@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/Studia/S6/pg/lab1/lab1/Content/font.spritefont","D:/Studia/S6/pg/lab1/lab1/Content/bin/DesktopGL/Content/font.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0.2689649
+"D:/Studia/S6/pg/lab1/lab1/Content/fox.png","D:/Studia/S6/pg/lab1/lab1/Content/bin/DesktopGL/Content/fox.xnb","TextureProcessor","Texture2DContent",6321,3869,0.0310053
+"D:/Studia/S6/pg/lab1/lab1/Content/skeleton.png","D:/Studia/S6/pg/lab1/lab1/Content/bin/DesktopGL/Content/skeleton.xnb","TextureProcessor","Texture2DContent",2146,2901,0.0089951
