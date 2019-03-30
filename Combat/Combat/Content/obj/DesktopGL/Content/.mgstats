@@ -1,0 +1,4 @@
+Source File,Dest File,Processor Type,Content Type,Source File Size,Dest File Size,Build Seconds
+"D:/Studia/S6/pg/Combat/Combat/Content/Font.spritefont","D:/Studia/S6/pg/Combat/Combat/Content/bin/DesktopGL/Content/Font.xnb","FontDescriptionProcessor","SpriteFontContent",2008,21521,0.2862168
+"D:/Studia/S6/pg/Combat/Combat/Content/fox.png","D:/Studia/S6/pg/Combat/Combat/Content/bin/DesktopGL/Content/fox.xnb","TextureProcessor","Texture2DContent",6321,3869,0.0149601
+"D:/Studia/S6/pg/Combat/Combat/Content/skeleton.png","D:/Studia/S6/pg/Combat/Combat/Content/bin/DesktopGL/Content/skeleton.xnb","TextureProcessor","Texture2DContent",2146,2901,0.0009985
