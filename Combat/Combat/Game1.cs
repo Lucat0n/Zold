@@ -116,8 +116,8 @@ namespace Combat
             //spriteBatch.Draw(enemy.getTexture(), enemyPos);
             spriteBatch.Draw(enemy.getTexture(), enemy.getPosition());
             spriteBatch.Draw(player.getTexture(), player.getPosition());
-            spriteBatch.DrawString(font, "Distance: " + distance.ToString(), new Vector2(100, 80), Color.Black);
-            spriteBatch.DrawString(font, "Direction: \n x: " + direction.X.ToString() + " y: " + direction.Y.ToString(), new Vector2(100, 100), Color.Black);
+            spriteBatch.DrawString(font, "Distance: " + enemy.getDistance().ToString(), new Vector2(100, 80), Color.Black);
+            spriteBatch.DrawString(font, "Direction: \n x: " + enemy.getDirection().X.ToString() + " y: " + enemy.getDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);

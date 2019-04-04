@@ -49,5 +49,15 @@ namespace Combat
         {
             return position;
         }
+
+        public Vector2 getDirection()
+        {
+            return direction;
+        }
+
+        public double getDistance()
+        {
+            return distance;
+        }
     }
 }
