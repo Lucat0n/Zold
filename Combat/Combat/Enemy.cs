@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using System.Timers;
 
 namespace Combat
 {
@@ -12,50 +13,93 @@ namespace Combat
     {
         Player player;
         Texture2D texture;
-        public Vector2 position, direction;
-        int speed = 1;
+        Timer attackTimer = new System.Timers.Timer();
+        public Vector2 position;
+        public Vector2 direction;
+        Vector2 attackPosition;
+        int damage;
+        float speed;
         double distance;
+        public string action { get; set; }
+        double attackStart;
+        float attackEnd;
+
 
         public Enemy(Player player, Vector2 position)
         {
             this.player = player;
             this.position = position;
+            damage = 5;
+
+            action = "Idle";
+
+            attackTimer.Interval = 1000;
+            attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
-        public void move()
+        public void AI(GameTime gameTime)
         {
-            distance = Vector2.Distance(player.getPosition(), position);
-            direction = new Vector2(player.getPosition().X - position.X, player.getPosition().Y - position.Y);
-            direction.Normalize();
+            speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            CalcDirection();
 
-            if (distance <= 100)
+            if (attackTimer.Enabled == true)
+                action = "Attacking";
+            else
+                action = "Idle";
+
+            if (distance <= 50 && attackTimer.Enabled == false)
             {
-                position.X += direction.X * speed;
-                position.Y += direction.Y * speed;
+                attackPosition = player.position;
+                attackTimer.Enabled = true;
+            }
+            else if (distance <= 200 && attackTimer.Enabled == false)
+            {
+                action = "Moving";
+                Move();
             }
         }
 
-        public void setTexture(Texture2D texture)
+        private void Attack(object source, ElapsedEventArgs e)
+        {
+            if (attackPosition == player.position)
+                player.hp -= damage;
+            attackTimer.Enabled = false;
+        }
+
+        public void Move()
+        {
+            position.X += direction.X * speed;
+            position.Y += direction.Y * speed;
+        }
+
+        private void CalcDirection()
+        {
+            distance = Vector2.Distance(player.position, position);
+            direction = new Vector2(player.position.X - position.X, player.position.Y - position.Y);
+            direction.Normalize();
+        }
+
+        public void SetTexture(Texture2D texture)
         {
             this.texture = texture;
         }
 
-        public Texture2D getTexture()
+        public Texture2D GetTexture()
         {
             return texture;
         }
 
-        public Vector2 getPosition()
+        public Vector2 GetPosition()
         {
             return position;
         }
 
-        public Vector2 getDirection()
+        public Vector2 GetDirection()
         {
             return direction;
         }
 
-        public double getDistance()
+        public double GetDistance()
         {
             return distance;
         }

@@ -12,11 +12,9 @@ namespace Combat
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        Vector2 direction;
         SpriteFont font;
         //bool colisionX = false;
         //bool colisionY = false;
-        double distance;
 
         Player player;
         Enemy enemy;
@@ -37,7 +35,7 @@ namespace Combat
         {
             // TODO: Add your initialization logic here
 
-            player = new Player(new Vector2(0, 0));
+            player = new Player(new Vector2(0, 0), 100);
             enemy = new Enemy(player, new Vector2(300, 300));
 
             base.Initialize();
@@ -53,9 +51,8 @@ namespace Combat
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
 
-            player.setTexture(Content.Load<Texture2D>("fox"));
-            enemy.setTexture(Content.Load<Texture2D>("skeleton"));
-
+            player.texture = Content.Load<Texture2D>("fox");
+            enemy.SetTexture(Content.Load<Texture2D>("skeleton"));
             // TODO: use this.Content to load your game content here
         }
 
@@ -88,7 +85,7 @@ namespace Combat
             if (Keyboard.GetState().IsKeyDown(Keys.D))
                 player.move("right");
 
-            enemy.move();
+            enemy.AI(gameTime);
             /*
             if ((position1.X > position2.X && position1.X < position2.X + 50) || (position1.X + 50 > position2.X && position1.X + 50 < position2.X + 50))
                 colisionX = true;
@@ -114,10 +111,12 @@ namespace Combat
             // TODO: Add your drawing code here
             spriteBatch.Begin();
             //spriteBatch.Draw(enemy.getTexture(), enemyPos);
-            spriteBatch.Draw(enemy.getTexture(), enemy.getPosition());
-            spriteBatch.Draw(player.getTexture(), player.getPosition());
-            spriteBatch.DrawString(font, "Distance: " + enemy.getDistance().ToString(), new Vector2(100, 80), Color.Black);
-            spriteBatch.DrawString(font, "Direction: \n x: " + enemy.getDirection().X.ToString() + " y: " + enemy.getDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
+            spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition());
+            spriteBatch.Draw(player.texture, player.position);
+            spriteBatch.DrawString(font, "Distance: " + enemy.GetDistance().ToString(), new Vector2(100, 80), Color.Black);
+            spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
+            spriteBatch.DrawString(font, "HP: " + player.hp.ToString() , new Vector2(15, 15), Color.Black);
+            spriteBatch.DrawString(font, enemy.action, new Vector2(enemy.position.X, enemy.position.Y-15), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);

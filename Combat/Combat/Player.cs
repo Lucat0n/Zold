@@ -10,58 +10,40 @@ namespace Combat
 {
     class Player
     {
-        Texture2D texture;
-        Vector2 position;
-        int speed = 2;
+        public Texture2D texture { get; set; }
+        public Vector2 position { get; set; }
+        public int hp { get; set; }
+        public int speed { get; private set; }
 
-        public Player(Vector2 position)
-        {
-            this.position = position;
-        }
+        public Player(Vector2 position, int hp)
+            {
+                this.position = position;
+                this.hp = hp;
+                speed = 2;
+            }
 
         public void move(string direction)
         {
             switch (direction)
             {
                 case "up":
-                    position.Y -= speed;
+                    // position.Y -= speed;
+                    position = new Vector2(position.X, position.Y - speed);
                     break;
                 case "down":
-                    position.Y += speed;
+                    // position.Y += speed;
+                    position = new Vector2(position.X, position.Y + speed);
                     break;
                 case "left":
-                    position.X -= speed;
+                    // position.X -= speed;
+                    position = new Vector2(position.X - speed, position.Y);
                     break;
                 case "right":
-                    position.X += speed;
+                    // position.X += speed;
+                    position = new Vector2(position.X + speed, position.Y);
                     break;
 
             }
-        }
-
-        public void setTexture(Texture2D texture)
-        {
-            this.texture = texture;
-        }
-
-        public void setPosition(Vector2 position)
-        {
-            this.position = position;
-        }
-
-        public Texture2D getTexture()
-        {
-            return texture;
-        }
-
-        public Vector2 getPosition()
-        {
-            return position;
-        }
-
-        public int getSpeed()
-        {
-            return speed;
         }
     }
 }
