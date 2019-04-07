@@ -51,7 +51,7 @@ namespace Combat
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
 
-            player.texture = Content.Load<Texture2D>("fox");
+            player.SetTexture(Content.Load<Texture2D>("fox"));
             enemy.SetTexture(Content.Load<Texture2D>("skeleton"));
             // TODO: use this.Content to load your game content here
         }
@@ -111,7 +111,7 @@ namespace Combat
             spriteBatch.Begin();
             //spriteBatch.Draw(enemy.getTexture(), enemyPos);
             spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition());
-            spriteBatch.Draw(player.texture, player.position);
+            spriteBatch.Draw(player.GetTexture(), player.GetPosition());
             spriteBatch.DrawString(font, "Distance: " + enemy.GetDistance().ToString(), new Vector2(100, 80), Color.Black);
             spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
             spriteBatch.DrawString(font, "HP: " + player.hp.ToString(), new Vector2(15, 15), Color.Black);

@@ -49,7 +49,7 @@ namespace Combat
 
             if (distance <= 50 && attackTimer.Enabled == false)
             {
-                attackPosition = player.position;
+                attackPosition = player.GetPosition();
                 attackTimer.Enabled = true;
             }
             else if (distance <= 200 && attackTimer.Enabled == false)
@@ -61,7 +61,7 @@ namespace Combat
 
         private void Attack(object source, ElapsedEventArgs e)
         {
-            if (attackPosition == player.position)
+            if (attackPosition == player.GetPosition())
                 player.hp -= damage;
             attackTimer.Enabled = false;
         }
@@ -74,8 +74,8 @@ namespace Combat
 
         private void CalcDirection()
         {
-            distance = Vector2.Distance(player.position, position);
-            direction = new Vector2(player.position.X - position.X, player.position.Y - position.Y);
+            distance = Vector2.Distance(player.GetPosition(), position);
+            direction = new Vector2(player.GetPosition().X - position.X, player.GetPosition().Y - position.Y);
             direction.Normalize();
         }
 

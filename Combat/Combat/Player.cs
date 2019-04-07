@@ -10,14 +10,14 @@ namespace Combat
 {
     class Player
     {
-        public Texture2D texture { get; set; }
-        public Vector2 position { get; set; }
+        private Texture2D texture;
+        private Vector2 position;
         public int hp { get; set; }
         public int speed { get; private set; }
 
         public Player(Vector2 position, int hp)
         {
-            this.position = position;
+            this.SetPosition(position);
             this.hp = hp;
             speed = 2;
         }
@@ -27,23 +27,39 @@ namespace Combat
             switch (direction)
             {
                 case "up":
-                    // position.Y -= speed;
-                    position = new Vector2(position.X, position.Y - speed);
+                    position.Y -= speed;
                     break;
                 case "down":
-                    // position.Y += speed;
-                    position = new Vector2(position.X, position.Y + speed);
+                    position.Y += speed;
                     break;
                 case "left":
-                    // position.X -= speed;
-                    position = new Vector2(position.X - speed, position.Y);
+                    position.X -= speed;
                     break;
                 case "right":
-                    // position.X += speed;
-                    position = new Vector2(position.X + speed, position.Y);
+                    position.X += speed;
                     break;
 
             }
+        }
+
+        public Texture2D GetTexture()
+        {
+            return texture;
+        }
+
+        public void SetTexture(Texture2D value)
+        {
+            texture = value;
+        }
+
+        public Vector2 GetPosition()
+        {
+            return position;
+        }
+
+        public void SetPosition(Vector2 value)
+        {
+            position = value;
         }
     }
 }
