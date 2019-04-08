@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -22,24 +23,16 @@ namespace Combat
             speed = 2;
         }
 
-        public void move(string direction)
+        public void move()
         {
-            switch (direction)
-            {
-                case "up":
-                    position.Y -= speed;
-                    break;
-                case "down":
-                    position.Y += speed;
-                    break;
-                case "left":
-                    position.X -= speed;
-                    break;
-                case "right":
-                    position.X += speed;
-                    break;
-
-            }
+            if (Keyboard.GetState().IsKeyDown(Keys.W))
+                position.Y -= speed;
+            if (Keyboard.GetState().IsKeyDown(Keys.S))
+                position.Y += speed;
+            if (Keyboard.GetState().IsKeyDown(Keys.A))
+                position.X -= speed;
+            if (Keyboard.GetState().IsKeyDown(Keys.D))
+                position.X += speed;
         }
 
         public Texture2D GetTexture()

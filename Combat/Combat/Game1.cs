@@ -76,14 +76,7 @@ namespace Combat
                 Exit();
 
             // TODO: Add your update logic here
-            if (Keyboard.GetState().IsKeyDown(Keys.W))
-                player.move("up");
-            if (Keyboard.GetState().IsKeyDown(Keys.S))
-                player.move("down");
-            if (Keyboard.GetState().IsKeyDown(Keys.A))
-                player.move("left");
-            if (Keyboard.GetState().IsKeyDown(Keys.D))
-                player.move("right");
+            player.move();
 
             enemy.AI(gameTime);
             /*
