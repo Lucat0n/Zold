@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
+using System.Collections.Generic;
 
 namespace Combat
 {
@@ -13,11 +14,10 @@ namespace Combat
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
         SpriteFont font;
-        //bool colisionX = false;
-        //bool colisionY = false;
 
         Player player;
         Enemy enemy;
+        List<Enemy> enemies;
 
         public Game1()
         {
@@ -34,9 +34,11 @@ namespace Combat
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            enemies = new List<Enemy>();
 
-            player = new Player(new Vector2(0, 0), 100);
+            player = new Player(new Vector2(0, 0), 100, enemies);
             enemy = new Enemy(player, new Vector2(300, 300));
+            enemies.Add(enemy);
 
             base.Initialize();
         }
@@ -51,7 +53,7 @@ namespace Combat
             spriteBatch = new SpriteBatch(GraphicsDevice);
             font = Content.Load<SpriteFont>("font");
 
-            player.SetTexture(Content.Load<Texture2D>("fox"));
+            player.SetTexture(Content.Load<Texture2D>("main"));
             enemy.SetTexture(Content.Load<Texture2D>("skeleton"));
             // TODO: use this.Content to load your game content here
         }
@@ -76,19 +78,10 @@ namespace Combat
                 Exit();
 
             // TODO: Add your update logic here
-            player.move();
+            player.Controlls();
 
             enemy.AI(gameTime);
-            /*
-            if ((position1.X > position2.X && position1.X < position2.X + 50) || (position1.X + 50 > position2.X && position1.X + 50 < position2.X + 50))
-                colisionX = true;
-            else
-                colisionX = false;
-            if ((position1.Y > position2.Y && position1.Y < position2.Y + 50) || (position1.Y + 50 > position2.Y && position1.Y + 50 < position2.Y + 50))
-                colisionY = true;
-            else
-                colisionY = false;
-                */
+
             base.Update(gameTime);
         }
 
@@ -105,10 +98,14 @@ namespace Combat
             //spriteBatch.Draw(enemy.getTexture(), enemyPos);
             spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition());
             spriteBatch.Draw(player.GetTexture(), player.GetPosition());
-            spriteBatch.DrawString(font, "Distance: " + enemy.GetDistance().ToString(), new Vector2(100, 80), Color.Black);
+
+
+            spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
             spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
-            spriteBatch.DrawString(font, "HP: " + player.hp.ToString(), new Vector2(15, 15), Color.Black);
-            spriteBatch.DrawString(font, enemy.action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
+            spriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
+            spriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(700, 15), Color.Black);
+            spriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
+            spriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
             spriteBatch.End();
 
             base.Draw(gameTime);

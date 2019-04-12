@@ -13,70 +13,81 @@ namespace Combat
     {
         Player player;
         Texture2D texture;
-        Timer attackTimer = new System.Timers.Timer();
+        Timer attackTimer;
         public Vector2 position;
         public Vector2 direction;
         Vector2 attackPosition;
-        int damage;
-        float speed;
-        double distance;
-        public string action { get; set; }
-        double attackStart;
-        float attackEnd;
+        public int Damage { get; private set; }
+        public int Hp { get; set; }
+        public float Speed { get; private set; }
+        public double Distance { get; private set; }
+        public string Action { get; private set; }
+        public double AttackStart { get; private set; }
+        public float AttackEnd { get; private set; }
 
 
         public Enemy(Player player, Vector2 position)
         {
             this.player = player;
             this.position = position;
-            damage = 5;
+            Damage = 5;
+            Hp = 50;
 
-            action = "Idle";
+            Action = "Idle";
 
+            attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
         public void AI(GameTime gameTime)
         {
-            speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             CalcDirection();
 
             if (attackTimer.Enabled == true)
-                action = "Attacking";
+                Action = "Attacking";
             else
-                action = "Idle";
+                Action = "Idle";
 
-            if (distance <= 50 && attackTimer.Enabled == false)
+            if (Distance <= 50 && attackTimer.Enabled == false)
             {
-                attackPosition = player.GetPosition();
+                attackPosition = player.GetCenterPosition();
                 attackTimer.Enabled = true;
             }
-            else if (distance <= 200 && attackTimer.Enabled == false)
+            else if (Distance <= 200 && attackTimer.Enabled == false)
             {
-                action = "Moving";
+                Action = "Moving";
                 Move();
             }
         }
 
         private void Attack(object source, ElapsedEventArgs e)
         {
-            if (attackPosition == player.GetPosition())
-                player.hp -= damage;
+            if (player.CheckPointCollision(attackPosition))
+                player.Hp -= Damage;
             attackTimer.Enabled = false;
         }
 
         public void Move()
         {
-            position.X += direction.X * speed;
-            position.Y += direction.Y * speed;
+            position.X += direction.X * Speed;
+            position.Y += direction.Y * Speed;
         }
 
         private void CalcDirection()
         {
-            distance = Vector2.Distance(player.GetPosition(), position);
-            direction = new Vector2(player.GetPosition().X - position.X, player.GetPosition().Y - position.Y);
+            Distance = Vector2.Distance(player.GetCenterPosition(), position);
+            direction = new Vector2(player.GetCenterPosition().X - position.X, player.GetCenterPosition().Y - position.Y);
             direction.Normalize();
+        }
+
+        public bool CheckPointCollision(Vector2 point)
+        {
+            if ((position.X < point.X) && (position.X + 32 > point.X) &&
+                (position.Y < point.Y) && (position.Y + 48 > point.Y))
+                return true;
+            return false;
         }
 
         public void SetTexture(Texture2D texture)
@@ -97,11 +108,6 @@ namespace Combat
         public Vector2 GetDirection()
         {
             return direction;
-        }
-
-        public double GetDistance()
-        {
-            return distance;
         }
     }
 }
