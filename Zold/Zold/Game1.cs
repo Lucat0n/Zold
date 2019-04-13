@@ -147,33 +147,33 @@ namespace Zold
             // Create a new SpriteBatch, which can be used to draw textures.
             spriteBatch = new SpriteBatch(GraphicsDevice);
             //game elements
-            poww = Content.Load<Texture2D>("citybackgrund");
-            cyberpunk = Content.Load<Texture2D>("cyber2");
-            scott = Content.Load<Texture2D>("sct");
-            wallace = Content.Load<Texture2D>("police");
-            ralf = Content.Load<Texture2D>("ralf");
-            splash = Content.Load<Texture2D>("rzprod");
-            zold = Content.Load<Texture2D>("zold");
-            playButton = Content.Load<Texture2D>("playButton");
-            optionsButton = Content.Load<Texture2D>("optionsButton");
-            quitButton = Content.Load<Texture2D>("quitButton");
-            blank = Content.Load<Texture2D>("blank");
-            backButton = Content.Load<Texture2D>("backButton");
-            boxChecked = Content.Load<Texture2D>("boxChecked");
-            boxUnchecked = Content.Load<Texture2D>("boxUnchecked");
-            fscrIcon = Content.Load<Texture2D>("fscrIcon");
+            poww = Content.Load<Texture2D>("placeholders/citybackgrund");
+            cyberpunk = Content.Load<Texture2D>("placeholders/cyber2");
+            scott = Content.Load<Texture2D>("placeholders/sct");
+            wallace = Content.Load<Texture2D>("placeholders/police");
+            ralf = Content.Load<Texture2D>("placeholders/ralf");
+            splash = Content.Load<Texture2D>("placeholders/rzprod");
+            zold = Content.Load<Texture2D>("placeholders/zold");
+            playButton = Content.Load<Texture2D>("placeholders/playButton");
+            optionsButton = Content.Load<Texture2D>("placeholders/optionsButton");
+            quitButton = Content.Load<Texture2D>("placeholders/quitButton");
+            blank = Content.Load<Texture2D>("placeholders/blank");
+            backButton = Content.Load<Texture2D>("placeholders/backButton");
+            boxChecked = Content.Load<Texture2D>("placeholders/boxChecked");
+            boxUnchecked = Content.Load<Texture2D>("placeholders/boxUnchecked");
+            fscrIcon = Content.Load<Texture2D>("placeholders/fscrIcon");
 
 
             // loading music
-            menuMusic = Content.Load<Song>(@"doskozzza");
-            gameplayMusic = Content.Load<Song>("lufa");
-            bgMusic = Content.Load<SoundEffect>("menu-music");
-            combatMusic = Content.Load<SoundEffect>("kombat");
+            menuMusic = Content.Load<Song>(@"placeholders/doskozzza");
+            gameplayMusic = Content.Load<Song>("placeholders/lufa");
+            bgMusic = Content.Load<SoundEffect>("placeholders/menu-music");
+            combatMusic = Content.Load<SoundEffect>("placeholders/kombat");
 
             // Combat content
-            font = Content.Load<SpriteFont>("font");
-            playerCombat = Content.Load<Texture2D>("main");
-            enemyCombat = Content.Load<Texture2D>("skeleton");
+            font = Content.Load<SpriteFont>("placeholders/font");
+            playerCombat = Content.Load<Texture2D>("placeholders/main");
+            enemyCombat = Content.Load<Texture2D>("placeholders/skeleton");
 
 
             currentSong = menuMusic;
@@ -191,7 +191,7 @@ namespace Zold
             playerOne.SetTexture(scott);
             
             enemy = new Map.Enemy(playerOne, new Vector2(400, 300));
-            enemy.SetTexture(Content.Load<Texture2D>("dosko-sm"));
+            enemy.SetTexture(Content.Load<Texture2D>("placeholders/dosko-sm"));
             // TODO: use this.Content to load your game content here
 
             Combat = new Combat.Combat(playerCombat, enemyCombat, font);
