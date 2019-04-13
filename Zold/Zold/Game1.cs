@@ -224,9 +224,9 @@ namespace Zold
                 case gameState.Game:
                     UpdateMainGame(gameTime);
                     break;
-                    //case gameState.Combat:
-                    //    combat.Update(gameTime);
-                    //    break;
+                case gameState.Combat:
+                    Combat.Update(gameTime);
+                    break;
             }
 
 
@@ -267,7 +267,7 @@ namespace Zold
             {
                 playerOne.move(scott.Width, scott.Height);
                 bacgrund = Color.Green;
-                manageLocations();
+                ManageLocations();
                 if (cyber)
                 {
                     enemy.AI(gameTime);
@@ -304,9 +304,9 @@ namespace Zold
                 case gameState.Game:
                     DrawMainGame(gameTime);
                     break;
-                    //case gameState.Combat:
-                    //    combat.Draw(gameTime);
-                    //    break;
+                case gameState.Combat:
+                    Combat.Draw(gameTime);
+                    break;
             }
 
 
@@ -526,11 +526,10 @@ namespace Zold
         }
 
 
-        void manageLocations()
+        void ManageLocations()
         {
             if (forest)
             {
-
                 if ((playerOne.GetPosition().X + scott.Width >= wallacePosX && playerOne.GetPosition().X < wallacePosX + wallaceWidth) && (playerOne.GetPosition().Y + scott.Height >= wallacePosY && playerOne.GetPosition().Y < wallacePosY + wallaceHeight))
                 {
                     bacgrund = bacgrundAfterHit;
@@ -543,9 +542,8 @@ namespace Zold
                     forest = false;
                     city = true;
                     cyber = false;
-
-
                 }
+
                 if (playerOne.GetPosition().X < 0)
                 {
                     kolorPow2 = Color.White;
@@ -559,10 +557,9 @@ namespace Zold
                     cyber = true;
                 }
             }
+
             if (city)
             {
-
-
                 if ((playerOne.GetPosition().X + scott.Width >= ralfX && playerOne.GetPosition().X < ralfX + ralfWidth) && (playerOne.GetPosition().Y + scott.Height >= ralfY && playerOne.GetPosition().Y < ralfY + ralfHeight))
                 {
                     // bacgrund = Color.Green;
@@ -594,10 +591,7 @@ namespace Zold
                     forest = true;
                     city = false;
                     cyber = false;
-
-
                 }
-
             }
 
             if (cyber)
@@ -605,60 +599,48 @@ namespace Zold
                 if (playerOne.GetPosition().X + scott.Width >= enemy.GetPosition().X
                     && playerOne.GetPosition().Y + scott.Width >= enemy.GetPosition().Y)
                 {
-                    //  state = gameState.Combat;
-                    if (!combatStart)
+                    state = gameState.Combat;
+                    if (songStart)
                     {
-
-                        if (songStart)
-                        {
-                            MediaPlayer.Stop();
-                            combatMusic.Play();
-                            songStart = false;
-                        }
-
-                        Combat.Combat combat = new Combat.Combat();
-                        combat.Run();
-                        combatStart = true;
+                        MediaPlayer.Stop();
+                        combatMusic.Play();
+                        songStart = false;
                     }
-                }
-
-                if (playerOne.GetPosition().X + scott.Width >= 800)    /// do lasu
-                {
-                    bacgrund = Color.Green;
-                    kolorPow2 = Color.White * 0;
-                    wht = Color.White;
-                    pos.X = 15;
-                    //pos.Y = 2;
-                    playerOne.SetPosition(15, playerOne.GetPosition().Y);
-
-                    forest = true;
-                    city = false;
-                    cyber = false;
-                }
-
-                if (playerOne.GetPosition().X < 0)   /// do miasta
-                {
-
-                    bacgrund = bacgrundAfterHit;
-                    kolorPow = Color.White;
-                    kolorPow2 = Color.Wheat * 0;
-                    wht = Color.Wheat * 0;
-
-                    pos.X = 650;
-                    //   pos.Y = 290;
-
-
-
-                    forest = false;
-                    city = true;
-                    cyber = false;
                 }
             }
 
+            if (playerOne.GetPosition().X + scott.Width >= 800)    /// do lasu
+            {
+                bacgrund = Color.Green;
+                kolorPow2 = Color.White * 0;
+                wht = Color.White;
+                pos.X = 15;
+                //pos.Y = 2;
+                playerOne.SetPosition(15, playerOne.GetPosition().Y);
+
+                forest = true;
+                city = false;
+                cyber = false;
+            }
+
+            if (playerOne.GetPosition().X < 0)   /// do miasta
+            {
+                bacgrund = bacgrundAfterHit;
+                kolorPow = Color.White;
+                kolorPow2 = Color.Wheat * 0;
+                wht = Color.Wheat * 0;
+
+                pos.X = 650;
+                //   pos.Y = 290;
+
+
+
+                forest = false;
+                city = true;
+                cyber = false;
+            }
         }
     }
-
-
 }
 
 
