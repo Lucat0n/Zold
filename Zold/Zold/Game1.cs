@@ -117,6 +117,12 @@ namespace Zold
         Map.Player playerOne;
         Map.Enemy enemy;
 
+        //Combat - temp
+        Combat.Combat Combat;
+        SpriteFont font;
+        Texture2D playerCombat;
+        Texture2D enemyCombat;
+
 
 
         public Game1()
@@ -128,9 +134,6 @@ namespace Zold
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-
-
-
             base.Initialize();
 
             state = gameState.Menu;
@@ -167,6 +170,11 @@ namespace Zold
             bgMusic = Content.Load<SoundEffect>("menu-music");
             combatMusic = Content.Load<SoundEffect>("kombat");
 
+            // Combat content
+            font = Content.Load<SpriteFont>("font");
+            playerCombat = Content.Load<Texture2D>("main");
+            enemyCombat = Content.Load<Texture2D>("skeleton");
+
 
             currentSong = menuMusic;
 
@@ -181,12 +189,12 @@ namespace Zold
             //makin playa
             playerOne = new Map.Player(pos);
             playerOne.SetTexture(scott);
-
+            
             enemy = new Map.Enemy(playerOne, new Vector2(400, 300));
             enemy.SetTexture(Content.Load<Texture2D>("dosko-sm"));
             // TODO: use this.Content to load your game content here
 
-            //combat = new Combat();
+            Combat = new Combat.Combat(playerCombat, enemyCombat, font);
 
         }
 
@@ -305,7 +313,7 @@ namespace Zold
                     DrawMainGame(gameTime);
                     break;
                 case gameState.Combat:
-                    Combat.Draw(gameTime);
+                    Combat.Draw(spriteBatch);
                     break;
             }
 

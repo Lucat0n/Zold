@@ -7,22 +7,28 @@ using System.Collections.Generic;
 namespace Combat
 {
     /// <summary>
-    /// This is the main type for your game.
+    /// This is the main class of Combat.
     /// </summary>
-    public class Combat : Game
+    public class Combat
     {
-        GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
-        SpriteFont font;
-
         Player player;
         Enemy enemy;
         List<Enemy> enemies;
 
-        public Combat()
+        //temp
+        SpriteFont font;
+        Texture2D playerTex;
+        Texture2D enemyTex;
+
+        public Combat(Texture2D playerTex, Texture2D enemyTex, SpriteFont font)
         {
-            graphics = new GraphicsDeviceManager(this);
-            Content.RootDirectory = "Content";
+            //temp
+            this.font = font;
+            this.playerTex = playerTex;
+            this.enemyTex = enemyTex;
+
+            Initialize();
+            LoadContent();
         }
 
         /// <summary>
@@ -31,40 +37,22 @@ namespace Combat
         /// related content.  Calling base.Initialize will enumerate through any components
         /// and initialize them as well.
         /// </summary>
-        protected override void Initialize()
+        void Initialize()
         {
-            // TODO: Add your initialization logic here
             enemies = new List<Enemy>();
-
             player = new Player(new Vector2(0, 0), 100, enemies);
             enemy = new Enemy(player, new Vector2(300, 300));
             enemies.Add(enemy);
-
-            base.Initialize();
         }
 
         /// <summary>
         /// LoadContent will be called once per game and is the place to load
         /// all of your content.
         /// </summary>
-        protected override void LoadContent()
+        void LoadContent()
         {
-            // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
-            font = Content.Load<SpriteFont>("font");
-
-            player.SetTexture(Content.Load<Texture2D>("main"));
-            enemy.SetTexture(Content.Load<Texture2D>("skeleton"));
-            // TODO: use this.Content to load your game content here
-        }
-
-        /// <summary>
-        /// UnloadContent will be called once per game and is the place to unload
-        /// game-specific content.
-        /// </summary>
-        protected override void UnloadContent()
-        {
-            // TODO: Unload any non ContentManager content here
+            player.SetTexture(playerTex);
+            enemy.SetTexture(enemyTex);
         }
 
         /// <summary>
@@ -72,28 +60,18 @@ namespace Combat
         /// checking for collisions, gathering input, and playing audio.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Update(GameTime gameTime)
+        public void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
-
-            // TODO: Add your update logic here
             player.Controlls();
             enemy.AI(gameTime);
-
-            base.Update(gameTime);
         }
 
         /// <summary>
         /// This is called when the game should draw itself.
         /// </summary>
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
-        protected override void Draw(GameTime gameTime)
+        public void Draw(SpriteBatch spriteBatch)
         {
-            GraphicsDevice.Clear(Color.CornflowerBlue);
-
-            // TODO: Add your drawing code here
-            spriteBatch.Begin();
             //spriteBatch.Draw(enemy.getTexture(), enemyPos);
             spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition());
             spriteBatch.Draw(player.GetTexture(), player.GetPosition());
@@ -105,9 +83,6 @@ namespace Combat
             spriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(700, 15), Color.Black);
             spriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
             spriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
-            spriteBatch.End();
-
-            base.Draw(gameTime);
         }
     }
 }
