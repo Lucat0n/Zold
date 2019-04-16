@@ -40,20 +40,34 @@ namespace Combat
 
         public void Controlls()
         {
-            Action = "Move";
+            if (attackTimer.Enabled == false)
+                Action = "Idle";
+
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            {
                 position.Y -= Speed;
+                attackTimer.Enabled = false;
+                Action = "Moving";
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            {
                 position.Y += Speed;
+                attackTimer.Enabled = false;
+                Action = "Moving";
+            }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 position.X -= Speed;
                 attackPosition = new Vector2(centerPosition.X - 50, centerPosition.Y);
+                attackTimer.Enabled = false;
+                Action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 position.X += Speed;
                 attackPosition = new Vector2(centerPosition.X + 50, centerPosition.Y);
+                attackTimer.Enabled = false;
+                Action = "Moving";
             }
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
 
