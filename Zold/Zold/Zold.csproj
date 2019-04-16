@@ -45,6 +45,7 @@
     <Compile Include="Combat\Enemy.cs" />
     <Compile Include="Combat\Combat.cs" />
     <Compile Include="Combat\Player.cs" />
+    <Compile Include="Content\Animation.cs" />
     <Compile Include="Content\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map\Enemy.cs" />
