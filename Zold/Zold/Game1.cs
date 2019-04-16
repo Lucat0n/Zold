@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using System.Collections.Generic;
 
 namespace Zold
 {
@@ -119,9 +120,14 @@ namespace Zold
 
         //Combat - temp
         Combat.Combat Combat;
+        Combat.Player combatPlayer;
+        Combat.Enemy skeleton;
+        Combat.Enemy fox;
+        List<Combat.Enemy> enemies;
         SpriteFont font;
-        Texture2D playerCombat;
-        Texture2D enemyCombat;
+        Texture2D combatPlayerTex;
+        Texture2D skeletonTex;
+        Texture2D foxTex;
 
 
 
@@ -172,8 +178,9 @@ namespace Zold
 
             // Combat content
             font = Content.Load<SpriteFont>("placeholders/font");
-            playerCombat = Content.Load<Texture2D>("placeholders/main");
-            enemyCombat = Content.Load<Texture2D>("placeholders/skeleton");
+            combatPlayerTex = Content.Load<Texture2D>("placeholders/main");
+            skeletonTex = Content.Load<Texture2D>("placeholders/skeleton");
+            foxTex = Content.Load<Texture2D>("placeholders/fox");
 
 
             currentSong = menuMusic;
@@ -194,7 +201,21 @@ namespace Zold
             enemy.SetTexture(Content.Load<Texture2D>("placeholders/dosko-sm"));
             // TODO: use this.Content to load your game content here
 
-            Combat = new Combat.Combat(playerCombat, enemyCombat, font);
+            // Combat
+            enemies = new List<Combat.Enemy>();
+
+            combatPlayer = new Combat.Player(new Vector2(0, 0), 100, enemies);
+            combatPlayer.SetTexture(combatPlayerTex);
+            
+            skeleton = new Combat.Enemy(combatPlayer, new Vector2(300, 300));
+            fox = new Combat.Enemy(combatPlayer, new Vector2(300, 400));
+            skeleton.SetTexture(skeletonTex);
+            fox.SetTexture(foxTex);
+
+            enemies.Add(skeleton);
+            enemies.Add(fox);
+
+            Combat = new Combat.Combat(combatPlayer, enemies, font);
 
         }
 
