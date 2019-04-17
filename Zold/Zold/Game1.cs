@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
+using TiledSharp;
 
 namespace Zold
 {
@@ -117,6 +118,7 @@ namespace Zold
         //player
         Map.Player playerOne;
         Map.Enemy enemy;
+        Map.Mapa mapa;
 
         //Combat - temp
         Combat.Combat Combat;
@@ -128,6 +130,11 @@ namespace Zold
         Texture2D combatPlayerTex;
         Texture2D skeletonTex;
         Texture2D foxTex;
+
+        TmxMap mapp;
+        TmxMap mapp2;
+
+        Texture2D tileset;
 
 
 
@@ -216,6 +223,12 @@ namespace Zold
             enemies.Add(fox);
 
             Combat = new Combat.Combat(combatPlayer, enemies, font);
+
+            mapp = new TmxMap(@"Content/mapa2.tmx");
+            //tileset = Content.Load<Texture2D>(mapp.Tilesets[0].Name.ToString());
+            //currentMap = map;
+
+            mapa = new Map.Mapa(mapp, tileset);
 
         }
 
@@ -385,11 +398,10 @@ namespace Zold
             }
 
         }
-
+    
         protected void DrawMainGame(GameTime gameTime)
         {
-            spriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
-            spriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
+            mapa.drawTiles(0, mapp, spriteBatch);
 
             //postac 
             spriteBatch.Draw(playerOne.GetTexture(), playerOne.GetPosition(), Color.White);

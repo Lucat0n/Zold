@@ -179,6 +179,21 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/mag.png
 
+#begin placeholders/magecity.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/magecity.png
+
+#begin placeholders/magecity.tsx
+/copy:placeholders/magecity.tsx
+
 #begin placeholders/main.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -190,6 +205,12 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/main.png
+
+#begin placeholders/mapa2.tmx
+/copy:placeholders/mapa2.tmx
+
+#begin placeholders/mapa3.tmx
+/copy:placeholders/mapa3.tmx
 
 #begin placeholders/menu-music.wav
 /importer:WavImporter
@@ -322,6 +343,9 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:placeholders/wesola.wav
+
+#begin placeholders/xdmojamap.tmx
+/copy:placeholders/xdmojamap.tmx
 
 #begin placeholders/zold.png
 /importer:TextureImporter
