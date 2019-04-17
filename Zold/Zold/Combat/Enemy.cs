@@ -13,7 +13,7 @@ namespace Combat
         public Player player;
         public Texture2D texture;
         public Vector2 position;
-        public Vector2 direction;
+        public Vector2 playerDirection;
         public Vector2 attackPosition;
         public int Damage { get; set; }
         public int Hp { get; set; }
@@ -45,8 +45,8 @@ namespace Combat
         public void CalcDirection()
         {
             Distance = Vector2.Distance(player.GetCenterPosition(), position);
-            direction = new Vector2(player.GetCenterPosition().X - position.X, player.GetCenterPosition().Y - position.Y);
-            direction.Normalize();
+            playerDirection = new Vector2(player.GetCenterPosition().X - position.X, player.GetCenterPosition().Y - position.Y);
+            playerDirection.Normalize();
         }
 
         public bool CheckPointCollision(Vector2 point)
@@ -74,7 +74,7 @@ namespace Combat
 
         public Vector2 GetDirection()
         {
-            return direction;
+            return playerDirection;
         }
     }
 }

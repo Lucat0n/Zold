@@ -42,6 +42,7 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Combat\Charger.cs" />
     <Compile Include="Combat\Enemy.cs" />
     <Compile Include="Combat\Combat.cs" />
     <Compile Include="Combat\Mob.cs" />

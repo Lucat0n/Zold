@@ -208,7 +208,7 @@ namespace Zold
             combatPlayer.SetTexture(combatPlayerTex);
             
             skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300));
-            fox = new Combat.Mob(combatPlayer, new Vector2(300, 400));
+            fox = new Combat.Charger(combatPlayer, new Vector2(300, 400));
             skeleton.SetTexture(skeletonTex);
             fox.SetTexture(foxTex);
 

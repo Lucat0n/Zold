@@ -34,7 +34,7 @@ namespace Combat
                 attackPosition = player.GetCenterPosition();
                 attackTimer.Enabled = true;
             }
-            else if (Distance <= 200 && attackTimer.Enabled == false)
+            else if (Distance <= 400 && attackTimer.Enabled == false)
             {
                 Action = "Moving";
                 Move();
@@ -43,8 +43,8 @@ namespace Combat
 
         public override void Move()
         {
-            position.X += direction.X * Speed;
-            position.Y += direction.Y * Speed;
+            position.X += playerDirection.X * Speed;
+            position.Y += playerDirection.Y * Speed;
         }
 
         private void Attack(object source, ElapsedEventArgs e)
