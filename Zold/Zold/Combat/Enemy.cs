@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace Combat
 {
-    class Enemy
+    abstract class Enemy
     {
         public Player player;
         public Texture2D texture;
@@ -34,19 +34,17 @@ namespace Combat
             Action = "Idle";
         }
 
-        public virtual void AI(GameTime gameTime)
-        {
-        }
+        public abstract void AI(GameTime gameTime);
 
-        public virtual void Move()
-        {
-        }
+        public abstract void Move();
 
-        public void CalcDirection()
+        public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
         {
-            Distance = Vector2.Distance(player.GetCenterPosition(), position);
-            playerDirection = new Vector2(player.GetCenterPosition().X - position.X, player.GetCenterPosition().Y - position.Y);
-            playerDirection.Normalize();
+            Distance = Vector2.Distance(vector1, vector2);
+            Vector2 result = new Vector2();
+            result = new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
+            result.Normalize();
+            return result;
         }
 
         public bool CheckPointCollision(Vector2 point)

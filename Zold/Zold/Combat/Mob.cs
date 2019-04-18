@@ -22,7 +22,7 @@ namespace Combat
         public override void AI(GameTime gameTime)
         {
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            CalcDirection();
+            playerDirection = CalcDirection(player.GetCenterPosition(), position);
 
             if (attackTimer.Enabled == true)
                 Action = "Attacking";

@@ -14,12 +14,14 @@ namespace Combat
         public float chargeSpeed { get; set; }
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
+        private float chargeRange;
+        private float chargeCheck;
         private bool charge;
 
         public Charger(Player player, Vector2 position) : base(player, position)
         {
             charge = false;
-
+            
             prepareTimer = new Timer();
             prepareTimer.Interval = 1000;
             prepareTimer.Elapsed += new ElapsedEventHandler(Prepare);
@@ -29,7 +31,7 @@ namespace Combat
         {
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             chargeSpeed = Speed * 5;
-            CalcDirection();
+            playerDirection = CalcDirection(player.GetCenterPosition(), position);
 
             if (prepareTimer.Enabled == true)
                 Action = "Preparing";
@@ -44,7 +46,9 @@ namespace Combat
             else if (Distance <= 200 && prepareTimer.Enabled == false)
             {
                 chargePosition = player.GetCenterPosition();
-                CalcChargeDirection();
+                chargeDirection = CalcDirection(chargePosition, position);
+                chargeCheck = 0;
+                chargeRange = Vector2.Distance(chargePosition, position) + 50;
                 prepareTimer.Enabled = true;
             }
             else if (Distance <= 400 && prepareTimer.Enabled == false)
@@ -70,19 +74,12 @@ namespace Combat
         {
             position.X += chargeDirection.X * chargeSpeed;
             position.Y += chargeDirection.Y * chargeSpeed;
-
-            if (Math.Round(position.X, 0) == Math.Round(chargePosition.X, 0))
-            //if (position.Equals(chargePosition))
+            chargeCheck += chargeSpeed;
+            
+            if (chargeCheck > chargeRange)
             {
                 charge = false;
             }
         }
-
-        public void CalcChargeDirection()
-        {
-            chargeDirection = new Vector2(chargePosition.X - position.X, chargePosition.Y - position.Y);
-            chargeDirection.Normalize();
-        }
-
     }
 }
