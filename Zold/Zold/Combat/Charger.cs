@@ -11,6 +11,7 @@ namespace Combat
     class Charger : Enemy
     {
         private Timer prepareTimer;
+        private Timer cooldownTimer;
         public float chargeSpeed { get; set; }
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
@@ -22,6 +23,10 @@ namespace Combat
         {
             charge = false;
             
+            cooldownTimer = new Timer();
+            cooldownTimer.Interval = 1000;
+            cooldownTimer.Elapsed += new ElapsedEventHandler(Ready);
+        
             prepareTimer = new Timer();
             prepareTimer.Interval = 1000;
             prepareTimer.Elapsed += new ElapsedEventHandler(Prepare);
@@ -43,7 +48,7 @@ namespace Combat
                 Action = "Charging";
                 Charge();
             }
-            else if (Distance <= 200 && prepareTimer.Enabled == false)
+            else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
                 chargePosition = player.GetCenterPosition();
                 chargeDirection = CalcDirection(chargePosition, position);
@@ -69,6 +74,11 @@ namespace Combat
             charge = true;
             prepareTimer.Enabled = false;
         }
+        
+        private void Ready(object source, ElapsedEventArgs e)
+        {
+            cooldownTimer.Enabled = false;
+        }
 
         private void Charge()
         {
@@ -79,6 +89,7 @@ namespace Combat
             if (chargeCheck > chargeRange)
             {
                 charge = false;
+                cooldownTimer.Enabled = true;
             }
         }
     }
