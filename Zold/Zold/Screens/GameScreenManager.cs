@@ -46,11 +46,11 @@ namespace Zold.Screens
             graphics = game.graphics;
             content = game.Content;
             content.RootDirectory = "Content";
+            spriteBatch = new SpriteBatch(GraphicsDevice);
         }
 
         protected override void LoadContent()
         {
-            spriteBatch = new SpriteBatch(GraphicsDevice);
             spriteFont = content.Load<SpriteFont>("placeholders/font");
             blank = content.Load<Texture2D>("placeholders/blank");
 

@@ -22,7 +22,13 @@ namespace Zold.Screens.Implemented
 
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.SpriteBatch.Draw(splash, new Vector2(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - splash.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2 - splash.Height / 2), Color.White * 0.5f);
+            System.Diagnostics.Debug.WriteLine("Draw");
+
+            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Draw(splash, new Vector2(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - splash.Width / 2,
+                gameScreenManager.GraphicsDevice.Viewport.Height / 2 - splash.Height / 2),
+                Color.White);
+            gameScreenManager.SpriteBatch.End();
         }
 
         public override void HandleInput(MouseState mouseState, Point mousePos, KeyboardState keyboardState)
@@ -32,6 +38,7 @@ namespace Zold.Screens.Implemented
 
         public override void LoadContent()
         {
+            System.Diagnostics.Debug.WriteLine("Load");
             splash = gameScreenManager.Content.Load<Texture2D>("placeholders/rzprod");
         }
 

@@ -15,7 +15,7 @@ namespace Zold
     public class Game1 : Game
     {
         public GraphicsDeviceManager graphics;
-        SpriteBatch spriteBatch;
+        //SpriteBatch spriteBatch;
         GameScreenManager gameScreenManager;
 
         Texture2D scott;
@@ -344,7 +344,7 @@ namespace Zold
 
 
             spriteBatch.End();*/
-
+            gameScreenManager.Draw(gameTime);
             base.Draw(gameTime);
         }
 
@@ -354,7 +354,7 @@ namespace Zold
             if (splashDelay > 0.0f) splashAlpha += (float)gameTime.ElapsedGameTime.TotalSeconds / 2.5f;
             else if (splashDelay > -5.0f) splashAlpha -= (float)gameTime.ElapsedGameTime.TotalSeconds / 2.5f;
             else state = gameState.Menu;
-            spriteBatch.Draw(splash, new Vector2(GraphicsDevice.Viewport.Width / 2 - splash.Width / 2, GraphicsDevice.Viewport.Height / 2 - splash.Height / 2), Color.White * splashAlpha);
+            //spriteBatch.Draw(splash, new Vector2(GraphicsDevice.Viewport.Width / 2 - splash.Width / 2, GraphicsDevice.Viewport.Height / 2 - splash.Height / 2), Color.White * splashAlpha);
         }
 
         protected void DrawMenu(GameTime gameTime)
@@ -375,44 +375,44 @@ namespace Zold
                 else
                 {
                     isMenuLoaded = true;
-                    spriteBatch.Draw(playButton, playButtonRectangle, playButtonColor);
-                    spriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
+                    //spriteBatch.Draw(playButton, playButtonRectangle, playButtonColor);
+                    //spriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
                 }
                 //spriteBatch.Draw(zold, new Vector2(GraphicsDevice.Viewport.Width / 2 - zold.Width / 2, GraphicsDevice.Viewport.Height / 2 - zold.Height / 2), Color.White * zoldAlpha);
-                spriteBatch.Draw(zold, new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
+                //spriteBatch.Draw(zold, new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
             }
             else
             {
-                spriteBatch.Draw(isFullScreenOn ? boxChecked : boxUnchecked, checkBoxRectangle, checkBoxColor);
-                spriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
-                spriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
+                //spriteBatch.Draw(isFullScreenOn ? boxChecked : boxUnchecked, checkBoxRectangle, checkBoxColor);
+                //spriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
+                //spriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
             }
 
         }
 
         protected void DrawMainGame(GameTime gameTime)
         {
-            spriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
-            spriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
+            //spriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
+            //spriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
 
             //postac 
-            spriteBatch.Draw(playerOne.GetTexture(), playerOne.GetPosition(), Color.White);
+            //spriteBatch.Draw(playerOne.GetTexture(), playerOne.GetPosition(), Color.White);
 
             ///budunek policji
-            spriteBatch.Draw(wallace, new Rectangle(wallacePosX, wallacePosY, wallaceWidth + 50, wallaceHeight + 20), wht);
+            //spriteBatch.Draw(wallace, new Rectangle(wallacePosX, wallacePosY, wallaceWidth + 50, wallaceHeight + 20), wht);
 
             //wiezowiec 2
-            spriteBatch.Draw(ralf, new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
+            //spriteBatch.Draw(ralf, new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
 
             if (cyber)
             {
                 // przeciwnik - DOSKOZZZA
-                spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), Color.White);
+                //spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), Color.White);
             }
             if (isPaused)
             {
-                spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
-                spriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
+                //spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
+                //spriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
 
             }
         }
