@@ -4,6 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
+using Zold.Screens;
+using Zold.Screens.Implemented;
 
 namespace Zold
 {
@@ -12,8 +14,9 @@ namespace Zold
     /// </summary>
     public class Game1 : Game
     {
-        GraphicsDeviceManager graphics;
+        public GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        GameScreenManager gameScreenManager;
 
         Texture2D scott;
         //public static int qwe = 90;
@@ -140,9 +143,9 @@ namespace Zold
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            gameScreenManager = new GameScreenManager(this);
             base.Initialize();
-
-            state = gameState.Menu;
+            //state = gameState.Menu;
 
             IsMouseVisible = true;
             Window.AllowUserResizing = true;
@@ -151,9 +154,10 @@ namespace Zold
         protected override void LoadContent()
         {
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            //spriteBatch = new SpriteBatch(GraphicsDevice);
+            gameScreenManager.InsertScreen(new SplashScreen());
             //game elements
-            poww = Content.Load<Texture2D>("placeholders/citybackgrund");
+            /*poww = Content.Load<Texture2D>("placeholders/citybackgrund");
             cyberpunk = Content.Load<Texture2D>("placeholders/cyber2");
             scott = Content.Load<Texture2D>("placeholders/sct");
             wallace = Content.Load<Texture2D>("placeholders/police");
@@ -215,7 +219,7 @@ namespace Zold
             enemies.Add(skeleton);
             enemies.Add(fox);
 
-            Combat = new Combat.Combat(combatPlayer, enemies, font);
+            Combat = new Combat.Combat(combatPlayer, enemies, font);*/
 
         }
 
@@ -237,7 +241,7 @@ namespace Zold
         {
             //MediaPlayer.Play(menuMusic);
 
-            switch (state)
+            /*switch (state)
             {
                 case gameState.Splash:
                     //state = gameState.Game;
@@ -256,7 +260,7 @@ namespace Zold
                 case gameState.Combat:
                     Combat.Update(gameTime);
                     break;
-            }
+            }*/
 
 
             base.Update(gameTime);
@@ -313,7 +317,7 @@ namespace Zold
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(bacgrund);
+            /*GraphicsDevice.Clear(bacgrund);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -339,7 +343,7 @@ namespace Zold
             }
 
 
-            spriteBatch.End();
+            spriteBatch.End();*/
 
             base.Draw(gameTime);
         }
