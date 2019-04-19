@@ -13,15 +13,13 @@ namespace Combat
     {
         Player player;
         List<Enemy> enemies;
+        int mapEdge;
 
         //temp
         SpriteFont font;
-        Texture2D playerTex;
-        Texture2D enemyTex;
 
         public Combat(Player player, List<Enemy> enemies, SpriteFont font)
         {
-            //temp
             this.font = font;
             this.player = player;
             this.enemies = enemies;

@@ -204,7 +204,7 @@ namespace Zold
             // Combat
             enemies = new List<Combat.Enemy>();
 
-            combatPlayer = new Combat.Player(new Vector2(0, 0), 100, enemies);
+            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies);
             combatPlayer.SetTexture(combatPlayerTex);
             
             skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300));

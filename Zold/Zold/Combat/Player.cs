@@ -18,6 +18,7 @@ namespace Combat
         private Vector2 attackPosition;
         Timer attackTimer;
         private List<Enemy> enemies;
+        public int mapEdge { get; set; }
         public int Hp { get; set; }
         public string Action { get; private set; }
         public int Speed { get; private set; }
@@ -28,6 +29,7 @@ namespace Combat
             this.Hp = Hp;
             this.enemies = enemies;
 
+            mapEdge = 150;
             Action = "";
             Speed = 2;
 
@@ -45,7 +47,8 @@ namespace Combat
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                position.Y -= Speed;
+                if (position.Y >= mapEdge)
+                    position.Y -= Speed;
                 attackTimer.Enabled = false;
                 Action = "Moving";
             }
