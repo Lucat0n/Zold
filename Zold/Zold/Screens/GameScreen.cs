@@ -20,8 +20,8 @@ namespace Zold.Screens
         private bool isTransparent = false;
         private float fadeQuant;
         private float fadeProgress;
-        private TimeSpan fadeInTime;
-        private TimeSpan fadeOutTime;
+        private TimeSpan fadeInTime = TimeSpan.Zero;
+        private TimeSpan fadeOutTime = TimeSpan.Zero;
         protected GameScreenManager gameScreenManager;
         private ScreenState screenState = ScreenState.FadeIn;
         #endregion
@@ -63,7 +63,7 @@ namespace Zold.Screens
         #endregion
 
         public abstract void Draw(GameTime gameTime);
-        public abstract void HandleInput(MouseState mouseState, Point mousePos, KeyboardState keyboardState);
+        public abstract void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState);
 
         /// <summary>
         /// Ustawia wartość kanału alfa w przejściu dla GameScreenManagera

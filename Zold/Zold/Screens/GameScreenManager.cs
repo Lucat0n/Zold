@@ -16,7 +16,7 @@ namespace Zold.Screens
         private bool isStackModified = true;
         private ContentManager content;
         private GraphicsDeviceManager graphics;
-        private Point cursor;
+        private Rectangle cursor;
         private List<GameScreen> ScreenList = new List<GameScreen>();
         private List<GameScreen> ScreensToDraw = new List<GameScreen>();
         private SpriteBatch spriteBatch;
@@ -34,7 +34,18 @@ namespace Zold.Screens
         {
             get { return content; }
         }
-
+        public KeyboardState KeyboardState
+        {
+            get { return keyboardState; }
+        }
+        public MouseState MouseState
+        {
+            get { return mouseState; }
+        }
+        public Rectangle Cursor
+        {
+            get { return cursor; }
+        }
         public SpriteBatch SpriteBatch
         {
             get { return spriteBatch; }
@@ -147,7 +158,6 @@ namespace Zold.Screens
 
         public void FadeScreen(byte alpha)
         {
-            //blank = content.Load<Texture2D>("placeholders/blank");
             spriteBatch.Begin();
             spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color((byte)0, (byte)0, (byte)0, (byte)alpha));
             spriteBatch.End();

@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Diagnostics;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 
@@ -50,18 +44,24 @@ namespace Zold.Screens.Implemented
                     break;
                 case ScreenState.FadeOut:
                     if (UpdateFade(gameTime, FadeOutTime))
+                    {
                         gameScreenManager.RemoveScreen(this);
+                        gameScreenManager.InsertScreen(new MenuScreen());
+                    }
                     break;
             }
         }
 
-        public override void HandleInput(MouseState mouseState, Point mousePos, KeyboardState keyboardState) { }
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
 
         public override void LoadContent()
         {
             splash = gameScreenManager.Content.Load<Texture2D>("placeholders/rzprod");
         }
 
-        public override void UnloadContent(){}
+        public override void UnloadContent()
+        {
+            splash.Dispose();
+        }
     }
 }

@@ -49,6 +49,7 @@
     <Compile Include="Combat\Player.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenManager.cs" />
+    <Compile Include="Screens\Implemented\MenuScreen.cs" />
     <Compile Include="Screens\Implemented\SplashScreen.cs" />
     <Compile Include="Utilities\Animation.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
