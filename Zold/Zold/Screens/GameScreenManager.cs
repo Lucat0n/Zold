@@ -108,6 +108,8 @@ namespace Zold.Screens
         #region draw
         public override void Draw(GameTime gameTime)
         {
+            graphics.IsFullScreen = isFullScreenOn;
+            //graphics.ApplyChanges();
             ScreensToDraw.Clear();
             ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
             /*if (isStackModified)
