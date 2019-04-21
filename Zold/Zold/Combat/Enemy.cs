@@ -23,7 +23,7 @@ namespace Combat
         public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
-
+        public float Height { get; set; }
 
         public Enemy(Player player, Vector2 position)
         {
