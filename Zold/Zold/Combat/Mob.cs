@@ -14,6 +14,8 @@ namespace Combat
 
         public Mob(Player player, Vector2 position) : base(player, position)
         {
+            Height = 48;
+
             attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
@@ -22,7 +24,7 @@ namespace Combat
         public override void AI(GameTime gameTime)
         {
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            playerDirection = CalcDirection(player.GetCenterPosition(), position);
+            playerDirection = CalcDirection(new Vector2(player.bottomPosition.X, player.bottomPosition.Y - Height), position);
 
             if (attackTimer.Enabled == true)
                 Action = "Attacking";
