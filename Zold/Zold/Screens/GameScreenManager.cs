@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Linq;
 using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
@@ -16,7 +17,7 @@ namespace Zold.Screens
         private ContentManager content;
         private GraphicsDeviceManager graphics;
         private Point cursor;
-        private Stack<GameScreen> ScreenStack = new Stack<GameScreen>();
+        private List<GameScreen> ScreenList = new List<GameScreen>();
         private List<GameScreen> ScreensToDraw = new List<GameScreen>();
         private SpriteBatch spriteBatch;
         SpriteFont spriteFont;
@@ -47,6 +48,7 @@ namespace Zold.Screens
             content = game.Content;
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            this.LoadContent();
         }
 
         protected override void LoadContent()
@@ -54,7 +56,7 @@ namespace Zold.Screens
             spriteFont = content.Load<SpriteFont>("placeholders/font");
             blank = content.Load<Texture2D>("placeholders/blank");
 
-            foreach(GameScreen screen in ScreenStack)
+            foreach(GameScreen screen in ScreenList)
             {
                 screen.LoadContent();
             }
@@ -63,7 +65,7 @@ namespace Zold.Screens
         protected override void UnloadContent()
         {
             content.Unload();
-            foreach (GameScreen screen in ScreenStack)
+            foreach (GameScreen screen in ScreenList)
             {
                 screen.UnloadContent();
             }
@@ -73,32 +75,37 @@ namespace Zold.Screens
         #region update
         public override void Update(GameTime gameTime)
         {
-            updateInput();
-            ScreenStack.Peek().HandleInput(mouseState, cursor, keyboardState);
-            ScreenStack.Peek().Update(gameTime);
+            UpdateInput();
+            if (ScreensToDraw.Count > 0)
+            {
+                ScreensToDraw[ScreensToDraw.Count - 1].HandleInput(mouseState, cursor, keyboardState);
+                ScreensToDraw[ScreensToDraw.Count - 1].Update(gameTime);
+            }
         }
         #endregion
 
         #region draw
-        //jak na razie poprawnie będzie wyświetlać jeden przezroczysty ekran na jakimś innym nieprzezroczystym
         public override void Draw(GameTime gameTime)
         {
-            if (isStackModified)
+            ScreensToDraw.Clear();
+            ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
+            /*if (isStackModified)
             {
+                //Screens
                 GameScreen temp;
-                do
+                 do
                 {
                     temp = ScreenStack.Peek();
-                    ScreensToDraw.Insert(0, ScreenStack.Pop());
+                    ScreensToDraw.Push(ScreenStack.Pop());
                 } while (temp.IsTransparent);
                 isStackModified = false;
-            }
+            }*/
             foreach (GameScreen gameScreen in ScreensToDraw)
                 gameScreen.Draw(gameTime);
         }
         #endregion
 
-        private void updateInput()
+        private void UpdateInput()
         {
             mouseState = Mouse.GetState();
             keyboardState = Keyboard.GetState();
@@ -106,27 +113,43 @@ namespace Zold.Screens
             cursor.Y = mouseState.Y;
         }
 
+        private static bool FindNonTransparent(GameScreen gameScreen)
+        {
+            if (gameScreen.IsTransparent)
+                return false;
+            else
+                return true;
+        }
+
         #region public
         public void InsertScreen(GameScreen gameScreen)
         {
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
-            ScreenStack.Push(gameScreen);
-            isStackModified = true;
+            ScreenList.Add(gameScreen);
+            //isStackModified = true;
         }
 
         public void RemoveScreen(GameScreen gameScreen)
         {
-            if(!gameScreen.IsTransparent)
-                isStackModified = true;
+            //if(!gameScreen.IsTransparent)
+                //isStackModified = true;
             ScreensToDraw.Remove(gameScreen);
-            //ScreenStack.Pop();
+            ScreenList.Remove(gameScreen);
         }
 
-        public void fadeScreen()
+        public void DarkenScreen()
         {
             spriteBatch.Begin();
             spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
+            spriteBatch.End();
+        }
+
+        public void FadeScreen(byte alpha)
+        {
+            //blank = content.Load<Texture2D>("placeholders/blank");
+            spriteBatch.Begin();
+            spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), new Color((byte)0, (byte)0, (byte)0, (byte)alpha));
             spriteBatch.End();
         }
         #endregion

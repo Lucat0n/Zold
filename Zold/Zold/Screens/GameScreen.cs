@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
@@ -27,6 +28,8 @@ namespace Zold.Screens
         #region getset
         public bool IsExiting { get { return isExiting; } protected set { isExiting = value; } }
         public bool IsTransparent { get { return isTransparent; } protected set { isTransparent = value; } }
+        public byte FadeAlpha { get { return (byte)(255 - fadeUpdateDelta * 255); } }
+        //public float FadeUpdateAlpha { get { return fadeUpdateDelta; } }
         public TimeSpan FadeInTime { get { return fadeInTime; } protected set { fadeInTime = value; } }
         public TimeSpan FadeOutTime { get { return fadeOutTime; } protected set { fadeOutTime = value; } }
         public GameScreenManager GameScreenManager { get { return gameScreenManager; } internal set { gameScreenManager = value; } }
@@ -66,17 +69,19 @@ namespace Zold.Screens
         /// Ustawia wartość kanału alfa w przejściu dla GameScreenManagera
         /// </summary>
         /// <returns>true jeśli zakończy przenikanie, false jeśli jest w trakcie</returns>
-        bool UpdateFade(GameTime gameTime, TimeSpan time)
+        protected bool UpdateFade(GameTime gameTime, TimeSpan time)
         {
-            if (time == TimeSpan.Zero)
+            if (time <= TimeSpan.Zero)
             {
                 fadeUpdateDelta = 1;
                 return true;
             }
             else
             {
-                fadeUpdateDelta = (float)(gameTime.ElapsedGameTime.TotalMilliseconds /
-                time.TotalMilliseconds);
+                fadeUpdateDelta = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / time.TotalMilliseconds);
+                //time = time.Subtract(new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000));
+                //time -= new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000);
+                //Debug.WriteLine(fadeUpdateDelta);
                 return false;
             }
             
