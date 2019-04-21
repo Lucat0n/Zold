@@ -13,6 +13,7 @@ namespace Zold.Screens
     public class GameScreenManager : DrawableGameComponent
     {
         #region zmienne
+        private bool isFullScreenOn = false;
         private bool isStackModified = true;
         private ContentManager content;
         private GraphicsDeviceManager graphics;
@@ -30,9 +31,18 @@ namespace Zold.Screens
         #endregion
 
         #region setget
+        public bool IsFullScreenOn
+        {
+            get { return isFullScreenOn; }
+            set { isFullScreenOn = value; }
+        }
         public ContentManager Content
         {
             get { return content; }
+        }
+        public GraphicsDeviceManager Graphics
+        {
+            get { return graphics; }
         }
         public KeyboardState KeyboardState
         {

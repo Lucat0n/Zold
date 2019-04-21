@@ -17,15 +17,37 @@ namespace Zold.Screens.Implemented
             Options
         }
         private bool isMousePressed = false;
+        private Color backButtonColor = Color.White;
+        private Color checkBoxColor = Color.White;
         private Color playButtonColor = Color.White;
         private Color optionsButtonColor = Color.White;
         private int titleY;
+        private Rectangle backButtonRectangle;
+        private Rectangle checkBoxRectangle;
         private Rectangle playButtonRectangle;
+        private Rectangle resolutionButtonRectangle;
         private Rectangle optionsButtonRectangle;
+        private Texture2D backButton;
+        private Texture2D boxChecked;
+        private Texture2D boxUnchecked;
+        private Texture2D fscrIcon;
         private Texture2D playButton;
         private Texture2D optionsButton;
         private Texture2D title;
         private MenuState menuState = MenuState.DrawLogo;
+
+        /*#region properties
+        public Color PlayButtonColor
+        {
+            get { return playButtonColor; }
+            set { playButtonColor = value; }
+        }
+        public Color OptionsButtonColor
+        {
+            get { return optionsButtonColor; }
+            set { optionsButtonColor = value; }
+        }
+        #endregion*/
 
         public MenuScreen()
         {
@@ -50,7 +72,12 @@ namespace Zold.Screens.Implemented
                     gameScreenManager.SpriteBatch.Draw(playButton, playButtonRectangle, playButtonColor);
                     gameScreenManager.SpriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
                     break;
-                
+                case MenuState.Options:
+                    gameScreenManager.SpriteBatch.Draw(gameScreenManager.IsFullScreenOn ? boxChecked : boxUnchecked, checkBoxRectangle, checkBoxColor);
+                    gameScreenManager.SpriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
+                    break;
+
             }
             gameScreenManager.SpriteBatch.End();
             if(menuState == MenuState.DrawLogo)
@@ -79,6 +106,12 @@ namespace Zold.Screens.Implemented
                     playButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 10);
                     optionsButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 10);
                     break;
+                case MenuState.Options:
+                    HandleInput(gameScreenManager.MouseState, gameScreenManager.Cursor, gameScreenManager.KeyboardState);
+                    checkBoxRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 + gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 12, gameScreenManager.GraphicsDevice.Viewport.Width / 12);
+                    resolutionButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 16, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 8);
+                    backButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 12, gameScreenManager.GraphicsDevice.Viewport.Width / 12);
+                    break;
             }
         }
 
@@ -91,6 +124,10 @@ namespace Zold.Screens.Implemented
         {
             titleY = this.gameScreenManager.GraphicsDevice.Viewport.Height / 3;
             title = gameScreenManager.Content.Load<Texture2D>("placeholders/zold");
+            backButton = gameScreenManager.Content.Load<Texture2D>("placeholders/backButton");
+            boxChecked = gameScreenManager.Content.Load<Texture2D>("placeholders/boxChecked");
+            boxUnchecked = gameScreenManager.Content.Load<Texture2D>("placeholders/boxUnchecked");
+            fscrIcon = gameScreenManager.Content.Load<Texture2D>("placeholders/fscrIcon");
             playButton = gameScreenManager.Content.Load<Texture2D>("placeholders/playButton");
             optionsButton = gameScreenManager.Content.Load<Texture2D>("placeholders/optionsButton");
 
@@ -103,11 +140,35 @@ namespace Zold.Screens.Implemented
             optionsButton.Dispose();
         }
 
+        /*private void CheckInteraction(Color color, Rectangle buttonRectangle, Rectangle cursor, MenuState targetState, MouseState mouseState)
+        {
+            if (buttonRectangle.Intersects(cursor))
+            {
+                color = Color.LightGray;
+                if(mouseState.LeftButton == ButtonState.Pressed)
+                {
+                    color = Color.Gray;
+                    isMousePressed = true;
+                }
+                else if(mouseState.LeftButton == ButtonState.Released && isMousePressed)
+                {
+                    isMousePressed = false;
+                    this.menuState = targetState;
+                }
+            }
+            else
+            {
+                color = Color.White;
+            }
+        }*/
+
         private void ButtonsEvents(MouseState mouseState, Rectangle Cursor)
         {
             switch (menuState)
             {
                 case MenuState.Main:
+                    //CheckInteraction(PlayButtonColor, playButtonRectangle, Cursor, MenuState.Play, mouseState);
+                    //CheckInteraction(OptionsButtonColor, optionsButtonRectangle, Cursor, MenuState.Options, mouseState);
                     if (playButtonRectangle.Intersects(Cursor))
                     {
                         playButtonColor = Color.LightGray;
@@ -146,7 +207,53 @@ namespace Zold.Screens.Implemented
                     }
                     break;
                 case MenuState.Options:
+                    if (backButtonRectangle.Intersects(Cursor))
+                    {
+                        backButtonColor = Color.LightGray;
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            backButtonColor = Color.Gray;
+                            isMousePressed = true;
 
+                        }
+                        else if (mouseState.LeftButton == ButtonState.Released && isMousePressed)
+                        {
+                            isMousePressed = false;
+                            this.menuState = MenuState.Main;
+                            gameScreenManager.Graphics.ApplyChanges();
+                        }
+
+                    }
+                    else if (checkBoxRectangle.Intersects(Cursor))
+                    {
+                        checkBoxColor = Color.LightGray;
+                        if (mouseState.LeftButton == ButtonState.Pressed)
+                        {
+                            checkBoxColor = Color.Gray;
+                            isMousePressed = true;
+
+                        }
+                        else if (mouseState.LeftButton == ButtonState.Released && isMousePressed)
+                        {
+                            isMousePressed = false;
+                            gameScreenManager.IsFullScreenOn = !gameScreenManager.IsFullScreenOn;
+                            if (gameScreenManager.IsFullScreenOn)
+                            {
+                                gameScreenManager.Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                                gameScreenManager.Graphics.PreferredBackBufferHeight = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                            }
+                            else
+                            {
+                                gameScreenManager.Graphics.PreferredBackBufferWidth = 800;
+                                gameScreenManager.Graphics.PreferredBackBufferHeight = 480;
+                            }
+                        }
+                    }
+                    else
+                    {
+                        backButtonColor = Color.White;
+                        checkBoxColor = Color.White;
+                    }
                     break;
             }
 
