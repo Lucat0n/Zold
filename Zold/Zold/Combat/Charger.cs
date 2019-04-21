@@ -34,9 +34,13 @@ namespace Combat
 
         public override void AI(GameTime gameTime)
         {
+            bottomPosition = new Vector2(position.X, position.Y + 20);
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             chargeSpeed = Speed * 5;
-            playerDirection = CalcDirection(player.GetCenterPosition(), position);
+            playerDirection = CalcDirection(player.bottomPosition, position);
+
+            if (bottomPosition.Y < player.mapEdge)
+                position.Y = player.mapEdge - 20;
 
             if (prepareTimer.Enabled == true)
                 Action = "Preparing";
@@ -50,7 +54,7 @@ namespace Combat
             }
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
-                chargePosition = player.GetCenterPosition();
+                chargePosition = player.bottomPosition;
                 chargeDirection = CalcDirection(chargePosition, position);
                 chargeCheck = 0;
                 chargeRange = Vector2.Distance(chargePosition, position) + 50;
@@ -66,7 +70,8 @@ namespace Combat
         public override void Move()
         {
             position.X += playerDirection.X * Speed;
-            position.Y += playerDirection.Y * Speed;
+            if (bottomPosition.Y >= player.mapEdge)
+                position.Y += playerDirection.Y * Speed;
         }
 
         private void Prepare(object source, ElapsedEventArgs e)
@@ -86,7 +91,7 @@ namespace Combat
             position.Y += chargeDirection.Y * chargeSpeed;
             chargeCheck += chargeSpeed;
             
-            if (chargeCheck > chargeRange)
+            if ((chargeCheck > chargeRange) || (bottomPosition.Y < player.mapEdge))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

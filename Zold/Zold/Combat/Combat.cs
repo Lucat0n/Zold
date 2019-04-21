@@ -17,10 +17,12 @@ namespace Combat
 
         //temp
         SpriteFont font;
+        Texture2D line;
 
-        public Combat(Player player, List<Enemy> enemies, SpriteFont font)
+        public Combat(Player player, List<Enemy> enemies, SpriteFont font, Texture2D line)
         {
             this.font = font;
+            this.line = line;
             this.player = player;
             this.enemies = enemies;
         }
@@ -39,8 +41,11 @@ namespace Combat
         // Called every Draw
         public void Draw(SpriteBatch spriteBatch)
         {
+            spriteBatch.Draw(line, new Vector2(0, 150));
+
             spriteBatch.Draw(player.GetTexture(), player.GetPosition());
             spriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
+            spriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
             spriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
 
 
@@ -50,6 +55,7 @@ namespace Combat
                //spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
                //spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
                
+               spriteBatch.DrawString(font, "bot.Y: " + enemy.bottomPosition.Y.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
                spriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 25), Color.Black);
                spriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
            });

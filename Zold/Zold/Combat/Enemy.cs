@@ -13,6 +13,7 @@ namespace Combat
         public Player player;
         public Texture2D texture;
         public Vector2 position;
+        public Vector2 bottomPosition;
         public Vector2 playerDirection;
         public Vector2 attackPosition;
         public int Damage { get; set; }
@@ -28,6 +29,7 @@ namespace Combat
         {
             this.player = player;
             this.position = position;
+            
             Damage = 5;
             Hp = 50;
 

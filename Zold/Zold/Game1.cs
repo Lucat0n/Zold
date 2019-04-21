@@ -122,12 +122,13 @@ namespace Zold
         Combat.Combat Combat;
         Combat.Player combatPlayer;
         Combat.Enemy skeleton;
-        Combat.Enemy fox;
+        Combat.Enemy rat;
         List<Combat.Enemy> enemies;
         SpriteFont font;
         Texture2D combatPlayerTex;
         Texture2D skeletonTex;
-        Texture2D foxTex;
+        Texture2D ratTex;
+        Texture2D line;
 
 
 
@@ -180,8 +181,9 @@ namespace Zold
             font = Content.Load<SpriteFont>("placeholders/font");
             combatPlayerTex = Content.Load<Texture2D>("placeholders/main");
             skeletonTex = Content.Load<Texture2D>("placeholders/skeleton");
-            foxTex = Content.Load<Texture2D>("placeholders/fox");
-
+            ratTex = Content.Load<Texture2D>("placeholders/rat");
+            line = Content.Load<Texture2D>("placeholders/line");
+            
 
             currentSong = menuMusic;
 
@@ -208,14 +210,14 @@ namespace Zold
             combatPlayer.SetTexture(combatPlayerTex);
             
             skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300));
-            fox = new Combat.Charger(combatPlayer, new Vector2(300, 400));
+            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400));
             skeleton.SetTexture(skeletonTex);
-            fox.SetTexture(foxTex);
+            rat.SetTexture(ratTex);
 
             enemies.Add(skeleton);
-            enemies.Add(fox);
+            enemies.Add(rat);
 
-            Combat = new Combat.Combat(combatPlayer, enemies, font);
+            Combat = new Combat.Combat(combatPlayer, enemies, font, line);
 
         }
 
