@@ -18,7 +18,7 @@ namespace Zold.Screens.Implemented
 
         public SplashScreen()
         {
-            FadeInTime = new TimeSpan(0, 0, 3);
+            FadeInTime = new TimeSpan(0, 0, 5);
             FadeOutTime = new TimeSpan(0, 0, 5);
             IsTransparent = false;
         }
@@ -39,7 +39,6 @@ namespace Zold.Screens.Implemented
             switch (ScreenState)
             {
                 case ScreenState.FadeIn:
-                    FadeInTime -= new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000);
                     if (UpdateFade(gameTime, FadeInTime))
                         this.ScreenState = ScreenState.Active;
                     
@@ -50,41 +49,19 @@ namespace Zold.Screens.Implemented
                         this.ScreenState = ScreenState.FadeOut;
                     break;
                 case ScreenState.FadeOut:
-                    FadeOutTime -= new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000);
-                    UpdateFade(gameTime, FadeOutTime);
+                    if (UpdateFade(gameTime, FadeOutTime))
+                        gameScreenManager.RemoveScreen(this);
                     break;
-                    /*if (IsExiting)
-                    {
-                        ScreenState = ScreenState.FadeOut;
-                        if (UpdateFade(gameTime, FadeOutTime))
-                        {
-                            gameScreenManager.RemoveScreen(this);
-                        }
-                    }
-                    else
-                    {
-                        if (!UpdateFade(gameTime, FadeInTime))
-                            ScreenState = ScreenState.FadeIn;
-                        else
-                            ScreenState = ScreenState.Active;
-                    }*/
             }
         }
 
-        public override void HandleInput(MouseState mouseState, Point mousePos, KeyboardState keyboardState)
-        {
-            //throw new NotImplementedException();
-        }
+        public override void HandleInput(MouseState mouseState, Point mousePos, KeyboardState keyboardState) { }
 
         public override void LoadContent()
         {
-            //System.Diagnostics.Debug.WriteLine("Load");
             splash = gameScreenManager.Content.Load<Texture2D>("placeholders/rzprod");
         }
 
-        public override void UnloadContent()
-        {
-            throw new NotImplementedException();
-        }
+        public override void UnloadContent(){}
     }
 }

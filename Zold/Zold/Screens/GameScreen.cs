@@ -18,7 +18,8 @@ namespace Zold.Screens
         #region zmienne
         private bool isExiting = false;
         private bool isTransparent = false;
-        private float fadeUpdateDelta;
+        private float fadeQuant;
+        private float fadeProgress;
         private TimeSpan fadeInTime;
         private TimeSpan fadeOutTime;
         protected GameScreenManager gameScreenManager;
@@ -28,8 +29,7 @@ namespace Zold.Screens
         #region getset
         public bool IsExiting { get { return isExiting; } protected set { isExiting = value; } }
         public bool IsTransparent { get { return isTransparent; } protected set { isTransparent = value; } }
-        public byte FadeAlpha { get { return (byte)(255 - fadeUpdateDelta * 255); } }
-        //public float FadeUpdateAlpha { get { return fadeUpdateDelta; } }
+        public byte FadeAlpha { get { return (byte)(255 - fadeProgress * 255); } }
         public TimeSpan FadeInTime { get { return fadeInTime; } protected set { fadeInTime = value; } }
         public TimeSpan FadeOutTime { get { return fadeOutTime; } protected set { fadeOutTime = value; } }
         public GameScreenManager GameScreenManager { get { return gameScreenManager; } internal set { gameScreenManager = value; } }
@@ -72,19 +72,19 @@ namespace Zold.Screens
         protected bool UpdateFade(GameTime gameTime, TimeSpan time)
         {
             if (time <= TimeSpan.Zero)
-            {
-                fadeUpdateDelta = 1;
-                return true;
-            }
+                fadeQuant = 1;
             else
-            {
-                fadeUpdateDelta = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / time.TotalMilliseconds);
-                //time = time.Subtract(new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000));
-                //time -= new TimeSpan((long)gameTime.ElapsedGameTime.TotalMilliseconds * 10000);
-                //Debug.WriteLine(fadeUpdateDelta);
+                fadeQuant = (float)(gameTime.ElapsedGameTime.TotalMilliseconds / time.TotalMilliseconds);
+
+            if (ScreenState == ScreenState.FadeIn)
+                fadeProgress += fadeQuant;
+            else if(ScreenState == ScreenState.FadeOut)
+                fadeProgress -= fadeQuant;
+
+            if((fadeProgress >= 0) && (fadeProgress <= 1))
                 return false;
-            }
-            
+            else
+                return true;
         }
     }
 }
