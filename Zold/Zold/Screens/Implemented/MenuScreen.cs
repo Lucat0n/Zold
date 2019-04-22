@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -21,6 +22,7 @@ namespace Zold.Screens.Implemented
         private Color checkBoxColor = Color.White;
         private Color playButtonColor = Color.White;
         private Color optionsButtonColor = Color.White;
+        private Color[] colors = { Color.White, Color.White, Color.White, Color.White }; // 1-playButton, 2-optionsButton, 3-backButtonColor
         private int titleY;
         private Rectangle backButtonRectangle;
         private Rectangle checkBoxRectangle;
@@ -69,8 +71,8 @@ namespace Zold.Screens.Implemented
                     break;
                 case MenuState.Main:
                     gameScreenManager.SpriteBatch.Draw(title, new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 4, titleY, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Width / 6), Color.White);
-                    gameScreenManager.SpriteBatch.Draw(playButton, playButtonRectangle, playButtonColor);
-                    gameScreenManager.SpriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
+                    gameScreenManager.SpriteBatch.Draw(playButton, playButtonRectangle, colors[0]);
+                    gameScreenManager.SpriteBatch.Draw(optionsButton, optionsButtonRectangle, colors[1]);
                     break;
                 case MenuState.Options:
                     gameScreenManager.SpriteBatch.Draw(gameScreenManager.IsFullScreenOn ? boxChecked : boxUnchecked, checkBoxRectangle, checkBoxColor);
@@ -140,14 +142,14 @@ namespace Zold.Screens.Implemented
             optionsButton.Dispose();
         }
 
-        /*private void CheckInteraction(Color color, Rectangle buttonRectangle, Rectangle cursor, MenuState targetState, MouseState mouseState)
+        private void CheckInteraction(int id, Rectangle buttonRectangle, Rectangle cursor, MenuState targetState, MouseState mouseState)
         {
             if (buttonRectangle.Intersects(cursor))
             {
-                color = Color.LightGray;
+                colors[id] = Color.LightGray;
                 if(mouseState.LeftButton == ButtonState.Pressed)
                 {
-                    color = Color.Gray;
+                    colors[id] = Color.Gray;
                     isMousePressed = true;
                 }
                 else if(mouseState.LeftButton == ButtonState.Released && isMousePressed)
@@ -158,18 +160,18 @@ namespace Zold.Screens.Implemented
             }
             else
             {
-                color = Color.White;
+                colors[id] = Color.White;
             }
-        }*/
+        }
 
         private void ButtonsEvents(MouseState mouseState, Rectangle Cursor)
         {
             switch (menuState)
             {
                 case MenuState.Main:
-                    //CheckInteraction(PlayButtonColor, playButtonRectangle, Cursor, MenuState.Play, mouseState);
-                    //CheckInteraction(OptionsButtonColor, optionsButtonRectangle, Cursor, MenuState.Options, mouseState);
-                    if (playButtonRectangle.Intersects(Cursor))
+                    CheckInteraction(0, playButtonRectangle, Cursor, MenuState.Play, mouseState);
+                    CheckInteraction(1, optionsButtonRectangle, Cursor, MenuState.Options, mouseState);
+                    /*if (playButtonRectangle.Intersects(Cursor))
                     {
                         playButtonColor = Color.LightGray;
                         if (mouseState.LeftButton == ButtonState.Pressed)
@@ -204,7 +206,7 @@ namespace Zold.Screens.Implemented
                     {
                         playButtonColor = Color.White;
                         optionsButtonColor = Color.White;
-                    }
+                    }*/
                     break;
                 case MenuState.Options:
                     if (backButtonRectangle.Intersects(Cursor))
@@ -224,7 +226,7 @@ namespace Zold.Screens.Implemented
                         }
 
                     }
-                    else if (checkBoxRectangle.Intersects(Cursor))
+                    if (checkBoxRectangle.Intersects(Cursor))
                     {
                         checkBoxColor = Color.LightGray;
                         if (mouseState.LeftButton == ButtonState.Pressed)
@@ -237,6 +239,7 @@ namespace Zold.Screens.Implemented
                         {
                             isMousePressed = false;
                             gameScreenManager.IsFullScreenOn = !gameScreenManager.IsFullScreenOn;
+                            
                             if (gameScreenManager.IsFullScreenOn)
                             {
                                 gameScreenManager.Graphics.PreferredBackBufferWidth = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
@@ -251,7 +254,6 @@ namespace Zold.Screens.Implemented
                     }
                     else
                     {
-                        backButtonColor = Color.White;
                         checkBoxColor = Color.White;
                     }
                     break;

@@ -14,7 +14,6 @@ namespace Zold
         public GraphicsDeviceManager graphics;
         GameScreenManager gameScreenManager;
 
-
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
@@ -33,7 +32,6 @@ namespace Zold
         protected override void LoadContent()
         {
             gameScreenManager.InsertScreen(new SplashScreen());
-
         }
 
         protected override void UnloadContent()
