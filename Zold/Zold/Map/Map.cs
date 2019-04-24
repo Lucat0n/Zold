@@ -1,21 +1,21 @@
-﻿using System;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
-using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Input;
 using TiledSharp;
-
+using System;
 
 namespace Map
 {
-    class Mapa
+    class Map
     {
+        
         TmxMap map;
         TmxMap map2;
+        TmxMap currentMap;
 
         Texture2D tileset;
 
@@ -24,10 +24,18 @@ namespace Map
         int tilesetTilesWide;
         int tilesetTilesHigh;
 
-        public Mapa(TmxMap currentMap, Texture2D tileset)
+        public Map(Texture2D tileset, TmxMap mapa)
         {
-            this.map = currentMap;
+            //loading tiles
+            map =mapa;
             this.tileset = tileset;
+
+            tileWidth = map.Tilesets[0].TileWidth;
+            tileHeight = map.Tilesets[0].TileHeight;
+            tilesetTilesWide = tileset.Width / tileWidth;
+            tilesetTilesHigh = tileset.Height / tileHeight;
+
+            //map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
         }
 
         public void drawTiles(int layer, TmxMap map, SpriteBatch spriteBatch)
@@ -59,16 +67,5 @@ namespace Map
             }
         }
 
-        //void displayDialog()
-        //{
-        //    ///need to set 250 i 310 as parameters
-        //    if (playerOne.GetPosition().X >= 250 && playerOne.GetPosition().X < 310 && forest)
-        //    {
-        //        Rectangle tlo = new Rectangle(100, 420, 500, 50);
-        //        spriteBatch.Draw(dotekstu, tlo, Color.White);
-
-        //        spriteBatch.DrawString(font, "Witaj zielona magnetyczna gwiazdo!", new Vector2(145, 425), Color.White);
-        //    }
-        //}
     }
 }

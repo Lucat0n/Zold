@@ -10,11 +10,29 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\MonoGame.Extended.Content.Pipeline.1.1.0\tools\MonoGame.Extended.Content.Pipeline.dll
+/reference:..\..\packages\MonoGame.Extended.Content.Pipeline.1.1.0\tools\MonoGame.Extended.dll
+/reference:..\..\packages\MonoGame.Extended.Content.Pipeline.1.1.0\tools\Newtonsoft.Json.dll
 
 #---------------------------------- Content ---------------------------------#
 
 #begin Content.mgcb
 /copy:Content.mgcb
+
+#begin magecity.tsx
+/copy:magecity.tsx
+
+#begin placeholders/Adven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Adven.png
 
 #begin placeholders/backbutton.png
 /importer:TextureImporter
@@ -100,6 +118,13 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/cyber2.jpg
 
+#begin placeholders/dialog.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:placeholders/dialog.spritefont
+
 #begin placeholders/dosko-sm.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -117,6 +142,18 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:placeholders/doskozzza.mp3
+
+#begin placeholders/dotekstu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/dotekstu.png
 
 #begin placeholders/explo.wav
 /importer:WavImporter
@@ -160,6 +197,18 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:placeholders/kombat.wav
+
+#begin placeholders/line.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/line.png
 
 #begin placeholders/lufa.mp3
 /importer:Mp3Importer
@@ -290,6 +339,18 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/ralf.jpg
 
+#begin placeholders/Rat.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Rat.png
+
 #begin placeholders/rzprod.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -343,9 +404,6 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:placeholders/wesola.wav
-
-#begin placeholders/xdmojamap.tmx
-/copy:placeholders/xdmojamap.tmx
 
 #begin placeholders/zold.png
 /importer:TextureImporter

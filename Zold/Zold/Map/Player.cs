@@ -22,7 +22,7 @@ namespace Map
         public Player(Vector2 position)
         {
             this.position = position;
-            speed = 50;
+            speed = 32;
         }
 
         public void move(int wid, int heigh)

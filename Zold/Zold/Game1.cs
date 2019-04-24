@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using TiledSharp;
+using System;
 
 namespace Zold
 {
@@ -17,6 +18,7 @@ namespace Zold
         SpriteBatch spriteBatch;
 
         Texture2D scott;
+        Texture2D adven;
         //public static int qwe = 90;
         Texture2D cyberpunk;
         Texture2D poww;
@@ -118,25 +120,46 @@ namespace Zold
         //player
         Map.Player playerOne;
         Map.Enemy enemy;
-        Map.Mapa mapa;
 
         //Combat - temp
         Combat.Combat Combat;
         Combat.Player combatPlayer;
         Combat.Enemy skeleton;
-        Combat.Enemy fox;
+        Combat.Enemy rat;
         List<Combat.Enemy> enemies;
-        SpriteFont font;
+
+
         Texture2D combatPlayerTex;
         Texture2D skeletonTex;
-        Texture2D foxTex;
+        Texture2D ratTex;
+        Texture2D line;
 
-        TmxMap mapp;
-        TmxMap mapp2;
+        //spritefonts
+        SpriteFont font;
+        SpriteFont dialog;
+
+        //tiles
+        TmxMap map;
+        TmxMap map2;
+        TmxMap currentMap;
 
         Texture2D tileset;
 
+        int tileWidth;
+        int tileHeight;
+        int tilesetTilesWide;
+        int tilesetTilesHigh;
 
+        Rectangle bounds;
+        
+        Texture2D dotekstu;
+
+        //adven pos
+        int advenPosX;
+        int advenPosY;
+
+        Map.Map mapa;
+        Map.DialogManager dialogManager;
 
         public Game1()
         {
@@ -162,7 +185,8 @@ namespace Zold
             //game elements
             poww = Content.Load<Texture2D>("placeholders/citybackgrund");
             cyberpunk = Content.Load<Texture2D>("placeholders/cyber2");
-            scott = Content.Load<Texture2D>("placeholders/sct");
+
+            scott = Content.Load<Texture2D>("placeholders/main");
             wallace = Content.Load<Texture2D>("placeholders/police");
             ralf = Content.Load<Texture2D>("placeholders/ralf");
             splash = Content.Load<Texture2D>("placeholders/rzprod");
@@ -175,6 +199,9 @@ namespace Zold
             boxChecked = Content.Load<Texture2D>("placeholders/boxChecked");
             boxUnchecked = Content.Load<Texture2D>("placeholders/boxUnchecked");
             fscrIcon = Content.Load<Texture2D>("placeholders/fscrIcon");
+            dotekstu = Content.Load<Texture2D>("placeholders/dotekstu");
+
+            adven = Content.Load<Texture2D>("placeholders/Adven");
 
 
             // loading music
@@ -183,12 +210,19 @@ namespace Zold
             bgMusic = Content.Load<SoundEffect>("placeholders/menu-music");
             combatMusic = Content.Load<SoundEffect>("placeholders/kombat");
 
-            // Combat content
+            //loading fonts
             font = Content.Load<SpriteFont>("placeholders/font");
+            dialog = Content.Load<SpriteFont>("placeholders/dialog");
+
+
+            // Combat content
+            //font = Content.Load<SpriteFont>("placeholders/font");
             combatPlayerTex = Content.Load<Texture2D>("placeholders/main");
             skeletonTex = Content.Load<Texture2D>("placeholders/skeleton");
-            foxTex = Content.Load<Texture2D>("placeholders/fox");
+            ratTex = Content.Load<Texture2D>("placeholders/rat");
+            line = Content.Load<Texture2D>("placeholders/line");
 
+            
 
             currentSong = menuMusic;
 
@@ -211,24 +245,37 @@ namespace Zold
             // Combat
             enemies = new List<Combat.Enemy>();
 
-            combatPlayer = new Combat.Player(new Vector2(0, 0), 100, enemies);
+            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies);
             combatPlayer.SetTexture(combatPlayerTex);
             
-            skeleton = new Combat.Enemy(combatPlayer, new Vector2(300, 300));
-            fox = new Combat.Enemy(combatPlayer, new Vector2(300, 400));
+            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300));
+            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400));
             skeleton.SetTexture(skeletonTex);
-            fox.SetTexture(foxTex);
+            rat.SetTexture(ratTex);
 
             enemies.Add(skeleton);
-            enemies.Add(fox);
+            enemies.Add(rat);
 
-            Combat = new Combat.Combat(combatPlayer, enemies, font);
+            Combat = new Combat.Combat(combatPlayer, enemies, font, line);
 
-            mapp = new TmxMap(@"Content/mapa2.tmx");
-            //tileset = Content.Load<Texture2D>(mapp.Tilesets[0].Name.ToString());
+            //loading tiles
+            map = new TmxMap(@"Content/placeholders/mapa2.tmx");
+            currentMap = map;
+            //tileset = Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
             //currentMap = map;
 
-            mapa = new Map.Mapa(mapp, tileset);
+            //tileWidth = map.Tilesets[0].TileWidth;
+            //tileHeight = map.Tilesets[0].TileHeight;
+            //tilesetTilesWide = tileset.Width / tileWidth;
+            //tilesetTilesHigh = tileset.Height / tileHeight;
+
+            map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
+            tileset = Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
+
+            mapa = new Map.Map(tileset,currentMap);
+            dialogManager = new Map.DialogManager(dotekstu, dialog);
+
+
 
         }
 
@@ -398,22 +445,34 @@ namespace Zold
             }
 
         }
-    
+
         protected void DrawMainGame(GameTime gameTime)
         {
-            mapa.drawTiles(0, mapp, spriteBatch);
+
+            mapa.drawTiles(0, currentMap,spriteBatch);
+
+            //spriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
+           // spriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
 
             //postac 
             spriteBatch.Draw(playerOne.GetTexture(), playerOne.GetPosition(), Color.White);
 
+            advenPosY = 64;
+            advenPosX = 256;
+            if (forest)
+            {
+                spriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
+            }
             ///budunek policji
             spriteBatch.Draw(wallace, new Rectangle(wallacePosX, wallacePosY, wallaceWidth + 50, wallaceHeight + 20), wht);
 
             //wiezowiec 2
             spriteBatch.Draw(ralf, new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
+            dialogManager.displayDialog(spriteBatch, playerOne, adven, advenPosX, advenPosY);
 
             if (cyber)
             {
+                currentMap = map2;
                 // przeciwnik - DOSKOZZZA
                 spriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), Color.White);
             }
@@ -567,7 +626,7 @@ namespace Zold
         }
 
 
-        void ManageLocations()
+        void ManageLocations() //////////////////  / / / / // / / / LOCATION MANAGER
         {
             if (forest)
             {
@@ -681,6 +740,52 @@ namespace Zold
                 cyber = false;
             }
         }
+
+        //void drawTiles(int layer, TmxMap map)
+        //{
+        //    for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
+        //    {
+        //        int gid = map.Layers[layer].Tiles[i].Gid;
+
+        //        Empty tile, do nothing
+        //        if (gid == 0)
+        //        {
+
+        //        }
+        //        else
+        //        {
+        //            int tileFrame = gid - 1;
+        //            int column = tileFrame % tilesetTilesWide;
+        //            int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
+
+        //            float x = (i % map.Width) * map.TileWidth;
+        //            float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+
+        //            Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
+        //            if (layer == 1 && tilesetRec.Intersects(playerOne.GetTextureRecta()))
+        //            {
+        //                playerOne.SetPosition(new Vector2(32, 32));
+        //            }
+        //            spriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+        //        }
+        //    }
+        //}
+
+        //void displayDialog(Texture2D npcet, int posx, int posy)
+        //{
+
+        //    if (playerOne.GetPosition().X >= posx - 50 && playerOne.GetPosition().X < posx + npcet.Width + 20
+        //        && playerOne.GetPosition().Y >= posy && playerOne.GetPosition().Y < posy + npcet.Height + 30
+        //        && forest)
+        //    {
+        //        Rectangle tlo = new Rectangle(100, 420, 500, 50);
+        //        spriteBatch.Draw(dotekstu, tlo, Color.White);
+
+        //        spriteBatch.DrawString(dialog, "Witaj zielona magnetyczna gwiazdo!", new Vector2(145, 425), Color.White);
+        //    }
+        //}
+
+
     }
 }
 
