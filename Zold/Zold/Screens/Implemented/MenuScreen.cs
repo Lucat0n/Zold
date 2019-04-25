@@ -3,6 +3,8 @@ using System.Diagnostics;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Microsoft.Xna.Framework.Media;
+using Microsoft.Xna.Framework.Audio;
 
 namespace Zold.Screens.Implemented
 {
@@ -37,6 +39,10 @@ namespace Zold.Screens.Implemented
         private Texture2D optionsButton;
         private Texture2D title;
         private MenuState menuState = MenuState.DrawLogo;
+
+        //music
+        private SoundEffect bgMusic;
+        private bool songStart = false;
 
         /*#region properties
         public Color PlayButtonColor
@@ -79,10 +85,7 @@ namespace Zold.Screens.Implemented
                     gameScreenManager.SpriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
                     gameScreenManager.SpriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
                     break;
-                case MenuState.Play:
-                    gameScreenManager.RemoveScreen(this);
-                    gameScreenManager.InsertScreen(new Map.MapManager());
-                    break;
+               
 
             }
             gameScreenManager.SpriteBatch.End();
@@ -92,6 +95,12 @@ namespace Zold.Screens.Implemented
 
         public override void Update(GameTime gameTime)
         {
+            if (!songStart)
+            {
+                bgMusic.Play();
+                songStart = true;
+            }
+
             switch (menuState)
             {
                 case MenuState.DrawLogo:
@@ -118,6 +127,11 @@ namespace Zold.Screens.Implemented
                     resolutionButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 16, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 8);
                     backButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 12, gameScreenManager.GraphicsDevice.Viewport.Width / 12);
                     break;
+                case MenuState.Play:
+                    bgMusic.Dispose();
+                    gameScreenManager.RemoveScreen(this);
+                    gameScreenManager.InsertScreen(new Map.MapManager());
+                    break;
             }
         }
 
@@ -136,6 +150,8 @@ namespace Zold.Screens.Implemented
             fscrIcon = gameScreenManager.Content.Load<Texture2D>("placeholders/fscrIcon");
             playButton = gameScreenManager.Content.Load<Texture2D>("placeholders/playButton");
             optionsButton = gameScreenManager.Content.Load<Texture2D>("placeholders/optionsButton");
+
+            bgMusic = gameScreenManager.Content.Load<SoundEffect>("placeholders/menu-music");
 
         }
 

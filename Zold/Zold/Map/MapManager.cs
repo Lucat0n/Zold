@@ -15,6 +15,8 @@ namespace Map
     class MapManager : Zold.Screens.GameScreen
     {
 
+        public List<string> powiedzonka = new List<string>();
+
         //colors 
         Color kolorPow = Color.White * 0;
         Color kolorPow2 = Color.White * 0;
@@ -79,6 +81,7 @@ namespace Map
 
         //bools
         bool songStart = false;
+        bool displayed = false;
         bool forest;
         bool city;
         bool cyber;
@@ -86,6 +89,7 @@ namespace Map
         bool isEscPressed = false;
         bool disp = false; // is message displayed?
 
+        
 
         public MapManager()
         {
@@ -95,7 +99,12 @@ namespace Map
 
         public override void LoadContent()
         {
-
+            powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
+            powiedzonka.Add("A ty tu czego?");
+            powiedzonka.Add("Nie widzisz, ze jestem zajety");
+            powiedzonka.Add("Elo");
+            powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
+            powiedzonka.Add("Ruchasz sie?");
             //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
 
@@ -109,7 +118,6 @@ namespace Map
             //do tekstu
             dotekstu = gameScreenManager.Content.Load<Texture2D>("placeholders/dotekstu");
             dymek = gameScreenManager.Content.Load<Texture2D>("placeholders/dymek");
-
   
             // loading music
             menuMusic = gameScreenManager.Content.Load<Song>(@"placeholders/doskozzza");
@@ -155,7 +163,6 @@ namespace Map
         }
 
 
-
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
@@ -164,13 +171,8 @@ namespace Map
 
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
-
-            
-
             gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition(), Color.White);
 
-            
-            
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(budynek1, new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
             //wiezowiec 2
@@ -182,6 +184,7 @@ namespace Map
                 gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
 
                 displayDialog(player, adven, advenPosX, advenPosY);
+                
             }
 
             if (cyber)
@@ -222,10 +225,7 @@ namespace Map
         }
 
 
-        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
-        {
-            //throw new NotImplementedException();
-        }
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
 
         public void drawTiles(int layer, TmxMap map)
         {
@@ -234,10 +234,8 @@ namespace Map
                 int gid = map.Layers[layer].Tiles[i].Gid;
 
                 // Empty tile, do nothing
-                if (gid == 0)
-                {
+                if (gid == 0) { }
 
-                }
                 else
                 {
                     int tileFrame = gid - 1;
@@ -390,23 +388,32 @@ namespace Map
         
         public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy)
         {
-            
+
+            int index = 2;
             if (playerOne.GetPosition().X >= posx - 50 && playerOne.GetPosition().X < posx + npcet.Width + 20
                 && playerOne.GetPosition().Y >= posy && playerOne.GetPosition().Y < posy + npcet.Height + 30)
                 
             {
                 Rectangle tlo = new Rectangle(100, 420, 500, 50);
-                
-                gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 5, advenPosY, dymek.Width, dymek.Height), Color.White);
-                if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
-                    disp = true;
+
+                if (!disp)
+                {
+                    
+
+                    gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 5, advenPosY, dymek.Width, dymek.Height), Color.White);
+                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
+                        disp = true;
+                }
                // else if (Keyboard.GetState().IsKeyDown(Keys.Space) && disp)
                //     disp = false;
 
                 if (disp)
                 {
+                    //var random = new Random();
+                    //index = random.Next(powiedzonka.Count);
+
                     gameScreenManager.SpriteBatch.Draw(dotekstu, tlo, Color.White);
-                    gameScreenManager.SpriteBatch.DrawString(dialog, "Witaj zielona magnetyczna gwiazdo!", new Vector2(145, 425), Color.White);
+                    gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], new Vector2(145, 425), Color.White);
 
                 }
             }
