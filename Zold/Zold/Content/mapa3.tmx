@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <map version="1.2" tiledversion="1.2.3" orientation="orthogonal" renderorder="right-down" width="70" height="40" tilewidth="32" tileheight="32" infinite="0" nextlayerid="2" nextobjectid="1">
- <tileset firstgid="1" source="../magecity.tsx"/>
+ <tileset firstgid="1" source="magecity.tsx"/>
  <layer id="1" name="Warstwa Kafelków 1" width="70" height="40">
   <data encoding="csv">
 293,293,285,284,283,283,286,292,286,283,292,284,291,292,286,292,291,294,292,285,286,283,293,284,293,291,284,283,292,293,294,293,285,293,291,284,292,292,284,284,283,294,285,292,291,292,286,292,293,285,284,286,294,284,283,284,285,292,294,292,293,283,291,283,293,292,286,285,283,284,

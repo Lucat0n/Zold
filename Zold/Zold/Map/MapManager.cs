@@ -123,8 +123,8 @@ namespace Map
             font = gameScreenManager.Content.Load<SpriteFont>("placeholders/font");
             dialog = gameScreenManager.Content.Load<SpriteFont>("placeholders/dialog");
 
-            map = new TmxMap(@"Content/placeholders/mapa2.tmx");
-            map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
+            map = new TmxMap(@"Content/mapa2.tmx");
+            map2 = new TmxMap(@"Content/mapa3.tmx");
             currentMap = map;
 
             tileset = gameScreenManager.Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
