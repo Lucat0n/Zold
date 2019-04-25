@@ -10,11 +10,45 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\TiledSharp.1.0.1\lib\netstandard2.0\TiledSharp.dll
 
 #---------------------------------- Content ---------------------------------#
 
 #begin Content.mgcb
 /copy:Content.mgcb
+
+#begin magecity.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:magecity.png
+
+#begin magecity.tsx
+/copy:magecity.tsx
+
+#begin mapa2.tmx
+/copy:mapa2.tmx
+
+#begin mapa3.tmx
+/copy:mapa3.tmx
+
+#begin placeholders/Adven.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Adven.png
 
 #begin placeholders/backbutton.png
 /importer:TextureImporter
@@ -100,6 +134,13 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/cyber2.jpg
 
+#begin placeholders/dialog.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:placeholders/dialog.spritefont
+
 #begin placeholders/dosko-sm.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -117,6 +158,30 @@
 /processor:SongProcessor
 /processorParam:Quality=Best
 /build:placeholders/doskozzza.mp3
+
+#begin placeholders/dotekstu.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/dotekstu.png
+
+#begin placeholders/dymek.gif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/dymek.gif
 
 #begin placeholders/explo.wav
 /importer:WavImporter

@@ -31,7 +31,7 @@ namespace Zold
 
         protected override void LoadContent()
         {
-            gameScreenManager.InsertScreen(new SplashScreen());
+            gameScreenManager.InsertScreen(new Map.MapManager());
         }
 
         protected override void UnloadContent()

@@ -79,6 +79,10 @@ namespace Zold.Screens.Implemented
                     gameScreenManager.SpriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
                     gameScreenManager.SpriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
                     break;
+                case MenuState.Play:
+                    gameScreenManager.RemoveScreen(this);
+                    gameScreenManager.InsertScreen(new Map.MapManager());
+                    break;
 
             }
             gameScreenManager.SpriteBatch.End();
