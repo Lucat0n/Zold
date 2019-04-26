@@ -22,43 +22,48 @@ namespace Zold.Utilities
 
         public ContentLoader(Game game)
         {
-            Content = new ContentManager(game.Services, "../../../../Content/");
+            Content = new ContentManager(game.Services, "../../../../Content");
             Assets = new Dictionary<string, dynamic>();
         }
 
         public void LoadLocation(string directory)
         {
             string dir= "../../../../Content/" + directory;
-            //Debug.WriteLine(Directory.GetDirectories(dir).First());
             foreach (string dirName in Directory.GetDirectories(dir))
             {
-                //Debug.WriteLine(Path.GetFileName(dirName));
                 switch (Path.GetFileName(dirName))
                 {
                     case "Textures":
                         foreach (string fileName in Directory.GetFiles(dir + "/Textures"))
                         {
-                            Debug.WriteLine(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName));
                             name = directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<Texture2D>(dir + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
-                            
+                            Assets.Add(name, Content.Load<Texture2D>(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Sounds":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<SoundEffect>(dir + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Add(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Music":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<Song>(dir + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Add(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                 }
+            }
+        }
+
+        public void UnloadLocation(string name)
+        {
+            foreach(KeyValuePair<string, dynamic> entry in Assets)
+            {
+                if (entry.Key.Split('/')[0].Equals(name))
+                    Assets.Remove(entry.Key);
             }
         }
     }

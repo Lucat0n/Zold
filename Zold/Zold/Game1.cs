@@ -155,7 +155,7 @@ namespace Zold
 
         protected override void LoadContent()
         {
-            contentLoader.LoadLocation("placeholders");
+            contentLoader.LoadLocation("menu");
             // Create a new SpriteBatch, which can be used to draw textures.
             /*spriteBatch = new SpriteBatch(GraphicsDevice);
             //game elements
