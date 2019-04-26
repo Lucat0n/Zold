@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,57 +16,50 @@ namespace Zold.Utilities
     class ContentLoader
     {
         ContentManager Content;
-        Dictionary<string, dynamic> Assets;
+        public Dictionary<string, dynamic> Assets;
         private string name;
-        private string extention;
+        private string extension;
 
         public ContentLoader(Game game)
         {
-            Content = new ContentManager(game.Services, "../Content");
+            Content = new ContentManager(game.Services, "../../../../Content/");
             Assets = new Dictionary<string, dynamic>();
         }
 
-        void LoadLocation(string location)
+        public void LoadLocation(string directory)
         {
-            Search("../Content/" + location);
-        }
-
-        void Search(string dir)
-        {
+            string dir= "../../../../Content/" + directory;
+            //Debug.WriteLine(Directory.GetDirectories(dir).First());
             foreach (string dirName in Directory.GetDirectories(dir))
             {
-                switch (dirName)
+                //Debug.WriteLine(Path.GetFileName(dirName));
+                switch (Path.GetFileName(dirName))
                 {
                     case "Textures":
-                        foreach (string fileName in Directory.GetFiles(dir))
+                        foreach (string fileName in Directory.GetFiles(dir + "/Textures"))
                         {
-                            SplitName(fileName);
-                            Assets.Add(name, Content.Load<Texture2D>(dir + "/Textures/" + name));
+                            Debug.WriteLine(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName));
+                            name = directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Add(name, Content.Load<Texture2D>(dir + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
+                            
                         }
                         break;
                     case "Sounds":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
-                            SplitName(fileName);
-                            Assets.Add(name, Content.Load<SoundEffect>(dir + "/Sounds/" + name));
+                            name = directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Add(name, Content.Load<SoundEffect>(dir + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Music":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
-                            SplitName(fileName);
-                            Assets.Add(name, Content.Load<Texture2D>(dir + "/Music/" + name));
+                            name = directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Add(name, Content.Load<Song>(dir + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                 }
             }
-        }
-
-        void SplitName(string fileName)
-        {
-            string[] temp = fileName.Split('.');
-            name = temp[0];
-            extention = temp[1];
         }
     }
 }

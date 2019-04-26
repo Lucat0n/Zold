@@ -1,9 +1,12 @@
-﻿using Microsoft.Xna.Framework;
+﻿using System.Diagnostics;
+using System.IO;
+using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
+using Zold.Utilities;
 
 namespace Zold
 {
@@ -14,6 +17,7 @@ namespace Zold
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
+        ContentLoader contentLoader;
 
         Texture2D scott;
         //public static int qwe = 90;
@@ -140,8 +144,9 @@ namespace Zold
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            contentLoader = new ContentLoader(this);
             base.Initialize();
-
+            
             state = gameState.Menu;
 
             IsMouseVisible = true;
@@ -150,8 +155,9 @@ namespace Zold
 
         protected override void LoadContent()
         {
+            contentLoader.LoadLocation("placeholders");
             // Create a new SpriteBatch, which can be used to draw textures.
-            spriteBatch = new SpriteBatch(GraphicsDevice);
+            /*spriteBatch = new SpriteBatch(GraphicsDevice);
             //game elements
             poww = Content.Load<Texture2D>("placeholders/citybackgrund");
             cyberpunk = Content.Load<Texture2D>("placeholders/cyber2");
@@ -216,7 +222,7 @@ namespace Zold
             enemies.Add(skeleton);
             enemies.Add(rat);
 
-            Combat = new Combat.Combat(combatPlayer, enemies, font, line);
+            Combat = new Combat.Combat(combatPlayer, enemies, font, line);*/
 
         }
 
@@ -236,9 +242,11 @@ namespace Zold
         /// <param name="gameTime">Provides a snapshot of timing values.</param>
         protected override void Update(GameTime gameTime)
         {
+            //Debug.WriteLine(contentLoader.Assets.Keys.Count);
+            //Debug.WriteLine(Path.GetFileName("../../../../Content/placeholders"));
             //MediaPlayer.Play(menuMusic);
 
-            switch (state)
+            /*switch (state)
             {
                 case gameState.Splash:
                     //state = gameState.Game;
@@ -260,7 +268,7 @@ namespace Zold
             }
 
 
-            base.Update(gameTime);
+            base.Update(gameTime);*/
         }
 
         protected void UpdateMenu(GameTime gameTime)
@@ -314,7 +322,7 @@ namespace Zold
 
         protected override void Draw(GameTime gameTime)
         {
-            GraphicsDevice.Clear(bacgrund);
+            /*GraphicsDevice.Clear(bacgrund);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -342,7 +350,7 @@ namespace Zold
 
             spriteBatch.End();
 
-            base.Draw(gameTime);
+            base.Draw(gameTime);*/
         }
 
         protected void DrawSplash(GameTime gameTime)
