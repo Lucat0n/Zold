@@ -144,6 +144,7 @@ namespace Zold
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
+            Directory.SetCurrentDirectory("..//..//..//..");
             contentLoader = new ContentLoader(this);
             base.Initialize();
             

@@ -22,13 +22,13 @@ namespace Zold.Utilities
 
         public ContentLoader(Game game)
         {
-            Content = new ContentManager(game.Services, "../../../../Content");
+            Content = new ContentManager(game.Services, "Content");
             Assets = new Dictionary<string, dynamic>();
         }
 
         public void LoadLocation(string directory)
         {
-            string dir= "../../../../Content/" + directory;
+            string dir= "Content/" + directory;
             foreach (string dirName in Directory.GetDirectories(dir))
             {
                 switch (Path.GetFileName(dirName))
