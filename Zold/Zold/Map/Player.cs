@@ -25,24 +25,27 @@ namespace Map
             speed = 50;
         }
 
-        public void move(int wid, int heigh)
+        public void move(int wid, int heigh, bool canMove)
         {
-            previous = current;
-            current = Keyboard.GetState();
+            if (canMove)
+            {
+                previous = current;
+                current = Keyboard.GetState();
 
-            if (current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Right))
-                position.X += speed;
+                if (current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Right))
+                    position.X += speed;
 
-            if (current.IsKeyDown(Keys.Up) && previous.IsKeyUp(Keys.Up))
-                position.Y -= speed;
+                if (current.IsKeyDown(Keys.Up) && previous.IsKeyUp(Keys.Up))
+                    position.Y -= speed;
 
-            if (current.IsKeyDown(Keys.Down) && previous.IsKeyUp(Keys.Down))
-                position.Y += speed;
+                if (current.IsKeyDown(Keys.Down) && previous.IsKeyUp(Keys.Down))
+                    position.Y += speed;
 
-            if (current.IsKeyDown(Keys.Left) && previous.IsKeyUp(Keys.Left))
-                position.X -= speed;
+                if (current.IsKeyDown(Keys.Left) && previous.IsKeyUp(Keys.Left))
+                    position.X -= speed;
 
-            centerPosition = new Vector2(position.X + 16, position.Y + 24);
+                centerPosition = new Vector2(position.X + 16, position.Y + 24);
+            }
         }
 
         public Texture2D GetTexture()
