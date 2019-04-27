@@ -40,5 +40,10 @@ namespace Zold.Utilities
         {
             return AssetList[name];
         }
+
+        public void remove(string name)
+        {
+            AssetList.Remove(name);
+        }
     }
 }

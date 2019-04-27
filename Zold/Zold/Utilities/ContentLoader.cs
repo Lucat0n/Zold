@@ -55,15 +55,15 @@ namespace Zold.Utilities
             }
         }
 
-        /*
+        
         public void UnloadLocation(string name)
         {
             foreach(KeyValuePair<string, dynamic> entry in Assets)
             {
                 if (entry.Key.Split('/')[0].Equals(name))
-                    Assets.Remove(entry.Key);
+                    Assets.Instance.remove(entry.Key);
             }
         }
-        */
+        
     }
 }
