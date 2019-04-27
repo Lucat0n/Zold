@@ -139,13 +139,13 @@ namespace Zold
         public Game1()
         {
             graphics = new GraphicsDeviceManager(this);
+            Content.RootDirectory = "Content";
         }
 
         protected override void Initialize()
         {
             // TODO: Add your initialization logic here
-            Directory.SetCurrentDirectory("..//..//..//..");
-            contentLoader = new ContentLoader(this);
+            contentLoader = new ContentLoader(this, Content);
             base.Initialize();
             
             state = gameState.Menu;
@@ -157,10 +157,11 @@ namespace Zold
         protected override void LoadContent()
         {
             contentLoader.LoadLocation("menu");
+            contentLoader.LoadLocation("placeholders");
             // Create a new SpriteBatch, which can be used to draw textures.
-            /*spriteBatch = new SpriteBatch(GraphicsDevice);
+            spriteBatch = new SpriteBatch(GraphicsDevice);
             //game elements
-            poww = Content.Load<Texture2D>("placeholders/citybackgrund");
+            /*poww = Content.Load<Texture2D>("placeholders/citybackgrund");
             cyberpunk = Content.Load<Texture2D>("placeholders/cyber2");
             scott = Content.Load<Texture2D>("placeholders/sct");
             wallace = Content.Load<Texture2D>("placeholders/police");
@@ -247,7 +248,7 @@ namespace Zold
             //Debug.WriteLine(Path.GetFileName("../../../../Content/placeholders"));
             //MediaPlayer.Play(menuMusic);
 
-            /*switch (state)
+            switch (state)
             {
                 case gameState.Splash:
                     //state = gameState.Game;
@@ -269,7 +270,7 @@ namespace Zold
             }
 
 
-            base.Update(gameTime);*/
+            base.Update(gameTime);
         }
 
         protected void UpdateMenu(GameTime gameTime)
@@ -323,7 +324,7 @@ namespace Zold
 
         protected override void Draw(GameTime gameTime)
         {
-            /*GraphicsDevice.Clear(bacgrund);
+            GraphicsDevice.Clear(bacgrund);
 
             // TODO: Add your drawing code here
             spriteBatch.Begin();
@@ -351,7 +352,7 @@ namespace Zold
 
             spriteBatch.End();
 
-            base.Draw(gameTime);*/
+            base.Draw(gameTime);
         }
 
         protected void DrawSplash(GameTime gameTime)
@@ -385,6 +386,7 @@ namespace Zold
                     spriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
                 }
                 //spriteBatch.Draw(zold, new Vector2(GraphicsDevice.Viewport.Width / 2 - zold.Width / 2, GraphicsDevice.Viewport.Height / 2 - zold.Height / 2), Color.White * zoldAlpha);
+                Texture2D zold = contentLoader.Assets["menu/Textures/zold"];
                 spriteBatch.Draw(zold, new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
             }
             else

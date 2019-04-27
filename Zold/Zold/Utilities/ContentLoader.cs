@@ -18,17 +18,16 @@ namespace Zold.Utilities
         ContentManager Content;
         public Dictionary<string, dynamic> Assets;
         private string name;
-        private string extension;
 
-        public ContentLoader(Game game)
+        public ContentLoader(Game game, ContentManager Content)
         {
-            Content = new ContentManager(game.Services, "Content");
+            this.Content = Content;
             Assets = new Dictionary<string, dynamic>();
         }
 
         public void LoadLocation(string directory)
         {
-            string dir= "Content/" + directory;
+            string dir = Content.RootDirectory + "/" + directory;
             foreach (string dirName in Directory.GetDirectories(dir))
             {
                 switch (Path.GetFileName(dirName))
@@ -57,6 +56,7 @@ namespace Zold.Utilities
                 }
             }
         }
+
 
         public void UnloadLocation(string name)
         {
