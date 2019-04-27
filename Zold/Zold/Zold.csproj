@@ -48,6 +48,7 @@
     <Compile Include="Combat\Mob.cs" />
     <Compile Include="Combat\Player.cs" />
     <Compile Include="Utilities\Animation.cs" />
+    <Compile Include="Utilities\Assets.cs" />
     <Compile Include="Utilities\ContentLoader.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />

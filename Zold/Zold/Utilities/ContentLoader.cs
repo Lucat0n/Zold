@@ -16,13 +16,11 @@ namespace Zold.Utilities
     class ContentLoader
     {
         ContentManager Content;
-        public Dictionary<string, dynamic> Assets;
         private string name;
 
         public ContentLoader(Game game, ContentManager Content)
         {
             this.Content = Content;
-            Assets = new Dictionary<string, dynamic>();
         }
 
         public void LoadLocation(string directory)
@@ -36,28 +34,28 @@ namespace Zold.Utilities
                         foreach (string fileName in Directory.GetFiles(dir + "/Textures"))
                         {
                             name = directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<Texture2D>(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.set(name, Content.Load<Texture2D>(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Sounds":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.set(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Music":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Add(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.set(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                 }
             }
         }
 
-
+        /*
         public void UnloadLocation(string name)
         {
             foreach(KeyValuePair<string, dynamic> entry in Assets)
@@ -66,5 +64,6 @@ namespace Zold.Utilities
                     Assets.Remove(entry.Key);
             }
         }
+        */
     }
 }

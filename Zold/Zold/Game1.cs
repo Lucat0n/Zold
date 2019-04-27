@@ -386,8 +386,7 @@ namespace Zold
                     spriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
                 }
                 //spriteBatch.Draw(zold, new Vector2(GraphicsDevice.Viewport.Width / 2 - zold.Width / 2, GraphicsDevice.Viewport.Height / 2 - zold.Height / 2), Color.White * zoldAlpha);
-                Texture2D zold = contentLoader.Assets["menu/Textures/zold"];
-                spriteBatch.Draw(zold, new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
+                spriteBatch.Draw(Assets.Instance.get("menu/Textures/zold"), new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
             }
             else
             {
