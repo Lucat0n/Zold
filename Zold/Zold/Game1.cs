@@ -90,13 +90,6 @@ namespace Zold
         Rectangle checkBoxRectangle;
         Rectangle quitButtonRectangle;
 
-        Texture2D quitButton;
-        //Texture2D creditsButton;
-        Texture2D backButton;
-        Texture2D boxChecked;
-        Texture2D boxUnchecked;
-        Texture2D fscrIcon;
-
         Color backButtonColor = Color.White;
         Color quitButtonColor = Color.White;
         Color checkBoxColor = Color.White; //DO ZMIANY JEŚLI MA BYĆ WIĘCEJ CHECKBOXÓW
@@ -419,7 +412,7 @@ namespace Zold
             if (isPaused)
             {
                 spriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
-                spriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
+                //spriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
 
             }
         }
