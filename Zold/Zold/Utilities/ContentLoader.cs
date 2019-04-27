@@ -34,21 +34,21 @@ namespace Zold.Utilities
                         foreach (string fileName in Directory.GetFiles(dir + "/Textures"))
                         {
                             name = directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Instance.set(name, Content.Load<Texture2D>(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.Set(name, Content.Load<Texture2D>(directory + "/Textures/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Sounds":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Instance.set(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.Set(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Music":
                         foreach (string fileName in Directory.GetFiles(dir))
                         {
                             name = directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Instance.set(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.Set(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                 }
@@ -58,11 +58,7 @@ namespace Zold.Utilities
         
         public void UnloadLocation(string name)
         {
-            foreach(KeyValuePair<string, dynamic> entry in Assets)
-            {
-                if (entry.Key.Split('/')[0].Equals(name))
-                    Assets.Instance.remove(entry.Key);
-            }
+            Assets.Instance.Remove(name);
         }
         
     }

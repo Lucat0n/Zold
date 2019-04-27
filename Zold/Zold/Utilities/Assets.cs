@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Diagnostics;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -31,19 +32,24 @@ namespace Zold.Utilities
             }
         }
 
-        public void set(string name, dynamic value)
+        public void Set(string name, dynamic value)
         {
+            Debug.WriteLine(name);
             AssetList.Add(name, value);
         }
 
-        public dynamic get(string name)
+        public dynamic Get(string name)
         {
             return AssetList[name];
         }
 
-        public void remove(string name)
+        public void Remove(string name)
         {
-            AssetList.Remove(name);
+            foreach (KeyValuePair<string, dynamic> entry in AssetList)
+            {
+                if (entry.Key.Split('/')[0].Equals(name))
+                    AssetList.Remove(entry.Key);
+            }
         }
     }
 }
