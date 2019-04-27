@@ -34,12 +34,12 @@ namespace Zold.Utilities
 
         public void Set(string name, dynamic value)
         {
-            Debug.WriteLine(name);
             AssetList.Add(name, value);
         }
 
         public dynamic Get(string name)
         {
+            Debug.WriteLine(name);
             return AssetList[name];
         }
 

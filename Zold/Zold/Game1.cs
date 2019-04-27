@@ -382,17 +382,17 @@ namespace Zold
                 else
                 {
                     isMenuLoaded = true;
-                    spriteBatch.Draw(playButton, playButtonRectangle, playButtonColor);
-                    spriteBatch.Draw(optionsButton, optionsButtonRectangle, optionsButtonColor);
+                    spriteBatch.Draw(Assets.Instance.Get("menu/Textures/playButton"), playButtonRectangle, playButtonColor);
+                    spriteBatch.Draw(Assets.Instance.Get("menu/Textures/optionsButton"), optionsButtonRectangle, optionsButtonColor);
                 }
                 //spriteBatch.Draw(zold, new Vector2(GraphicsDevice.Viewport.Width / 2 - zold.Width / 2, GraphicsDevice.Viewport.Height / 2 - zold.Height / 2), Color.White * zoldAlpha);
                 spriteBatch.Draw(Assets.Instance.Get("menu/Textures/zold"), new Rectangle(GraphicsDevice.Viewport.Width / 4, zoldY, GraphicsDevice.Viewport.Width / 2, GraphicsDevice.Viewport.Width / 6), Color.White * zoldAlpha);
             }
             else
             {
-                spriteBatch.Draw(isFullScreenOn ? boxChecked : boxUnchecked, checkBoxRectangle, checkBoxColor);
-                spriteBatch.Draw(fscrIcon, resolutionButtonRectangle, Color.White);
-                spriteBatch.Draw(backButton, backButtonRectangle, backButtonColor);
+                spriteBatch.Draw(isFullScreenOn ? Assets.Instance.Get("menu/Textures/boxChecked") : Assets.Instance.Get("menu/Textures/boxUnchecked"), checkBoxRectangle, checkBoxColor);
+                spriteBatch.Draw(Assets.Instance.Get("menu/Textures/fscrIcon"), resolutionButtonRectangle, Color.White);
+                spriteBatch.Draw(Assets.Instance.Get("menu/Textures/backbutton"), backButtonRectangle, backButtonColor);
             }
 
         }
