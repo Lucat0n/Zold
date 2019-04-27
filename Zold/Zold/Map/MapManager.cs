@@ -63,7 +63,17 @@ namespace Map
         Texture2D cyberpunk;
         Texture2D poww;
 
-            //budynki
+        //Combat
+        Zold.Screens.Implemented.Combat.CombatScreen Combat;
+        Zold.Screens.Implemented.Combat.Player combatPlayer;
+        Zold.Screens.Implemented.Combat.Enemy skeleton;
+        Zold.Screens.Implemented.Combat.Enemy rat;
+        List<Zold.Screens.Implemented.Combat.Enemy> enemies;
+        Texture2D skeletonTex;
+        Texture2D ratTex;
+        Texture2D line;
+
+        //budynki
         Texture2D policja;
         int policjaPosX = 400;
         int policjaPosY = 300;
@@ -114,7 +124,7 @@ namespace Map
             //budynki
             budynek1 = gameScreenManager.Content.Load<Texture2D>("placeholders/police");
             policja = gameScreenManager.Content.Load<Texture2D>("placeholders/ralf");
-
+            
             //do tekstu
             dotekstu = gameScreenManager.Content.Load<Texture2D>("placeholders/dotekstu");
             dymek = gameScreenManager.Content.Load<Texture2D>("placeholders/dymek");
@@ -154,6 +164,22 @@ namespace Map
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(gameScreenManager.Content.Load<Texture2D>("placeholders/dosko-sm"));
+
+            // combat
+            skeletonTex = gameScreenManager.Content.Load<Texture2D>("placeholders/skeleton");
+            ratTex = gameScreenManager.Content.Load<Texture2D>("placeholders/rat");
+
+            enemies = new List<Zold.Screens.Implemented.Combat.Enemy>();
+            combatPlayer = new Zold.Screens.Implemented.Combat.Player(new Vector2(0, 200), 100, enemies);
+            combatPlayer.SetTexture(pietrek);
+
+            skeleton = new Zold.Screens.Implemented.Combat.Mob(combatPlayer, new Vector2(300, 300));
+            rat = new Zold.Screens.Implemented.Combat.Charger(combatPlayer, new Vector2(300, 400));
+            skeleton.SetTexture(skeletonTex);
+            rat.SetTexture(ratTex);
+            enemies.Add(skeleton);
+            enemies.Add(rat);
+            Combat = new Zold.Screens.Implemented.Combat.CombatScreen(combatPlayer, enemies, font);
 
         }
 
@@ -343,6 +369,9 @@ namespace Map
                     && player.GetPosition().Y + pietrek.Width >= enemy.GetPosition().Y)
                 {
                     //CHANGE STATE TO COMBAT HEEREEEE
+
+                    gameScreenManager.RemoveScreen(this);
+                    gameScreenManager.InsertScreen(Combat);
 
                     //if (songStart)
                     //{
