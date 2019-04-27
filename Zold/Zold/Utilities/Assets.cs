@@ -39,17 +39,14 @@ namespace Zold.Utilities
 
         public dynamic Get(string name)
         {
-            Debug.WriteLine(name);
             return AssetList[name];
         }
 
         public void Remove(string name)
         {
-            foreach (KeyValuePair<string, dynamic> entry in AssetList)
-            {
-                if (entry.Key.Split('/')[0].Equals(name))
-                    AssetList.Remove(entry.Key);
-            }
+            var itemsToDelete = AssetList.Where(x => x.Key.Split('/')[0].Equals(name)).ToArray();
+            foreach (var item in itemsToDelete)
+                AssetList.Remove(item.Key);
         }
     }
 }
