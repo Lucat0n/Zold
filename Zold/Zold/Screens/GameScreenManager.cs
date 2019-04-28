@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
+using Zold.Utilities;
 
 namespace Zold.Screens
 {
@@ -74,8 +75,8 @@ namespace Zold.Screens
 
         protected override void LoadContent()
         {
-            spriteFont = content.Load<SpriteFont>("placeholders/font");
-            blank = content.Load<Texture2D>("placeholders/blank");
+            spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
+            blank = Assets.Instance.Get("placeholders/Textures/blank");
 
             foreach(GameScreen screen in ScreenList)
             {

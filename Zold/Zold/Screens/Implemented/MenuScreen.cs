@@ -5,6 +5,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
+using Zold.Utilities;
 
 namespace Zold.Screens.Implemented
 {
@@ -143,15 +144,15 @@ namespace Zold.Screens.Implemented
         public override void LoadContent()
         {
             titleY = this.gameScreenManager.GraphicsDevice.Viewport.Height / 3;
-            title = gameScreenManager.Content.Load<Texture2D>("placeholders/zold");
-            backButton = gameScreenManager.Content.Load<Texture2D>("placeholders/backButton");
-            boxChecked = gameScreenManager.Content.Load<Texture2D>("placeholders/boxChecked");
-            boxUnchecked = gameScreenManager.Content.Load<Texture2D>("placeholders/boxUnchecked");
-            fscrIcon = gameScreenManager.Content.Load<Texture2D>("placeholders/fscrIcon");
-            playButton = gameScreenManager.Content.Load<Texture2D>("placeholders/playButton");
-            optionsButton = gameScreenManager.Content.Load<Texture2D>("placeholders/optionsButton");
+            title = Assets.Instance.Get("menu/Textures/zold");
+            backButton = Assets.Instance.Get("menu/Textures/backButton");
+            boxChecked = Assets.Instance.Get("menu/Textures/boxChecked");
+            boxUnchecked = Assets.Instance.Get("menu/Textures/boxUnchecked");
+            fscrIcon = Assets.Instance.Get("menu/Textures/fscrIcon");
+            playButton = Assets.Instance.Get("menu/Textures/playButton");
+            optionsButton = Assets.Instance.Get("menu/Textures/optionsButton");
 
-            bgMusic = gameScreenManager.Content.Load<SoundEffect>("placeholders/menu-music");
+            bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
 
         }
 

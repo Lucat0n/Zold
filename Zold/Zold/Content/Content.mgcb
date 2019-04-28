@@ -16,7 +16,7 @@
 #begin Content.mgcb
 /copy:Content.mgcb
 
-#begin menu/Textures/backbutton.png
+#begin magecity.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -26,7 +26,31 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:menu/Textures/backbutton.png
+/build:magecity.png
+
+#begin magecity.tsx
+/copy:magecity.tsx
+
+#begin mapa2.tmx
+/copy:mapa2.tmx
+
+#begin mapa2v2.tmx
+/copy:mapa2v2.tmx
+
+#begin mapa3.tmx
+/copy:mapa3.tmx
+
+#begin menu/Textures/backButton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menu/Textures/backButton.png
 
 #begin menu/Textures/boxChecked.png
 /importer:TextureImporter
@@ -118,6 +142,30 @@
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
 /build:placeholders/Fonts/dialog.spritefont
+
+#begin placeholders/Music/explo.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/explo.wav
+
+#begin placeholders/Music/kombat.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/kombat.wav
+
+#begin placeholders/Music/menu-music.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/menu-music.wav
+
+#begin placeholders/Music/wesola.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/wesola.wav
 
 #begin placeholders/Textures/Adven.png
 /importer:TextureImporter
@@ -287,7 +335,7 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/ralf.jpg
 
-#begin placeholders/Textures/Rat.png
+#begin placeholders/Textures/rat.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -297,7 +345,7 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/Textures/Rat.png
+/build:placeholders/Textures/rat.png
 
 #begin placeholders/Textures/rzprod.png
 /importer:TextureImporter

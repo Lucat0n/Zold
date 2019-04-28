@@ -34,7 +34,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.GraphicsDevice.Clear(Color.Black);
+            gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin();
 
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150));

@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using Zold.Utilities;
 
 namespace Zold.Screens.Implemented
 {
@@ -56,7 +57,7 @@ namespace Zold.Screens.Implemented
 
         public override void LoadContent()
         {
-            splash = gameScreenManager.Content.Load<Texture2D>("placeholders/rzprod");
+            splash = Assets.Instance.Get("placeholders/Textures/rzprod");
         }
 
         public override void UnloadContent()

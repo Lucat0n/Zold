@@ -50,7 +50,6 @@ namespace Zold.Screens.Implemented.Map
         SpriteFont dialog;
 
         // //postacie
-        Texture2D pietrek;
         Vector2 pos;
 
         Texture2D adven;
@@ -121,10 +120,8 @@ namespace Zold.Screens.Implemented.Map
            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
   
             // loading music
-            menuMusic = gameScreenManager.Content.Load<Song>(@"placeholders/doskozzza");
-            gameplayMusic = gameScreenManager.Content.Load<Song>("placeholders/lufa");
-            bgMusic = gameScreenManager.Content.Load<SoundEffect>("placeholders/menu-music");
-            combatMusic = gameScreenManager.Content.Load<SoundEffect>("placeholders/kombat");
+            bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
+            combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
 
             currentSong = gameplayMusic;
 
@@ -149,8 +146,7 @@ namespace Zold.Screens.Implemented.Map
             cyber = false;
 
             pos = new Vector2(10, 10);
-            player = new Map.Player(pos);
-            player.SetTexture(Assets.Instance.Get("placeholders/Textures/main"));
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
@@ -182,14 +178,14 @@ namespace Zold.Screens.Implemented.Map
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
             
-                drawTiles(1, currentMap);
-                drawTiles(0, currentMap);
+               // drawTiles(1, currentMap);
+               // drawTiles(0, currentMap);
                // drawed = true;
             
 
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
-            gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition(), Color.White);
+            gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
@@ -199,7 +195,8 @@ namespace Zold.Screens.Implemented.Map
             //postacie
             if (forest)
             {
-                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/Adven"), new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
+                adven = Assets.Instance.Get("placeholders/Textures/Adven");
+                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
 
                 displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX, advenPosY);
                 
@@ -232,7 +229,7 @@ namespace Zold.Screens.Implemented.Map
 
             if (!isPaused)
             {
-                player.move(pietrek.Width, pietrek.Height,true);
+                player.move(player.Width, player.Height, true);
                 bacgrund = Color.Green;
                 ManageLocations();
                 if (cyber)
@@ -294,7 +291,7 @@ namespace Zold.Screens.Implemented.Map
         {
             if (forest)
             {
-                if ((player.GetPosition().X + pietrek.Width >= policjaPosX && player.GetPosition().X < policjaPosX + policjaWidth) && (player.GetPosition().Y + pietrek.Height >= policjaPosY && player.GetPosition().Y < policjaPosY + policjaHeight))
+                if ((player.GetPosition().X + player.Width >= policjaPosX && player.GetPosition().X < policjaPosX + policjaWidth) && (player.GetPosition().Y + player.Height >= policjaPosY && player.GetPosition().Y < policjaPosY + policjaHeight))
                 {
                     bacgrund = bacgrundAfterHit;
                     kolorPow = Color.White;
@@ -324,7 +321,7 @@ namespace Zold.Screens.Implemented.Map
 
             if (city)
             {
-                if ((player.GetPosition().X + pietrek.Width >= ralfX && player.GetPosition().X < ralfX + ralfWidth) && (player.GetPosition().Y + pietrek.Height >= ralfY && player.GetPosition().Y < ralfY + ralfHeight))
+                if ((player.GetPosition().X + player.Width >= ralfX && player.GetPosition().X < ralfX + ralfWidth) && (player.GetPosition().Y + player.Height >= ralfY && player.GetPosition().Y < ralfY + ralfHeight))
                 {
                     // bacgrund = Color.Green;
                     kolorPow2 = Color.White;
@@ -360,8 +357,8 @@ namespace Zold.Screens.Implemented.Map
 
             if (cyber)
             {
-                if (player.GetPosition().X + pietrek.Width >= enemy.GetPosition().X
-                    && player.GetPosition().Y + pietrek.Width >= enemy.GetPosition().Y)
+                if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
+                    && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
                     //CHANGE STATE TO COMBAT HEEREEEE
 
@@ -377,7 +374,7 @@ namespace Zold.Screens.Implemented.Map
                 }
 
 
-                if (player.GetPosition().X + pietrek.Width >= 800)    /// do lasu
+                if (player.GetPosition().X + player.Width >= 800)    /// do lasu
                 {
                     bacgrund = Color.Green;
                     kolorPow2 = Color.White * 0;
@@ -418,7 +415,7 @@ namespace Zold.Screens.Implemented.Map
                     
                 {
                     player.SetPosition(0, 32);
-                   // player.move(pietrek.Width, pietrek.Height, false);
+                   // player.move(player.Width, player.Height, false);
                 }
             }
         }

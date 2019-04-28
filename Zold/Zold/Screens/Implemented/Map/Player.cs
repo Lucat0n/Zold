@@ -11,7 +11,7 @@ namespace Zold.Screens.Implemented.Map
 {
     class Player
     {
-        private Texture2D texture;
+        public Texture2D texture { get; set; }
         private Vector2 position;
         private Vector2 centerPosition;
         public int speed { get; private set; }
@@ -19,9 +19,16 @@ namespace Zold.Screens.Implemented.Map
         public KeyboardState current;
         public KeyboardState previous;
 
-        public Player(Vector2 position)
+        public int Width { get; set; }
+        public int Height { get; set; }
+
+        public Player(Vector2 position, Texture2D texture)
         {
+            this.texture = texture;
             this.position = position;
+
+            Width = texture.Width;
+            Height = texture.Height;
             speed = 50;
         }
 
@@ -46,16 +53,6 @@ namespace Zold.Screens.Implemented.Map
 
                 centerPosition = new Vector2(position.X + 16, position.Y + 24);
             }
-        }
-
-        public Texture2D GetTexture()
-        {
-            return texture;
-        }
-
-        public void SetTexture(Texture2D value)
-        {
-            texture = value;
         }
 
         public Vector2 GetPosition()
