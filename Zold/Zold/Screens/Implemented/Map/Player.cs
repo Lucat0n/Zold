@@ -7,7 +7,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Map
+namespace Zold.Screens.Implemented.Map
 {
     class Player
     {

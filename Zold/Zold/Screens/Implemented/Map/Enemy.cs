@@ -7,7 +7,7 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Timers;
 
-namespace Map
+namespace Zold.Screens.Implemented.Map
 {
     class Enemy
     {

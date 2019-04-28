@@ -9,10 +9,11 @@ using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 using System;
+using Zold.Utilities;
 
-namespace Map
+namespace Zold.Screens.Implemented.Map
 {
-    class MapManager : Zold.Screens.GameScreen
+    class MapManager : GameScreen
     {
 
         public List<string> powiedzonka = new List<string>();
@@ -46,7 +47,6 @@ namespace Map
         SoundEffect combatMusic;
 
         //spritefonts
-        SpriteFont font;
         SpriteFont dialog;
 
         // //postacie
@@ -87,8 +87,8 @@ namespace Map
         static int ralfWidth = policjaWidth + 50;
         static int ralfHeight = policjaHeight + 80;
 
-        Map.Player player;
-        Map.Enemy enemy;
+        Player player;
+        Enemy enemy;
 
         //bools
         bool songStart = false;
@@ -119,17 +119,6 @@ namespace Map
             powiedzonka.Add("Ruchasz sie?");
             //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
-
-            //postacie
-            pietrek = gameScreenManager.Content.Load<Texture2D>("placeholders/main");
-            adven = gameScreenManager.Content.Load<Texture2D>("placeholders/Adven");
-            //budynki
-            budynek1 = gameScreenManager.Content.Load<Texture2D>("placeholders/police");
-            policja = gameScreenManager.Content.Load<Texture2D>("placeholders/ralf");
-            
-            //do tekstu
-            dotekstu = gameScreenManager.Content.Load<Texture2D>("placeholders/dotekstu");
-            dymek = gameScreenManager.Content.Load<Texture2D>("placeholders/dymek");
   
             // loading music
             menuMusic = gameScreenManager.Content.Load<Song>(@"placeholders/doskozzza");
@@ -140,8 +129,7 @@ namespace Map
             currentSong = gameplayMusic;
 
             //loading fonts
-            font = gameScreenManager.Content.Load<SpriteFont>("placeholders/font");
-            dialog = gameScreenManager.Content.Load<SpriteFont>("placeholders/dialog");
+            dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
 
             map = new TmxMap(@"Content/mapa2v2.tmx");
             map2 = new TmxMap(@"Content/mapa3.tmx");
@@ -162,26 +150,24 @@ namespace Map
 
             pos = new Vector2(10, 10);
             player = new Map.Player(pos);
-            player.SetTexture(pietrek);
+            player.SetTexture(Assets.Instance.Get("placeholders/Textures/main"));
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
-            enemy.SetTexture(gameScreenManager.Content.Load<Texture2D>("placeholders/dosko-sm"));
+            enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
-            // combat
-            skeletonTex = gameScreenManager.Content.Load<Texture2D>("placeholders/skeleton");
-            ratTex = gameScreenManager.Content.Load<Texture2D>("placeholders/rat");
+            // Combat
 
             enemies = new List<Zold.Screens.Implemented.Combat.Enemy>();
             combatPlayer = new Zold.Screens.Implemented.Combat.Player(new Vector2(0, 200), 100, enemies);
-            combatPlayer.SetTexture(pietrek);
+            combatPlayer.SetTexture(Assets.Instance.Get("placeholders/Textures/main"));
 
             skeleton = new Zold.Screens.Implemented.Combat.Mob(combatPlayer, new Vector2(300, 300));
             rat = new Zold.Screens.Implemented.Combat.Charger(combatPlayer, new Vector2(300, 400));
-            skeleton.SetTexture(skeletonTex);
-            rat.SetTexture(ratTex);
+            skeleton.SetTexture(Assets.Instance.Get("placeholders/Textures/skeleton"));
+            rat.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
             enemies.Add(skeleton);
             enemies.Add(rat);
-            Combat = new Zold.Screens.Implemented.Combat.CombatScreen(combatPlayer, enemies, font);
+            Combat = new Combat.CombatScreen(combatPlayer, enemies);
 
         }
 
@@ -206,16 +192,16 @@ namespace Map
             gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition(), Color.White);
 
             ///budunek policji
-            gameScreenManager.SpriteBatch.Draw(budynek1, new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
             //wiezowiec 2
-            gameScreenManager.SpriteBatch.Draw(policja, new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
 
             //postacie
             if (forest)
             {
-                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
+                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/Adven"), new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
 
-                displayDialog(player, adven, advenPosX, advenPosY);
+                displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX, advenPosY);
                 
             }
 
@@ -449,8 +435,7 @@ namespace Map
 
                 if (!disp)
                 {
-                    
-
+                    dymek = Assets.Instance.Get("placeholders/Textures/rat");
                     gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 5, advenPosY, dymek.Width, dymek.Height), Color.White);
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
                         disp = true;
@@ -463,7 +448,7 @@ namespace Map
                     //var random = new Random();
                     //index = random.Next(powiedzonka.Count);
 
-                    gameScreenManager.SpriteBatch.Draw(dotekstu, tlo, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
                     gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], new Vector2(145, 425), Color.White);
 
                 }

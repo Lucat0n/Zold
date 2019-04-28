@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System;
 using System.Collections.Generic;
+using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -10,16 +11,11 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        int mapEdge;
-
-        //temp
         SpriteFont font;
-        Texture2D line;
 
-        public CombatScreen(Player player, List<Enemy> enemies, SpriteFont font)
+        public CombatScreen(Player player, List<Enemy> enemies)
         {
-            this.font = font;
-            this.line = line;
+            font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
             IsTransparent = false;
@@ -41,7 +37,7 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
 
-            gameScreenManager.SpriteBatch.Draw(line, new Vector2(0, 150));
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150));
 
             gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition());
             gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);

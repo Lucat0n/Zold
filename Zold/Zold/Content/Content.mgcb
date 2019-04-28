@@ -10,14 +10,13 @@
 
 #-------------------------------- References --------------------------------#
 
-/reference:..\..\packages\TiledSharp.1.0.1\lib\netstandard2.0\TiledSharp.dll
 
 #---------------------------------- Content ---------------------------------#
 
 #begin Content.mgcb
 /copy:Content.mgcb
 
-#begin magecity.png
+#begin menu/Textures/backbutton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -27,21 +26,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:magecity.png
+/build:menu/Textures/backbutton.png
 
-#begin magecity.tsx
-/copy:magecity.tsx
-
-#begin mapa2.tmx
-/copy:mapa2.tmx
-
-#begin mapa2v2.tmx
-/copy:mapa2v2.tmx
-
-#begin mapa3.tmx
-/copy:mapa3.tmx
-
-#begin placeholders/Adven.png
+#begin menu/Textures/boxChecked.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -51,9 +38,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/Adven.png
+/build:menu/Textures/boxChecked.png
 
-#begin placeholders/backbutton.png
+#begin menu/Textures/boxUnchecked.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -63,9 +50,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/backbutton.png
+/build:menu/Textures/boxUnchecked.png
 
-#begin placeholders/blank.png
+#begin menu/Textures/fscrIcon.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -75,9 +62,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/blank.png
+/build:menu/Textures/fscrIcon.png
 
-#begin placeholders/boxChecked.png
+#begin menu/Textures/optionsButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -87,9 +74,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/boxChecked.png
+/build:menu/Textures/optionsButton.png
 
-#begin placeholders/boxUnchecked.png
+#begin menu/Textures/playButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -99,9 +86,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/boxUnchecked.png
+/build:menu/Textures/playButton.png
 
-#begin placeholders/citybackgrund.PNG
+#begin menu/Textures/quitButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -111,9 +98,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/citybackgrund.PNG
+/build:menu/Textures/quitButton.png
 
-#begin placeholders/cityy.jpg
+#begin menu/Textures/zold.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -123,28 +110,16 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/cityy.jpg
+/build:menu/Textures/zold.png
 
-#begin placeholders/cyber2.jpg
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:placeholders/cyber2.jpg
-
-#begin placeholders/dialog.spritefont
+#begin placeholders/Fonts/dialog.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
 /processorParam:PremultiplyAlpha=True
 /processorParam:TextureFormat=Compressed
-/build:placeholders/dialog.spritefont
+/build:placeholders/Fonts/dialog.spritefont
 
-#begin placeholders/dosko-sm.png
+#begin placeholders/Textures/Adven.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -154,15 +129,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/dosko-sm.png
+/build:placeholders/Textures/Adven.png
 
-#begin placeholders/doskozzza.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:placeholders/doskozzza.mp3
-
-#begin placeholders/dotekstu.png
+#begin placeholders/Textures/blank.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -172,9 +141,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/dotekstu.png
+/build:placeholders/Textures/blank.png
 
-#begin placeholders/dymek.gif
+#begin placeholders/Textures/citybackgrund.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -184,22 +153,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/dymek.gif
+/build:placeholders/Textures/citybackgrund.PNG
 
-#begin placeholders/explo.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:placeholders/explo.wav
-
-#begin placeholders/font.spritefont
-/importer:FontDescriptionImporter
-/processor:FontDescriptionProcessor
-/processorParam:PremultiplyAlpha=True
-/processorParam:TextureFormat=Compressed
-/build:placeholders/font.spritefont
-
-#begin placeholders/fox.png
+#begin placeholders/Textures/cityy.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -209,9 +165,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/fox.png
+/build:placeholders/Textures/cityy.jpg
 
-#begin placeholders/fscrIcon.png
+#begin placeholders/Textures/cyber2.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -221,21 +177,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/fscrIcon.png
+/build:placeholders/Textures/cyber2.jpg
 
-#begin placeholders/kombat.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:placeholders/kombat.wav
-
-#begin placeholders/lufa.mp3
-/importer:Mp3Importer
-/processor:SongProcessor
-/processorParam:Quality=Best
-/build:placeholders/lufa.mp3
-
-#begin placeholders/mag.png
+#begin placeholders/Textures/dosko-sm.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -245,9 +189,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/mag.png
+/build:placeholders/Textures/dosko-sm.png
 
-#begin placeholders/main.png
+#begin placeholders/Textures/dotekstu.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -257,15 +201,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/main.png
+/build:placeholders/Textures/dotekstu.png
 
-#begin placeholders/menu-music.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:placeholders/menu-music.wav
-
-#begin placeholders/optionsButton.png
+#begin placeholders/Textures/fox.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -275,9 +213,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/optionsButton.png
+/build:placeholders/Textures/fox.png
 
-#begin placeholders/playButton.png
+#begin placeholders/Textures/line.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -287,9 +225,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/playButton.png
+/build:placeholders/Textures/line.png
 
-#begin placeholders/police.PNG
+#begin placeholders/Textures/mag.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -299,9 +237,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/police.PNG
+/build:placeholders/Textures/mag.png
 
-#begin placeholders/poww.png
+#begin placeholders/Textures/main.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -311,9 +249,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/poww.png
+/build:placeholders/Textures/main.png
 
-#begin placeholders/quitButton.png
+#begin placeholders/Textures/police.PNG
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -323,9 +261,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/quitButton.png
+/build:placeholders/Textures/police.PNG
 
-#begin placeholders/ralf.jpg
+#begin placeholders/Textures/poww.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -335,9 +273,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/ralf.jpg
+/build:placeholders/Textures/poww.png
 
-#begin placeholders/Rat.png
+#begin placeholders/Textures/ralf.jpg
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -347,9 +285,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/Rat.png
+/build:placeholders/Textures/ralf.jpg
 
-#begin placeholders/rzprod.png
+#begin placeholders/Textures/Rat.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -359,9 +297,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/rzprod.png
+/build:placeholders/Textures/Rat.png
 
-#begin placeholders/sct.png
+#begin placeholders/Textures/rzprod.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -371,9 +309,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/sct.png
+/build:placeholders/Textures/rzprod.png
 
-#begin placeholders/skeleton.png
+#begin placeholders/Textures/sct.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -383,9 +321,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/skeleton.png
+/build:placeholders/Textures/sct.png
 
-#begin placeholders/wallace.png
+#begin placeholders/Textures/skeleton.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -395,15 +333,9 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/wallace.png
+/build:placeholders/Textures/skeleton.png
 
-#begin placeholders/wesola.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:placeholders/wesola.wav
-
-#begin placeholders/zold.png
+#begin placeholders/Textures/wallace.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -413,5 +345,17 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/zold.png
+/build:placeholders/Textures/wallace.png
+
+#begin placeholders/Textures/zold.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/zold.png
 

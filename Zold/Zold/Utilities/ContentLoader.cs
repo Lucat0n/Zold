@@ -51,6 +51,13 @@ namespace Zold.Utilities
                             Assets.Instance.Set(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
+                    case "Fonts":
+                        foreach (string fileName in Directory.GetFiles(dir))
+                        {
+                            name = directory + "/Fonts/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Instance.Set(name, Content.Load<SpriteFont>(directory + "/Fonts/" + Path.GetFileNameWithoutExtension(fileName)));
+                        }
+                        break;
                 }
             }
         }

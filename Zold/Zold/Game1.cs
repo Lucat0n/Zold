@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
+using Zold.Utilities;
 using Zold.Screens;
 using Zold.Screens.Implemented;
 
@@ -13,6 +14,8 @@ namespace Zold
     {
         public GraphicsDeviceManager graphics;
         GameScreenManager gameScreenManager;
+        ContentLoader contentLoader;
+        ContentLoader contentLoader2;
 
         public Game1()
         {
@@ -23,6 +26,8 @@ namespace Zold
         protected override void Initialize()
         {
             gameScreenManager = new GameScreenManager(this);
+            contentLoader = new ContentLoader(this, Content);
+            contentLoader2 = new ContentLoader(this, Content);
             base.Initialize();
 
             IsMouseVisible = true;
@@ -31,7 +36,9 @@ namespace Zold
 
         protected override void LoadContent()
         {
-            gameScreenManager.InsertScreen(new Map.MapManager());
+            contentLoader.LoadLocation("menu");
+            contentLoader2.LoadLocation("placeholders");
+            gameScreenManager.InsertScreen(new Screens.Implemented.Map.MapManager());
         }
 
         protected override void UnloadContent()

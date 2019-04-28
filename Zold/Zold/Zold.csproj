@@ -46,12 +46,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Combat\Charger.cs" />
-    <Compile Include="Combat\Enemy.cs" />
-    <Compile Include="Combat\Combat.cs" />
-    <Compile Include="Combat\Mob.cs" />
-    <Compile Include="Combat\Player.cs" />
-    <Compile Include="Map\MapManager.cs" />
+    <Compile Include="Screens\Implemented\Map\MapManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenManager.cs" />
     <Compile Include="Screens\Implemented\Combat\Charger.cs" />
@@ -66,8 +61,8 @@
     <Compile Include="Utilities\ContentLoader.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Map\Enemy.cs" />
-    <Compile Include="Map\Player.cs" />
+    <Compile Include="Screens\Implemented\Map\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Map\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
