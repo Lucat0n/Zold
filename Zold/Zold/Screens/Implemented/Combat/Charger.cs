@@ -22,11 +22,12 @@ namespace Zold.Screens.Implemented.Combat
         public Charger(Player player, Vector2 position) : base(player, position)
         {
             charge = false;
-            
+            Height = 20;
+
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 1000;
             cooldownTimer.Elapsed += new ElapsedEventHandler(Ready);
-        
+
             prepareTimer = new Timer();
             prepareTimer.Interval = 1000;
             prepareTimer.Elapsed += new ElapsedEventHandler(Prepare);
@@ -34,9 +35,13 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void AI(GameTime gameTime)
         {
+            bottomPosition = new Vector2(position.X, position.Y + Height);
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             chargeSpeed = Speed * 5;
-            playerDirection = CalcDirection(player.GetCenterPosition(), position);
+            playerDirection = CalcDirection(new Vector2(player.bottomPosition.X, player.bottomPosition.Y - Height), position);
+
+            if (bottomPosition.Y < player.mapEdge)
+                position.Y = player.mapEdge - Height;
 
             if (prepareTimer.Enabled == true)
                 Action = "Preparing";
@@ -50,7 +55,7 @@ namespace Zold.Screens.Implemented.Combat
             }
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
-                chargePosition = player.GetCenterPosition();
+                chargePosition = new Vector2(player.bottomPosition.X, player.bottomPosition.Y - Height);
                 chargeDirection = CalcDirection(chargePosition, position);
                 chargeCheck = 0;
                 chargeRange = Vector2.Distance(chargePosition, position) + 50;
@@ -66,7 +71,8 @@ namespace Zold.Screens.Implemented.Combat
         public override void Move()
         {
             position.X += playerDirection.X * Speed;
-            position.Y += playerDirection.Y * Speed;
+            if (bottomPosition.Y >= player.mapEdge)
+                position.Y += playerDirection.Y * Speed;
         }
 
         private void Prepare(object source, ElapsedEventArgs e)
@@ -74,7 +80,7 @@ namespace Zold.Screens.Implemented.Combat
             charge = true;
             prepareTimer.Enabled = false;
         }
-        
+
         private void Ready(object source, ElapsedEventArgs e)
         {
             cooldownTimer.Enabled = false;
@@ -85,8 +91,8 @@ namespace Zold.Screens.Implemented.Combat
             position.X += chargeDirection.X * chargeSpeed;
             position.Y += chargeDirection.Y * chargeSpeed;
             chargeCheck += chargeSpeed;
-            
-            if (chargeCheck > chargeRange)
+
+            if ((chargeCheck > chargeRange) || (bottomPosition.Y + 1 < player.mapEdge))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

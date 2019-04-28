@@ -13,6 +13,7 @@ namespace Zold.Screens.Implemented.Combat
         public Player player;
         public Texture2D texture;
         public Vector2 position;
+        public Vector2 bottomPosition;
         public Vector2 playerDirection;
         public Vector2 attackPosition;
         public int Damage { get; set; }
@@ -22,12 +23,14 @@ namespace Zold.Screens.Implemented.Combat
         public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
+        public float Height { get; set; }
 
 
         public Enemy(Player player, Vector2 position)
         {
             this.player = player;
             this.position = position;
+
             Damage = 5;
             Hp = 50;
 

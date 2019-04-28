@@ -10,16 +10,16 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
+        int mapEdge;
 
         //temp
         SpriteFont font;
-        Texture2D playerTex;
-        Texture2D enemyTex;
+        Texture2D line;
 
         public CombatScreen(Player player, List<Enemy> enemies, SpriteFont font)
         {
-            //temp
             this.font = font;
+            this.line = line;
             this.player = player;
             this.enemies = enemies;
             IsTransparent = false;
@@ -41,8 +41,11 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
 
+            gameScreenManager.SpriteBatch.Draw(line, new Vector2(0, 150));
+
             gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition());
             gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
 
 
@@ -53,6 +56,7 @@ namespace Zold.Screens.Implemented.Combat
                 //spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
                 //spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
 
+                gameScreenManager.SpriteBatch.DrawString(font, "bot.Y: " + enemy.bottomPosition.Y.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 25), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
             });

@@ -14,6 +14,8 @@ namespace Zold.Screens.Implemented.Combat
 
         public Mob(Player player, Vector2 position) : base(player, position)
         {
+            Height = 48;
+
             attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
