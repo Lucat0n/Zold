@@ -16,6 +16,7 @@ namespace Map
     {
 
         public List<string> powiedzonka = new List<string>();
+        public List<Rectangle> colisionTiles = new List<Rectangle>();
 
         //colors 
         Color kolorPow = Color.White * 0;
@@ -98,6 +99,7 @@ namespace Map
         bool isPaused = false;
         bool isEscPressed = false;
         bool disp = false; // is message displayed?
+        bool drawed = false;
 
         
 
@@ -141,7 +143,7 @@ namespace Map
             font = gameScreenManager.Content.Load<SpriteFont>("placeholders/font");
             dialog = gameScreenManager.Content.Load<SpriteFont>("placeholders/dialog");
 
-            map = new TmxMap(@"Content/mapa2.tmx");
+            map = new TmxMap(@"Content/mapa2v2.tmx");
             map2 = new TmxMap(@"Content/mapa3.tmx");
             currentMap = map;
 
@@ -193,7 +195,11 @@ namespace Map
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
-            drawTiles(0, currentMap);
+            
+                drawTiles(1, currentMap);
+                drawTiles(0, currentMap);
+               // drawed = true;
+            
 
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
@@ -235,12 +241,12 @@ namespace Map
                 MediaPlayer.Play(currentSong);
                 songStart = true;
             }
-
+            checkIfColide();
             KeyboardEvents();
 
             if (!isPaused)
             {
-                player.move(pietrek.Width, pietrek.Height);
+                player.move(pietrek.Width, pietrek.Height,true);
                 bacgrund = Color.Green;
                 ManageLocations();
                 if (cyber)
@@ -272,9 +278,12 @@ namespace Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    //if (layer==1 && tilesetRec.Intersects(player.GetTextureRecta())){
-                    //    player.SetPosition(new Vector2(32,32));
-                    //}
+
+                    if (layer==0){
+                        //player.SetPosition(new Vector2(0,32));
+                        colisionTiles.Add(new Rectangle((int)x, (int)y, tileWidth, tileHeight));
+                    }
+
                     gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                 }
             }
@@ -411,6 +420,19 @@ namespace Map
                     forest = false;
                     city = true;
                     cyber = false;
+                }
+            }
+        }
+
+        void checkIfColide()
+        {
+            foreach (Rectangle tile in colisionTiles)
+            {
+                if(player.GetPosition().X > tile.X && player.GetPosition().Y > tile.Y)
+                    
+                {
+                    player.SetPosition(0, 32);
+                   // player.move(pietrek.Width, pietrek.Height, false);
                 }
             }
         }

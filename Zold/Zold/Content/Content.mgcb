@@ -35,6 +35,9 @@
 #begin mapa2.tmx
 /copy:mapa2.tmx
 
+#begin mapa2v2.tmx
+/copy:mapa2v2.tmx
+
 #begin mapa3.tmx
 /copy:mapa3.tmx
 
