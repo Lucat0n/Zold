@@ -62,6 +62,8 @@
     <Compile Include="Screens\Implemented\MenuScreen.cs" />
     <Compile Include="Screens\Implemented\SplashScreen.cs" />
     <Compile Include="Utilities\Animation.cs" />
+    <Compile Include="Utilities\Assets.cs" />
+    <Compile Include="Utilities\ContentLoader.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Map\Enemy.cs" />
@@ -70,6 +72,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
+    <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
     </Reference>
