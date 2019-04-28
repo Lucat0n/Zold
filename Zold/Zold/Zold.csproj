@@ -1,5 +1,5 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
-<Project ToolsVersion="4.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Common.props')" />
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
@@ -13,7 +13,8 @@
     <AssemblyName>Zold</AssemblyName>
     <FileAlignment>512</FileAlignment>
     <MonoGamePlatform>DesktopGL</MonoGamePlatform>
-    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
+    <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)' == 'Debug|AnyCPU'">
     <DebugSymbols>true</DebugSymbols>
@@ -41,19 +42,27 @@
   <PropertyGroup>
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
+  <PropertyGroup>
+    <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
+  </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Combat\Charger.cs" />
-    <Compile Include="Combat\Enemy.cs" />
-    <Compile Include="Combat\Combat.cs" />
-    <Compile Include="Combat\Mob.cs" />
-    <Compile Include="Combat\Player.cs" />
+    <Compile Include="Screens\Implemented\Map\MapManager.cs" />
+    <Compile Include="Screens\GameScreen.cs" />
+    <Compile Include="Screens\GameScreenManager.cs" />
+    <Compile Include="Screens\Implemented\Combat\Charger.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatScreen.cs" />
+    <Compile Include="Screens\Implemented\Combat\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Combat\Mob.cs" />
+    <Compile Include="Screens\Implemented\Combat\Player.cs" />
+    <Compile Include="Screens\Implemented\MenuScreen.cs" />
+    <Compile Include="Screens\Implemented\SplashScreen.cs" />
     <Compile Include="Utilities\Animation.cs" />
     <Compile Include="Utilities\Assets.cs" />
     <Compile Include="Utilities\ContentLoader.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="Map\Enemy.cs" />
-    <Compile Include="Map\Player.cs" />
+    <Compile Include="Screens\Implemented\Map\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Map\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
@@ -64,6 +73,10 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="TiledSharp, Version=0.15.0.0, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\TiledSharp.1.0.1\lib\netstandard2.0\TiledSharp.dll</HintPath>
+    </Reference>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Icon.ico" />
@@ -115,7 +128,9 @@
       <Link>MonoGame.Framework.dll.config</Link>
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </None>
+    <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="packages.config" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />

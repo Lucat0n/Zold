@@ -38,17 +38,24 @@ namespace Zold.Utilities
                         }
                         break;
                     case "Sounds":
-                        foreach (string fileName in Directory.GetFiles(dir))
+                        foreach (string fileName in Directory.GetFiles(dir + "/Sounds"))
                         {
                             name = directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName);
                             Assets.Instance.Set(name, Content.Load<SoundEffect>(directory + "/Sounds/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                     case "Music":
-                        foreach (string fileName in Directory.GetFiles(dir))
+                        foreach (string fileName in Directory.GetFiles(dir + "/Music"))
                         {
                             name = directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName);
-                            Assets.Instance.Set(name, Content.Load<Song>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
+                            Assets.Instance.Set(name, Content.Load<SoundEffect>(directory + "/Music/" + Path.GetFileNameWithoutExtension(fileName)));
+                        }
+                        break;
+                    case "Fonts":
+                        foreach (string fileName in Directory.GetFiles(dir + "/Fonts"))
+                        {
+                            name = directory + "/Fonts/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Instance.Set(name, Content.Load<SpriteFont>(directory + "/Fonts/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
                 }
