@@ -11,6 +11,7 @@ namespace Zold.Screens.Implemented
 {
     class MenuScreen : GameScreen
     {
+        #region variables
         private enum MenuState
         {
             DrawLogo,
@@ -55,8 +56,8 @@ namespace Zold.Screens.Implemented
         {
             get { return optionsButtonColor; }
             set { optionsButtonColor = value; }
-        }
-        #endregion*/
+        }*/
+        #endregion
 
         public MenuScreen()
         {
@@ -143,6 +144,7 @@ namespace Zold.Screens.Implemented
 
         public override void LoadContent()
         {
+            gameScreenManager.LoadAssets("menu");
             titleY = this.gameScreenManager.GraphicsDevice.Viewport.Height / 3;
             title = Assets.Instance.Get("menu/Textures/zold");
             backButton = Assets.Instance.Get("menu/Textures/backButton");
@@ -159,6 +161,10 @@ namespace Zold.Screens.Implemented
         public override void UnloadContent()
         {
             title.Dispose();
+            backButton.Dispose();
+            boxChecked.Dispose();
+            boxUnchecked.Dispose();
+            fscrIcon.Dispose();
             playButton.Dispose();
             optionsButton.Dispose();
         }
@@ -192,42 +198,6 @@ namespace Zold.Screens.Implemented
                 case MenuState.Main:
                     CheckInteraction(0, playButtonRectangle, Cursor, MenuState.Play, mouseState);
                     CheckInteraction(1, optionsButtonRectangle, Cursor, MenuState.Options, mouseState);
-                    /*if (playButtonRectangle.Intersects(Cursor))
-                    {
-                        playButtonColor = Color.LightGray;
-                        if (mouseState.LeftButton == ButtonState.Pressed)
-                        {
-                            playButtonColor = Color.Gray;
-                            isMousePressed = true;
-
-                        }
-                        else if (mouseState.LeftButton == ButtonState.Released && isMousePressed)
-                        {
-                            isMousePressed = false;
-                            this.menuState = MenuState.Play;
-                        }
-
-                    }
-                    else if (optionsButtonRectangle.Intersects(Cursor))
-                    {
-                        optionsButtonColor = Color.LightGray;
-                        if (mouseState.LeftButton == ButtonState.Pressed)
-                        {
-                            optionsButtonColor = Color.Gray;
-                            isMousePressed = true;
-
-                        }
-                        else if (mouseState.LeftButton == ButtonState.Released && isMousePressed)
-                        {
-                            isMousePressed = false;
-                            this.menuState = MenuState.Options;
-                        }
-                    }
-                    else
-                    {
-                        playButtonColor = Color.White;
-                        optionsButtonColor = Color.White;
-                    }*/
                     break;
                 case MenuState.Options:
                     if (backButtonRectangle.Intersects(Cursor))

@@ -17,6 +17,7 @@ namespace Zold.Screens
         private bool isFullScreenOn = false;
         private bool isStackModified = true;
         private ContentManager content;
+        private ContentLoader contentLoader;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
         private List<GameScreen> ScreenList = new List<GameScreen>();
@@ -61,6 +62,8 @@ namespace Zold.Screens
         {
             get { return spriteBatch; }
         }
+
+        internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
         #endregion
 
         #region init
@@ -70,11 +73,13 @@ namespace Zold.Screens
             content = game.Content;
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            ContentLoader = new ContentLoader(game, Content);
             this.LoadContent();
         }
 
         protected override void LoadContent()
         {
+            LoadAssets("placeholders");
             spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
             blank = Assets.Instance.Get("placeholders/Textures/blank");
 
@@ -146,6 +151,11 @@ namespace Zold.Screens
         }
 
         #region public
+        public void LoadAssets(string name)
+        {
+            contentLoader.LoadLocation(name);
+        }
+
         public void InsertScreen(GameScreen gameScreen)
         {
             gameScreen.GameScreenManager = this;

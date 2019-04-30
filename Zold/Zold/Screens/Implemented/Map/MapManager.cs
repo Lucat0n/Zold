@@ -5,11 +5,13 @@ using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
 using System.Linq;
+using System.Diagnostics;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Utilities;
+using Zold.Screens.Implemented.Pause;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -90,17 +92,18 @@ namespace Zold.Screens.Implemented.Map
         Enemy enemy;
 
         //bools
+        bool wasPaused = false;
         bool songStart = false;
         bool displayed = false;
         bool forest;
         bool city;
         bool cyber;
         bool isPaused = false;
-        bool isEscPressed = false;
+        private bool isEscPressed = false;
         bool disp = false; // is message displayed?
         bool drawed = false;
 
-        
+        TimeSpan PauseCooldown;
 
         public MapManager()
         {
@@ -108,14 +111,18 @@ namespace Zold.Screens.Implemented.Map
             //map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
         }
 
+        #region init
         public override void LoadContent()
         {
+            PauseCooldown = new TimeSpan(0, 0, 0, 500);
+
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
-            powiedzonka.Add("Nie widzisz, ze jestem zajety");
+            powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
             powiedzonka.Add("Elo");
             powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
             powiedzonka.Add("Ruchasz sie?");
+            powiedzonka.Add("Zapraszam na Morenke");
             //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
   
@@ -171,8 +178,9 @@ namespace Zold.Screens.Implemented.Map
         {
             throw new NotImplementedException();
         }
+        #endregion
 
-
+        #region drawupdate
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
@@ -217,31 +225,6 @@ namespace Zold.Screens.Implemented.Map
             gameScreenManager.SpriteBatch.End();
         }
 
-        public override void Update(GameTime gameTime)
-        {
-            if (!songStart)
-            {
-                MediaPlayer.Play(currentSong);
-                songStart = true;
-            }
-            checkIfColide();
-            KeyboardEvents();
-
-            if (!isPaused)
-            {
-                player.move(player.Width, player.Height, true);
-                bacgrund = Color.Green;
-                ManageLocations();
-                if (cyber)
-                {
-                    enemy.AI(gameTime);
-                }
-            }
-        }
-
-
-        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
-
         public void drawTiles(int layer, TmxMap map)
         {
             for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
@@ -262,7 +245,8 @@ namespace Zold.Screens.Implemented.Map
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
 
-                    if (layer==0){
+                    if (layer == 0)
+                    {
                         //player.SetPosition(new Vector2(0,32));
                         colisionTiles.Add(new Rectangle((int)x, (int)y, tileWidth, tileHeight));
                     }
@@ -272,21 +256,63 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
-        private void KeyboardEvents()
+        public override void Update(GameTime gameTime)
         {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            //CalculatePause(gameTime);
+            if (!songStart)
             {
-                if (!isEscPressed)
+                MediaPlayer.Play(currentSong);
+                songStart = true;
+            }
+            checkIfColide();
+            HandleInput(gameScreenManager.MouseState, gameScreenManager.Cursor ,gameScreenManager.KeyboardState);
+
+            if (!isPaused)
+            {
+                player.move(player.Width, player.Height, true);
+                bacgrund = Color.Green;
+                ManageLocations();
+                if (cyber)
                 {
-                    isPaused = !isPaused;
-                    isEscPressed = true;
+                    enemy.AI(gameTime);
                 }
             }
-            else isEscPressed = false;
+            else
+            {
+                gameScreenManager.InsertScreen(new PauseScreen());
+                isPaused = false;
+            }
+        }
+        #endregion
+
+        bool pressed;
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
+        {
+            if(keyboardState.IsKeyDown(Keys.Escape) && !pressed) 
+            {
+                Debug.WriteLine("down");
+                pressed = true;
+                isPaused = !isPaused;
+                Debug.WriteLine(isPaused ? "paused" : "unpaused");
+            }else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
+            {
+                Debug.WriteLine("up");
+                pressed = false;
+            }
         }
 
 
 
+        private void KeyboardEvents()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+
+            }
+        }
+
+
+        #region managelocations
         void ManageLocations() 
         {
             if (forest)
@@ -406,6 +432,7 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
         }
+        #endregion
 
         void checkIfColide()
         {
@@ -432,7 +459,7 @@ namespace Zold.Screens.Implemented.Map
 
                 if (!disp)
                 {
-                    dymek = Assets.Instance.Get("placeholders/Textures/rat");
+                    dymek = Assets.Instance.Get("placeholders/Textures/dymek");
                     gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 5, advenPosY, dymek.Width, dymek.Height), Color.White);
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
                         disp = true;
@@ -451,6 +478,16 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
         }
+
+        /*private void CalculatePause(GameTime gameTime)
+        {
+            this.PauseCooldown -= new TimeSpan(0,0,0,gameTime.ElapsedGameTime.Milliseconds);
+            if (PauseCooldown <= TimeSpan.Zero)
+            {
+                Debug.WriteLine("Halo salut");
+                wasPaused = false;
+            }
+        }*/
 
     }
 }
