@@ -22,6 +22,7 @@ namespace Zold.Screens.Implemented.Combat
         public int mapEdge { get; set; }
         public int Hp { get; set; }
         public string Action { get; private set; }
+        public string Direction { get; private set; }
         public int Speed { get; private set; }
 
         public Player(Vector2 position, int Hp, List<Enemy> enemies)
@@ -68,6 +69,7 @@ namespace Zold.Screens.Implemented.Combat
                 attackPosition = new Vector2(centerPosition.X - 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -75,6 +77,7 @@ namespace Zold.Screens.Implemented.Combat
                 attackPosition = new Vector2(centerPosition.X + 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = "Right";
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -98,6 +101,7 @@ namespace Zold.Screens.Implemented.Combat
                     Enemy.Hp -= 5;
             });
             attackTimer.Enabled = false;
+            Action = "Idle";
         }
 
         public bool CheckPointCollision(Vector2 point)
