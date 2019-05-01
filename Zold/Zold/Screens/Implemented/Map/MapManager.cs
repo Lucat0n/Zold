@@ -39,7 +39,7 @@ namespace Zold.Screens.Implemented.Map
         int tilesetTilesWide;
         int tilesetTilesHigh;
 
-         // here is dope music
+        // here is dope music
         Song menuMusic;
         Song gameplayMusic;
         Song currentSong;
@@ -99,8 +99,12 @@ namespace Zold.Screens.Implemented.Map
         bool isEscPressed = false;
         bool disp = false; // is message displayed?
         bool drawed = false;
+        bool canMoveLeft;
+        bool canMoveUp;
+        bool canMoveRight;
+        bool canMoveDown;
 
-        
+        Rectangle bounds; //camera bounds 
 
         public MapManager()
         {
@@ -110,6 +114,11 @@ namespace Zold.Screens.Implemented.Map
 
         public override void LoadContent()
         {
+            canMoveDown = true;
+            canMoveLeft = true;
+            canMoveRight = true;
+            canMoveUp = true;
+
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
             powiedzonka.Add("Nie widzisz, ze jestem zajety");
@@ -117,8 +126,8 @@ namespace Zold.Screens.Implemented.Map
             powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
             powiedzonka.Add("Ruchasz sie?");
             //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
-           // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
-  
+            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
+
             // loading music
             bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
             combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
@@ -129,7 +138,7 @@ namespace Zold.Screens.Implemented.Map
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
 
             map = new TmxMap(@"Content/mapa2v2.tmx");
-            map2 = new TmxMap(@"Content/mapa3.tmx");
+            map2 = new TmxMap(@"Content/mapa2v2.tmx");
             currentMap = map;
 
             tileset = gameScreenManager.Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
@@ -165,6 +174,12 @@ namespace Zold.Screens.Implemented.Map
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
 
+            //camera
+            bounds = new Rectangle(0, 0, 0, 0);
+            getColideObjects(map);
+            getColideObjects(map2);
+
+
         }
 
         public override void UnloadContent()
@@ -177,29 +192,32 @@ namespace Zold.Screens.Implemented.Map
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
-            
-               // drawTiles(1, currentMap);
-               // drawTiles(0, currentMap);
-               // drawed = true;
-            
+
+           
+
+            drawTiles(1, currentMap);
+            drawTiles(0, currentMap);
+
+            gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
 
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
             gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             ///budunek policji
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
             //wiezowiec 2
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
             //postacie
             if (forest)
             {
                 adven = Assets.Instance.Get("placeholders/Textures/Adven");
-                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
+                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
 
-                displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX, advenPosY);
-                
+                displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX + bounds.X, advenPosY + bounds.Y);
+
             }
 
             if (cyber)
@@ -211,7 +229,7 @@ namespace Zold.Screens.Implemented.Map
             if (isPaused)
             {
                 //gameScreenManager.SpriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
-               // gameScreenManager.SpriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
+                // gameScreenManager.SpriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
 
             }
             gameScreenManager.SpriteBatch.End();
@@ -219,6 +237,7 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
+            //moveCamera();
             if (!songStart)
             {
                 MediaPlayer.Play(currentSong);
@@ -229,7 +248,7 @@ namespace Zold.Screens.Implemented.Map
 
             if (!isPaused)
             {
-                player.move(player.Width, player.Height, true);
+                player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown);
                 bacgrund = Color.Green;
                 ManageLocations();
                 if (cyber)
@@ -262,14 +281,103 @@ namespace Zold.Screens.Implemented.Map
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
 
-                    if (layer==0){
+                    if (layer == 0)
+                    {
                         //player.SetPosition(new Vector2(0,32));
-                        colisionTiles.Add(new Rectangle((int)x, (int)y, tileWidth, tileHeight));
+                       // colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
                     }
 
-                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
                 }
             }
+        }
+
+        public void getColideObjects(TmxMap map)
+        {
+            for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
+            {
+                int gid = map.Layers[0].Tiles[i].Gid;
+
+                // Empty tile, do nothing
+                if (gid == 0) { }
+
+                else
+                {
+                    int tileFrame = gid - 1;
+                    int column = tileFrame % tilesetTilesWide;
+                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
+
+                    float x = (i % map.Width) * map.TileWidth;
+                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+
+                  ///  Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
+
+                    colisionTiles.Add(new Rectangle((int)x , (int)y, tileWidth, tileHeight));
+
+                }
+            }
+        }
+
+        void checkIfColide()
+        {
+            foreach (Rectangle tile in colisionTiles)
+            {
+                // if (player.GetPosition().X > tile.X && player.GetPosition().Y > tile.Y)
+                //if ((player.GetPosition().X + player.texture.Width >= tile.X && player.GetPosition().X <= tile.X + tile.Width) && (player.GetPosition().Y <= tile.Y + tile.Height && player.GetPosition().Y >= tile.Y))
+                if ((player.GetPosition().X + player.texture.Width > tile.X && player.GetPosition().X < tile.X) && (player.GetPosition().Y + player.texture.Height > tile.Y && player.GetPosition().Y < tile.Y + tile.Height))
+                {
+                    canMoveRight = false;
+                  //  player.move(player.Width, player.Height, true,true,true,true);
+                }
+                else
+                {
+                    canMoveRight = true;
+                }
+
+                if ((player.GetPosition().X <= tile.X + tile.Width && player.GetPosition().X >= tile.X) && (player.GetPosition().Y >= tile.Y - player.texture.Height && player.GetPosition().Y <= tile.Y + tile.Height))
+                {
+                    canMoveLeft = false;
+                    //  player.move(player.Width, player.Height, true,true,true,true);
+                }
+                else
+                {
+                    canMoveLeft = true;
+                }
+
+                //if (player.GetPosition().X <= tile.X + tile.Width && (player.GetPosition().X + player.texture.Width >= tile.X))
+                //{
+                //    canMoveLeft = false;
+                //    //  player.move(player.Width, player.Height, true,true,true,true);
+                //}
+
+                //else
+                //{
+                //    canMoveLeft = true;
+                //    canMoveDown = true;
+                //    canMoveUp = true;
+                    
+                //}
+
+            }
+        }
+
+        void moveCamera()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            int scrollx = 0, scrolly = 0;
+
+            if (keyState.IsKeyDown(Keys.Left))
+                scrollx = 1;
+            if (keyState.IsKeyDown(Keys.Right))
+                scrollx = -1;
+            if (keyState.IsKeyDown(Keys.Up))
+                scrolly = 1;
+            if (keyState.IsKeyDown(Keys.Down))
+                scrolly = -1;
+
+            bounds.X = bounds.X + scrollx;
+            bounds.Y = bounds.Y + scrolly;
         }
 
         private void KeyboardEvents()
@@ -287,7 +395,7 @@ namespace Zold.Screens.Implemented.Map
 
 
 
-        void ManageLocations() 
+        void ManageLocations()
         {
             if (forest)
             {
@@ -407,26 +515,15 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
-        void checkIfColide()
-        {
-            foreach (Rectangle tile in colisionTiles)
-            {
-                if(player.GetPosition().X > tile.X && player.GetPosition().Y > tile.Y)
-                    
-                {
-                    player.SetPosition(0, 32);
-                   // player.move(player.Width, player.Height, false);
-                }
-            }
-        }
-        
+
+
         public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy)
         {
 
             int index = 2;
             if (playerOne.GetPosition().X >= posx - 50 && playerOne.GetPosition().X < posx + npcet.Width + 20
                 && playerOne.GetPosition().Y >= posy && playerOne.GetPosition().Y < posy + npcet.Height + 30)
-                
+
             {
                 Rectangle tlo = new Rectangle(100, 420, 500, 50);
 
@@ -437,8 +534,8 @@ namespace Zold.Screens.Implemented.Map
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
                         disp = true;
                 }
-               // else if (Keyboard.GetState().IsKeyDown(Keys.Space) && disp)
-               //     disp = false;
+                // else if (Keyboard.GetState().IsKeyDown(Keys.Space) && disp)
+                //     disp = false;
 
                 if (disp)
                 {

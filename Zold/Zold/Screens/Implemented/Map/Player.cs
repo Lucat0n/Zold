@@ -14,7 +14,7 @@ namespace Zold.Screens.Implemented.Map
         public Texture2D texture { get; set; }
         private Vector2 position;
         private Vector2 centerPosition;
-        public int speed { get; private set; }
+        public float speed { get; private set; }
 
         public KeyboardState current;
         public KeyboardState previous;
@@ -29,30 +29,29 @@ namespace Zold.Screens.Implemented.Map
 
             Width = texture.Width;
             Height = texture.Height;
-            speed = 50;
+            speed = 2.3f;
         }
 
-        public void move(int wid, int heigh, bool canMove)
+        public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown)
         {
-            if (canMove)
-            {
-                previous = current;
+           
+               // previous = current;
                 current = Keyboard.GetState();
 
-                if (current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Right))
+                if (canMoveRight && current.IsKeyDown(Keys.Right)  && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
                     position.X += speed;
 
-                if (current.IsKeyDown(Keys.Up) && previous.IsKeyUp(Keys.Up))
+                if (canMoveUp && current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
                     position.Y -= speed;
 
-                if (current.IsKeyDown(Keys.Down) && previous.IsKeyUp(Keys.Down))
+                if (canMoveDown && current.IsKeyDown(Keys.Down) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
                     position.Y += speed;
 
-                if (current.IsKeyDown(Keys.Left) && previous.IsKeyUp(Keys.Left))
+                if (canMoveLeft && current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
                     position.X -= speed;
 
                 centerPosition = new Vector2(position.X + 16, position.Y + 24);
-            }
+            
         }
 
         public Vector2 GetPosition()
