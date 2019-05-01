@@ -292,7 +292,7 @@ namespace Zold.Screens.Implemented.Map
             {
                 pressed = true;
                 isPaused = !isPaused;
-                Debug.WriteLine(isPaused ? "paused" : "unpaused");
+                //Debug.WriteLine(isPaused ? "paused" : "unpaused");
             }else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
             {
                 pressed = false;

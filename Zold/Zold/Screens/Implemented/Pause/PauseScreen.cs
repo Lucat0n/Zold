@@ -15,10 +15,23 @@ namespace Zold.Screens.Implemented.Pause
     class PauseScreen : GameScreen
     {
         #region vars
+        private enum PauseState
+        {
+            equipment,
+            items,
+            perks,
+            map,
+            options,
+            main
+        }
+        private PauseState pauseState = PauseState.main;
         private bool isDownPressed = false;
+        private bool isEnterPressed = false;
+        private bool isEscPressed = false;
         private bool isUpPressed = false;
         private Rectangle cursorPos;
         private Rectangle mainWindow;
+        private Rectangle secondaryWindow;
         private readonly SpriteFont font;
         private readonly String[] options = new String[]{"Rzeczy", "Itemki", "Zdolnosci", "Mapa", "Opcje"};
         private TimeSpan cooldown;
@@ -38,31 +51,101 @@ namespace Zold.Screens.Implemented.Pause
             for(int i=0; i<options.Count(); i++)
                 gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
+            switch (pauseState)
+            {
+                case (PauseState.equipment):
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    break;
+                case (PauseState.items):
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    break;
+                case (PauseState.perks):
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    break;
+                case (PauseState.map):
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    break;
+                case (PauseState.options):
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    break;
+            }
             gameScreenManager.SpriteBatch.End();
         }
 
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
         {
-            if (keyboardState.IsKeyDown(Keys.Escape) && this.cooldown <= TimeSpan.Zero)
+            switch (pauseState)
             {
-                gameScreenManager.RemoveScreen(this);
-                Assets.Instance.Remove("pause");
+                case (PauseState.main):
+                    if (keyboardState.IsKeyDown(Keys.Escape) && this.cooldown <= TimeSpan.Zero && !isEscPressed)
+                    {
+                        gameScreenManager.RemoveScreen(this);
+                        Assets.Instance.Remove("pause");
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Escape))
+                        isEscPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
+                    {
+                        if (++index > 4)
+                            index = 0;
+                        isDownPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Down))
+                        isDownPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
+                    {
+                        if (--index < 0)
+                            index = 4;
+                        isUpPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Up))
+                        isUpPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
+                    {
+                        pauseState = (PauseState)index;
+                        isEnterPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Enter))
+                        isEnterPressed = false;
+                    break;
+                case (PauseState.equipment):
+                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    {
+                        isEscPressed = true;
+                        pauseState = PauseState.main;
+                    }
+                    break;
+                case (PauseState.items):
+                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    {
+                        isEscPressed = true;
+                        pauseState = PauseState.main;
+                    }
+                    break;
+                case (PauseState.perks):
+                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    {
+                        isEscPressed = true;
+                        pauseState = PauseState.main;
+                    }
+                    break;
+                case (PauseState.map):
+                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    {
+                        isEscPressed = true;
+                        pauseState = PauseState.main;
+                    }
+                    break;
+                case (PauseState.options):
+                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    {
+                        isEscPressed = true;
+                        pauseState = PauseState.main;
+                    }
+                    break;
+
             }
-            if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
-            {
-                if(++index>4)
-                    index=0;
-                isDownPressed = true;
-            } else if (keyboardState.IsKeyUp(Keys.Down))
-                isDownPressed = false;
-            if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
-            {
-                if (--index<0)
-                    index = 4;
-                isUpPressed = true;
-            }
-            else if (keyboardState.IsKeyUp(Keys.Up))
-                isUpPressed = false;
+           
         }
 
         public override void LoadContent()
@@ -82,6 +165,8 @@ namespace Zold.Screens.Implemented.Pause
 
             mainWindow = new Rectangle(50, 50, gameScreenManager.GraphicsDevice.Viewport.Height / 3, gameScreenManager.GraphicsDevice.Viewport.Height / 3);
             cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 7 + (mainWindow.Height/6) * index, mainWindow.Width/12 , mainWindow.Width/12);
+            if (pauseState != PauseState.main)
+                secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
         }
     }
 }
