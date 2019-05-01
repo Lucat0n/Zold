@@ -15,7 +15,6 @@ namespace Zold.Screens
     {
         #region zmienne
         private bool isFullScreenOn = false;
-        private bool isStackModified = true;
         private ContentManager content;
         private ContentLoader contentLoader;
         private GraphicsDeviceManager graphics;
@@ -161,13 +160,10 @@ namespace Zold.Screens
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
             ScreenList.Add(gameScreen);
-            //isStackModified = true;
         }
 
         public void RemoveScreen(GameScreen gameScreen)
         {
-            //if(!gameScreen.IsTransparent)
-                //isStackModified = true;
             ScreensToDraw.Remove(gameScreen);
             ScreenList.Remove(gameScreen);
         }
