@@ -47,6 +47,7 @@ namespace Zold.Utilities
             var itemsToDelete = AssetList.Where(x => x.Key.Split('/')[0].Equals(name)).ToArray();
             foreach (var item in itemsToDelete)
                 AssetList.Remove(item.Key);
+                
         }
     }
 }

@@ -115,6 +115,7 @@ namespace Zold.Screens.Implemented.Map
         #region init
         public override void LoadContent()
         {
+            gameScreenManager.ContentLoader.LoadLocation("placeholders");
             PauseCooldown = new TimeSpan(0, 0, 0, 500);
 
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
@@ -177,14 +178,14 @@ namespace Zold.Screens.Implemented.Map
 
         public override void UnloadContent()
         {
-            throw new NotImplementedException();
+            Assets.Instance.Remove("placeholders");
         }
         #endregion
 
         #region drawupdate
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.GraphicsDevice.Clear(Color.Black);
+            gameScreenManager.GraphicsDevice.Clear(Color.White);
             gameScreenManager.SpriteBatch.Begin();
             
                // drawTiles(1, currentMap);
@@ -262,7 +263,7 @@ namespace Zold.Screens.Implemented.Map
             //CalculatePause(gameTime);
             if (!songStart)
             {
-                MediaPlayer.Play(currentSong);
+                //MediaPlayer.Play(currentSong);
                 songStart = true;
             }
             checkIfColide();

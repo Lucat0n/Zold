@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
 using Zold.Utilities;
+using Zold.Screens.Implemented;
 
 namespace Zold.Screens
 {
@@ -78,9 +79,9 @@ namespace Zold.Screens
 
         protected override void LoadContent()
         {
-            LoadAssets("placeholders");
-            spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
-            blank = Assets.Instance.Get("placeholders/Textures/blank");
+            LoadAssets("screenManager");
+            //spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
+            blank = Assets.Instance.Get("screenManager/Textures/blank");
 
             foreach(GameScreen screen in ScreenList)
             {
@@ -114,20 +115,8 @@ namespace Zold.Screens
         public override void Draw(GameTime gameTime)
         {
             graphics.IsFullScreen = isFullScreenOn;
-            //graphics.ApplyChanges();
             ScreensToDraw.Clear();
             ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
-            /*if (isStackModified)
-            {
-                //Screens
-                GameScreen temp;
-                 do
-                {
-                    temp = ScreenStack.Peek();
-                    ScreensToDraw.Push(ScreenStack.Pop());
-                } while (temp.IsTransparent);
-                isStackModified = false;
-            }*/
             foreach (GameScreen gameScreen in ScreensToDraw)
                 gameScreen.Draw(gameTime);
         }
@@ -166,6 +155,14 @@ namespace Zold.Screens
         {
             ScreensToDraw.Remove(gameScreen);
             ScreenList.Remove(gameScreen);
+            gameScreen.UnloadContent();
+        }
+
+        public void GoToMenu()
+        {
+            UnloadContent();
+            ScreenList.Clear();
+            InsertScreen(new MenuScreen());
         }
 
         public void DarkenScreen()

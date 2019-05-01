@@ -33,9 +33,11 @@ namespace Zold.Screens.Implemented.Pause
         private Rectangle mainWindow;
         private Rectangle secondaryWindow;
         private readonly SpriteFont font;
-        private readonly String[] options = new String[]{"Rzeczy", "Itemki", "Zdolnosci", "Mapa", "Opcje"};
+        private readonly String[] mainOptions = new String[]{"Rzeczy", "Itemki", "Zdolnosci", "Mapa", "Opcje"};
+        private readonly String[] options = new String[]{"Pelny ekran", "Glosnosc muzyki", "Glosnosc efektow", "Wyjscie"};
         private TimeSpan cooldown;
         private SByte index = 0;
+        private SByte optionsIndex = 0;
         #endregion
 
         public PauseScreen()
@@ -48,8 +50,8 @@ namespace Zold.Screens.Implemented.Pause
         {
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/mainWindow"), mainWindow, Color.White);
-            for(int i=0; i<options.Count(); i++)
-                gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
+            for(int i=0; i<mainOptions.Count(); i++)
+                gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
             switch (pauseState)
             {
@@ -67,6 +69,9 @@ namespace Zold.Screens.Implemented.Pause
                     break;
                 case (PauseState.options):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    for (int i = 0; i < options.Count(); i++)
+                        gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(secondaryWindow.X + (secondaryWindow.Width / 6), 50 + secondaryWindow.Height / 12 + (secondaryWindow.Height / 4) * i), Color.White);
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
             }
             gameScreenManager.SpriteBatch.End();
@@ -142,6 +147,35 @@ namespace Zold.Screens.Implemented.Pause
                         isEscPressed = true;
                         pauseState = PauseState.main;
                     }
+                    if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
+                    {
+                        if (++optionsIndex > 3)
+                            optionsIndex = 0;
+                        isDownPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Down))
+                        isDownPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
+                    {
+                        if (--optionsIndex < 0)
+                            optionsIndex = 3;
+                        isUpPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Up))
+                        isUpPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
+                    {
+                        switch (optionsIndex)
+                        {
+                            case (3):
+                                gameScreenManager.RemoveScreen(this);
+                                gameScreenManager.GoToMenu();
+                                break;
+                        }
+                        isEnterPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Enter))
+                        isEnterPressed = false;
                     break;
 
             }
@@ -164,9 +198,29 @@ namespace Zold.Screens.Implemented.Pause
                 this.cooldown -= new TimeSpan(0, 0, 0, gameTime.ElapsedGameTime.Milliseconds);
 
             mainWindow = new Rectangle(50, 50, gameScreenManager.GraphicsDevice.Viewport.Height / 3, gameScreenManager.GraphicsDevice.Viewport.Height / 3);
-            cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 7 + (mainWindow.Height/6) * index, mainWindow.Width/12 , mainWindow.Width/12);
-            if (pauseState != PauseState.main)
-                secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+            switch (pauseState)
+            {
+                case (PauseState.main):
+                    cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 7 + (mainWindow.Height / 6) * index, mainWindow.Width / 12, mainWindow.Width / 12);
+                    break;
+                case (PauseState.equipment):
+                    secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    break;
+                case (PauseState.items):
+                    secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    break;
+                case (PauseState.perks):
+                    secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    break;
+                case (PauseState.map):
+                    secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    break;
+                case (PauseState.options):
+                    cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 10), 50 + secondaryWindow.Height / 9 + (secondaryWindow.Height / 4) * optionsIndex, mainWindow.Width / 12, mainWindow.Width / 12);
+                    secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    break;
+            }
+                
         }
     }
 }

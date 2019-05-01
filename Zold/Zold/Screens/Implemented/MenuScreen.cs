@@ -156,7 +156,7 @@ namespace Zold.Screens.Implemented
             playButton = Assets.Instance.Get("menu/Textures/playButton");
             optionsButton = Assets.Instance.Get("menu/Textures/optionsButton");
 
-            bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
+            bgMusic = Assets.Instance.Get("menu/Music/menu-music");
 
         }
 
@@ -169,6 +169,7 @@ namespace Zold.Screens.Implemented
             fscrIcon.Dispose();
             playButton.Dispose();
             optionsButton.Dispose();
+            Assets.Instance.Remove("menu");
         }
 
         private void CheckInteraction(int id, Rectangle buttonRectangle, Rectangle cursor, MenuState targetState, MouseState mouseState)

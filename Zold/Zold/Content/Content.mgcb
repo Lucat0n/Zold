@@ -40,6 +40,12 @@
 #begin mapa3.tmx
 /copy:mapa3.tmx
 
+#begin menu/Music/menu-music.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:menu/Music/menu-music.wav
+
 #begin menu/Textures/backButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -191,12 +197,6 @@
 /processorParam:Quality=Best
 /build:placeholders/Music/kombat.wav
 
-#begin placeholders/Music/menu-music.wav
-/importer:WavImporter
-/processor:SoundEffectProcessor
-/processorParam:Quality=Best
-/build:placeholders/Music/menu-music.wav
-
 #begin placeholders/Music/wesola.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -214,18 +214,6 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/Adven.png
-
-#begin placeholders/Textures/blank.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:placeholders/Textures/blank.png
 
 #begin placeholders/Textures/citybackgrund.PNG
 /importer:TextureImporter
@@ -442,6 +430,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/zold.png
+
+#begin screenManager/Textures/blank.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:screenManager/Textures/blank.png
 
 #begin splash/Textures/rzprod.png
 /importer:TextureImporter
