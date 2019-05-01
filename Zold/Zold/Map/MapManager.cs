@@ -90,7 +90,9 @@ namespace Map
         bool isEscPressed = false;
         bool disp = false; // is message displayed?
         bool drawed = false;
+        bool canmove;
 
+        Rectangle bounds; //camera bounds    
         
 
         public MapManager()
@@ -101,6 +103,9 @@ namespace Map
 
         public override void LoadContent()
         {
+            canmove = true;
+            bounds = new Rectangle(0, 0, 0, 0);
+
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
             powiedzonka.Add("Nie widzisz, ze jestem zajety");
@@ -134,7 +139,7 @@ namespace Map
             dialog = gameScreenManager.Content.Load<SpriteFont>("placeholders/dialog");
 
             map = new TmxMap(@"Content/mapa2v2.tmx");
-            map2 = new TmxMap(@"Content/mapa3.tmx");
+            map2 = new TmxMap(@"Content/mapa2v2.tmx");
             currentMap = map;
 
             tileset = gameScreenManager.Content.Load<Texture2D>(map.Tilesets[0].Name.ToString());
@@ -170,8 +175,8 @@ namespace Map
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
             
-                drawTiles(1, currentMap);
-                drawTiles(0, currentMap);
+            drawTiles(1, currentMap);
+            drawTiles(0, currentMap);
                // drawed = true;
             
 
@@ -180,15 +185,14 @@ namespace Map
             gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition(), Color.White);
 
             ///budunek policji
-            gameScreenManager.SpriteBatch.Draw(budynek1, new Rectangle(policjaPosX, policjaPosY, policjaWidth + 50, policjaHeight + 20), wht);
+            gameScreenManager.SpriteBatch.Draw(budynek1, new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
             //wiezowiec 2
-            gameScreenManager.SpriteBatch.Draw(policja, new Rectangle(ralfX, ralfY, ralfWidth, ralfHeight), kolorPow);
+            gameScreenManager.SpriteBatch.Draw(policja, new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
             //postacie
             if (forest)
             {
-                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX, advenPosY, adven.Width, adven.Height), Color.White);
-
+                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
                 displayDialog(player, adven, advenPosX, advenPosY);
                 
             }
@@ -210,6 +214,7 @@ namespace Map
 
         public override void Update(GameTime gameTime)
         {
+            moveCamera();
             if (!songStart)
             {
                 MediaPlayer.Play(currentSong);
@@ -220,7 +225,7 @@ namespace Map
 
             if (!isPaused)
             {
-                player.move(pietrek.Width, pietrek.Height,true);
+                player.move(pietrek.Width, pietrek.Height,canmove);
                 bacgrund = Color.Green;
                 ManageLocations();
                 if (cyber)
@@ -255,12 +260,45 @@ namespace Map
 
                     if (layer==0){
                         //player.SetPosition(new Vector2(0,32));
-                        colisionTiles.Add(new Rectangle((int)x, (int)y, tileWidth, tileHeight));
+                        colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
                     }
 
-                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
                 }
             }
+        }
+
+        void checkIfColide()
+        {
+            foreach (Rectangle tile in colisionTiles)
+            {
+                if (player.GetPosition().X + player.GetTexture().Width >= tile.X && player.GetPosition().Y > tile.Y)
+                {
+                    //canmove = false;
+                    //player.SetPosition(0, 32);
+                    // player.move(pietrek.Width, pietrek.Height, false);
+                }
+               
+            }
+        }
+
+        void moveCamera()
+        {
+            KeyboardState keyState = Keyboard.GetState();
+
+            int scrollx = 0, scrolly = 0;
+
+            if (keyState.IsKeyDown(Keys.Left))
+                scrollx = 1;
+            if (keyState.IsKeyDown(Keys.Right))
+                scrollx = -1;
+            if (keyState.IsKeyDown(Keys.Up))
+                scrolly = 1;
+            if (keyState.IsKeyDown(Keys.Down))
+                scrolly = -1;
+
+            bounds.X = bounds.X + scrollx;
+            bounds.Y = bounds.Y + scrolly;
         }
 
         private void KeyboardEvents()
@@ -395,18 +433,7 @@ namespace Map
             }
         }
 
-        void checkIfColide()
-        {
-            foreach (Rectangle tile in colisionTiles)
-            {
-                if(player.GetPosition().X > tile.X && player.GetPosition().Y > tile.Y)
-                    
-                {
-                    player.SetPosition(0, 32);
-                   // player.move(pietrek.Width, pietrek.Height, false);
-                }
-            }
-        }
+
         
         public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy)
         {
