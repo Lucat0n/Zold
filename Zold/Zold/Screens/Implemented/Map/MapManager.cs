@@ -95,6 +95,7 @@ namespace Zold.Screens.Implemented.Map
         bool wasPaused = false;
         bool songStart = false;
         bool displayed = false;
+        bool pressed = false;
         bool forest;
         bool city;
         bool cyber;
@@ -285,32 +286,18 @@ namespace Zold.Screens.Implemented.Map
         }
         #endregion
 
-        bool pressed;
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
         {
             if(keyboardState.IsKeyDown(Keys.Escape) && !pressed) 
             {
-                Debug.WriteLine("down");
                 pressed = true;
                 isPaused = !isPaused;
                 Debug.WriteLine(isPaused ? "paused" : "unpaused");
             }else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
             {
-                Debug.WriteLine("up");
                 pressed = false;
             }
         }
-
-
-
-        private void KeyboardEvents()
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-
-            }
-        }
-
 
         #region managelocations
         void ManageLocations() 

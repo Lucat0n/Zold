@@ -106,6 +106,7 @@ namespace Zold.Screens.Implemented
             switch (menuState)
             {
                 case MenuState.DrawLogo:
+                    skipIntro();
                     if (UpdateFade(gameTime, FadeInTime))
                     {
                         ScreenState = ScreenState.Active;
@@ -113,6 +114,7 @@ namespace Zold.Screens.Implemented
                     }
                     break;
                 case MenuState.MoveLogo:
+                    skipIntro();
                     if (titleY > gameScreenManager.GraphicsDevice.Viewport.Width / 20)
                         titleY--;
                     else
@@ -250,6 +252,15 @@ namespace Zold.Screens.Implemented
                     break;
             }
 
+        }
+
+        private void skipIntro()
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape) && (menuState == MenuState.DrawLogo || menuState == MenuState.MoveLogo))
+            {
+                titleY = gameScreenManager.GraphicsDevice.Viewport.Width / 20;
+                menuState = MenuState.Main;
+            }
         }
     }
 }
