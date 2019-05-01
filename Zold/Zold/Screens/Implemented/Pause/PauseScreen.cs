@@ -48,7 +48,8 @@ namespace Zold.Screens.Implemented.Pause
         }
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.SpriteBatch.Begin();
+            //gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Deferred, null, SamplerState.PointWrap, null, null, null, null);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/mainWindow"), mainWindow, Color.White);
             for(int i=0; i<mainOptions.Count(); i++)
                 gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (mainWindow.Width / 2.75f), 50 + mainWindow.Height/15 + (mainWindow.Height / 6) * i), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height/110, mainWindow.Height / 110), SpriteEffects.None, 1f);
