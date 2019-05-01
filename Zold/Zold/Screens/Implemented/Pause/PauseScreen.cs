@@ -51,7 +51,8 @@ namespace Zold.Screens.Implemented.Pause
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/mainWindow"), mainWindow, Color.White);
             for(int i=0; i<mainOptions.Count(); i++)
-                gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
+                gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (mainWindow.Width / 2.75f), 50 + mainWindow.Height/15 + (mainWindow.Height / 6) * i), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height/110, mainWindow.Height / 110), SpriteEffects.None, 1f);
+            //gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
             switch (pauseState)
             {
@@ -70,7 +71,7 @@ namespace Zold.Screens.Implemented.Pause
                 case (PauseState.options):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     for (int i = 0; i < options.Count(); i++)
-                        gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(secondaryWindow.X + (secondaryWindow.Width / 6), 50 + secondaryWindow.Height / 12 + (secondaryWindow.Height / 4) * i), Color.White);
+                        gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(secondaryWindow.X + (secondaryWindow.Width / 6), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4) * i), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
             }
@@ -201,7 +202,7 @@ namespace Zold.Screens.Implemented.Pause
             switch (pauseState)
             {
                 case (PauseState.main):
-                    cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 7 + (mainWindow.Height / 6) * index, mainWindow.Width / 12, mainWindow.Width / 12);
+                    cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 9 + (mainWindow.Height / 6) * index, mainWindow.Width / 12, mainWindow.Width / 12);
                     break;
                 case (PauseState.equipment):
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
@@ -216,7 +217,7 @@ namespace Zold.Screens.Implemented.Pause
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
                 case (PauseState.options):
-                    cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 10), 50 + secondaryWindow.Height / 9 + (secondaryWindow.Height / 4) * optionsIndex, mainWindow.Width / 12, mainWindow.Width / 12);
+                    cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 10), 50 + (int)(secondaryWindow.Height / 8f) + (secondaryWindow.Height / 4) * optionsIndex, mainWindow.Width / 12, mainWindow.Width / 12);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
             }

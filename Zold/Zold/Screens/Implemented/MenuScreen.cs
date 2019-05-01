@@ -121,6 +121,7 @@ namespace Zold.Screens.Implemented
                         menuState = MenuState.Main;
                     break;
                 case MenuState.Main:
+                    titleY = gameScreenManager.GraphicsDevice.Viewport.Width / 20;
                     HandleInput(gameScreenManager.MouseState, gameScreenManager.Cursor, gameScreenManager.KeyboardState);
                     playButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 10);
                     optionsButtonRectangle = new Rectangle(gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 2 - gameScreenManager.GraphicsDevice.Viewport.Width / 8, gameScreenManager.GraphicsDevice.Viewport.Width / 4, gameScreenManager.GraphicsDevice.Viewport.Width / 10);

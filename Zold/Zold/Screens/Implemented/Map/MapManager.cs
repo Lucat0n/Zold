@@ -185,7 +185,7 @@ namespace Zold.Screens.Implemented.Map
         #region drawupdate
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.GraphicsDevice.Clear(Color.White);
+            gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
             
                // drawTiles(1, currentMap);
