@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
@@ -64,14 +63,11 @@ namespace Zold.Screens.Implemented.Map
         Texture2D poww;
 
         //Combat
-        Zold.Screens.Implemented.Combat.CombatScreen Combat;
-        Zold.Screens.Implemented.Combat.Player combatPlayer;
-        Zold.Screens.Implemented.Combat.Enemy skeleton;
-        Zold.Screens.Implemented.Combat.Enemy rat;
-        List<Zold.Screens.Implemented.Combat.Enemy> enemies;
-        Texture2D skeletonTex;
-        Texture2D ratTex;
-        Texture2D line;
+        Combat.CombatScreen Combat;
+        Combat.Player combatPlayer;
+        Combat.Enemy skeleton;
+        Combat.Enemy rat;
+        List<Combat.Enemy> enemies;
 
         //budynki
         Texture2D policja;
@@ -146,21 +142,18 @@ namespace Zold.Screens.Implemented.Map
             cyber = false;
 
             pos = new Vector2(10, 10);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
+            player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
-            enemy = new Map.Enemy(player, new Vector2(400, 300));
+            enemy = new Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
 
-            enemies = new List<Zold.Screens.Implemented.Combat.Enemy>();
-            combatPlayer = new Zold.Screens.Implemented.Combat.Player(new Vector2(0, 200), 100, enemies);
-            combatPlayer.SetTexture(Assets.Instance.Get("placeholders/Textures/main"));
+            enemies = new List<Combat.Enemy>();
+            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
 
-            skeleton = new Zold.Screens.Implemented.Combat.Mob(combatPlayer, new Vector2(300, 300));
-            rat = new Zold.Screens.Implemented.Combat.Charger(combatPlayer, new Vector2(300, 400));
-            skeleton.SetTexture(Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
+            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
+            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);

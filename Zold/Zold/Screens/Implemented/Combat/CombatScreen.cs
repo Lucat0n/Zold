@@ -1,7 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
 using Zold.Utilities;
 
@@ -12,7 +11,6 @@ namespace Zold.Screens.Implemented.Combat
         Player player;
         List<Enemy> enemies;
         SpriteFont font;
-        SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
@@ -33,33 +31,14 @@ namespace Zold.Screens.Implemented.Combat
 
         }
 
-        public override void LoadContent()
-        {
-            SpriteBatchSpriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48);
-            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
-        }
+        public override void LoadContent() {}
 
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin();
-            SpriteBatchSpriteSheet.Begin();
 
-            if (player.Action == "Moving")
-            {
-                SpriteBatchSpriteSheet.PlayFullAniamtion(player.GetPosition(), player.Direction, gameTime);
-            }
-            //else if (player.Action == "Idle")
-            else
-            {
-                if (player.Direction == "Right")
-                    SpriteBatchSpriteSheet.Draw(player.GetPosition(), 1, 0);
-                if (player.Direction == "Left")
-                    SpriteBatchSpriteSheet.Draw(player.GetPosition(), 3, 0);
-            }
-
-            SpriteBatchSpriteSheet.End();
+            player.Animation(gameTime);
 
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150));
 

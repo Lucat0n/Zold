@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
 
 namespace Zold.Screens.Implemented.Combat
@@ -12,7 +8,7 @@ namespace Zold.Screens.Implemented.Combat
     {
         private Timer attackTimer;
 
-        public Mob(Player player, Vector2 position) : base(player, position)
+        public Mob(Player player, Vector2 position, Texture2D texture) : base(player, position, texture)
         {
             Height = 48;
 
