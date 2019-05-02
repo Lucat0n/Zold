@@ -60,7 +60,7 @@ namespace Zold.Screens.Implemented.Map
         Texture2D dotekstu;
         Texture2D dymek;
         //tla (nie uzywane)
-        Texture2D cyberpunk;
+        Texture2D location3punk;
         Texture2D poww;
 
         //Combat
@@ -92,9 +92,9 @@ namespace Zold.Screens.Implemented.Map
         //bools
         bool songStart = false;
         bool displayed = false;
-        bool forest;
-        bool city;
-        bool cyber;
+        bool location1;
+        bool location2;
+        bool location3;
         bool isPaused = false;
         bool isEscPressed = false;
         bool disp = false; // is message displayed?
@@ -103,6 +103,9 @@ namespace Zold.Screens.Implemented.Map
         bool canMoveUp;
         bool canMoveRight;
         bool canMoveDown;
+
+        int screenWdth = 800;
+        int screenHeight = 480;
 
         Rectangle bounds; //camera bounds 
 
@@ -125,8 +128,8 @@ namespace Zold.Screens.Implemented.Map
             powiedzonka.Add("Elo");
             powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
             powiedzonka.Add("Ruchasz sie?");
-            //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
-            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
+            //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/location2backgrund");
+            // location3punk = gameScreenManager.Content.Load<Texture2D>("placeholders/location32");
 
             // loading music
             bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
@@ -150,9 +153,9 @@ namespace Zold.Screens.Implemented.Map
             currentSong = gameplayMusic;
             //MediaPlayer.Play(currentSong);
 
-            forest = true;
-            city = false;
-            cyber = false;
+            location1 = true;
+            location2 = false;
+            location3 = false;
 
             pos = new Vector2(10, 10);
             player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f);
@@ -179,6 +182,9 @@ namespace Zold.Screens.Implemented.Map
             getColideObjects(map);
             getColideObjects(map2);
 
+            Console.WriteLine("szerokosc mapy 1: " + map.Width);
+            Console.WriteLine("wysookosc mapy 1: " + map.Height);
+
 
         }
 
@@ -200,9 +206,11 @@ namespace Zold.Screens.Implemented.Map
 
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "boundsX: "+bounds.X.ToString(), new Vector2(10, 70), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "boundsY: "+bounds.Y.ToString(), new Vector2(10, 110), Color.White);
 
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
-            // gameScreenManager.SpriteBatch.Draw(cyberpunk, new Rectangle(0, 0, 802, 580), kolorPow2);
+            // gameScreenManager.SpriteBatch.Draw(location3punk, new Rectangle(0, 0, 802, 580), kolorPow2);
             gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             ///budunek policji
@@ -211,7 +219,7 @@ namespace Zold.Screens.Implemented.Map
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
             //postacie
-            if (forest)
+            if (location1)
             {
                 adven = Assets.Instance.Get("placeholders/Textures/Adven");
                 gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
@@ -220,7 +228,7 @@ namespace Zold.Screens.Implemented.Map
 
             }
 
-            if (cyber)
+            if (location3)
             {
                 currentMap = map2;
                 // przeciwnik - DOSKOZZZA
@@ -237,7 +245,7 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
-            moveCamera(3,128,128,650,352);
+            moveCamera(128,128,650,352);
             if (!songStart)
             {
                 MediaPlayer.Play(currentSong);
@@ -246,13 +254,13 @@ namespace Zold.Screens.Implemented.Map
             
             KeyboardEvents();
             checkIfColide();
-
+            dontGoOutsideMap();
             if (!isPaused)
             {
                 player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown);
                 bacgrund = Color.Green;
                 ManageLocations();
-                if (cyber)
+                if (location3)
                 {
                     enemy.AI(gameTime);
                 }
@@ -310,7 +318,31 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
-        void checkIfColide()
+        void dontGoOutsideMap()
+        {
+
+            if(player.GetPosition().X <= 0)
+            {
+                canMoveLeft = false;
+            }
+
+            if (player.GetPosition().Y <= 0)
+            {
+                canMoveUp = false;
+            }
+
+            if (player.GetPosition().Y +player.texture.Height > screenHeight && bounds.Y < -800)
+            {
+                canMoveDown = false;
+            }
+            if (player.GetPosition().X + player.texture.Width >= screenWdth && bounds.X < -1440)
+            {
+                canMoveRight = false;
+            }
+
+        }
+
+            void checkIfColide()
         {
             canMoveRight = true;
             canMoveLeft = true;
@@ -319,7 +351,7 @@ namespace Zold.Screens.Implemented.Map
 
             foreach (Rectangle tile in colisionTiles)
             {
-                Console.WriteLine("tile: " + tile);
+              //  Console.WriteLine("tile: " + tile);
                 Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, player.texture.Width, player.texture.Height);
 
                 if (ghost.Intersects(tile))
@@ -350,8 +382,12 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
-        void moveCamera(int cumSpeed, int lewy, int gorny, int prawy, int dolny)
+        void moveCamera(int lewy, int gorny, int prawy, int dolny)
         {
+            int mapWidth = map.Width*32;
+            int mapHeight = map.Height*32;
+
+            
             KeyboardState keyState = Keyboard.GetState();
 
             int scrollx = 0, scrolly = 0;
@@ -360,7 +396,7 @@ namespace Zold.Screens.Implemented.Map
             //   scrollx = cumSpeed;
 
             //right border
-            if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right))
+            if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right) && bounds.X - screenWdth> -1*mapWidth)
             {
                 //   canMoveRight = false;
                 getColideObjects(map);
@@ -368,15 +404,15 @@ namespace Zold.Screens.Implemented.Map
                 player.SetPosition(player.GetPosition().X - 7, player.GetPosition().Y);                   
             }
 
-            if (player.GetPosition().X < lewy && keyState.IsKeyDown(Keys.Left))
+            if (player.GetPosition().X < lewy && keyState.IsKeyDown(Keys.Left) && bounds.X <0)
             {
-                //   canMoveRight = false;
+                
                 getColideObjects(map);
                 scrollx = +7;
                 player.SetPosition(player.GetPosition().X + 7, player.GetPosition().Y);
             }
 
-            if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down))
+            if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down) && bounds.Y - screenHeight > -1 * mapHeight)
             {
                 //   canMoveRight = false;
                 getColideObjects(map);
@@ -384,7 +420,7 @@ namespace Zold.Screens.Implemented.Map
                 player.SetPosition(player.GetPosition().X, player.GetPosition().Y -7);
             }
 
-            if (player.GetPosition().Y < gorny && keyState.IsKeyDown(Keys.Up))
+            if (player.GetPosition().Y < gorny && keyState.IsKeyDown(Keys.Up) && bounds.Y < 0)
             {
                 //   canMoveRight = false;
                 getColideObjects(map);
@@ -398,8 +434,8 @@ namespace Zold.Screens.Implemented.Map
             //   if (keyState.IsKeyDown(Keys.Down))
             //       scrolly = -cumSpeed;
 
-            bounds.X = bounds.X + scrollx;
-            bounds.Y = bounds.Y + scrolly;
+            bounds.X += scrollx;
+            bounds.Y += scrolly;
         }
 
         private void KeyboardEvents()
@@ -419,9 +455,9 @@ namespace Zold.Screens.Implemented.Map
 
         void ManageLocations()
         {
-            if (forest)
+            if (location1)
             {
-                if ((player.GetPosition().X + player.Width >= policjaPosX && player.GetPosition().X < policjaPosX + policjaWidth) && (player.GetPosition().Y + player.Height >= policjaPosY && player.GetPosition().Y < policjaPosY + policjaHeight))
+                if ((player.GetPosition().X + player.Width >= policjaPosX + bounds.X && player.GetPosition().X < policjaPosX + bounds.X + policjaWidth) && (player.GetPosition().Y + player.Height >= policjaPosY + bounds.Y && player.GetPosition().Y < policjaPosY + bounds.Y+ policjaHeight))
                 {
                     bacgrund = bacgrundAfterHit;
                     kolorPow = Color.White;
@@ -430,26 +466,26 @@ namespace Zold.Screens.Implemented.Map
 
                     player.SetPosition(15, 290);
 
-                    forest = false;
-                    city = true;
-                    cyber = false;
+                    location1 = false;
+                    location2 = true;
+                    location3 = false;
                 }
 
-                if (player.GetPosition().X < 0)
-                {
-                    kolorPow2 = Color.White;
-                    kolorPow = Color.White * 0;
-                    wht = Color.White * 0;
+                //if (player.GetPosition().X < 0)
+                //{
+                //    kolorPow2 = Color.White;
+                //    kolorPow = Color.White * 0;
+                //    wht = Color.White * 0;
 
-                    player.SetPosition(615, player.GetPosition().Y);
+                //    player.SetPosition(615, player.GetPosition().Y);
 
-                    forest = false;
-                    city = false;
-                    cyber = true;
-                }
+                //    location1 = false;
+                //    location2 = false;
+                //    location3 = true;
+                //}
             }
 
-            if (city)
+            if (location2)
             {
                 if ((player.GetPosition().X + player.Width >= ralfX && player.GetPosition().X < ralfX + ralfWidth) && (player.GetPosition().Y + player.Height >= ralfY && player.GetPosition().Y < ralfY + ralfHeight))
                 {
@@ -463,29 +499,29 @@ namespace Zold.Screens.Implemented.Map
 
                     player.SetPosition(100, 320);
 
-                    forest = false;
-                    city = false;
-                    cyber = true;
+                    location1 = false;
+                    location2 = false;
+                    location3 = true;
 
 
                 }
 
-                if (player.GetPosition().X < 0)   /// do lasu
-                {
-                    kolorPow = Color.Wheat * 0;
-                    bacgrund = Color.Green;
-                    kolorPow2 = Color.White * 0;
-                    wht = Color.White;
+                //if (player.GetPosition().X < 0)   /// do lasu
+                //{
+                //    kolorPow = Color.Wheat * 0;
+                //    bacgrund = Color.Green;
+                //    kolorPow2 = Color.White * 0;
+                //    wht = Color.White;
 
-                    player.SetPosition(615, player.GetPosition().Y);
+                //    player.SetPosition(615, player.GetPosition().Y);
 
-                    forest = true;
-                    city = false;
-                    cyber = false;
-                }
+                //    location1 = true;
+                //    location2 = false;
+                //    location3 = false;
+                //}
             }
 
-            if (cyber)
+            if (location3)
             {
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
@@ -513,9 +549,9 @@ namespace Zold.Screens.Implemented.Map
                     //pos.Y = 2;
                     player.SetPosition(15, player.GetPosition().Y);
 
-                    forest = true;
-                    city = false;
-                    cyber = false;
+                    location1 = true;
+                    location2 = false;
+                    location3 = false;
                 }
 
                 if (player.GetPosition().X < 0)   /// do miasta
@@ -530,9 +566,9 @@ namespace Zold.Screens.Implemented.Map
 
 
 
-                    forest = false;
-                    city = true;
-                    cyber = false;
+                    location1 = false;
+                    location2 = true;
+                    location3 = false;
                 }
             }
         }
