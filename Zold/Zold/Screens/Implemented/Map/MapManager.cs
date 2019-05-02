@@ -179,8 +179,8 @@ namespace Zold.Screens.Implemented.Map
 
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
-            getColideObjects(map);
-            getColideObjects(map2);
+            getColideObjects(map, 0);
+            getColideObjects(map2,0);
 
             Console.WriteLine("szerokosc mapy 1: " + map.Width);
             Console.WriteLine("wysookosc mapy 1: " + map.Height);
@@ -215,6 +215,7 @@ namespace Zold.Screens.Implemented.Map
 
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(550,16, 250,32), wht);
             //wiezowiec 2
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
@@ -294,12 +295,12 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
-        public void getColideObjects(TmxMap map)
+        public void getColideObjects(TmxMap map, int warstwa)
         {
             colisionTiles.Clear();
-            for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
+            for (var i = 0; i < map.Layers[warstwa].Tiles.Count; i++)
             {
-                int gid = map.Layers[0].Tiles[i].Gid;
+                int gid = map.Layers[warstwa].Tiles[i].Gid;
 
                 if (gid == 0) { }
 
@@ -361,7 +362,6 @@ namespace Zold.Screens.Implemented.Map
                         canMoveRight = false;
                     }
 
-
                     if (ghost.X > tile.X)
                     {
                         canMoveLeft = false;
@@ -399,7 +399,7 @@ namespace Zold.Screens.Implemented.Map
             if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right) && bounds.X - screenWdth> -1*mapWidth)
             {
                 //   canMoveRight = false;
-                getColideObjects(map);
+                getColideObjects(map,0);
                  scrollx = -7;
                 player.SetPosition(player.GetPosition().X - 7, player.GetPosition().Y);                   
             }
@@ -407,7 +407,7 @@ namespace Zold.Screens.Implemented.Map
             if (player.GetPosition().X < lewy && keyState.IsKeyDown(Keys.Left) && bounds.X <0)
             {
                 
-                getColideObjects(map);
+                getColideObjects(map,0);
                 scrollx = +7;
                 player.SetPosition(player.GetPosition().X + 7, player.GetPosition().Y);
             }
@@ -415,7 +415,7 @@ namespace Zold.Screens.Implemented.Map
             if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down) && bounds.Y - screenHeight > -1 * mapHeight)
             {
                 //   canMoveRight = false;
-                getColideObjects(map);
+                getColideObjects(map,0);
                 scrolly = -7;
                 player.SetPosition(player.GetPosition().X, player.GetPosition().Y -7);
             }
@@ -423,7 +423,7 @@ namespace Zold.Screens.Implemented.Map
             if (player.GetPosition().Y < gorny && keyState.IsKeyDown(Keys.Up) && bounds.Y < 0)
             {
                 //   canMoveRight = false;
-                getColideObjects(map);
+                getColideObjects(map,0);
                 scrolly = +7;
                 player.SetPosition(player.GetPosition().X, player.GetPosition().Y +7);
             }
