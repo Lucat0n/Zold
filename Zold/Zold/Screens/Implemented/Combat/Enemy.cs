@@ -18,8 +18,8 @@ namespace Zold.Screens.Implemented.Combat
         public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
-        public float Height { get; set; }
-        public float Width { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
 
 
         public Enemy(Player player, Vector2 position, Texture2D texture)

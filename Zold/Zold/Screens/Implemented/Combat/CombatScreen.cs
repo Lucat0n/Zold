@@ -22,13 +22,10 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Update(GameTime gameTime)
         {
-            player.Controls();
-
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
             });
-
         }
 
         public override void LoadContent() {}
@@ -63,7 +60,11 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.SpriteBatch.End();
         }
 
-        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
-        public override void UnloadContent() { }
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
+        {
+            player.Controls();
+        }
+
+        public override void UnloadContent() {}
     }
 }
