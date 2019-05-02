@@ -22,14 +22,14 @@ namespace Zold.Screens.Implemented.Map
         public int Width { get; set; }
         public int Height { get; set; }
 
-        public Player(Vector2 position, Texture2D texture)
+        public Player(Vector2 position, Texture2D texture, float sped)
         {
             this.texture = texture;
             this.position = position;
 
             Width = texture.Width;
             Height = texture.Height;
-            speed = 2.3f;
+            speed = sped;
         }
 
         public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown)

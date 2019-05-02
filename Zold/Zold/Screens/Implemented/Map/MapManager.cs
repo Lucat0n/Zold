@@ -155,7 +155,7 @@ namespace Zold.Screens.Implemented.Map
             cyber = false;
 
             pos = new Vector2(10, 10);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f);
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
@@ -237,14 +237,15 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
-            //moveCamera();
+            moveCamera(3,128,128,650,352);
             if (!songStart)
             {
                 MediaPlayer.Play(currentSong);
                 songStart = true;
             }
-            checkIfColide();
+            
             KeyboardEvents();
+            checkIfColide();
 
             if (!isPaused)
             {
@@ -280,13 +281,6 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-
-                    if (layer == 0)
-                    {
-                        //player.SetPosition(new Vector2(0,32));
-                       // colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
-                    }
-
                     gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
                 }
             }
@@ -294,11 +288,11 @@ namespace Zold.Screens.Implemented.Map
 
         public void getColideObjects(TmxMap map)
         {
+            colisionTiles.Clear();
             for (var i = 0; i < map.Layers[0].Tiles.Count; i++)
             {
                 int gid = map.Layers[0].Tiles[i].Gid;
 
-                // Empty tile, do nothing
                 if (gid == 0) { }
 
                 else
@@ -310,9 +304,7 @@ namespace Zold.Screens.Implemented.Map
                     float x = (i % map.Width) * map.TileWidth;
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
-                  ///  Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-
-                    colisionTiles.Add(new Rectangle((int)x , (int)y, tileWidth, tileHeight));
+                    colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
 
                 }
             }
@@ -320,61 +312,91 @@ namespace Zold.Screens.Implemented.Map
 
         void checkIfColide()
         {
+            canMoveRight = true;
+            canMoveLeft = true;
+            canMoveDown = true;
+            canMoveUp = true;
+
             foreach (Rectangle tile in colisionTiles)
             {
-                // if (player.GetPosition().X > tile.X && player.GetPosition().Y > tile.Y)
-                //if ((player.GetPosition().X + player.texture.Width >= tile.X && player.GetPosition().X <= tile.X + tile.Width) && (player.GetPosition().Y <= tile.Y + tile.Height && player.GetPosition().Y >= tile.Y))
-                if ((player.GetPosition().X + player.texture.Width > tile.X && player.GetPosition().X < tile.X) && (player.GetPosition().Y + player.texture.Height > tile.Y && player.GetPosition().Y < tile.Y + tile.Height))
-                {
-                    canMoveRight = false;
-                  //  player.move(player.Width, player.Height, true,true,true,true);
-                }
-                else
-                {
-                    canMoveRight = true;
-                }
+                Console.WriteLine("tile: " + tile);
+                Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, player.texture.Width, player.texture.Height);
 
-                if ((player.GetPosition().X <= tile.X + tile.Width && player.GetPosition().X >= tile.X) && (player.GetPosition().Y >= tile.Y - player.texture.Height && player.GetPosition().Y <= tile.Y + tile.Height))
+                if (ghost.Intersects(tile))
                 {
-                    canMoveLeft = false;
-                    //  player.move(player.Width, player.Height, true,true,true,true);
-                }
-                else
-                {
-                    canMoveLeft = true;
-                }
+                    if(ghost.X <= tile.X)
+                    {
+                        canMoveRight = false;
+                    }
 
-                //if (player.GetPosition().X <= tile.X + tile.Width && (player.GetPosition().X + player.texture.Width >= tile.X))
-                //{
-                //    canMoveLeft = false;
-                //    //  player.move(player.Width, player.Height, true,true,true,true);
-                //}
 
-                //else
-                //{
-                //    canMoveLeft = true;
-                //    canMoveDown = true;
-                //    canMoveUp = true;
-                    
-                //}
+                    if (ghost.X > tile.X)
+                    {
+                        canMoveLeft = false;
+                    }
+
+                    if(ghost.Y > tile.Y)
+                    {
+                        canMoveUp = false;
+                    }
+
+                    if(ghost.Y <= tile.Y)
+                    {
+                        canMoveDown = false;
+                    }
+
+                }
 
             }
         }
 
-        void moveCamera()
+        void moveCamera(int cumSpeed, int lewy, int gorny, int prawy, int dolny)
         {
             KeyboardState keyState = Keyboard.GetState();
 
             int scrollx = 0, scrolly = 0;
 
-            if (keyState.IsKeyDown(Keys.Left))
-                scrollx = 1;
-            if (keyState.IsKeyDown(Keys.Right))
-                scrollx = -1;
-            if (keyState.IsKeyDown(Keys.Up))
-                scrolly = 1;
-            if (keyState.IsKeyDown(Keys.Down))
-                scrolly = -1;
+            //  if (keyState.IsKeyDown(Keys.Left))
+            //   scrollx = cumSpeed;
+
+            //right border
+            if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right))
+            {
+                //   canMoveRight = false;
+                getColideObjects(map);
+                 scrollx = -7;
+                player.SetPosition(player.GetPosition().X - 7, player.GetPosition().Y);                   
+            }
+
+            if (player.GetPosition().X < lewy && keyState.IsKeyDown(Keys.Left))
+            {
+                //   canMoveRight = false;
+                getColideObjects(map);
+                scrollx = +7;
+                player.SetPosition(player.GetPosition().X + 7, player.GetPosition().Y);
+            }
+
+            if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down))
+            {
+                //   canMoveRight = false;
+                getColideObjects(map);
+                scrolly = -7;
+                player.SetPosition(player.GetPosition().X, player.GetPosition().Y -7);
+            }
+
+            if (player.GetPosition().Y < gorny && keyState.IsKeyDown(Keys.Up))
+            {
+                //   canMoveRight = false;
+                getColideObjects(map);
+                scrolly = +7;
+                player.SetPosition(player.GetPosition().X, player.GetPosition().Y +7);
+            }
+            //to 700 to ustawiona na sztywno prawa krawedz mapy
+
+            //    if (keyState.IsKeyDown(Keys.Up))
+            //       scrolly = cumSpeed;
+            //   if (keyState.IsKeyDown(Keys.Down))
+            //       scrolly = -cumSpeed;
 
             bounds.X = bounds.X + scrollx;
             bounds.Y = bounds.Y + scrolly;
@@ -529,8 +551,8 @@ namespace Zold.Screens.Implemented.Map
 
                 if (!disp)
                 {
-                    dymek = Assets.Instance.Get("placeholders/Textures/rat");
-                    gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 5, advenPosY, dymek.Width, dymek.Height), Color.White);
+                    dymek = Assets.Instance.Get("placeholders/Textures/dymek");
+                    gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(advenPosX - 12 + bounds.X, advenPosY-14 + bounds.Y, dymek.Width*2, dymek.Height*2), Color.White);
                     if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
                         disp = true;
                 }
