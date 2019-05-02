@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
+using System.Linq;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat
@@ -11,12 +12,14 @@ namespace Zold.Screens.Implemented.Combat
         Player player;
         List<Enemy> enemies;
         SpriteFont font;
+        string combatState;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
+            combatState = "";
             IsTransparent = false;
         }
 
@@ -26,9 +29,24 @@ namespace Zold.Screens.Implemented.Combat
             {
                 enemy.AI(gameTime);
             });
+
+            var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
+            foreach (Enemy enemy in enemiesToDelete)
+            {
+                enemies.Remove(enemy);
+            }
+
+            if (enemies.Count == 0)
+            {
+                combatState = "Wygrana";
+            }
+            else if (player.Hp <= 0)
+            {
+                combatState = "Przegrana";
+            }
         }
 
-        public override void LoadContent() {}
+        public override void LoadContent() { }
 
         public override void Draw(GameTime gameTime)
         {
@@ -40,6 +58,7 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150));
 
             //gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition());
+            gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
@@ -65,6 +84,6 @@ namespace Zold.Screens.Implemented.Combat
             player.Controls();
         }
 
-        public override void UnloadContent() {}
+        public override void UnloadContent() { }
     }
 }

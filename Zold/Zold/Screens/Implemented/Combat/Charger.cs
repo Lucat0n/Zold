@@ -23,7 +23,7 @@ namespace Zold.Screens.Implemented.Combat
             Width = 40;
 
             cooldownTimer = new Timer();
-            cooldownTimer.Interval = 1000;
+            cooldownTimer.Interval = 2000;
             cooldownTimer.Elapsed += new ElapsedEventHandler(Ready);
 
             prepareTimer = new Timer();
