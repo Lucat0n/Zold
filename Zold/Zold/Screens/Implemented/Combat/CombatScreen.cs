@@ -22,7 +22,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Update(GameTime gameTime)
         {
-            player.Controlls();
+            player.Controls();
 
             enemies.ForEach(enemy =>
             {

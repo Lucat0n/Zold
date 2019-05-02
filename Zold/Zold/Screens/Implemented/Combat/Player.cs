@@ -43,7 +43,7 @@ namespace Zold.Screens.Implemented.Combat
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
-        public void Controlls()
+        public void Controls()
         {
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
             bottomPosition = new Vector2(position.X, position.Y + 44);
