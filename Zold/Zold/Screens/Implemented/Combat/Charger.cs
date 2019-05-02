@@ -1,9 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
 
 namespace Zold.Screens.Implemented.Combat
@@ -19,7 +15,7 @@ namespace Zold.Screens.Implemented.Combat
         private float chargeCheck;
         private bool charge;
 
-        public Charger(Player player, Vector2 position) : base(player, position)
+        public Charger(Player player, Vector2 position, Texture2D texture) : base(player, position, texture)
         {
             charge = false;
             Height = 20;

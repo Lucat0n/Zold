@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -26,10 +21,11 @@ namespace Zold.Screens.Implemented.Combat
         public float Height { get; set; }
 
 
-        public Enemy(Player player, Vector2 position)
+        public Enemy(Player player, Vector2 position, Texture2D texture)
         {
             this.player = player;
             this.position = position;
+            this.texture = texture;
 
             Damage = 5;
             Hp = 50;
@@ -56,11 +52,6 @@ namespace Zold.Screens.Implemented.Combat
                 (position.Y < point.Y) && (position.Y + 48 > point.Y))
                 return true;
             return false;
-        }
-
-        public void SetTexture(Texture2D texture)
-        {
-            this.texture = texture;
         }
 
         public Texture2D GetTexture()

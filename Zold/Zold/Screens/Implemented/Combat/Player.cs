@@ -1,34 +1,35 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Timers;
+using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat
 {
     class Player
     {
-        private Texture2D texture;
         public Vector2 position;
         private Vector2 centerPosition;
         private Vector2 attackPosition;
-        Timer attackTimer;
+        private Timer attackTimer;
+        private SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         private List<Enemy> enemies;
         public Vector2 bottomPosition { get; set; }
         public int mapEdge { get; set; }
         public int Hp { get; set; }
         public string Action { get; private set; }
+        public string Direction { get; private set; }
         public int Speed { get; private set; }
 
-        public Player(Vector2 position, int Hp, List<Enemy> enemies)
+        public Player(Vector2 position, int Hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
         {
             this.position = position;
             this.Hp = Hp;
             this.enemies = enemies;
+
+            this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
+            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
 
             mapEdge = 150;
             Action = "";
@@ -68,6 +69,7 @@ namespace Zold.Screens.Implemented.Combat
                 attackPosition = new Vector2(centerPosition.X - 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
@@ -75,6 +77,7 @@ namespace Zold.Screens.Implemented.Combat
                 attackPosition = new Vector2(centerPosition.X + 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = "Right";
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -84,6 +87,26 @@ namespace Zold.Screens.Implemented.Combat
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
                 Block();
+        }
+
+        public void Animation(GameTime gameTime)
+        {
+            SpriteBatchSpriteSheet.Begin();
+
+            if (Action == "Moving")
+            {
+                SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), Direction, gameTime);
+            }
+            //else if (Action == "Idle")
+            else
+            {
+                if (Direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(GetPosition(), 1, 0);
+                if (Direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(GetPosition(), 3, 0);
+            }
+
+            SpriteBatchSpriteSheet.End();
         }
 
         private void Block()
@@ -98,6 +121,7 @@ namespace Zold.Screens.Implemented.Combat
                     Enemy.Hp -= 5;
             });
             attackTimer.Enabled = false;
+            Action = "Idle";
         }
 
         public bool CheckPointCollision(Vector2 point)
@@ -106,16 +130,6 @@ namespace Zold.Screens.Implemented.Combat
                 (position.Y < point.Y) && (position.Y + 48 > point.Y))
                 return true;
             return false;
-        }
-
-        public Texture2D GetTexture()
-        {
-            return texture;
-        }
-
-        public void SetTexture(Texture2D value)
-        {
-            texture = value;
         }
 
         public Vector2 GetPosition()
