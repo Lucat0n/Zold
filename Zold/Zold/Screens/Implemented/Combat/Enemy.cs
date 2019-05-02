@@ -19,6 +19,7 @@ namespace Zold.Screens.Implemented.Combat
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
         public float Height { get; set; }
+        public float Width { get; set; }
 
 
         public Enemy(Player player, Vector2 position, Texture2D texture)
@@ -48,8 +49,18 @@ namespace Zold.Screens.Implemented.Combat
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((position.X < point.X) && (position.X + 32 > point.X) &&
-                (position.Y < point.Y) && (position.Y + 48 > point.Y))
+            if ((position.X < point.X) && (position.X + Width > point.X) &&
+                (position.Y < point.Y) && (position.Y + Height > point.Y))
+                return true;
+            return false;
+        }
+
+        public bool CheckBoxCollision(Vector2 point, int height, int width)
+        {
+            if (position.X < point.X + width &&
+                position.X + Width > point.X &&
+                position.Y < point.Y + height &&
+                position.Y + Height > point.Y)
                 return true;
             return false;
         }

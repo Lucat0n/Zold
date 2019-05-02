@@ -11,6 +11,7 @@ namespace Zold.Screens.Implemented.Combat
         public Mob(Player player, Vector2 position, Texture2D texture) : base(player, position, texture)
         {
             Height = 48;
+            Width = 32;
 
             attackTimer = new Timer();
             attackTimer.Interval = 1000;

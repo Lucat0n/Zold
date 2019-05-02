@@ -35,7 +35,7 @@ namespace Zold
             contentLoader.LoadLocation("menu");
             contentLoader.LoadLocation("placeholders");
             gameScreenManager = new GameScreenManager(this);
-            gameScreenManager.InsertScreen(new Screens.Implemented.SplashScreen());
+            gameScreenManager.InsertScreen(new Screens.Implemented.Map.MapManager());
         }
 
         protected override void UnloadContent()
