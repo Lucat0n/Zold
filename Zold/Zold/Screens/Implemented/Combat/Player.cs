@@ -8,9 +8,10 @@ namespace Zold.Screens.Implemented.Combat
 {
     class Player
     {
+        private const int WIDTH = 32;
+        private const int HEIGHT = 48;
         public Vector2 position;
         private Vector2 centerPosition;
-        private Vector2 attackPosition;
         private Timer attackTimer;
         private SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         private List<Enemy> enemies;
@@ -35,14 +36,14 @@ namespace Zold.Screens.Implemented.Combat
             Action = "";
             Speed = 2;
 
-            centerPosition = new Vector2(position.X + 16, position.Y + 24);
+            centerPosition = new Vector2(position.X + WIDTH/2, position.Y + HEIGHT/2);
 
             attackTimer = new Timer();
             attackTimer.Interval = 500;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
-        public void Controlls()
+        public void Controls()
         {
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
             bottomPosition = new Vector2(position.X, position.Y + 44);
@@ -66,7 +67,6 @@ namespace Zold.Screens.Implemented.Combat
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
                 position.X -= Speed;
-                attackPosition = new Vector2(centerPosition.X - 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
                 Direction = "Left";
@@ -74,7 +74,6 @@ namespace Zold.Screens.Implemented.Combat
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 position.X += Speed;
-                attackPosition = new Vector2(centerPosition.X + 50, centerPosition.Y);
                 attackTimer.Enabled = false;
                 Action = "Moving";
                 Direction = "Right";
@@ -116,8 +115,15 @@ namespace Zold.Screens.Implemented.Combat
 
         public void Attack(object source, ElapsedEventArgs e)
         {
+            Vector2 hitbox;
+
+            if (Direction == "Right")
+                hitbox = centerPosition;
+            else
+                hitbox = new Vector2(centerPosition.X - 40, centerPosition.Y);
+
             enemies.ForEach( Enemy => {
-                if (Enemy.CheckPointCollision(attackPosition))
+                if (Enemy.CheckBoxCollision(hitbox, 1, 40))
                     Enemy.Hp -= 5;
             });
             attackTimer.Enabled = false;
@@ -126,8 +132,18 @@ namespace Zold.Screens.Implemented.Combat
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((position.X < point.X) && (position.X + 32 > point.X) &&
-                (position.Y < point.Y) && (position.Y + 48 > point.Y))
+            if ((position.X < point.X) && (position.X + WIDTH > point.X) &&
+                (position.Y < point.Y) && (position.Y + HEIGHT > point.Y))
+                return true;
+            return false;
+        }
+
+        public bool CheckBoxCollision(Vector2 point, int height, int width)
+        {
+            if (position.X < point.X + width &&
+                position.X + WIDTH > point.X &&
+                position.Y < point.Y + height &&
+                position.Y + HEIGHT > point.Y)
                 return true;
             return false;
         }
