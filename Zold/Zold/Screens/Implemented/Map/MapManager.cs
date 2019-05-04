@@ -73,6 +73,8 @@ namespace Zold.Screens.Implemented.Map
         Texture2D ratTex;
         Texture2D line;
 
+        Texture2D postac;
+
         //budynki
         Texture2D policja;
         int policjaPosX = 400;
@@ -109,6 +111,8 @@ namespace Zold.Screens.Implemented.Map
 
         Rectangle bounds; //camera bounds 
 
+        Content.SpriteBatchSpriteSheet animManager;
+
         public MapManager()
         {
 
@@ -121,6 +125,9 @@ namespace Zold.Screens.Implemented.Map
             canMoveLeft = true;
             canMoveRight = true;
             canMoveUp = true;
+
+            //postac = Assets.Instance.Get("graphic/characters/main");
+           // animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, postac, 4, 3, postac.Width, postac.Height);
 
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
@@ -159,6 +166,7 @@ namespace Zold.Screens.Implemented.Map
 
             pos = new Vector2(10, 10);
             player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f);
+            
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
@@ -185,8 +193,11 @@ namespace Zold.Screens.Implemented.Map
             Console.WriteLine("szerokosc mapy 1: " + map.Width);
             Console.WriteLine("wysookosc mapy 1: " + map.Height);
 
+            animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, player.texture, 4, 3, player.texture.Width, player.texture.Height);
 
+            animManager.MakeAnimation(1, "one", 3);
         }
+
 
         public override void UnloadContent()
         {
@@ -204,18 +215,30 @@ namespace Zold.Screens.Implemented.Map
             drawTiles(1, currentMap);
             drawTiles(0, currentMap);
 
+
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsX: "+bounds.X.ToString(), new Vector2(10, 70), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsY: "+bounds.Y.ToString(), new Vector2(10, 110), Color.White);
 
+            //animManager.Draw(player.GetPosition(), 1, 1);
+            
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(location3punk, new Rectangle(0, 0, 802, 580), kolorPow2);
             gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(550,16, 250,32), wht);
+
+            //hpbar
+            if (gameScreenManager.IsFullScreenOn)
+            {
+                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300, 16, 250, 32), wht);
+            }
+            else
+            {
+                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(550, 16, 250, 32), wht);
+            }
             //wiezowiec 2
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
@@ -246,7 +269,17 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
-            moveCamera(128,128,650,352);
+            
+            if (gameScreenManager.IsFullScreenOn)
+            {
+                moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256);
+            }
+            else
+            {
+                moveCamera(128, 128, 650, 352); /// trub okienkowy
+            }
+
+
             if (!songStart)
             {
                 MediaPlayer.Play(currentSong);
@@ -255,7 +288,9 @@ namespace Zold.Screens.Implemented.Map
             
             KeyboardEvents();
             checkIfColide();
-            dontGoOutsideMap();
+
+           dontGoOutsideMap();
+            
             if (!isPaused)
             {
                 player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown);
@@ -321,8 +356,20 @@ namespace Zold.Screens.Implemented.Map
 
         void dontGoOutsideMap()
         {
+            int sh;
+            int sw;
+            if (gameScreenManager.IsFullScreenOn)
+            {
+                sh = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                sw = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            }
+            else
+            {
+                sh = screenHeight;
+                sw = screenWdth;
+            }
 
-            if(player.GetPosition().X <= 0)
+            if (player.GetPosition().X <= 0)
             {
                 canMoveLeft = false;
             }
@@ -332,11 +379,11 @@ namespace Zold.Screens.Implemented.Map
                 canMoveUp = false;
             }
 
-            if (player.GetPosition().Y +player.texture.Height > screenHeight && bounds.Y < -800)
+            if (player.GetPosition().Y +player.texture.Height >sh)
             {
                 canMoveDown = false;
             }
-            if (player.GetPosition().X + player.texture.Width >= screenWdth && bounds.X < -1440)
+            if (player.GetPosition().X + player.texture.Width >= sw )
             {
                 canMoveRight = false;
             }
@@ -387,7 +434,20 @@ namespace Zold.Screens.Implemented.Map
             int mapWidth = map.Width*32;
             int mapHeight = map.Height*32;
 
-            
+            int sh;
+            int sw;
+            if (gameScreenManager.IsFullScreenOn)
+            {
+                sh = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
+                sw = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+            }
+            else
+            {
+                sh = screenHeight;
+                sw = screenWdth;
+            }
+
+
             KeyboardState keyState = Keyboard.GetState();
 
             int scrollx = 0, scrolly = 0;
@@ -396,7 +456,7 @@ namespace Zold.Screens.Implemented.Map
             //   scrollx = cumSpeed;
 
             //right border
-            if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right) && bounds.X - screenWdth> -1*mapWidth)
+            if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right) && bounds.X - sw> -1*mapWidth)
             {
                 //   canMoveRight = false;
                 getColideObjects(map,0);
@@ -412,7 +472,7 @@ namespace Zold.Screens.Implemented.Map
                 player.SetPosition(player.GetPosition().X + 7, player.GetPosition().Y);
             }
 
-            if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down) && bounds.Y - screenHeight > -1 * mapHeight)
+            if (player.GetPosition().Y > dolny && keyState.IsKeyDown(Keys.Down) && bounds.Y - sh > -1 * mapHeight)
             {
                 //   canMoveRight = false;
                 getColideObjects(map,0);
@@ -450,7 +510,6 @@ namespace Zold.Screens.Implemented.Map
             }
             else isEscPressed = false;
         }
-
 
 
         void ManageLocations()
@@ -503,7 +562,6 @@ namespace Zold.Screens.Implemented.Map
                     location2 = false;
                     location3 = true;
 
-
                 }
 
                 //if (player.GetPosition().X < 0)   /// do lasu
@@ -538,8 +596,7 @@ namespace Zold.Screens.Implemented.Map
                     //    songStart = false;
                     //}
                 }
-
-
+          
                 if (player.GetPosition().X + player.Width >= 800)    /// do lasu
                 {
                     bacgrund = Color.Green;
@@ -563,7 +620,6 @@ namespace Zold.Screens.Implemented.Map
 
                     pos.X = 650;
                     //   pos.Y = 290;
-
 
 
                     location1 = false;
