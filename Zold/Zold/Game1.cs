@@ -13,7 +13,6 @@ namespace Zold
     {
         public GraphicsDeviceManager graphics;
         GameScreenManager gameScreenManager;
-        ContentLoader contentLoader;
 
         public Game1()
         {
@@ -23,7 +22,6 @@ namespace Zold
 
         protected override void Initialize()
         {
-            contentLoader = new ContentLoader(this, Content);
             base.Initialize();
 
             IsMouseVisible = true;
@@ -32,8 +30,6 @@ namespace Zold
 
         protected override void LoadContent()
         {
-            contentLoader.LoadLocation("menu");
-            contentLoader.LoadLocation("placeholders");
             gameScreenManager = new GameScreenManager(this);
            // gameScreenManager.InsertScreen(new Screens.Implemented.SplashScreen());
            // gameScreenManager.InsertScreen(new Screens.Implemented.Map.MapManager());

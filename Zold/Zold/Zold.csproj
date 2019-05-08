@@ -55,6 +55,7 @@
     <Compile Include="Screens\Implemented\Combat\Mob.cs" />
     <Compile Include="Screens\Implemented\Combat\Player.cs" />
     <Compile Include="Screens\Implemented\MenuScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\PauseScreen.cs" />
     <Compile Include="Screens\Implemented\SplashScreen.cs" />
     <Compile Include="Utilities\Animation.cs" />
     <Compile Include="Utilities\Assets.cs" />

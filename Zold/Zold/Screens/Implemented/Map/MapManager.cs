@@ -9,7 +9,6 @@ using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Utilities;
-using Content;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -73,8 +72,6 @@ namespace Zold.Screens.Implemented.Map
         Texture2D skeletonTex;
         Texture2D ratTex;
         Texture2D line;
-
-
         Texture2D postac;
 
         //budynki
@@ -94,13 +91,14 @@ namespace Zold.Screens.Implemented.Map
         Enemy enemy;
 
         //bools
+        bool wasPaused = false;
         bool songStart = false;
         bool displayed = false;
         bool location1;
         bool location2;
         bool location3;
         bool isPaused = false;
-        bool isEscPressed = false;
+        private bool isEscPressed = false;
         bool disp = false; // is message displayed?
         bool drawed = false;
         bool canMoveLeft;
@@ -120,12 +118,15 @@ namespace Zold.Screens.Implemented.Map
         int playerWidth = 32;
         int playerHeight = 48;
 
+        TimeSpan PauseCooldown;
+
         public MapManager()
         {
 
             //map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
         }
 
+        #region init
         public override void LoadContent()
         {
             canMoveDown = true;
@@ -136,15 +137,17 @@ namespace Zold.Screens.Implemented.Map
             //postac = Assets.Instance.Get("graphic/characters/main");
            // animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, postac, 4, 3, postac.Width, postac.Height);
 
+            PauseCooldown = new TimeSpan(0, 0, 0, 500);
+
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
-            powiedzonka.Add("Nie widzisz, ze jestem zajety");
+            powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
             powiedzonka.Add("Elo");
             powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
             powiedzonka.Add("Ruchasz sie?");
-            //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/location2backgrund");
-            // location3punk = gameScreenManager.Content.Load<Texture2D>("placeholders/location32");
-
+            //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
+           // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
+  
             // loading music
             bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
             combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
@@ -188,9 +191,6 @@ namespace Zold.Screens.Implemented.Map
             enemies = new List<Combat.Enemy>();
 
             combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight));
-            //stare
-            //combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
-
 
             skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
             rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
@@ -211,13 +211,13 @@ namespace Zold.Screens.Implemented.Map
             //animManager.MakeAnimation(1, "one", 3);
         }
 
-
         public override void UnloadContent()
         {
-            throw new NotImplementedException();
+            Assets.Instance.Remove("placeholders");
         }
+        #endregion
 
-
+        #region drawupdate
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
@@ -322,7 +322,6 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
         }
-
 
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
 
@@ -524,17 +523,38 @@ namespace Zold.Screens.Implemented.Map
         {
             if (Keyboard.GetState().IsKeyDown(Keys.Escape))
             {
-                if (!isEscPressed)
+                player.move(player.Width, player.Height, true);
+                bacgrund = Color.Green;
+                ManageLocations();
+                if (cyber)
                 {
-                    isPaused = !isPaused;
-                    isEscPressed = true;
+                    enemy.AI(gameTime);
                 }
+            }
+            else
+            {
+                gameScreenManager.InsertScreen(new PauseScreen());
+                isPaused = false;
             }
             else isEscPressed = false;
         }
+        #endregion
 
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
+        {
+            if(keyboardState.IsKeyDown(Keys.Escape) && !pressed) 
+            {
+                pressed = true;
+                isPaused = !isPaused;
+                //Debug.WriteLine(isPaused ? "paused" : "unpaused");
+            }else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
+            {
+                pressed = false;
+            }
+        }
 
-        void ManageLocations()
+        #region managelocations
+        void ManageLocations() 
         {
             if (location1)
             {
@@ -650,6 +670,7 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
         }
+        #endregion
 
 
 
@@ -684,6 +705,16 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
         }
+
+        /*private void CalculatePause(GameTime gameTime)
+        {
+            this.PauseCooldown -= new TimeSpan(0,0,0,gameTime.ElapsedGameTime.Milliseconds);
+            if (PauseCooldown <= TimeSpan.Zero)
+            {
+                Debug.WriteLine("Halo salut");
+                wasPaused = false;
+            }
+        }*/
 
     }
 }

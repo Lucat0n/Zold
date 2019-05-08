@@ -8,6 +8,7 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
 using Zold.Utilities;
+using Zold.Screens.Implemented;
 
 namespace Zold.Screens
 {
@@ -15,8 +16,8 @@ namespace Zold.Screens
     {
         #region zmienne
         private bool isFullScreenOn = false;
-        private bool isStackModified = true;
         private ContentManager content;
+        private ContentLoader contentLoader;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
         private List<GameScreen> ScreenList = new List<GameScreen>();
@@ -61,6 +62,8 @@ namespace Zold.Screens
         {
             get { return spriteBatch; }
         }
+
+        internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
         #endregion
 
         #region init
@@ -70,13 +73,15 @@ namespace Zold.Screens
             content = game.Content;
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
+            ContentLoader = new ContentLoader(game, Content);
             this.LoadContent();
         }
 
         protected override void LoadContent()
         {
-            spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
-            blank = Assets.Instance.Get("placeholders/Textures/blank");
+            LoadAssets("screenManager");
+            //spriteFont = Assets.Instance.Get("placeholders/Fonts/dialog");
+            blank = Assets.Instance.Get("screenManager/Textures/blank");
 
             foreach(GameScreen screen in ScreenList)
             {
@@ -110,20 +115,8 @@ namespace Zold.Screens
         public override void Draw(GameTime gameTime)
         {
             graphics.IsFullScreen = isFullScreenOn;
-            //graphics.ApplyChanges();
             ScreensToDraw.Clear();
             ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
-            /*if (isStackModified)
-            {
-                //Screens
-                GameScreen temp;
-                 do
-                {
-                    temp = ScreenStack.Peek();
-                    ScreensToDraw.Push(ScreenStack.Pop());
-                } while (temp.IsTransparent);
-                isStackModified = false;
-            }*/
             foreach (GameScreen gameScreen in ScreensToDraw)
                 gameScreen.Draw(gameTime);
         }
@@ -146,20 +139,30 @@ namespace Zold.Screens
         }
 
         #region public
+        public void LoadAssets(string name)
+        {
+            contentLoader.LoadLocation(name);
+        }
+
         public void InsertScreen(GameScreen gameScreen)
         {
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
             ScreenList.Add(gameScreen);
-            //isStackModified = true;
         }
 
         public void RemoveScreen(GameScreen gameScreen)
         {
-            //if(!gameScreen.IsTransparent)
-                //isStackModified = true;
             ScreensToDraw.Remove(gameScreen);
             ScreenList.Remove(gameScreen);
+            gameScreen.UnloadContent();
+        }
+
+        public void GoToMenu()
+        {
+            UnloadContent();
+            ScreenList.Clear();
+            InsertScreen(new MenuScreen());
         }
 
         public void DarkenScreen()

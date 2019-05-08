@@ -53,15 +53,23 @@ namespace Zold.Screens.Implemented
             }
         }
 
-        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
+        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
+        {
+            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
+            {
+                this.ScreenState = ScreenState.FadeOut;
+            }
+        }
 
         public override void LoadContent()
         {
-            splash = Assets.Instance.Get("placeholders/Textures/rzprod");
+            gameScreenManager.ContentLoader.LoadLocation("splash");
+            splash = Assets.Instance.Get("splash/Textures/rzprod");
         }
 
         public override void UnloadContent()
         {
+            gameScreenManager.ContentLoader.UnloadLocation("splash");
             splash.Dispose();
         }
     }
