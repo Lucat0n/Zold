@@ -4,7 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
-using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TiledSharp;
@@ -74,6 +73,7 @@ namespace Zold.Screens.Implemented.Map
         Texture2D skeletonTex;
         Texture2D ratTex;
         Texture2D line;
+
 
         Texture2D postac;
 
@@ -172,17 +172,25 @@ namespace Zold.Screens.Implemented.Map
             location3 = false;
 
             pos = new Vector2(10, 10);
+
             spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
             player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
             
+          //stare
+            //player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
-            enemy = new Map.Enemy(player, new Vector2(400, 300));
+
+            enemy = new Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
 
             enemies = new List<Combat.Enemy>();
+
             combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight));
+            //stare
+            //combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
+
 
             skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
             rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
