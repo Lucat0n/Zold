@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Utilities;
+using Content;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -64,11 +65,12 @@ namespace Zold.Screens.Implemented.Map
         Texture2D poww;
 
         //Combat
-        Zold.Screens.Implemented.Combat.CombatScreen Combat;
-        Zold.Screens.Implemented.Combat.Player combatPlayer;
-        Zold.Screens.Implemented.Combat.Enemy skeleton;
-        Zold.Screens.Implemented.Combat.Enemy rat;
-        List<Zold.Screens.Implemented.Combat.Enemy> enemies;
+        Combat.CombatScreen Combat;
+        Combat.Player combatPlayer;
+        Combat.Enemy skeleton;
+        Combat.Enemy rat;
+        List<Combat.Enemy> enemies;
+
         Texture2D skeletonTex;
         Texture2D ratTex;
         Texture2D line;
@@ -112,6 +114,11 @@ namespace Zold.Screens.Implemented.Map
         Rectangle bounds; //camera bounds 
 
         Content.SpriteBatchSpriteSheet animManager;
+        SpriteBatchSpriteSheet spriteSheet;
+
+        //measures
+        int playerWidth = 32;
+        int playerHeight = 48;
 
         public MapManager()
         {
@@ -165,7 +172,8 @@ namespace Zold.Screens.Implemented.Map
             location3 = false;
 
             pos = new Vector2(10, 10);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f);
+            spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
             
 
             enemy = new Map.Enemy(player, new Vector2(400, 300));
@@ -173,14 +181,11 @@ namespace Zold.Screens.Implemented.Map
 
             // Combat
 
-            enemies = new List<Zold.Screens.Implemented.Combat.Enemy>();
-            combatPlayer = new Zold.Screens.Implemented.Combat.Player(new Vector2(0, 200), 100, enemies);
-            combatPlayer.SetTexture(Assets.Instance.Get("placeholders/Textures/main"));
+            enemies = new List<Combat.Enemy>();
+            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight));
 
-            skeleton = new Zold.Screens.Implemented.Combat.Mob(combatPlayer, new Vector2(300, 300));
-            rat = new Zold.Screens.Implemented.Combat.Charger(combatPlayer, new Vector2(300, 400));
-            skeleton.SetTexture(Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
+            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
+            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
@@ -193,9 +198,9 @@ namespace Zold.Screens.Implemented.Map
             Console.WriteLine("szerokosc mapy 1: " + map.Width);
             Console.WriteLine("wysookosc mapy 1: " + map.Height);
 
-            animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, player.texture, 4, 3, player.texture.Width, player.texture.Height);
+           // animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, player.texture, 4, 3, player.texture.Width, player.texture.Height);
 
-            animManager.MakeAnimation(1, "one", 3);
+            //animManager.MakeAnimation(1, "one", 3);
         }
 
 
@@ -209,23 +214,29 @@ namespace Zold.Screens.Implemented.Map
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
+            
 
-           
 
             drawTiles(1, currentMap);
             drawTiles(0, currentMap);
-
-
+            //
+            //spriteSheet.Begin();
+            player.Animation(gameTime);
+            //spriteSheet.End();
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsX: "+bounds.X.ToString(), new Vector2(10, 70), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsY: "+bounds.Y.ToString(), new Vector2(10, 110), Color.White);
+            //// here is our maain character !
+            
+           // gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             //animManager.Draw(player.GetPosition(), 1, 1);
-            
+
             //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
             // gameScreenManager.SpriteBatch.Draw(location3punk, new Rectangle(0, 0, 802, 580), kolorPow2);
-            gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
+
+
 
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
@@ -264,6 +275,7 @@ namespace Zold.Screens.Implemented.Map
                 // gameScreenManager.SpriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
 
             }
+            
             gameScreenManager.SpriteBatch.End();
         }
 
@@ -325,7 +337,9 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    spriteSheet.Begin();
+                    spriteSheet.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    spriteSheet.End();
                 }
             }
         }
@@ -379,11 +393,11 @@ namespace Zold.Screens.Implemented.Map
                 canMoveUp = false;
             }
 
-            if (player.GetPosition().Y +player.texture.Height >sh)
+            if (player.GetPosition().Y +playerHeight >sh)
             {
                 canMoveDown = false;
             }
-            if (player.GetPosition().X + player.texture.Width >= sw )
+            if (player.GetPosition().X + playerWidth >= sw )
             {
                 canMoveRight = false;
             }
@@ -400,7 +414,7 @@ namespace Zold.Screens.Implemented.Map
             foreach (Rectangle tile in colisionTiles)
             {
               //  Console.WriteLine("tile: " + tile);
-                Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, player.texture.Width, player.texture.Height);
+                Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
 
                 if (ghost.Intersects(tile))
                 {

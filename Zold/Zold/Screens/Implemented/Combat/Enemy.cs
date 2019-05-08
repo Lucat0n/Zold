@@ -1,10 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -23,13 +18,15 @@ namespace Zold.Screens.Implemented.Combat
         public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
-        public float Height { get; set; }
+        public int Height { get; set; }
+        public int Width { get; set; }
 
 
-        public Enemy(Player player, Vector2 position)
+        public Enemy(Player player, Vector2 position, Texture2D texture)
         {
             this.player = player;
             this.position = position;
+            this.texture = texture;
 
             Damage = 5;
             Hp = 50;
@@ -52,15 +49,20 @@ namespace Zold.Screens.Implemented.Combat
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((position.X < point.X) && (position.X + 32 > point.X) &&
-                (position.Y < point.Y) && (position.Y + 48 > point.Y))
+            if ((position.X < point.X) && (position.X + Width > point.X) &&
+                (position.Y < point.Y) && (position.Y + Height > point.Y))
                 return true;
             return false;
         }
 
-        public void SetTexture(Texture2D texture)
+        public bool CheckBoxCollision(Vector2 point, int height, int width)
         {
-            this.texture = texture;
+            if (position.X < point.X + width &&
+                position.X + Width > point.X &&
+                position.Y < point.Y + height &&
+                position.Y + Height > point.Y)
+                return true;
+            return false;
         }
 
         public Texture2D GetTexture()
