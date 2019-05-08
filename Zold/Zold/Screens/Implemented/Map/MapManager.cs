@@ -4,8 +4,6 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using System.Collections.Generic;
-using System.Text;
-using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Utilities;
@@ -94,6 +92,7 @@ namespace Zold.Screens.Implemented.Map
         bool wasPaused = false;
         bool songStart = false;
         bool displayed = false;
+        bool pressed = false;
         bool location1;
         bool location2;
         bool location3;
@@ -111,7 +110,7 @@ namespace Zold.Screens.Implemented.Map
 
         Rectangle bounds; //camera bounds 
 
-        Content.SpriteBatchSpriteSheet animManager;
+        SpriteBatchSpriteSheet animManager;
         SpriteBatchSpriteSheet spriteSheet;
 
         //measures
@@ -129,6 +128,8 @@ namespace Zold.Screens.Implemented.Map
         #region init
         public override void LoadContent()
         {
+            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+
             canMoveDown = true;
             canMoveLeft = true;
             canMoveRight = true;
@@ -149,7 +150,6 @@ namespace Zold.Screens.Implemented.Map
            // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
   
             // loading music
-            bgMusic = Assets.Instance.Get("placeholders/Music/menu-music");
             combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
 
             currentSong = gameplayMusic;
@@ -306,7 +306,6 @@ namespace Zold.Screens.Implemented.Map
                 songStart = true;
             }
             
-            KeyboardEvents();
             checkIfColide();
 
            dontGoOutsideMap();
@@ -321,9 +320,12 @@ namespace Zold.Screens.Implemented.Map
                     enemy.AI(gameTime);
                 }
             }
+            else
+            {
+                gameScreenManager.InsertScreen(new Pause.PauseScreen());
+                isPaused = false;
+            }
         }
-
-        public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState) { }
 
         public void drawTiles(int layer, TmxMap map)
         {
@@ -519,25 +521,6 @@ namespace Zold.Screens.Implemented.Map
             bounds.Y += scrolly;
         }
 
-        private void KeyboardEvents()
-        {
-            if (Keyboard.GetState().IsKeyDown(Keys.Escape))
-            {
-                player.move(player.Width, player.Height, true);
-                bacgrund = Color.Green;
-                ManageLocations();
-                if (cyber)
-                {
-                    enemy.AI(gameTime);
-                }
-            }
-            else
-            {
-                gameScreenManager.InsertScreen(new PauseScreen());
-                isPaused = false;
-            }
-            else isEscPressed = false;
-        }
         #endregion
 
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
@@ -671,9 +654,7 @@ namespace Zold.Screens.Implemented.Map
             }
         }
         #endregion
-
-
-
+        
         public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy)
         {
 
