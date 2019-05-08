@@ -16,6 +16,18 @@
 #begin Content.mgcb
 /copy:Content.mgcb
 
+#begin graphic/characters/main.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/characters/main.png
+
 #begin magecity.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -287,6 +299,18 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/dymek.gif
 
+#begin placeholders/Textures/dymek.gif
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/dymek.gif
+
 #begin placeholders/Textures/fox.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -419,7 +443,7 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/wallace.png
 
-#begin placeholders/Textures/zold.png
+#begin placeholders/Textures/single-hpbar.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -429,7 +453,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:placeholders/Textures/zold.png
+/build:placeholders/Textures/single-hpbar.png
+
+#begin placeholders/Textures/skeleton.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/skeleton.png
 
 #begin screenManager/Textures/blank.png
 /importer:TextureImporter
