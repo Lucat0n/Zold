@@ -52,7 +52,5 @@ namespace Zold.Screens.Implemented.Combat
                 player.Hp -= Damage;
             attackTimer.Enabled = false;
         }
-
-
     }
 }
