@@ -46,7 +46,10 @@ namespace Zold.Screens.Implemented.Combat
             }
         }
 
-        public override void LoadContent() { }
+        public override void LoadContent()
+        {
+            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+        }
 
         public override void Draw(GameTime gameTime)
         {
@@ -84,6 +87,9 @@ namespace Zold.Screens.Implemented.Combat
             player.Controls();
         }
 
-        public override void UnloadContent() { }
+        public override void UnloadContent()
+        {
+            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+        }
     }
 }
