@@ -302,7 +302,7 @@ namespace Zold.Screens.Implemented.Map
 
             if (!songStart)
             {
-                MediaPlayer.Play(currentSong);
+                //MediaPlayer.Play(currentSong);
                 songStart = true;
             }
             

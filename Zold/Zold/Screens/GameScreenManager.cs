@@ -18,6 +18,7 @@ namespace Zold.Screens
         private bool isFullScreenOn = false;
         private ContentManager content;
         private ContentLoader contentLoader;
+        private float masterVolume = 1.0f;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
         private List<GameScreen> ScreenList = new List<GameScreen>();
@@ -41,6 +42,11 @@ namespace Zold.Screens
         public ContentManager Content
         {
             get { return content; }
+        }
+        public float MasterVolume
+        {
+            get { return masterVolume; }
+            set { masterVolume = value; }
         }
         public GraphicsDeviceManager Graphics
         {
