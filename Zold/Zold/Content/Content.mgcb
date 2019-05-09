@@ -299,18 +299,6 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/dymek.gif
 
-#begin placeholders/Textures/dymek.gif
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:placeholders/Textures/dymek.gif
-
 #begin placeholders/Textures/fox.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -322,6 +310,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/fox.png
+
+#begin placeholders/Textures/hpbars.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/hpbars.png
 
 #begin placeholders/Textures/line.png
 /importer:TextureImporter
@@ -419,30 +419,6 @@
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/sct.png
 
-#begin placeholders/Textures/skeleton.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:placeholders/Textures/skeleton.png
-
-#begin placeholders/Textures/wallace.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:placeholders/Textures/wallace.png
-
 #begin placeholders/Textures/single-hpbar.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -466,6 +442,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/skeleton.png
+
+#begin placeholders/Textures/wallace.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/wallace.png
 
 #begin screenManager/Textures/blank.png
 /importer:TextureImporter

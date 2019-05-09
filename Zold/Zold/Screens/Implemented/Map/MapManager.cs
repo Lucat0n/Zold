@@ -100,12 +100,15 @@ namespace Zold.Screens.Implemented.Map
 
         SpriteBatchSpriteSheet animManager;
         SpriteBatchSpriteSheet spriteSheet;
+        SpriteBatchSpriteSheet spriteSheetHP;
 
         //measures
         int playerWidth = 32;
         int playerHeight = 48;
 
         TimeSpan PauseCooldown;
+
+        int hp;
 
         public MapManager(){}
 
@@ -118,6 +121,8 @@ namespace Zold.Screens.Implemented.Map
             canMoveLeft = true;
             canMoveRight = true;
             canMoveUp = true;
+
+            hp = 100;
 
             PauseCooldown = new TimeSpan(0, 0, 0, 500);
 
@@ -156,9 +161,11 @@ namespace Zold.Screens.Implemented.Map
             pos = new Vector2(10, 10);
 
             spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
-            
-            //stare
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet, hp);
+
+            //hpbar 
+            spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250,32);
+           // hpbar = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
             //player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
             enemy = new Enemy(player, new Vector2(400, 300));
@@ -195,8 +202,6 @@ namespace Zold.Screens.Implemented.Map
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
             
-
-
             drawTiles(1, currentMap);
             drawTiles(0, currentMap);
 
@@ -215,11 +220,13 @@ namespace Zold.Screens.Implemented.Map
             //hpbar
             if (gameScreenManager.IsFullScreenOn)
             {
-                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300, 16, 250, 32), wht);
+                int posY= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300;
+                player.AnimateHealth(gameTime, spriteSheetHP, posY);
             }
             else
             {
-                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(550, 16, 250, 32), wht);
+                //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/hpbar"), new Rectangle(550, 16, 250, 32), wht);
+                player.AnimateHealth(gameTime, spriteSheetHP,550);
             }
 
             //wiezowiec 2
