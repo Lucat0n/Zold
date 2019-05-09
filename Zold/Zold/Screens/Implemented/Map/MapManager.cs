@@ -37,11 +37,8 @@ namespace Zold.Screens.Implemented.Map
         int tilesetTilesHigh;
 
         // here is dope music
-        Song menuMusic;
-        Song gameplayMusic;
-        Song currentSong;
+        SoundEffect currentSong;
         SoundEffect bgMusic;
-        SoundEffect combatMusic;
 
         //spritefonts
         SpriteFont dialog;
@@ -56,9 +53,6 @@ namespace Zold.Screens.Implemented.Map
         //ramka na tekst
         Texture2D dotekstu;
         Texture2D dymek;
-        //tla (nie uzywane)
-        Texture2D location3punk;
-        Texture2D poww;
 
         //Combat
         Combat.CombatScreen Combat;
@@ -66,11 +60,6 @@ namespace Zold.Screens.Implemented.Map
         Combat.Enemy skeleton;
         Combat.Enemy rat;
         List<Combat.Enemy> enemies;
-
-        Texture2D skeletonTex;
-        Texture2D ratTex;
-        Texture2D line;
-        Texture2D postac;
 
         //budynki
         Texture2D policja;
@@ -91,7 +80,6 @@ namespace Zold.Screens.Implemented.Map
         //bools
         bool wasPaused = false;
         bool songStart = false;
-        bool displayed = false;
         bool pressed = false;
         bool location1;
         bool location2;
@@ -112,6 +100,7 @@ namespace Zold.Screens.Implemented.Map
 
         SpriteBatchSpriteSheet animManager;
         SpriteBatchSpriteSheet spriteSheet;
+        SpriteBatchSpriteSheet spriteSheetHP;
 
         //measures
         int playerWidth = 32;
@@ -119,11 +108,9 @@ namespace Zold.Screens.Implemented.Map
 
         TimeSpan PauseCooldown;
 
-        public MapManager()
-        {
+        int hp;
 
-            //map2 = new TmxMap(@"Content/placeholders/mapa3.tmx");
-        }
+        public MapManager(){}
 
         #region init
         public override void LoadContent()
@@ -135,24 +122,24 @@ namespace Zold.Screens.Implemented.Map
             canMoveRight = true;
             canMoveUp = true;
 
-            //postac = Assets.Instance.Get("graphic/characters/main");
-           // animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, postac, 4, 3, postac.Width, postac.Height);
+            hp = 100;
 
             PauseCooldown = new TimeSpan(0, 0, 0, 500);
 
             powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
             powiedzonka.Add("A ty tu czego?");
             powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
+            powiedzonka.Add("Jestem zajety");
+            powiedzonka.Add("Odejdz");
+            powiedzonka.Add("Do samochodu i do widzenia");
+            powiedzonka.Add("Ile razy sie zesrales? ");
+            powiedzonka.Add("Niech zyje wolny zold, precz z komuniom");
             powiedzonka.Add("Elo");
             powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
             powiedzonka.Add("Ruchasz sie?");
-            //poww = gameScreenManager.Content.Load<Texture2D>("placeholders/citybackgrund");
-           // cyberpunk = gameScreenManager.Content.Load<Texture2D>("placeholders/cyber2");
   
             // loading music
-            combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
-
-            currentSong = gameplayMusic;
+            //combatMusic = Assets.Instance.Get("placeholders/Music/kombat");
 
             //loading fonts
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
@@ -167,9 +154,6 @@ namespace Zold.Screens.Implemented.Map
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
 
-            currentSong = gameplayMusic;
-            //MediaPlayer.Play(currentSong);
-
             location1 = true;
             location2 = false;
             location3 = false;
@@ -177,11 +161,12 @@ namespace Zold.Screens.Implemented.Map
             pos = new Vector2(10, 10);
 
             spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
-            
-          //stare
-            //player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet, hp);
 
+            //hpbar 
+            spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250,32);
+           // hpbar = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
+            //player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
             enemy = new Enemy(player, new Vector2(400, 300));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
@@ -203,12 +188,6 @@ namespace Zold.Screens.Implemented.Map
             getColideObjects(map, 0);
             getColideObjects(map2,0);
 
-            Console.WriteLine("szerokosc mapy 1: " + map.Width);
-            Console.WriteLine("wysookosc mapy 1: " + map.Height);
-
-           // animManager = new Content.SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, player.texture, 4, 3, player.texture.Width, player.texture.Height);
-
-            //animManager.MakeAnimation(1, "one", 3);
         }
 
         public override void UnloadContent()
@@ -223,28 +202,17 @@ namespace Zold.Screens.Implemented.Map
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin();
             
-
-
             drawTiles(1, currentMap);
             drawTiles(0, currentMap);
-            //
-            //spriteSheet.Begin();
+
             player.Animation(gameTime);
-            //spriteSheet.End();
+
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsX: "+bounds.X.ToString(), new Vector2(10, 70), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "boundsY: "+bounds.Y.ToString(), new Vector2(10, 110), Color.White);
-            //// here is our maain character !
             
            // gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
-
-            //animManager.Draw(player.GetPosition(), 1, 1);
-
-            //gameScreenManager.SpriteBatch.Draw(poww, new Rectangle(0, 0, 802, 580), kolorPow);
-            // gameScreenManager.SpriteBatch.Draw(location3punk, new Rectangle(0, 0, 802, 580), kolorPow2);
-
-
 
             ///budunek policji
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
@@ -252,12 +220,15 @@ namespace Zold.Screens.Implemented.Map
             //hpbar
             if (gameScreenManager.IsFullScreenOn)
             {
-                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300, 16, 250, 32), wht);
+                int posY= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300;
+                player.AnimateHealth(gameTime, spriteSheetHP, posY);
             }
             else
             {
-                gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/single-hpbar"), new Rectangle(550, 16, 250, 32), wht);
+                //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/hpbar"), new Rectangle(550, 16, 250, 32), wht);
+                player.AnimateHealth(gameTime, spriteSheetHP,550);
             }
+
             //wiezowiec 2
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
@@ -268,20 +239,18 @@ namespace Zold.Screens.Implemented.Map
                 gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
 
                 displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX + bounds.X, advenPosY + bounds.Y);
-
             }
 
             if (location3)
             {
                 currentMap = map2;
-                // przeciwnik - DOSKOZZZA
+                // przeciwnik
                 gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), Color.White);
             }
             if (isPaused)
             {
                 //gameScreenManager.SpriteBatch.Draw(blank, new Rectangle(0, 0, GraphicsDevice.Viewport.Width, GraphicsDevice.Viewport.Height), Color.White * 0.5f);
                 // gameScreenManager.SpriteBatch.Draw(quitButton, quitButtonRectangle, quitButtonColor);
-
             }
             
             gameScreenManager.SpriteBatch.End();
@@ -299,16 +268,15 @@ namespace Zold.Screens.Implemented.Map
                 moveCamera(128, 128, 650, 352); /// trub okienkowy
             }
 
-
-            if (!songStart)
-            {
-                //MediaPlayer.Play(currentSong);
-                songStart = true;
-            }
+            //if (!songStart)
+            //{
+            //    MediaPlayer.Play(currentSong);
+            //    songStart = true;
+            //}
             
             checkIfColide();
 
-           dontGoOutsideMap();
+            dontGoOutsideMap();
             
             if (!isPaused)
             {
@@ -372,7 +340,6 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
-
                 }
             }
         }
@@ -475,9 +442,6 @@ namespace Zold.Screens.Implemented.Map
 
             int scrollx = 0, scrolly = 0;
 
-            //  if (keyState.IsKeyDown(Keys.Left))
-            //   scrollx = cumSpeed;
-
             //right border
             if (player.GetPosition().X > prawy && keyState.IsKeyDown(Keys.Right) && bounds.X - sw> -1*mapWidth)
             {
@@ -510,12 +474,6 @@ namespace Zold.Screens.Implemented.Map
                 scrolly = +7;
                 player.SetPosition(player.GetPosition().X, player.GetPosition().Y +7);
             }
-            //to 700 to ustawiona na sztywno prawa krawedz mapy
-
-            //    if (keyState.IsKeyDown(Keys.Up))
-            //       scrolly = cumSpeed;
-            //   if (keyState.IsKeyDown(Keys.Down))
-            //       scrolly = -cumSpeed;
 
             bounds.X += scrollx;
             bounds.Y += scrolly;
@@ -554,19 +512,6 @@ namespace Zold.Screens.Implemented.Map
                     location2 = true;
                     location3 = false;
                 }
-
-                //if (player.GetPosition().X < 0)
-                //{
-                //    kolorPow2 = Color.White;
-                //    kolorPow = Color.White * 0;
-                //    wht = Color.White * 0;
-
-                //    player.SetPosition(615, player.GetPosition().Y);
-
-                //    location1 = false;
-                //    location2 = false;
-                //    location3 = true;
-                //}
             }
 
             if (location2)
@@ -588,20 +533,6 @@ namespace Zold.Screens.Implemented.Map
                     location3 = true;
 
                 }
-
-                //if (player.GetPosition().X < 0)   /// do lasu
-                //{
-                //    kolorPow = Color.Wheat * 0;
-                //    bacgrund = Color.Green;
-                //    kolorPow2 = Color.White * 0;
-                //    wht = Color.White;
-
-                //    player.SetPosition(615, player.GetPosition().Y);
-
-                //    location1 = true;
-                //    location2 = false;
-                //    location3 = false;
-                //}
             }
 
             if (location3)
@@ -609,8 +540,7 @@ namespace Zold.Screens.Implemented.Map
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
-                    //CHANGE STATE TO COMBAT HEEREEEE
-
+                    //CHANGE STATE TO COMBAT
                     gameScreenManager.RemoveScreen(this);
                     gameScreenManager.InsertScreen(Combat);
 
@@ -627,8 +557,9 @@ namespace Zold.Screens.Implemented.Map
                     bacgrund = Color.Green;
                     kolorPow2 = Color.White * 0;
                     wht = Color.White;
+
                     pos.X = 15;
-                    //pos.Y = 2;
+
                     player.SetPosition(15, player.GetPosition().Y);
 
                     location1 = true;
@@ -644,9 +575,7 @@ namespace Zold.Screens.Implemented.Map
                     wht = Color.Wheat * 0;
 
                     pos.X = 650;
-                    //   pos.Y = 290;
-
-
+  
                     location1 = false;
                     location2 = true;
                     location3 = false;
@@ -679,7 +608,6 @@ namespace Zold.Screens.Implemented.Map
                 {
                     //var random = new Random();
                     //index = random.Next(powiedzonka.Count);
-
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
                     gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], new Vector2(145, 425), Color.White);
 

@@ -23,7 +23,9 @@ namespace Zold.Screens.Implemented.Map
         public string Direction { get; private set; }
         public bool isMoving;
 
-        public Player(Vector2 position, Texture2D texture, float sped, SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
+        public int hp;
+
+        public Player(Vector2 position, Texture2D texture, float sped, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int hp)
         {
             this.texture = texture;
             this.position = position;
@@ -37,7 +39,7 @@ namespace Zold.Screens.Implemented.Map
             SpriteBatchSpriteSheet.MakeAnimation(1, "right", 250);
             SpriteBatchSpriteSheet.MakeAnimation(2, "down", 250);
             SpriteBatchSpriteSheet.MakeAnimation(0, "up", 250);
-
+            this.hp = hp;
             isMoving = false;
         }
 
@@ -109,6 +111,14 @@ namespace Zold.Screens.Implemented.Map
                 }
             }
             //SpriteBatchSpriteSheet.Draw(GetPosition(), 3, 0);
+            SpriteBatchSpriteSheet.End();
+        }
+
+        public void AnimateHealth(GameTime gameTime, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int posY)
+        {
+            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Draw(new Vector2(posY, 16), 100-hp ,0);
+
             SpriteBatchSpriteSheet.End();
         }
 
