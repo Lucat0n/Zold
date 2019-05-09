@@ -25,10 +25,16 @@ namespace Zold.Screens.Implemented.Pause
             main
         }
         private PauseState pauseState = PauseState.main;
+        private bool isAdjustingMusic = false;
+        private bool[] isCountDownActive = { false, false };
+        private bool isCountDownComplete = false;
         private bool isDownPressed = false;
         private bool isEnterPressed = false;
         private bool isEscPressed = false;
+        private bool isLeftPressed = false;
+        private bool isRightPressed = false;
         private bool isUpPressed = false;
+        private byte masterVolume;
         private Rectangle cursorPos;
         private Rectangle mainWindow;
         private Rectangle secondaryWindow;
@@ -36,6 +42,7 @@ namespace Zold.Screens.Implemented.Pause
         private readonly String[] mainOptions = new String[]{"Rzeczy", "Itemki", "Zdolnosci", "Mapa", "Opcje"};
         private readonly String[] options = new String[]{"Pelny ekran", "Glosnosc muzyki", "Glosnosc efektow", "Wyjscie"};
         private TimeSpan cooldown;
+        private TimeSpan buttonBlock;
         private SByte index = 0;
         private SByte optionsIndex = 0;
         #endregion
@@ -72,8 +79,19 @@ namespace Zold.Screens.Implemented.Pause
                 case (PauseState.options):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     for (int i = 0; i < options.Count(); i++)
+                    {
                         gameScreenManager.SpriteBatch.DrawString(font, options[i], new Vector2(secondaryWindow.X + (secondaryWindow.Width / 6), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4) * i), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
-                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
+                        if (i == 1)
+                        {
+                            gameScreenManager.SpriteBatch.DrawString(font, masterVolume.ToString(), new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4) * i), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
+                        }
+                    }
+                        
+                    if(!isAdjustingMusic)
+                        gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
+                    else
+                        gameScreenManager.SpriteBatch.DrawString(font, "___", new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4)), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
+
                     break;
             }
             gameScreenManager.SpriteBatch.End();
@@ -144,11 +162,16 @@ namespace Zold.Screens.Implemented.Pause
                     }
                     break;
                 case (PauseState.options):
-                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
                     {
                         isEscPressed = true;
-                        pauseState = PauseState.main;
+                        if (!isAdjustingMusic)
+                            pauseState = PauseState.main;
+                        else
+                            isAdjustingMusic = false;
                     }
+                    else if (keyboardState.IsKeyUp(Keys.Escape))
+                        isEscPressed = false;
                     if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
                     {
                         if (++optionsIndex > 3)
@@ -165,19 +188,67 @@ namespace Zold.Screens.Implemented.Pause
                     }
                     else if (keyboardState.IsKeyUp(Keys.Up))
                         isUpPressed = false;
-                    if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
+                    if (keyboardState.IsKeyDown(Keys.Left) && isAdjustingMusic)
+                    {
+                        if (!isCountDownActive[0])
+                        {
+                            isCountDownActive[0] = true;
+                            if (isAdjustingMusic && masterVolume > byte.MinValue)
+                                masterVolume--;
+                            gameScreenManager.MasterVolume = masterVolume * 0.01f;
+                        }
+                        if (isCountDownComplete && masterVolume > byte.MinValue)
+                            masterVolume--;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Left))
+                    {
+                        isLeftPressed = false;
+                        if (isCountDownActive[0])
+                        {
+                            isCountDownActive[0] = false;
+                            isCountDownComplete = false;
+                            buttonBlock = new TimeSpan(0, 0, 0, 0, 750);
+                        }
+                    }
+                    if (keyboardState.IsKeyDown(Keys.Right) && isAdjustingMusic)
+                    {
+                        if (!isCountDownActive[1])
+                        {
+                            isCountDownActive[1] = true;
+                            if (isAdjustingMusic && masterVolume < 100)
+                                masterVolume++;
+                        }
+                            
+                        if (isCountDownComplete && masterVolume < 100)
+                            masterVolume++;
+                        gameScreenManager.MasterVolume = masterVolume * 0.01f;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Right))
+                    {
+                        isRightPressed = false;
+                        if (isCountDownActive[1])
+                        {
+                            isCountDownActive[1] = false;
+                            isCountDownComplete = false;
+                            buttonBlock = new TimeSpan(0, 0, 0, 0, 750);
+                        }
+                    }    
+                    if (keyboardState.IsKeyDown(Keys.Enter))
                     {
                         switch (optionsIndex)
                         {
+                            case (1):
+                                isAdjustingMusic = true;
+                                break;
                             case (3):
                                 gameScreenManager.RemoveScreen(this);
                                 gameScreenManager.GoToMenu();
                                 break;
                         }
-                        isEnterPressed = true;
+                        isRightPressed = true;
                     }
-                    else if (keyboardState.IsKeyUp(Keys.Enter))
-                        isEnterPressed = false;
+                    else if (keyboardState.IsKeyUp(Keys.Right))
+                        isRightPressed = false;
                     break;
 
             }
@@ -187,6 +258,7 @@ namespace Zold.Screens.Implemented.Pause
         public override void LoadContent()
         {
             gameScreenManager.LoadAssets("pause");
+            masterVolume = (byte)(gameScreenManager.MasterVolume * 100);
         }
 
         public override void UnloadContent()
@@ -220,9 +292,19 @@ namespace Zold.Screens.Implemented.Pause
                 case (PauseState.options):
                     cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 10), 50 + (int)(secondaryWindow.Height / 8f) + (secondaryWindow.Height / 4) * optionsIndex, mainWindow.Width / 12, mainWindow.Width / 12);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
+                    if (isCountDownActive.Contains(true)) CountDown(gameTime);
                     break;
             }
                 
+        }
+
+        private void CountDown(GameTime gameTime)
+        {
+            buttonBlock -= new TimeSpan(0, 0, 0, 0, gameTime.ElapsedGameTime.Milliseconds);
+            if (buttonBlock <= TimeSpan.Zero)
+                isCountDownComplete = true;
+            else
+                isCountDownComplete = false;
         }
     }
 }
