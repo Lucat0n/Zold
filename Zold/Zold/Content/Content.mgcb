@@ -52,6 +52,13 @@
 #begin mapa3.tmx
 /copy:mapa3.tmx
 
+#begin menu/Fonts/dialog.spritefont
+/importer:FontDescriptionImporter
+/processor:FontDescriptionProcessor
+/processorParam:PremultiplyAlpha=True
+/processorParam:TextureFormat=Compressed
+/build:menu/Fonts/dialog.spritefont
+
 #begin menu/Music/menu-music.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -106,6 +113,18 @@
 /processorParam:TextureFormat=Color
 /build:menu/Textures/fscrIcon.png
 
+#begin menu/Textures/leftArrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menu/Textures/leftArrow.png
+
 #begin menu/Textures/optionsButton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -141,6 +160,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:menu/Textures/quitButton.png
+
+#begin menu/Textures/rightArrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:menu/Textures/rightArrow.png
 
 #begin menu/Textures/zold.png
 /importer:TextureImporter
