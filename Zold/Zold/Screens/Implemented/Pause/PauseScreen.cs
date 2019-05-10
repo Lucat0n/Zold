@@ -90,7 +90,7 @@ namespace Zold.Screens.Implemented.Pause
                     if(!isAdjustingMusic)
                         gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     else
-                        gameScreenManager.SpriteBatch.DrawString(font, "___", new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4)), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
+                        gameScreenManager.SpriteBatch.DrawString(font, new string('_', masterVolume.ToString().Length), new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4)), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
 
                     break;
             }
