@@ -20,6 +20,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void AI(GameTime gameTime)
         {
+            CalculateDepth();
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerDirection = CalcDirection(player.GetCenterPosition(), position);
 

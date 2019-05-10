@@ -33,8 +33,9 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void AI(GameTime gameTime)
         {
-            bottomPosition = new Vector2(position.X, position.Y + Height);
+            CalculateDepth();
             Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            bottomPosition = new Vector2(position.X, position.Y + Height);
             chargeSpeed = Speed * 10;
             playerDirection = CalcDirection(new Vector2(player.bottomPosition.X, player.bottomPosition.Y - Height), position);
 

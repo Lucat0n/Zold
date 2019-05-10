@@ -39,10 +39,13 @@ namespace Zold.Screens.Implemented.Combat
             if (enemies.Count == 0)
             {
                 combatState = "Wygrana";
+                gameScreenManager.RemoveScreen(this);
             }
             else if (player.Hp <= 0)
             {
                 combatState = "Przegrana";
+                gameScreenManager.RemoveScreen(this);
+                gameScreenManager.InsertScreen(new Map.MapManager());
             }
         }
 
@@ -64,17 +67,19 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.LayerDepth.ToString(), new Vector2(player.position.X, player.position.Y - 35), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
 
 
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition());
+                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, null, null, 0.0f, Vector2.Zero, null, SpriteEffects.None, enemy.LayerDepth);
 
                 //spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
                 //spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
 
-                gameScreenManager.SpriteBatch.DrawString(font, "bot.Y: " + enemy.bottomPosition.Y.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(font, "bot.Y: " + enemy.bottomPosition.Y.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 45), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.LayerDepth.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 25), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
             });

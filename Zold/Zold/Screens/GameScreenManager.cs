@@ -155,6 +155,7 @@ namespace Zold.Screens
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
             ScreenList.Add(gameScreen);
+            ScreensToDraw.Add(gameScreen);
         }
 
         public void RemoveScreen(GameScreen gameScreen)

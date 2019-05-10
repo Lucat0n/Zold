@@ -18,6 +18,7 @@ namespace Zold.Screens.Implemented.Combat
         public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
+        public float LayerDepth { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
 
@@ -28,6 +29,7 @@ namespace Zold.Screens.Implemented.Combat
             this.position = position;
             this.texture = texture;
 
+            LayerDepth = (position.Y - 100) / 350;
             Damage = 5;
             Hp = 50;
 
@@ -37,6 +39,14 @@ namespace Zold.Screens.Implemented.Combat
         public abstract void AI(GameTime gameTime);
 
         public abstract void Move();
+
+        public void CalculateDepth()
+        {
+            if (position.Y >= 450)
+                LayerDepth = 1.0f;
+            else
+                LayerDepth = (position.Y - 100) / 350;
+        }
 
         public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
         {
