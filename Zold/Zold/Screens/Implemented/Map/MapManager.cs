@@ -161,7 +161,7 @@ namespace Zold.Screens.Implemented.Map
             pos = new Vector2(10, 10);
 
             spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
-            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet, hp);
+            player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 32, spriteSheet, hp);
 
             //hpbar 
             spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250,32);
@@ -215,7 +215,7 @@ namespace Zold.Screens.Implemented.Map
            // gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
 
             ///budunek policji
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
+            //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/police"), new Rectangle(policjaPosX + bounds.X, policjaPosY + bounds.Y, policjaWidth + 50, policjaHeight + 20), wht);
 
             //hpbar
             if (gameScreenManager.IsFullScreenOn)
@@ -230,7 +230,7 @@ namespace Zold.Screens.Implemented.Map
             }
 
             //wiezowiec 2
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
+            //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/ralf"), new Rectangle(ralfX + bounds.X, ralfY + bounds.Y, ralfWidth, ralfHeight), kolorPow);
 
             //postacie
             if (location1)
@@ -280,7 +280,8 @@ namespace Zold.Screens.Implemented.Map
             
             if (!isPaused)
             {
-                player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown);
+                //player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown);
+                player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown, gameTime);
                 bacgrund = Color.Green;
                 ManageLocations();
                 if (location3)

@@ -39,51 +39,74 @@ namespace Zold.Screens.Implemented.Map
             SpriteBatchSpriteSheet.MakeAnimation(1, "right", 250);
             SpriteBatchSpriteSheet.MakeAnimation(2, "down", 250);
             SpriteBatchSpriteSheet.MakeAnimation(0, "up", 250);
+
             this.hp = hp;
             isMoving = false;
         }
 
-        public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown)
+        public void move2(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown)
         {
-           
-               // previous = current;
+            int speed = 32;
+
+                previous = current;
                 current = Keyboard.GetState();
 
-                if (canMoveRight && current.IsKeyDown(Keys.Right)  && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
+                if (current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Right))
+                    position.X += speed;
+
+                if (current.IsKeyDown(Keys.Up) && previous.IsKeyUp(Keys.Up))
+                    position.Y -= speed;
+
+                if (current.IsKeyDown(Keys.Down) && previous.IsKeyUp(Keys.Down))
+                    position.Y += speed;
+
+                if (current.IsKeyDown(Keys.Left) && previous.IsKeyUp(Keys.Left))
+                    position.X -= speed;
+
+                centerPosition = new Vector2(position.X + 16, position.Y + 24);
+        }
+
+        public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown, GameTime gameTime)
+        {
+                previous = current;
+                current = Keyboard.GetState();
+                //bool isMoving = false;
+                if (canMoveRight && current.IsKeyDown(Keys.Right)  && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down) && !isMoving )
                 {
                     position.X += speed;
                     Direction = "right";
                     isMoving = true;
+                    
+                    
                 }
 
-                else if (canMoveUp && current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
+                else if (canMoveUp && current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Up))
                 {
                     position.Y -= speed;
                     Direction = "up";
                     isMoving = true;
-
                 }
 
 
-            else if (canMoveDown && current.IsKeyDown(Keys.Down) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
+            else if (canMoveDown && current.IsKeyDown(Keys.Down) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right) && previous.IsKeyUp(Keys.Down))
             {
                 position.Y += speed;
                 Direction = "down";
                 isMoving = true;
-
             }
-            else if (canMoveLeft && current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
+
+            else if (canMoveLeft && current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down) && previous.IsKeyUp(Keys.Left))
             {
                 position.X -= speed;
                 Direction = "left";
                 isMoving = true;
-
             }
 
             else
             {
                 isMoving =false;
             }
+
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
             
         }
