@@ -57,12 +57,14 @@ namespace Zold.Screens.Implemented.Combat
                     position.Y -= Speed;
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = Direction ?? "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 position.Y += Speed;
                 attackTimer.Enabled = false;
                 Action = "Moving";
+                Direction = Direction ?? "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
