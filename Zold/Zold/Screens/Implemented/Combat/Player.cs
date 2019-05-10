@@ -34,6 +34,7 @@ namespace Zold.Screens.Implemented.Combat
 
             mapEdge = 150;
             Action = "";
+            Direction = "Right";
             Speed = 2;
 
             centerPosition = new Vector2(position.X + WIDTH/2, position.Y + HEIGHT/2);
@@ -57,14 +58,12 @@ namespace Zold.Screens.Implemented.Combat
                     position.Y -= Speed;
                 attackTimer.Enabled = false;
                 Action = "Moving";
-                Direction = Direction ?? "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
                 position.Y += Speed;
                 attackTimer.Enabled = false;
                 Action = "Moving";
-                Direction = Direction ?? "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {

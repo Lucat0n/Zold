@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -10,6 +11,13 @@ namespace Zold.Screens.Implemented
     {
         Texture2D splash;
         TimeSpan LifeTime = new TimeSpan(0, 0, 3);
+
+        //Combat
+        Combat.CombatScreen Combat;
+        Combat.Player combatPlayer;
+        Combat.Enemy skeleton;
+        Combat.Enemy rat;
+        List<Combat.Enemy> enemies;
 
         public SplashScreen()
         {
@@ -59,17 +67,33 @@ namespace Zold.Screens.Implemented
             {
                 this.ScreenState = ScreenState.FadeOut;
             }
+            if (Keyboard.GetState().IsKeyDown(Keys.F1))
+            {
+                gameScreenManager.RemoveScreen(this);
+                gameScreenManager.InsertScreen(Combat);
+            }
         }
 
         public override void LoadContent()
         {
             gameScreenManager.ContentLoader.LoadLocation("splash");
+            gameScreenManager.ContentLoader.LoadLocation("placeholders");
             splash = Assets.Instance.Get("splash/Textures/rzprod");
+
+            // Combat
+            enemies = new List<Combat.Enemy>();
+            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
+            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
+            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
+            enemies.Add(skeleton);
+            enemies.Add(rat);
+            Combat = new Combat.CombatScreen(combatPlayer, enemies);
         }
 
         public override void UnloadContent()
         {
             gameScreenManager.ContentLoader.UnloadLocation("splash");
+            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
             splash.Dispose();
         }
     }
