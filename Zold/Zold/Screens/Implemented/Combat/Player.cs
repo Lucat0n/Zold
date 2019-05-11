@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Timers;
 using Zold.Utilities;
+using Zold.Screens.Implemented.Combat.Enemies;
 
 namespace Zold.Screens.Implemented.Combat
 {

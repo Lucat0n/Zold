@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 
-namespace Zold.Screens.Implemented.Combat
+namespace Zold.Screens.Implemented.Combat.Enemies
 {
     abstract class Enemy
     {

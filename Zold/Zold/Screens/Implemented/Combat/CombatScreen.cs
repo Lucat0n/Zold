@@ -4,6 +4,7 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Zold.Utilities;
+using Zold.Screens.Implemented.Combat.Enemies;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -73,7 +74,7 @@ namespace Zold.Screens.Implemented.Combat
 
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, null, null, 0.0f, Vector2.Zero, null, SpriteEffects.None, enemy.LayerDepth);
+                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, null, null, 0.0f, null, null, SpriteEffects.None, enemy.LayerDepth);
 
                 //spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
                 //spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);

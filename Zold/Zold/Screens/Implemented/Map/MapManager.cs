@@ -57,9 +57,9 @@ namespace Zold.Screens.Implemented.Map
         //Combat
         Combat.CombatScreen Combat;
         Combat.Player combatPlayer;
-        Combat.Enemy skeleton;
-        Combat.Enemy rat;
-        List<Combat.Enemy> enemies;
+        Combat.Enemies.Enemy skeleton;
+        Combat.Enemies.Enemy rat;
+        List<Combat.Enemies.Enemy> enemies;
 
         //budynki
         Texture2D policja;
@@ -173,12 +173,12 @@ namespace Zold.Screens.Implemented.Map
 
             // Combat
 
-            enemies = new List<Combat.Enemy>();
+            enemies = new List<Combat.Enemies.Enemy>();
 
             combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight));
 
-            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
+            skeleton = new Combat.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
+            rat = new Combat.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
