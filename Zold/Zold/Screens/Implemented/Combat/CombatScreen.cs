@@ -77,7 +77,7 @@ namespace Zold.Screens.Implemented.Combat
 
             enemies.ForEach(enemy =>
             {
-                enemy.Animation();
+                enemy.Animation(gameTime);
 
                 #region debug-text
                 // Debug text

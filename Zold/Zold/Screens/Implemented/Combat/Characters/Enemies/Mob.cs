@@ -21,6 +21,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public override void AI(GameTime gameTime)
         {
             CalculateDepth();
+            CheckDirection();
             speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerDirection = CalcDirection(player.GetCenterPosition(), Position);
 
@@ -47,10 +48,23 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             Position.Y += playerDirection.Y * speed;
         }
 
-        public override void Animation()
+        public override void Animation(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
-            SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+
+            if (action == "Moving")
+            {
+                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
+            }
+            //else if (Action == "Idle")
+            else
+            {
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 3, 0);
+            }
+
             SpriteBatchSpriteSheet.End();
         }
 

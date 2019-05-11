@@ -18,6 +18,11 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
         public Charger(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
+            SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(1, "Left", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(3, "Death_Right", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(4, "Death_Left", 250);
+
             charge = false;
 
             cooldownTimer = new Timer();
@@ -32,6 +37,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public override void AI(GameTime gameTime)
         {
             CalculateDepth();
+            CheckDirection();
             speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             BottomPosition = new Vector2(Position.X, Position.Y + height);
             chargeSpeed = speed * 10;
@@ -72,10 +78,36 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
                 Position.Y += playerDirection.Y * speed;
         }
 
-        public override void Animation()
+        public override void Animation(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
-            SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+
+            if (action == "Moving")
+            {
+                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
+            }
+            else if (action == "Charging")
+            {
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 4, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 4, 1);
+            }
+            else if (action == "Preparing")
+            {
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 0, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+            }
+            else if (action == "Idle")
+            {
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 0, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+            }
+
             SpriteBatchSpriteSheet.End();
         }
 

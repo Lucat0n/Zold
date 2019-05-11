@@ -24,8 +24,6 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
         public abstract void Move();
 
-        public abstract void Animation();
-
         public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
         {
             Distance = Vector2.Distance(vector1, vector2);

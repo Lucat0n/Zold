@@ -13,9 +13,9 @@ namespace Zold.Screens.Implemented.Combat.Characters
         private Timer attackTimer;
         private List<Enemy> enemies;
 
-        public Player(Vector2 position, int Hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
+        public Player(Vector2 position, int hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
         {
-            this.hp = Hp;
+            this.hp = hp;
             this.enemies = enemies;
 
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
@@ -78,21 +78,21 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 Block();
         }
 
-        public void Animation(GameTime gameTime)
+        public override void Animation(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
 
             if (action == "Moving")
             {
-                SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), direction, gameTime);
+                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
             }
-            //else if (Action == "Idle")
+            //else if (action == "Idle")
             else
             {
                 if (direction == "Right")
-                    SpriteBatchSpriteSheet.Draw(GetPosition(), 1, 0);
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
                 if (direction == "Left")
-                    SpriteBatchSpriteSheet.Draw(GetPosition(), 3, 0);
+                    SpriteBatchSpriteSheet.Draw(Position, 3, 0);
             }
 
             SpriteBatchSpriteSheet.End();

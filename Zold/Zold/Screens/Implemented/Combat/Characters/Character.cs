@@ -7,6 +7,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
     abstract class Character
     {
         public Vector2 Position;
+        public Vector2 tempPosition;
         public Vector2 BottomPosition;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public float layerDepth { get; set; }
@@ -21,16 +22,17 @@ namespace Zold.Screens.Implemented.Combat.Characters
         public int height { get; set; }
         public int width { get; set; }
 
-        public Character(Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
+        public Character(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
-            this.Position = position;
+            this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
 
             this.height = height;
             this.width = width;
 
             CalculateDepth();
-            layerDepth = (position.Y - 100) / 350;
+            tempPosition = Position;
+            layerDepth = (Position.Y - 100) / 350;
             mapEdge = 150;
             rotation = 0.0f;
             scale = 1.0f;
@@ -40,12 +42,25 @@ namespace Zold.Screens.Implemented.Combat.Characters
             action = "Idle";
         }
 
+        public abstract void Animation(GameTime gameTime);
+
         public void CalculateDepth()
         {
             if (Position.Y >= 450)
                 layerDepth = 1.0f;
             else
                 layerDepth = (Position.Y - 100) / 350;
+        }
+
+        public void CheckDirection()
+        {
+            if (Position.X > tempPosition.X)
+                direction = "Right";
+            else if (Position.X < tempPosition.X)
+                direction = "Left";
+
+
+            tempPosition = Position;
         }
     }
 }
