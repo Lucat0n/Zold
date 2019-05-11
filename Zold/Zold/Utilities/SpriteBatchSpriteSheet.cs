@@ -17,6 +17,8 @@ namespace Zold.Utilities
 
         public int TextureHeightPixels { get; set; }
 
+        public float LayerDepth { get; set; }
+
         public int SpriteSheetWidth { get { return TextureWidthPixels * Cols; } }
 
         public int SpriteSheetHeight { get { return TextureHeightPixels * Rows; } }
@@ -39,9 +41,27 @@ namespace Zold.Utilities
                     Frames[i,j] = new Rectangle(j*textureWidthPixels, i*TextureHeightPixels, textureWidthPixels, textureHeightPixels);
         }
 
+        public SpriteBatchSpriteSheet(GraphicsDevice graphicsDevice, Texture2D spriteSheet, int rows, int cols, int textureWidthPixels, int textureHeightPixels, float layerDepth) : base(graphicsDevice)
+        {
+            SpriteSheet = spriteSheet;
+            Rows = rows;
+            Cols = cols;
+            TextureWidthPixels = textureWidthPixels;
+            TextureHeightPixels = textureHeightPixels;
+
+            Frames = new Rectangle[rows, cols];
+            for (int i = 0; i < rows; i++)
+                for (int j = 0; j < cols; j++)
+                    Frames[i, j] = new Rectangle(j * textureWidthPixels, i * TextureHeightPixels, textureWidthPixels, textureHeightPixels);
+        }
+
         public void Draw(Vector2 place, int x, int y)
         {
             base.Draw(SpriteSheet, place, Frames[x,y], Color.White);
+
+            Draw(SpriteSheet, place, null, Frames[x, y], null, 0.0f, null, null, SpriteEffects.None, LayerDepth);
+
+            Draw(SpriteSheet, place, Frames[x, y], Color.White, 0.0f, null, 0.0f, SpriteEffects.None, LayerDepth);
         }
 
         public void MakeAnimation(int rowNumber, String name, int time)
