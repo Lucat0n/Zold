@@ -6,6 +6,7 @@ using System.Linq;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.Characters;
 using Zold.Screens.Implemented.Combat.Characters.Enemies;
+using System;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -13,20 +14,27 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        SpriteFont font;
+        List<Character> objectsToRender;
         string combatState;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
-            font = Assets.Instance.Get("combat/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
+
+            objectsToRender = new List<Character>();
+            objectsToRender.Add(player);
+            objectsToRender.AddRange(enemies);
+ 
+
             combatState = "";
             IsTransparent = false;
         }
 
         public override void Update(GameTime gameTime)
         {
+            objectsToRender = objectsToRender.OrderBy(item => item.Position.Y).ToList();
+
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
@@ -36,12 +44,14 @@ namespace Zold.Screens.Implemented.Combat
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
+                objectsToRender.Remove(enemy);
             }
 
             if (enemies.Count == 0)
             {
                 combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
+                gameScreenManager.InsertScreen(new Map.MapManager());
             }
             else if (player.Hp <= 0)
             {
@@ -62,30 +72,12 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            player.Animation(gameTime);
+            objectsToRender.ForEach(item => {
+                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + item.Hp.ToString(), new Vector2(item.Position.X, item.Position.Y - 35), Color.Black);
+                item.Animation(gameTime);
+            }) ;
             
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
-
-            #region debug-text
-            // Debug text
-            gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
-            //gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.Position.Y.ToString(), new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
-            //gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.SpriteBatchSpriteSheet.LayerDepth.ToString(), new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
-            //gameScreenManager.SpriteBatch.DrawString(font, player.action, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
-            #endregion
-
-            enemies.ForEach(enemy =>
-            {
-                enemy.Animation(gameTime);
-
-                #region debug-text
-                // Debug text
-                gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
-                //gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.layerDepth.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
-                //gameScreenManager.SpriteBatch.DrawString(font, enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 15), Color.Black);
-                #endregion
-            });
 
             gameScreenManager.SpriteBatch.End();
         }
