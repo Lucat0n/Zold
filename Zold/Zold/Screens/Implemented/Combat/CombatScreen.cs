@@ -4,7 +4,8 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Zold.Utilities;
-using Zold.Screens.Implemented.Combat.Enemies;
+using Zold.Screens.Implemented.Combat.Characters;
+using Zold.Screens.Implemented.Combat.Characters.Enemies;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -17,7 +18,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
-            font = Assets.Instance.Get("placeholders/Fonts/dialog");
+            font = Assets.Instance.Get("combat/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
             combatState = "";
@@ -52,7 +53,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
-            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
         }
 
         public override void Draw(GameTime gameTime)
@@ -63,7 +64,7 @@ namespace Zold.Screens.Implemented.Combat
 
             player.Animation(gameTime);
             
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
 
             #region debug-text
             // Debug text
@@ -76,7 +77,7 @@ namespace Zold.Screens.Implemented.Combat
 
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, Color.White, enemy.Rotation, Vector2.Zero, enemy.Scale, SpriteEffects.None, enemy.LayerDepth);
+                enemy.Animation();
 
                 #region debug-text
                 // Debug text
@@ -96,7 +97,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void UnloadContent()
         {
-            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+            gameScreenManager.ContentLoader.UnloadLocation("combat");
         }
     }
 }

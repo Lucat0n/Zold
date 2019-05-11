@@ -1,8 +1,8 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
+using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.Enemies
+namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 {
     class Charger : Enemy
     {
@@ -16,11 +16,9 @@ namespace Zold.Screens.Implemented.Combat.Enemies
         private bool charge;
         private bool hit;
 
-        public Charger(Player player, Vector2 position, Texture2D texture) : base(player, position, texture)
+        public Charger(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
             charge = false;
-            Height = 20;
-            Width = 40;
 
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 2000;
@@ -72,6 +70,13 @@ namespace Zold.Screens.Implemented.Combat.Enemies
             position.X += playerDirection.X * Speed;
             if (bottomPosition.Y >= player.mapEdge)
                 position.Y += playerDirection.Y * Speed;
+        }
+
+        public override void Animation()
+        {
+            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Draw(position, 1, 0);
+            SpriteBatchSpriteSheet.End();
         }
 
         private void Prepare(object source, ElapsedEventArgs e)

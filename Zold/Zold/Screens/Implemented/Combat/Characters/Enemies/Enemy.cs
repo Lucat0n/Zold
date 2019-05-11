@@ -1,56 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.Enemies
+namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 {
-    abstract class Enemy
+    abstract class Enemy : Character
     {
         public Player player;
-        public Texture2D texture;
-        public Vector2 position;
-        public Vector2 bottomPosition;
         public Vector2 playerDirection;
         public Vector2 attackPosition;
-        public int Damage { get; set; }
-        public int Hp { get; set; }
-        public float Speed { get; set; }
         public double Distance { get; set; }
-        public string Action { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
-        public float LayerDepth { get; set; }
-        public float Rotation { get; set; }
-        public float Scale { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
 
-
-        public Enemy(Player player, Vector2 position, Texture2D texture)
+        public Enemy(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, SpriteBatchSpriteSheet, height, width)
         {
             this.player = player;
-            this.position = position;
-            this.texture = texture;
-
-            LayerDepth = (position.Y - 100) / 350;
-            Rotation = 0.0f;
-            Scale = 1.0f;
-            Damage = 5;
-            Hp = 50;
-
-            Action = "Idle";
         }
 
         public abstract void AI(GameTime gameTime);
 
         public abstract void Move();
 
-        public void CalculateDepth()
-        {
-            if (position.Y >= 450)
-                LayerDepth = 1.0f;
-            else
-                LayerDepth = (position.Y - 100) / 350;
-        }
+        public abstract void Animation();
 
         public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
         {

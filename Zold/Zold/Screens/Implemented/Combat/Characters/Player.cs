@@ -3,9 +3,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Timers;
 using Zold.Utilities;
-using Zold.Screens.Implemented.Combat.Enemies;
+using Zold.Screens.Implemented.Combat.Characters.Enemies;
 
-namespace Zold.Screens.Implemented.Combat
+namespace Zold.Screens.Implemented.Combat.Characters
 {
     class Player
     {

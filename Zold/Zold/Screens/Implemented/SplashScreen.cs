@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat;
+using Zold.Screens.Implemented.Combat.Characters;
+using Zold.Screens.Implemented.Combat.Characters.Enemies;
 
 namespace Zold.Screens.Implemented
 {
@@ -16,9 +18,9 @@ namespace Zold.Screens.Implemented
         //Combat
         CombatScreen Combat;
         Player combatPlayer;
-        Combat.Enemies.Enemy skeleton;
-        Combat.Enemies.Enemy rat;
-        List<Combat.Enemies.Enemy> enemies;
+        Enemy skeleton;
+        Enemy rat;
+        List<Enemy> enemies;
 
         public SplashScreen()
         {
@@ -78,14 +80,15 @@ namespace Zold.Screens.Implemented
         public override void LoadContent()
         {
             gameScreenManager.ContentLoader.LoadLocation("splash");
-            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
             splash = Assets.Instance.Get("splash/Textures/rzprod");
 
             // Combat
-            enemies = new List<Combat.Enemies.Enemy>();
-            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
-            skeleton = new Combat.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat = new Combat.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
+            enemies = new List<Enemy>();
+            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48));
+            skeleton = new Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
+            rat = new Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
+
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
@@ -94,7 +97,7 @@ namespace Zold.Screens.Implemented
         public override void UnloadContent()
         {
             gameScreenManager.ContentLoader.UnloadLocation("splash");
-            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+            gameScreenManager.ContentLoader.UnloadLocation("combat");
             splash.Dispose();
         }
     }

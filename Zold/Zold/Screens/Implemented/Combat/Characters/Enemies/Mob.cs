@@ -1,18 +1,15 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
+using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.Enemies
+namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 {
     class Mob : Enemy
     {
         private Timer attackTimer;
 
-        public Mob(Player player, Vector2 position, Texture2D texture) : base(player, position, texture)
+        public Mob(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
-            Height = 48;
-            Width = 32;
-
             attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
@@ -45,6 +42,13 @@ namespace Zold.Screens.Implemented.Combat.Enemies
         {
             position.X += playerDirection.X * Speed;
             position.Y += playerDirection.Y * Speed;
+        }
+
+        public override void Animation()
+        {
+            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Draw(position, 1, 0);
+            SpriteBatchSpriteSheet.End();
         }
 
         private void Attack(object source, ElapsedEventArgs e)
