@@ -14,7 +14,7 @@ namespace Zold.Screens.Implemented.Combat
         public Vector2 position;
         private Vector2 centerPosition;
         private Timer attackTimer;
-        private SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
+        public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         private List<Enemy> enemies;
         public Vector2 bottomPosition { get; set; }
         public int mapEdge { get; set; }
@@ -52,6 +52,7 @@ namespace Zold.Screens.Implemented.Combat
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
             bottomPosition = new Vector2(position.X, position.Y + 44);
             CalculateDepth();
+            SpriteBatchSpriteSheet.LayerDepth = LayerDepth;
 
             if (attackTimer.Enabled == false)
                 Action = "Idle";

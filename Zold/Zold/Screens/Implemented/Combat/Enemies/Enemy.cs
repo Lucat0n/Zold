@@ -19,6 +19,8 @@ namespace Zold.Screens.Implemented.Combat.Enemies
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
         public float LayerDepth { get; set; }
+        public float Rotation { get; set; }
+        public float Scale { get; set; }
         public int Height { get; set; }
         public int Width { get; set; }
 
@@ -30,6 +32,8 @@ namespace Zold.Screens.Implemented.Combat.Enemies
             this.texture = texture;
 
             LayerDepth = (position.Y - 100) / 350;
+            Rotation = 0.0f;
+            Scale = 1.0f;
             Damage = 5;
             Hp = 50;
 
