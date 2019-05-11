@@ -18,7 +18,7 @@ namespace Zold.Screens.Implemented
         //Combat
         CombatScreen Combat;
         Player combatPlayer;
-        Enemy skeleton;
+        Enemy punk;
         Enemy rat;
         List<Enemy> enemies;
 
@@ -85,11 +85,11 @@ namespace Zold.Screens.Implemented
 
             // Combat
             enemies = new List<Enemy>();
-            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48));
-            skeleton = new Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
+            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
+            punk = new Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
             rat = new Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
 
-            enemies.Add(skeleton);
+            enemies.Add(punk);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
         }

@@ -16,6 +16,8 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public Enemy(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, SpriteBatchSpriteSheet, height, width)
         {
             this.player = player;
+
+            direction = "Left";
         }
 
         public abstract void AI(GameTime gameTime);
@@ -35,35 +37,20 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((position.X < point.X) && (position.X + Width > point.X) &&
-                (position.Y < point.Y) && (position.Y + Height > point.Y))
+            if ((Position.X < point.X) && (Position.X + width > point.X) &&
+                (Position.Y < point.Y) && (Position.Y + height > point.Y))
                 return true;
             return false;
         }
 
         public bool CheckBoxCollision(Vector2 point, int height, int width)
         {
-            if (position.X < point.X + width &&
-                position.X + Width > point.X &&
-                position.Y < point.Y + height &&
-                position.Y + Height > point.Y)
+            if (Position.X < point.X + width &&
+                Position.X + base.width > point.X &&
+                Position.Y < point.Y + height &&
+                Position.Y + base.height > point.Y)
                 return true;
             return false;
-        }
-
-        public Texture2D GetTexture()
-        {
-            return texture;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return position;
-        }
-
-        public Vector2 GetDirection()
-        {
-            return playerDirection;
         }
     }
 }

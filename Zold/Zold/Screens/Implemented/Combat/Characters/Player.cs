@@ -7,41 +7,25 @@ using Zold.Screens.Implemented.Combat.Characters.Enemies;
 
 namespace Zold.Screens.Implemented.Combat.Characters
 {
-    class Player
+    class Player : Character
     {
-        private const int WIDTH = 32;
-        private const int HEIGHT = 48;
-        public Vector2 position;
         private Vector2 centerPosition;
         private Timer attackTimer;
-        public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         private List<Enemy> enemies;
-        public Vector2 bottomPosition { get; set; }
-        public int mapEdge { get; set; }
-        public int Hp { get; set; }
-        public string Action { get; private set; }
-        public string Direction { get; private set; }
-        public int Speed { get; private set; }
-        public float LayerDepth { get; set; }
 
-        public Player(Vector2 position, int Hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
+        public Player(Vector2 position, int Hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
         {
-            this.position = position;
-            this.Hp = Hp;
+            this.hp = Hp;
             this.enemies = enemies;
 
-            this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
+            
+            direction = "Right";
+            speed = 2;
 
-            mapEdge = 150;
-            Action = "";
-            Direction = "Right";
-            Speed = 2;
-
-            centerPosition = new Vector2(position.X + WIDTH/2, position.Y + HEIGHT/2);
-            CalculateDepth();
-
+            centerPosition = new Vector2(position.X + base.width / 2, position.Y + base.height/2);
+            
             attackTimer = new Timer();
             attackTimer.Interval = 500;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
@@ -49,45 +33,45 @@ namespace Zold.Screens.Implemented.Combat.Characters
 
         public void Controls()
         {
-            centerPosition = new Vector2(position.X + 16, position.Y + 24);
-            bottomPosition = new Vector2(position.X, position.Y + 44);
+            centerPosition = new Vector2(Position.X + 16, Position.Y + 24);
+            BottomPosition = new Vector2(Position.X, Position.Y + 44);
             CalculateDepth();
-            SpriteBatchSpriteSheet.LayerDepth = LayerDepth;
+            SpriteBatchSpriteSheet.LayerDepth = layerDepth;
 
             if (attackTimer.Enabled == false)
-                Action = "Idle";
+                action = "Idle";
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                if (bottomPosition.Y >= mapEdge)
-                    position.Y -= Speed;
+                if (BottomPosition.Y >= mapEdge)
+                    Position.Y -= speed;
                 attackTimer.Enabled = false;
-                Action = "Moving";
+                action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                position.Y += Speed;
+                Position.Y += speed;
                 attackTimer.Enabled = false;
-                Action = "Moving";
+                action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                position.X -= Speed;
+                Position.X -= speed;
                 attackTimer.Enabled = false;
-                Action = "Moving";
-                Direction = "Left";
+                action = "Moving";
+                direction = "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                position.X += Speed;
+                Position.X += speed;
                 attackTimer.Enabled = false;
-                Action = "Moving";
-                Direction = "Right";
+                action = "Moving";
+                direction = "Right";
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
-                Action = "Attacking";
+                action = "Attacking";
                 attackTimer.Enabled = true;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
@@ -98,16 +82,16 @@ namespace Zold.Screens.Implemented.Combat.Characters
         {
             SpriteBatchSpriteSheet.Begin();
 
-            if (Action == "Moving")
+            if (action == "Moving")
             {
-                SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), Direction, gameTime);
+                SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), direction, gameTime);
             }
             //else if (Action == "Idle")
             else
             {
-                if (Direction == "Right")
+                if (direction == "Right")
                     SpriteBatchSpriteSheet.Draw(GetPosition(), 1, 0);
-                if (Direction == "Left")
+                if (direction == "Left")
                     SpriteBatchSpriteSheet.Draw(GetPosition(), 3, 0);
             }
 
@@ -123,53 +107,53 @@ namespace Zold.Screens.Implemented.Combat.Characters
         {
             Vector2 hitbox;
 
-            if (Direction == "Right")
+            if (direction == "Right")
                 hitbox = centerPosition;
             else
                 hitbox = new Vector2(centerPosition.X - 40, centerPosition.Y);
 
             enemies.ForEach( Enemy => {
                 if (Enemy.CheckBoxCollision(hitbox, 1, 40))
-                    Enemy.Hp -= 5;
+                    Enemy.hp -= 5;
             });
             attackTimer.Enabled = false;
-            Action = "Idle";
+            action = "Idle";
         }
 
         public void CalculateDepth()
         {
-            if (position.Y >= 450)
-                LayerDepth = 1.0f;
+            if (Position.Y >= 450)
+                layerDepth = 1.0f;
             else
-                LayerDepth = (position.Y - 100) / 350;
+                layerDepth = (Position.Y - 100) / 350;
         }
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((position.X < point.X) && (position.X + WIDTH > point.X) &&
-                (position.Y < point.Y) && (position.Y + HEIGHT > point.Y))
+            if ((Position.X < point.X) && (Position.X + width > point.X) &&
+                (Position.Y < point.Y) && (Position.Y + height > point.Y))
                 return true;
             return false;
         }
 
         public bool CheckBoxCollision(Vector2 point, int height, int width)
         {
-            if (position.X < point.X + width &&
-                position.X + WIDTH > point.X &&
-                position.Y < point.Y + height &&
-                position.Y + HEIGHT > point.Y)
+            if (Position.X < point.X + width &&
+                Position.X + base.width > point.X &&
+                Position.Y < point.Y + height &&
+                Position.Y + base.height > point.Y)
                 return true;
             return false;
         }
 
         public Vector2 GetPosition()
         {
-            return position;
+            return Position;
         }
 
         public void SetPosition(Vector2 value)
         {
-            position = value;
+            Position = value;
         }
 
         public Vector2 GetCenterPosition()

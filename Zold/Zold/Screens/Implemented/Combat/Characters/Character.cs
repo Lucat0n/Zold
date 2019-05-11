@@ -6,43 +6,46 @@ namespace Zold.Screens.Implemented.Combat.Characters
 {
     abstract class Character
     {
-        public Texture2D texture;
-        public Vector2 position;
-        public Vector2 bottomPosition;
+        public Vector2 Position;
+        public Vector2 BottomPosition;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
-        public float LayerDepth { get; set; }
-        public float Rotation { get; set; }
-        public float Scale { get; set; }
-        public int Damage { get; set; }
-        public int Hp { get; set; }
-        public float Speed { get; set; }
-        public string Action { get; set; }
-        public int Height { get; set; }
-        public int Width { get; set; }
+        public float layerDepth { get; set; }
+        public float rotation { get; set; }
+        public float scale { get; set; }
+        public int mapEdge { get; set; }
+        public int damage { get; set; }
+        public int hp { get; set; }
+        public float speed { get; set; }
+        public string action { get; set; }
+        public string direction { get; set; }
+        public int height { get; set; }
+        public int width { get; set; }
 
         public Character(Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
-            this.position = position;
+            this.Position = position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
 
-            Height = height;
-            Width = width;
+            this.height = height;
+            this.width = width;
 
-            LayerDepth = (position.Y - 100) / 350;
-            Rotation = 0.0f;
-            Scale = 1.0f;
-            Damage = 5;
-            Hp = 50;
+            CalculateDepth();
+            layerDepth = (position.Y - 100) / 350;
+            mapEdge = 150;
+            rotation = 0.0f;
+            scale = 1.0f;
+            damage = 5;
+            hp = 50;
 
-            Action = "Idle";
+            action = "Idle";
         }
 
         public void CalculateDepth()
         {
-            if (position.Y >= 450)
-                LayerDepth = 1.0f;
+            if (Position.Y >= 450)
+                layerDepth = 1.0f;
             else
-                LayerDepth = (position.Y - 100) / 350;
+                layerDepth = (Position.Y - 100) / 350;
         }
     }
 }

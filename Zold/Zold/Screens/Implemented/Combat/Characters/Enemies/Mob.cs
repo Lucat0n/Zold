@@ -10,6 +10,9 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
         public Mob(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
+            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
+
             attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
@@ -18,13 +21,13 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public override void AI(GameTime gameTime)
         {
             CalculateDepth();
-            Speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            playerDirection = CalcDirection(player.GetCenterPosition(), position);
+            speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
+            playerDirection = CalcDirection(player.GetCenterPosition(), Position);
 
             if (attackTimer.Enabled == true)
-                Action = "Attacking";
+                action = "Attacking";
             else
-                Action = "Idle";
+                action = "Idle";
 
             if (Distance <= 50 && attackTimer.Enabled == false)
             {
@@ -33,28 +36,28 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             }
             else if (Distance <= 400 && attackTimer.Enabled == false)
             {
-                Action = "Moving";
+                action = "Moving";
                 Move();
             }
         }
 
         public override void Move()
         {
-            position.X += playerDirection.X * Speed;
-            position.Y += playerDirection.Y * Speed;
+            Position.X += playerDirection.X * speed;
+            Position.Y += playerDirection.Y * speed;
         }
 
         public override void Animation()
         {
             SpriteBatchSpriteSheet.Begin();
-            SpriteBatchSpriteSheet.Draw(position, 1, 0);
+            SpriteBatchSpriteSheet.Draw(Position, 1, 0);
             SpriteBatchSpriteSheet.End();
         }
 
         private void Attack(object source, ElapsedEventArgs e)
         {
             if (player.CheckPointCollision(attackPosition))
-                player.Hp -= Damage;
+                player.hp -= damage;
             attackTimer.Enabled = false;
         }
     }
