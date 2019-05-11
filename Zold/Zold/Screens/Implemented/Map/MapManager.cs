@@ -172,7 +172,7 @@ namespace Zold.Screens.Implemented.Map
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
-
+            /*
             enemies = new List<Combat.Characters.Enemies.Enemy>();
 
             combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
@@ -182,7 +182,7 @@ namespace Zold.Screens.Implemented.Map
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
-
+            */
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
             getColideObjects(map, 0);
