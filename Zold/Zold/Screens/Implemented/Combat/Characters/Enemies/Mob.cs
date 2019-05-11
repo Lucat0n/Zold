@@ -23,7 +23,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             CalculateDepth();
             CheckDirection();
             speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            playerDirection = CalcDirection(player.GetCenterPosition(), Position);
+            playerDirection = CalcDirection(player.CenterPosition, Position);
 
             if (attackTimer.Enabled == true)
                 action = "Attacking";
@@ -32,7 +32,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
             if (Distance <= 50 && attackTimer.Enabled == false)
             {
-                attackPosition = player.GetCenterPosition();
+                attackPosition = player.CenterPosition;
                 attackTimer.Enabled = true;
             }
             else if (Distance <= 400 && attackTimer.Enabled == false)
@@ -56,7 +56,6 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             {
                 SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
             }
-            //else if (Action == "Idle")
             else
             {
                 if (direction == "Right")
@@ -71,7 +70,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         private void Attack(object source, ElapsedEventArgs e)
         {
             if (player.CheckPointCollision(attackPosition))
-                player.hp -= damage;
+                player.Hp -= damage;
             attackTimer.Enabled = false;
         }
     }

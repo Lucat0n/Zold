@@ -43,8 +43,8 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             chargeSpeed = speed * 10;
             playerDirection = CalcDirection(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
-            if (BottomPosition.Y < player.mapEdge)
-                Position.Y = player.mapEdge - height;
+            if (BottomPosition.Y < mapEdge)
+                Position.Y = mapEdge - height;
 
             if (prepareTimer.Enabled == true)
                 action = "Preparing";
@@ -74,7 +74,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public override void Move()
         {
             Position.X += playerDirection.X * speed;
-            if (BottomPosition.Y >= player.mapEdge)
+            if (BottomPosition.Y >= mapEdge)
                 Position.Y += playerDirection.Y * speed;
         }
 
@@ -131,11 +131,11 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
             if (player.CheckBoxCollision(Position, height, width) && !hit)
             {
-                player.hp -= 10;
+                player.Hp -= 10;
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || (BottomPosition.Y + 1 < player.mapEdge))
+            if ((chargeCheck > chargeRange) || (BottomPosition.Y + 1 < mapEdge))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

@@ -9,18 +9,18 @@ namespace Zold.Screens.Implemented.Combat.Characters
         public Vector2 Position;
         public Vector2 tempPosition;
         public Vector2 BottomPosition;
-        public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
-        public float layerDepth { get; set; }
-        public float rotation { get; set; }
-        public float scale { get; set; }
-        public int mapEdge { get; set; }
-        public int damage { get; set; }
-        public int hp { get; set; }
-        public float speed { get; set; }
-        public string action { get; set; }
-        public string direction { get; set; }
-        public int height { get; set; }
-        public int width { get; set; }
+        protected SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
+        public int Hp { set; get; }
+        protected float layerDepth;
+        protected float rotation;
+        protected float scale;
+        protected readonly int mapEdge;
+        protected int damage;
+        protected float speed;
+        protected string action;
+        protected string direction;
+        protected int height;
+        protected int width;
 
         public Character(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
@@ -37,7 +37,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
             rotation = 0.0f;
             scale = 1.0f;
             damage = 5;
-            hp = 50;
+            Hp = 50;
 
             action = "Idle";
         }
@@ -58,7 +58,6 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 direction = "Right";
             else if (Position.X < tempPosition.X)
                 direction = "Left";
-
 
             tempPosition = Position;
         }

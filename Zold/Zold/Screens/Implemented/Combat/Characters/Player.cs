@@ -9,13 +9,13 @@ namespace Zold.Screens.Implemented.Combat.Characters
 {
     class Player : Character
     {
-        private Vector2 centerPosition;
+        public Vector2 CenterPosition;
         private Timer attackTimer;
         private List<Enemy> enemies;
 
         public Player(Vector2 position, int hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
         {
-            this.hp = hp;
+            this.Hp = hp;
             this.enemies = enemies;
 
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
@@ -24,7 +24,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
             direction = "Right";
             speed = 2;
 
-            centerPosition = new Vector2(position.X + base.width / 2, position.Y + base.height/2);
+            CenterPosition = new Vector2(position.X + base.width / 2, position.Y + base.height/2);
             
             attackTimer = new Timer();
             attackTimer.Interval = 500;
@@ -33,9 +33,10 @@ namespace Zold.Screens.Implemented.Combat.Characters
 
         public void Controls()
         {
-            centerPosition = new Vector2(Position.X + 16, Position.Y + 24);
+            CenterPosition = new Vector2(Position.X + 16, Position.Y + 24);
             BottomPosition = new Vector2(Position.X, Position.Y + 44);
             CalculateDepth();
+            CheckDirection();
             SpriteBatchSpriteSheet.LayerDepth = layerDepth;
 
             if (attackTimer.Enabled == false)
@@ -59,14 +60,12 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 Position.X -= speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
-                direction = "Left";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
                 Position.X += speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
-                direction = "Right";
             }
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
@@ -86,7 +85,6 @@ namespace Zold.Screens.Implemented.Combat.Characters
             {
                 SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
             }
-            //else if (action == "Idle")
             else
             {
                 if (direction == "Right")
@@ -108,24 +106,16 @@ namespace Zold.Screens.Implemented.Combat.Characters
             Vector2 hitbox;
 
             if (direction == "Right")
-                hitbox = centerPosition;
+                hitbox = CenterPosition;
             else
-                hitbox = new Vector2(centerPosition.X - 40, centerPosition.Y);
+                hitbox = new Vector2(CenterPosition.X - 40, CenterPosition.Y);
 
             enemies.ForEach( Enemy => {
                 if (Enemy.CheckBoxCollision(hitbox, 1, 40))
-                    Enemy.hp -= 5;
+                    Enemy.Hp -= 5;
             });
             attackTimer.Enabled = false;
             action = "Idle";
-        }
-
-        public void CalculateDepth()
-        {
-            if (Position.Y >= 450)
-                layerDepth = 1.0f;
-            else
-                layerDepth = (Position.Y - 100) / 350;
         }
 
         public bool CheckPointCollision(Vector2 point)
@@ -144,26 +134,6 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 Position.Y + base.height > point.Y)
                 return true;
             return false;
-        }
-
-        public Vector2 GetPosition()
-        {
-            return Position;
-        }
-
-        public void SetPosition(Vector2 value)
-        {
-            Position = value;
-        }
-
-        public Vector2 GetCenterPosition()
-        {
-            return centerPosition;
-        }
-
-        public void SetCenterPosition(Vector2 value)
-        {
-            centerPosition = value;
         }
     }
 }

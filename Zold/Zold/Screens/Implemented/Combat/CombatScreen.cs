@@ -32,7 +32,7 @@ namespace Zold.Screens.Implemented.Combat
                 enemy.AI(gameTime);
             });
 
-            var enemiesToDelete = enemies.Where(x => x.hp <= 0).ToArray();
+            var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
@@ -43,7 +43,7 @@ namespace Zold.Screens.Implemented.Combat
                 combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
             }
-            else if (player.hp <= 0)
+            else if (player.Hp <= 0)
             {
                 combatState = "Przegrana";
                 gameScreenManager.RemoveScreen(this);
@@ -69,10 +69,10 @@ namespace Zold.Screens.Implemented.Combat
             #region debug-text
             // Debug text
             gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.hp.ToString(), new Vector2(15, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.Position.Y.ToString(), new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.SpriteBatchSpriteSheet.LayerDepth.ToString(), new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, player.action, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
+            //gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.Position.Y.ToString(), new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
+            //gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.SpriteBatchSpriteSheet.LayerDepth.ToString(), new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
+            //gameScreenManager.SpriteBatch.DrawString(font, player.action, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
             #endregion
 
             enemies.ForEach(enemy =>
@@ -81,9 +81,9 @@ namespace Zold.Screens.Implemented.Combat
 
                 #region debug-text
                 // Debug text
-                gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.layerDepth.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 15), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
+                //gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.layerDepth.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
+                //gameScreenManager.SpriteBatch.DrawString(font, enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 15), Color.Black);
                 #endregion
             });
 
