@@ -21,6 +21,7 @@ namespace Zold.Screens.Implemented.Combat
         public string Action { get; private set; }
         public string Direction { get; private set; }
         public int Speed { get; private set; }
+        public float LayerDepth { get; set; }
 
         public Player(Vector2 position, int Hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
         {
@@ -34,9 +35,11 @@ namespace Zold.Screens.Implemented.Combat
 
             mapEdge = 150;
             Action = "";
+            Direction = "Right";
             Speed = 2;
 
             centerPosition = new Vector2(position.X + WIDTH/2, position.Y + HEIGHT/2);
+            CalculateDepth();
 
             attackTimer = new Timer();
             attackTimer.Interval = 500;
@@ -47,6 +50,7 @@ namespace Zold.Screens.Implemented.Combat
         {
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
             bottomPosition = new Vector2(position.X, position.Y + 44);
+            CalculateDepth();
 
             if (attackTimer.Enabled == false)
                 Action = "Idle";
@@ -128,6 +132,14 @@ namespace Zold.Screens.Implemented.Combat
             });
             attackTimer.Enabled = false;
             Action = "Idle";
+        }
+
+        public void CalculateDepth()
+        {
+            if (position.Y >= 450)
+                LayerDepth = 1.0f;
+            else
+                LayerDepth = (position.Y - 100) / 350;
         }
 
         public bool CheckPointCollision(Vector2 point)
