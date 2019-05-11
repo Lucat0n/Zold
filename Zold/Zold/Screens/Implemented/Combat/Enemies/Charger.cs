@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Timers;
 
-namespace Zold.Screens.Implemented.Combat
+namespace Zold.Screens.Implemented.Combat.Enemies
 {
     class Charger : Enemy
     {

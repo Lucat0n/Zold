@@ -49,10 +49,10 @@
     <Compile Include="Screens\Implemented\Map\MapManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenManager.cs" />
-    <Compile Include="Screens\Implemented\Combat\Charger.cs" />
+    <Compile Include="Screens\Implemented\Combat\Enemies\Charger.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatScreen.cs" />
-    <Compile Include="Screens\Implemented\Combat\Enemy.cs" />
-    <Compile Include="Screens\Implemented\Combat\Mob.cs" />
+    <Compile Include="Screens\Implemented\Combat\Enemies\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Combat\Enemies\Mob.cs" />
     <Compile Include="Screens\Implemented\Combat\Player.cs" />
     <Compile Include="Screens\Implemented\MenuScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\PauseScreen.cs" />

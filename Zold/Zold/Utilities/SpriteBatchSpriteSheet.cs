@@ -17,6 +17,12 @@ namespace Zold.Utilities
 
         public int TextureHeightPixels { get; set; }
 
+        public float LayerDepth { get; set; }
+
+        public float Rotation { get; set; }
+
+        public float Scale { get; set; }
+
         public int SpriteSheetWidth { get { return TextureWidthPixels * Cols; } }
 
         public int SpriteSheetHeight { get { return TextureHeightPixels * Rows; } }
@@ -33,6 +39,9 @@ namespace Zold.Utilities
             TextureWidthPixels = textureWidthPixels;
             TextureHeightPixels = textureHeightPixels;
 
+            Rotation = 0.0f;
+            Scale = 1.0f;
+
             Frames = new Rectangle[rows, cols];
             for (int i = 0; i < rows; i++)
                 for (int j = 0; j < cols; j++)
@@ -41,7 +50,7 @@ namespace Zold.Utilities
 
         public void Draw(Vector2 place, int x, int y)
         {
-            base.Draw(SpriteSheet, place, Frames[x,y], Color.White);
+            base.Draw(SpriteSheet, place, Frames[x, y], Color.White, Rotation, Vector2.Zero, Scale, SpriteEffects.None, LayerDepth);
         }
 
         public void MakeAnimation(int rowNumber, String name, int time)
@@ -55,7 +64,7 @@ namespace Zold.Utilities
         {
             try
             {
-                base.Draw(SpriteSheet, place, Animations[name].Update(gameTime), Color.White);
+                base.Draw(SpriteSheet, place, Animations[name].Update(gameTime), Color.White, Rotation, Vector2.Zero, Scale, SpriteEffects.None, LayerDepth);
             }
             catch (KeyNotFoundException e)
             {
