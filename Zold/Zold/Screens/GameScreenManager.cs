@@ -18,6 +18,7 @@ namespace Zold.Screens
         private bool isFullScreenOn = false;
         private ContentManager content;
         private ContentLoader contentLoader;
+        private ItemManager itemManager;
         private float masterVolume = 1.0f;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
@@ -70,6 +71,7 @@ namespace Zold.Screens
         }
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
+        internal ItemManager ItemManager { get => itemManager; set => itemManager = value; }
         #endregion
 
         #region init
@@ -80,6 +82,7 @@ namespace Zold.Screens
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentLoader = new ContentLoader(game, Content);
+            itemManager = new ItemManager(contentLoader);
             this.LoadContent();
         }
 
