@@ -21,13 +21,17 @@ namespace Zold.Utilities
             };
         }
 
-        
-
+        /// <summary>
+        /// Dodaje ekwipunek o podanej nazwie.
+        /// </summary>
         public void AddInventory(String name, Inventory.Inventory inventory)
         {
             inventories.Add(name, inventory);
         }
 
+        /// <summary>
+        /// Czyści ekwipunek o podanej nazwie.
+        /// </summary>
         public void ClearInventory(String name)
         {
             if (inventories.ContainsKey(name))
@@ -37,8 +41,6 @@ namespace Zold.Utilities
         /// <summary>
         /// Tworzy nowy klucz z kopią wartości spod klucza origin lub kopiuje inwentarz pod klucz target.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
         public void CopyInventory(String origin, String target)
         {
             if(inventories.ContainsKey(target))
@@ -50,9 +52,6 @@ namespace Zold.Utilities
         /// <summary>
         /// Przenosi ekwipunek z jednego klucza pod inny z możliwością wyczyszczenia źródłowego ekwipunku.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
-        /// <param name="clearBefore"></param>
         public void MoveInventory(String origin, String target, bool clearOrigin)
         {
             foreach (KeyValuePair<string, ItemAmountPair> pair in inventories[origin].Items)
@@ -63,25 +62,43 @@ namespace Zold.Utilities
                 inventories[origin].ClearInventory();
         }
 
+        /// <summary>
+        /// Zwraca ekwipunek o podanej nazwie.
+        /// </summary>
         public Inventory.Inventory getInventory(String name)
         {
             return inventories[name];
         }
 
+        /// <summary>
+        /// Zwraca ekwipunek gracza.
+        /// </summary>
+        /// <returns></returns>
         public Inventory.Inventory getPlayerInventory()
         {
             return inventories[PlayerInventoryID];
         }
 
+        /// <summary>
+        /// Dodaje jedną sztukę przedmiotu do wskazanego ekwipunku.
+        /// </summary>
         public void InsertItem(String targetInventory, String name, Item item)
         {
             inventories[targetInventory].InsertItem(name, item);
         }
+
+        /// <summary>
+        /// Dodaje podaną liczbę sztuk przedmiotu do wskazanego ekwipunku.
+        /// </summary>
         public void InsertItem(String targetInventory, String name, Item item, byte amount)
         {
             inventories[targetInventory].InsertItem(name, item, amount);
         }
 
+        /// <summary>
+        /// Usuwa podany ekwipunek.
+        /// </summary>
+        /// <param name="name"></param>
         public void RemoveInventory(String name)
         {
             inventories.Remove(name);
@@ -90,9 +107,6 @@ namespace Zold.Utilities
         /// <summary>
         /// Przenosi wszystkie sztuki danego przedmiotu do docelowego ekwipunku.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
-        /// <param name="name"></param>
         public void Transfer(String origin, String target, String name)
         {
             byte amount = inventories[origin].Items[name].Amount;
@@ -101,11 +115,8 @@ namespace Zold.Utilities
         }
 
         /// <summary>
-        /// Przenosi jedną sztukę danego przedmiotu do docelowego ekwipunku
+        /// Przenosi jedną sztukę danego przedmiotu do docelowego ekwipunku.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
-        /// <param name="name"></param>
         public void TransferItem(String origin, String target, String name)
         {
             inventories[origin].RemoveItem(name, 1);
@@ -113,12 +124,8 @@ namespace Zold.Utilities
         }
 
         /// <summary>
-        /// Przenosi określoną ilość danego przedmiotu do docelowego ekwipunku
+        /// Przenosi określoną ilość danego przedmiotu do docelowego ekwipunku.
         /// </summary>
-        /// <param name="origin"></param>
-        /// <param name="target"></param>
-        /// <param name="name"></param>
-        /// <param name="amount"></param>
         public void TransferItem(String origin, String target, String name, byte amount)
         {
             inventories[origin].RemoveItem(name, amount);
