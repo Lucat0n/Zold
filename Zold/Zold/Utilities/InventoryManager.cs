@@ -48,7 +48,7 @@ namespace Zold.Utilities
         }
 
         /// <summary>
-        /// 
+        /// Przenosi ekwipunek z jednego klucza pod inny z możliwością wyczyszczenia źródłowego ekwipunku.
         /// </summary>
         /// <param name="origin"></param>
         /// <param name="target"></param>
