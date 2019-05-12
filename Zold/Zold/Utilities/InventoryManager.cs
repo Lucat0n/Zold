@@ -87,5 +87,43 @@ namespace Zold.Utilities
             inventories.Remove(name);
         }
 
+        /// <summary>
+        /// Przenosi wszystkie sztuki danego przedmiotu do docelowego ekwipunku.
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <param name="name"></param>
+        public void Transfer(String origin, String target, String name)
+        {
+            byte amount = inventories[origin].Items[name].Amount;
+            inventories[origin].RemoveItem(name);
+            inventories[target].InsertItem(name, inventories[origin].Items[name].Item, amount);
+        }
+
+        /// <summary>
+        /// Przenosi jedną sztukę danego przedmiotu do docelowego ekwipunku
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <param name="name"></param>
+        public void TransferItem(String origin, String target, String name)
+        {
+            inventories[origin].RemoveItem(name, 1);
+            inventories[target].InsertItem(name, inventories[origin].Items[name].Item);
+        }
+
+        /// <summary>
+        /// Przenosi określoną ilość danego przedmiotu do docelowego ekwipunku
+        /// </summary>
+        /// <param name="origin"></param>
+        /// <param name="target"></param>
+        /// <param name="name"></param>
+        /// <param name="amount"></param>
+        public void TransferItem(String origin, String target, String name, byte amount)
+        {
+            inventories[origin].RemoveItem(name, amount);
+            inventories[target].InsertItem(name, inventories[origin].Items[name].Item ,amount);
+        }
+
     }
 }
