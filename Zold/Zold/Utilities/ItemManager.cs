@@ -21,6 +21,7 @@ namespace Zold.Utilities
         public ItemManager(ContentLoader contentLoader)
         {
             this.contentLoader = contentLoader;
+            items = new Dictionary<string, Item>();
             ItemsBase = JObject.Parse(File.ReadAllText(@"..\..\..\..\Inventory\Items\Items.json"));
         }
 

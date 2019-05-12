@@ -47,6 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Inventory\Items\Item.cs" />
+    <Compile Include="Utilities\InventoryManager.cs" />
     <Compile Include="Utilities\ItemManager.cs" />
     <Compile Include="Inventory\Items\Weapon.cs" />
     <Compile Include="Inventory\Inventory.cs" />
@@ -64,9 +65,9 @@
     <Compile Include="Utilities\Animation.cs" />
     <Compile Include="Utilities\Assets.cs" />
     <Compile Include="Utilities\ContentLoader.cs" />
-    <Compile Include="Quests\IQuest.cs" />
     <Compile Include="Quests\Quest.cs" />
-    <Compile Include="Quests\QuestManager.cs" />
+    <Compile Include="Quests\ItemQuest.cs" />
+    <Compile Include="Utilities\QuestManager.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Screens\Implemented\Map\Enemy.cs" />

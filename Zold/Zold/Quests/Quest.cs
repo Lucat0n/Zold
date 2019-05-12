@@ -6,34 +6,29 @@ using System.Threading.Tasks;
 
 namespace Zold.Utilities.Quests
 {
-    abstract class ItemQuest:IQuest
+    public abstract class Quest
     {
+
         private bool isDone;
         private String title;
         private String description;
-        private Dictionary<dynamic, byte> itemsToCollect;
-        private Dictionary<dynamic, byte> itemsCollected;
-        
-        public ItemQuest(String title, String description)
+        private QuestManager questManager;
+
+        public Quest(String questID, QuestManager questManager)
         {
             this.isDone = false;
             this.title = title;
             this.Description = description;
+            this.questManager = questManager;
         }
 
         #region properties
         public string Description { get => description; set => description = value; }
-        public string Title { get => title;}
-        public bool IsDone { get => isDone;}
+        public string Title { get => title; }
+        public bool IsDone { get => isDone; }
         #endregion
 
-        public bool CheckCompletion()
-        {
-            foreach(KeyValuePair<dynamic, byte> entry in itemsToCollect)
-            if (itemsToCollect.Count == 0)
-                return isDone = true;
-            return false;
-        }
+        abstract public bool CheckCompletion();
 
     }
 }

@@ -10,7 +10,9 @@ namespace Zold.Inventory
     {
         private Dictionary<String, ItemAmountPair> items;
 
-        class ItemAmountPair
+        public Dictionary<string, ItemAmountPair> Items { get => items; set => items = value; }
+
+        public class ItemAmountPair
         {
             private Item item;
             private byte amount;
@@ -28,7 +30,7 @@ namespace Zold.Inventory
 
         public Inventory()
         {
-            items = new Dictionary<String, ItemAmountPair>();
+            Items = new Dictionary<String, ItemAmountPair>();
         }            
         /// <summary>
         /// Dodaje dokładnie jedną sztukę danego przedmiotu
@@ -37,24 +39,24 @@ namespace Zold.Inventory
         /// <param name="item"></param>
         public void InsertItem(String name, Item item)
         {
-            if (items.ContainsKey(name))
+            if (Items.ContainsKey(name))
             {
-                items[name].Amount++;
+                Items[name].Amount++;
             }
             else
             {
-                items.Add(name, new ItemAmountPair(item, 1));
+                Items.Add(name, new ItemAmountPair(item, 1));
             }
         }
         public void InsertItem(String name, Item item, byte amount)
         {
-            if (items.ContainsKey(name))
+            if (Items.ContainsKey(name))
             {
-                items[name].Amount += amount;
+                Items[name].Amount += amount;
             }
             else
             {
-                items.Add(name, new ItemAmountPair(item, amount));
+                Items.Add(name, new ItemAmountPair(item, amount));
             }
         }
 
@@ -63,9 +65,9 @@ namespace Zold.Inventory
         /// </summary>
         public void RemoveItem(String name)
         {
-            if (items.ContainsKey(name))
+            if (Items.ContainsKey(name))
             {
-                items.Remove(name);
+                Items.Remove(name);
             }
         }
 
@@ -74,31 +76,34 @@ namespace Zold.Inventory
         /// </summary>
         public void RemoveItem(String name, byte amount)
         {
-            if (items.ContainsKey(name) && items[name].Amount>=amount)
+            if (Items.ContainsKey(name) && Items[name].Amount>=amount)
             {
-                items[name].Amount -= amount;
+                Items[name].Amount -= amount;
             }
         }
 
-        public byte CheckAmount(String name)
+        /// <summary>
+        /// Zwraca liczbę sztuk danego przedmiotu
+        /// </summary>
+        public byte GetAmount(String name)
         {
-            if (items.ContainsKey(name))
-                return items[name].Amount;
+            if (Items.ContainsKey(name))
+                return Items[name].Amount;
             return 0;
         }
 
         public Item GetItem(String name)
         {
-            if (items.ContainsKey(name))
+            if (Items.ContainsKey(name))
             {
-                return items[name].Item;
+                return Items[name].Item;
             }
             return null;
         }
 
         public void ClearInventory()
         {
-            items.Clear();
+            Items.Clear();
         }
 
         /// <summary>
@@ -108,7 +113,7 @@ namespace Zold.Inventory
         public Dictionary<Item, byte> GetWholeInventory()
         {
             Dictionary<Item, byte> itemsDict = new Dictionary<Item, byte>();
-            foreach(KeyValuePair<String, ItemAmountPair>pair in items)
+            foreach(KeyValuePair<String, ItemAmountPair>pair in Items)
             {
                 itemsDict.Add(pair.Value.Item, pair.Value.Amount);
             }
