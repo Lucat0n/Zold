@@ -24,15 +24,6 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
 
         public abstract void Move();
 
-        public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
-        {
-            Distance = Vector2.Distance(vector1, vector2);
-            Vector2 result = new Vector2();
-            result = new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
-            result.Normalize();
-            return result;
-        }
-
         public bool CheckPointCollision(Vector2 point)
         {
             if ((Position.X < point.X) && (Position.X + width > point.X) &&
@@ -44,9 +35,9 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         public bool CheckBoxCollision(Vector2 point, int height, int width)
         {
             if (Position.X < point.X + width &&
-                Position.X + base.width > point.X &&
+                Position.X + this.width > point.X &&
                 Position.Y < point.Y + height &&
-                Position.Y + base.height > point.Y)
+                Position.Y + this.height > point.Y)
                 return true;
             return false;
         }

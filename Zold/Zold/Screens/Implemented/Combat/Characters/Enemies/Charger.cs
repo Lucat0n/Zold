@@ -42,6 +42,7 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             BottomPosition = new Vector2(Position.X, Position.Y + height);
             chargeSpeed = speed * 10;
             playerDirection = CalcDirection(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
             if (BottomPosition.Y < mapEdge)
                 Position.Y = mapEdge - height;

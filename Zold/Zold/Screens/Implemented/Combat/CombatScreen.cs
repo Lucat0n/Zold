@@ -14,8 +14,8 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        List<Projectile> projectiles;
         List<Character> objectsToRender;
+        public List<Projectile> Projectiles;
         string combatState;
 
         public CombatScreen(Player player, List<Enemy> enemies)
@@ -23,13 +23,14 @@ namespace Zold.Screens.Implemented.Combat
             this.player = player;
             this.enemies = enemies;
             
+            Projectiles = new List<Projectile>();
             objectsToRender = new List<Character>();
             objectsToRender.Add(player);
             objectsToRender.AddRange(enemies);
 
             foreach (Character character in objectsToRender)
             {
-                character.combatScreen = this;
+                character.CombatScreen = this;
             } 
 
             combatState = "";
@@ -43,6 +44,11 @@ namespace Zold.Screens.Implemented.Combat
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
+            });
+
+            Projectiles.ForEach(projectile =>
+            {
+                projectile.Move(gameTime);
             });
 
             var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
@@ -77,10 +83,16 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            objectsToRender.ForEach(item => {
+            objectsToRender.ForEach(item =>
+            {
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + item.Hp.ToString(), new Vector2(item.Position.X, item.Position.Y - 35), Color.Black);
                 item.Animation(gameTime);
-            }) ;
+            });
+
+            Projectiles.ForEach(projectile =>
+            {
+                projectile.Animation(gameTime);
+            });
             
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
 
@@ -95,6 +107,11 @@ namespace Zold.Screens.Implemented.Combat
         public override void UnloadContent()
         {
             gameScreenManager.ContentLoader.UnloadLocation("combat");
+        }
+
+        public Projectile MakeProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        {
+            return new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
         }
     }
 }

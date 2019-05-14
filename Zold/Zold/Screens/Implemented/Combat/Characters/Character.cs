@@ -9,7 +9,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
         public Vector2 Position;
         public Vector2 tempPosition;
         public Vector2 BottomPosition;
-        public CombatScreen combatScreen { set; protected get; }
+        public CombatScreen CombatScreen;
         protected SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public int Hp { set; get; }
         protected float layerDepth;
@@ -51,6 +51,14 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 layerDepth = 1.0f;
             else
                 layerDepth = (Position.Y - 100) / 350;
+        }
+
+        public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
+        {
+            Vector2 result = new Vector2();
+            result = new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
+            result.Normalize();
+            return result;
         }
 
         public void CheckDirection()
