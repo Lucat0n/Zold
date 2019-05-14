@@ -1,0 +1,11 @@
+{
+  "itemQuests": {
+    "iQ1": {
+      "title": "Zepsuta rêka",
+      "description": "ZnajdŸ czêœci do posk³adania rêki Adasia",
+      "itemsToCollect": {
+        "bolt": 3
+      }
+    }
+  }
+}

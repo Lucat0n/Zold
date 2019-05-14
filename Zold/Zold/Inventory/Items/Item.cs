@@ -33,6 +33,7 @@ namespace Zold.Inventory
         {
             this.name = name;
             JObject itemsBase = itemManager.ItemsBase;
+            System.Diagnostics.Debug.WriteLine(name);
             isBattleOnly = (bool)itemsBase["items"][name]["isBattleOnly"];
             isKeyItem = (bool)itemsBase["items"][name]["isKeyItem"];
             thrownDmg = (short)itemsBase["items"][name]["thrownDmg"];

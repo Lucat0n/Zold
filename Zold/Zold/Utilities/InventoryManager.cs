@@ -11,10 +11,12 @@ namespace Zold.Utilities
     class InventoryManager
     {
         private readonly String PlayerInventoryID = "Player";
+        private ItemManager itemManager;
         private Dictionary<String, Inventory.Inventory> inventories;
 
-        public InventoryManager()
+        public InventoryManager(ItemManager itemManager)
         {
+            this.itemManager = itemManager;
             inventories = new Dictionary<string, Inventory.Inventory>
             {
                 { PlayerInventoryID, new Inventory.Inventory() }
@@ -36,6 +38,28 @@ namespace Zold.Utilities
         {
             if (inventories.ContainsKey(name))
                 inventories[name].ClearInventory();
+        }
+
+        /// <summary>
+        /// Sprawdza liczbę sztuk przedmiotu w ekwipunku gracza
+        /// </summary>
+        /// <param name="name"></param>
+        public byte CheckItemAmount(String itemName)
+        {
+            if (this.getPlayerInventory().Items.ContainsKey(itemName))
+                return this.getPlayerInventory().GetAmount(itemName);
+            return 0;
+        }
+
+        /// <summary>
+        /// Sprawdza liczbę sztuk przedmiotu w podanym ekwipunku
+        /// </summary>
+        /// <param name="name"></param>
+        public byte CheckItemAmount(String name, String itemName)
+        {
+            if (inventories.ContainsKey(name))
+                return inventories[name].GetAmount(itemName);
+            return 0;
         }
 
         /// <summary>

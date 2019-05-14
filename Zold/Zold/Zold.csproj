@@ -144,6 +144,7 @@
     <None Include="app.manifest" />
     <None Include="Inventory\Items\Items.json" />
     <None Include="packages.config" />
+    <None Include="Quests\Quests.json" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

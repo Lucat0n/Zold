@@ -36,6 +36,8 @@ namespace Zold.Utilities
         }
         public Item GetItem(string name)
         {
+            if (!items.ContainsKey(name))
+                AddItem(name);
             return items[name];
         }
 

@@ -24,6 +24,14 @@
       "miniature": "healthPotionIcon3",
       "largeScale": "healthPotionImage3"
     },
+    "bolt": {
+      "isBattleOnly": false,
+      "isKeyItem": false,
+      "thrownDmg":  10,
+      "description": "Œruba, jak ka¿da inna. Powszechny przedmiot w Zold.",
+      "miniature": "boltIcon",
+      "largeScale": "boltImage"
+    },
     "stick": {
       "isBattleOnly": false,
       "isKeyItem": false,

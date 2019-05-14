@@ -1,10 +1,7 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+using Zold.Utilities;
 
-namespace Zold.Utilities.Quests
+namespace Zold.Quests
 {
     public abstract class Quest
     {
@@ -14,18 +11,19 @@ namespace Zold.Utilities.Quests
         private String description;
         private QuestManager questManager;
 
-        public Quest(String questID, QuestManager questManager)
+        internal Quest(String questID, QuestManager questManager)
         {
             this.isDone = false;
             this.title = title;
             this.Description = description;
-            this.questManager = questManager;
+            this.QuestManager = questManager;
         }
 
         #region properties
         public string Description { get => description; set => description = value; }
-        public string Title { get => title; }
-        public bool IsDone { get => isDone; }
+        public string Title { get => title; set => title = value; }
+        public bool IsDone { get => isDone; set => isDone = value; }
+        internal QuestManager QuestManager { get => questManager; set => questManager = value; }
         #endregion
 
         abstract public bool CheckCompletion();
