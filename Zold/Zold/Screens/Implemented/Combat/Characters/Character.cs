@@ -9,6 +9,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
         public Vector2 Position;
         public Vector2 tempPosition;
         public Vector2 BottomPosition;
+        public CombatScreen combatScreen { set; protected get; }
         protected SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public int Hp { set; get; }
         protected float layerDepth;

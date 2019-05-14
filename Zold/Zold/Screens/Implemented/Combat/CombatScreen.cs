@@ -14,6 +14,7 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
+        List<Projectile> projectiles;
         List<Character> objectsToRender;
         string combatState;
 
@@ -21,11 +22,15 @@ namespace Zold.Screens.Implemented.Combat
         {
             this.player = player;
             this.enemies = enemies;
-
+            
             objectsToRender = new List<Character>();
             objectsToRender.Add(player);
             objectsToRender.AddRange(enemies);
- 
+
+            foreach (Character character in objectsToRender)
+            {
+                character.combatScreen = this;
+            } 
 
             combatState = "";
             IsTransparent = false;
