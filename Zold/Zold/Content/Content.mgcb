@@ -20,6 +20,18 @@
 /processorParam:TextureFormat=Compressed
 /build:combat/Fonts/dialog.spritefont
 
+#begin combat/Textures/arrow.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/arrow.png
+
 #begin combat/Textures/fox.png
 /importer:TextureImporter
 /processor:TextureProcessor

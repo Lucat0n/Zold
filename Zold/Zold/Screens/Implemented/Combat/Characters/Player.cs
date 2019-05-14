@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Timers;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.Characters.Enemies;
+using Zold.Screens.Implemented.Combat.Skills;
 
 namespace Zold.Screens.Implemented.Combat.Characters
 {
@@ -12,6 +13,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
         public Vector2 CenterPosition;
         private Timer attackTimer;
         private List<Enemy> enemies;
+        private Skill skill;
 
         public Player(Vector2 position, int hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
         {
@@ -25,6 +27,7 @@ namespace Zold.Screens.Implemented.Combat.Characters
             speed = 2;
 
             CenterPosition = new Vector2(position.X + base.width / 2, position.Y + base.height/2);
+            skill = new Skill(CombatScreen);
             
             attackTimer = new Timer();
             attackTimer.Interval = 500;
@@ -74,7 +77,17 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 attackTimer.Enabled = true;
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
-                Block();
+            {
+                if (direction == "Right")
+                {
+                    skill.Destination = CalcDirection(new Vector2(CenterPosition.X + 1, CenterPosition.Y), CenterPosition);
+                }
+                else
+                    skill.Destination = CalcDirection(new Vector2(CenterPosition.X - 1, CenterPosition.Y), CenterPosition);
+                skill.CombatScreen = CombatScreen;
+                skill.StartPosition = CenterPosition;
+                skill.Use();
+            }
         }
 
         public override void Animation(GameTime gameTime)

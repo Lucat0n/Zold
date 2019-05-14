@@ -23,7 +23,8 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
             CalculateDepth();
             CheckDirection();
             speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
-            playerDirection = CalcDirection(player.CenterPosition, Position);
+            playerDirection = CalcDirection(player.Position, Position);
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
             if (attackTimer.Enabled == true)
                 action = "Attacking";
