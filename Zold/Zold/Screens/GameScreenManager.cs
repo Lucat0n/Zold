@@ -10,6 +10,7 @@ using Microsoft.Xna.Framework.Input;
 using Zold.Inventory;
 using Zold.Utilities;
 using Zold.Screens.Implemented;
+using Zold.Quests;
 
 namespace Zold.Screens
 {
@@ -88,10 +89,6 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
-            //******************
-            questManager.AddItemQuest("iQ1");
-            questManager.UpdateQuests();
-            //******************
             this.LoadContent();
         }
 

@@ -2,10 +2,17 @@
   "itemQuests": {
     "iQ1": {
       "title": "Zepsuta rêka",
-      "description": "ZnajdŸ czêœci do posk³adania rêki Adasia",
+      "description": "ZnajdŸ czêœci do posk³adania rêki Adasia.",
       "itemsToCollect": {
         "bolt": 3
       }
+    }
+  },
+  "locationQuests": {
+    "lQ1": {
+      "title": "Wyjœcie",
+      "description": "Wydostañ siê z akademika.",
+      "locationToVisit": "Wyjscie"
     }
   }
 }

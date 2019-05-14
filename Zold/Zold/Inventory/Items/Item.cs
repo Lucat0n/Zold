@@ -13,10 +13,10 @@ namespace Zold.Inventory
 {
     class Item
     {
-        private bool isBattleOnly = false;
-        private bool isKeyItem = false;
-        private short thrownDmg = 10;
-        private String description = "Brak opisu";
+        private bool isBattleOnly;
+        private bool isKeyItem;
+        private short thrownDmg;
+        private String description;
         private String miniature;
         private String name;
         private String largeScale;
@@ -33,11 +33,10 @@ namespace Zold.Inventory
         {
             this.name = name;
             JObject itemsBase = itemManager.ItemsBase;
-            System.Diagnostics.Debug.WriteLine(name);
-            isBattleOnly = (bool)itemsBase["items"][name]["isBattleOnly"];
-            isKeyItem = (bool)itemsBase["items"][name]["isKeyItem"];
-            thrownDmg = (short)itemsBase["items"][name]["thrownDmg"];
-            Description = (String)itemsBase["items"][name]["description"];
+            isBattleOnly = itemsBase["items"][name]["isBattleOnly"]!=null ? (bool)itemsBase["items"][name]["isBattleOnly"] : false;
+            isKeyItem = itemsBase["items"][name]["isKeyItem"]!=null ? (bool)itemsBase["items"][name]["isKeyItem"] : false;
+            thrownDmg = itemsBase["items"][name]["thrownDmg"]!=null ? (short)itemsBase["items"][name]["thrownDmg"] : (short)10;
+            Description = itemsBase["items"][name]["thrownDmg"]!=null ? (String)itemsBase["items"][name]["description"] : "Brak opisu";
             miniature = (String)itemsBase["items"][name]["miniature"];
             largeScale = (String)itemsBase["items"][name]["largeScale"];
         }

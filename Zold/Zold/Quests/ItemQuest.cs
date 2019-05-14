@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -27,15 +28,18 @@ namespace Zold.Quests
         {
             itemsToCollect.Add(item, amount);
             itemsCollected.Add(item,
-                base.QuestManager.InventoryManager.getPlayerInventory().Items.ContainsKey(item.Name) ? 
-                base.QuestManager.InventoryManager.getPlayerInventory().Items[item.Name].Amount : (byte)0
+                base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(item.Name) ? 
+                base.QuestManager.InventoryManager.GetPlayerInventory().Items[item.Name].Amount : (byte)0
                 );
         }
 
         override public bool CheckCompletion()
         {
-            foreach(KeyValuePair<Item, byte> entry in itemsToCollect)
-                if (entry.Value >= itemsCollected[entry.Key])
+            UpdateItemsAmount();
+            foreach (KeyValuePair<Item, byte> entry in itemsToCollect)
+                if (entry.Value <= itemsCollected[entry.Key])
+                    continue;
+                else
                 {
                     IsDone = false;
                     return IsDone;
@@ -44,13 +48,15 @@ namespace Zold.Quests
             return IsDone;
         }
 
-        public void updateItemsAmount()
+        public void UpdateItemsAmount()
         {
-            foreach(KeyValuePair<Item, byte> pair in itemsCollected)
+            var itemsCollectedArray = itemsCollected.ToArray();
+            foreach(KeyValuePair<Item, byte> pair in itemsCollectedArray)
             {
-                if (base.QuestManager.InventoryManager.getPlayerInventory().Items.ContainsKey(pair.Key.Name))
+                if (base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(pair.Key.Name))
                 {
-                    itemsCollected[pair.Key] = base.QuestManager.InventoryManager.getPlayerInventory().Items[pair.Key.Name].Amount;
+                    itemsCollected[pair.Key] = base.QuestManager.InventoryManager.GetPlayerInventory().Items[pair.Key.Name].Amount;
+                    
                 }
             }
                 

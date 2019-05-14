@@ -46,8 +46,8 @@ namespace Zold.Utilities
         /// <param name="name"></param>
         public byte CheckItemAmount(String itemName)
         {
-            if (this.getPlayerInventory().Items.ContainsKey(itemName))
-                return this.getPlayerInventory().GetAmount(itemName);
+            if (this.GetPlayerInventory().Items.ContainsKey(itemName))
+                return this.GetPlayerInventory().GetAmount(itemName);
             return 0;
         }
 
@@ -89,7 +89,7 @@ namespace Zold.Utilities
         /// <summary>
         /// Zwraca ekwipunek o podanej nazwie.
         /// </summary>
-        public Inventory.Inventory getInventory(String name)
+        public Inventory.Inventory GetInventory(String name)
         {
             return inventories[name];
         }
@@ -98,7 +98,7 @@ namespace Zold.Utilities
         /// Zwraca ekwipunek gracza.
         /// </summary>
         /// <returns></returns>
-        public Inventory.Inventory getPlayerInventory()
+        public Inventory.Inventory GetPlayerInventory()
         {
             return inventories[PlayerInventoryID];
         }

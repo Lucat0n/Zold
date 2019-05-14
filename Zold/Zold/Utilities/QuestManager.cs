@@ -1,34 +1,45 @@
 ﻿using Newtonsoft.Json.Linq;
 using System.Collections.Generic;
 using System.IO;
+using System.Linq;
 using Zold.Quests;
 
 namespace Zold.Utilities
 {
     class QuestManager
     {
-        private HashSet<Quest> completedQuests;
-        private HashSet<Quest> activeQuests;
+        private Dictionary<string, Quest> completedQuests;
+        private Dictionary<string, Quest> activeQuests;
         private JObject questsBase;
         private ItemManager itemManager;
         private InventoryManager inventoryManager;
 
         internal InventoryManager InventoryManager { get => inventoryManager; set => inventoryManager = value; }
+        public Dictionary<string, Quest> CompletedQuests { get => completedQuests; set => completedQuests = value; }
+        public Dictionary<string, Quest> ActiveQuests { get => activeQuests; set => activeQuests = value; }
 
         public QuestManager(InventoryManager inventoryManager, ItemManager itemManager)
         {
             this.itemManager = itemManager;
             questsBase = JObject.Parse(File.ReadAllText(@"..\..\..\..\Quests\Quests.json"));
-            completedQuests = new HashSet<Quest>();
-            activeQuests = new HashSet<Quest>();
+            CompletedQuests = new Dictionary<string, Quest>();
+            ActiveQuests = new Dictionary<string, Quest>();
             this.InventoryManager = inventoryManager;
         }
 
         public void UpdateQuests()
         {
-            foreach(Quest quest in activeQuests){
-                quest.CheckCompletion();
+            HashSet<Quest> questsToMove = new HashSet<Quest>();
+            foreach(KeyValuePair<string, Quest> pair in ActiveQuests){
+                if (pair.Value.CheckCompletion())
+                    questsToMove.Add(pair.Value);
             }
+            foreach(Quest quest in questsToMove)
+            {
+                ActiveQuests.Remove(quest.QuestID);
+                CompletedQuests.Add(quest.QuestID, quest);
+            }
+
         }
 
         public void AddItemQuest(string questID)
@@ -39,8 +50,16 @@ namespace Zold.Utilities
             var itemsToCollect = questsBase["itemQuests"][questID]["itemsToCollect"];
             foreach(var item in itemsToCollect)
                 itemQuest.AddItemToCollect(itemManager.GetItem(item.ToObject<JProperty>().Name), (byte)item);
-            //itemQuest.
-            activeQuests.Add(itemQuest);
+            ActiveQuests.Add(questID, itemQuest);
+        }
+
+        public void AddLocationQuest(string questID)
+        {
+            LocationQuest locationQuest = new LocationQuest("lQ1", this);
+            locationQuest.Title = (string)questsBase["locationQuests"][questID]["title"];
+            locationQuest.Description = (string)questsBase["locationQuests"][questID]["description"];
+            locationQuest.LocationToVisit = (string)questsBase["locationQuests"][questID]["locationToVisit"];
+            ActiveQuests.Add(questID, locationQuest);
         }
 
     }
