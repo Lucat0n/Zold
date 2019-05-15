@@ -46,17 +46,18 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Screens\Implemented\Combat\Characters\Character.cs" />
-    <Compile Include="Screens\Implemented\Combat\Projectile.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Characters\Character.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\CombatObject.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Projectile.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
     <Compile Include="Screens\Implemented\Map\MapManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenManager.cs" />
-    <Compile Include="Screens\Implemented\Combat\Characters\Enemies\Charger.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Characters\Enemies\Charger.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatScreen.cs" />
-    <Compile Include="Screens\Implemented\Combat\Characters\Enemies\Enemy.cs" />
-    <Compile Include="Screens\Implemented\Combat\Characters\Enemies\Mob.cs" />
-    <Compile Include="Screens\Implemented\Combat\Characters\Player.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Characters\Enemies\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Characters\Enemies\Mob.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObject\Characters\Player.cs" />
     <Compile Include="Screens\Implemented\MenuScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\PauseScreen.cs" />
     <Compile Include="Screens\Implemented\SplashScreen.cs" />

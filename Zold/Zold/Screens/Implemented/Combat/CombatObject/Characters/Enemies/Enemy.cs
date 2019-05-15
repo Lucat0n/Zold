@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.Characters.Enemies
+namespace Zold.Screens.Implemented.Combat.CombatObject.Characters.Enemies
 {
     abstract class Enemy : Character
     {
@@ -28,16 +28,6 @@ namespace Zold.Screens.Implemented.Combat.Characters.Enemies
         {
             if ((Position.X < point.X) && (Position.X + width > point.X) &&
                 (Position.Y < point.Y) && (Position.Y + height > point.Y))
-                return true;
-            return false;
-        }
-
-        public bool CheckBoxCollision(Vector2 point, int height, int width)
-        {
-            if (Position.X < point.X + width &&
-                Position.X + this.width > point.X &&
-                Position.Y < point.Y + height &&
-                Position.Y + this.height > point.Y)
                 return true;
             return false;
         }

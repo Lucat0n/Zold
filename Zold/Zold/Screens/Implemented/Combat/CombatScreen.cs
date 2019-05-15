@@ -4,9 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Zold.Utilities;
-using Zold.Screens.Implemented.Combat.Characters;
-using Zold.Screens.Implemented.Combat.Characters.Enemies;
-using System;
+using Zold.Screens.Implemented.Combat.CombatObject;
+using Zold.Screens.Implemented.Combat.CombatObject.Characters.Enemies;
+using Zold.Screens.Implemented.Combat.CombatObject.Characters;
 
 namespace Zold.Screens.Implemented.Combat
 {
