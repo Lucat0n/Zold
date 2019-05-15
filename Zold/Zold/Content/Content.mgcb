@@ -10,6 +10,7 @@
 
 #-------------------------------- References --------------------------------#
 
+/reference:..\..\packages\TiledSharp.1.0.1\lib\netstandard2.0\TiledSharp.dll
 
 #---------------------------------- Content ---------------------------------#
 
@@ -119,6 +120,24 @@
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
 
+#begin graphic/locations/MainRoom/MainRoom.tmx
+/copy:graphic/locations/MainRoom/MainRoom.tmx
+
+#begin graphic/locations/MainRoom/mainRoom2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/locations/MainRoom/mainRoom2.png
+
+#begin graphic/locations/MainRoom/MainRoom2.tsx
+/copy:graphic/locations/MainRoom/MainRoom2.tsx
+
 #begin magecity.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -133,6 +152,24 @@
 
 #begin magecity.tsx
 /copy:magecity.tsx
+
+#begin MainRoom.tmx
+/copy:MainRoom.tmx
+
+#begin mainRoom2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:mainRoom2.png
+
+#begin MainRoom2.tsx
+/copy:MainRoom2.tsx
 
 #begin mapa2.tmx
 /copy:mapa2.tmx
