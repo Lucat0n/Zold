@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.CombatObject
+namespace Zold.Screens.Implemented.Combat.CombatObjects
 {
     class Projectile : CombatObject
     {

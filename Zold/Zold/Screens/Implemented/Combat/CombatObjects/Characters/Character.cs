@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.CombatObject.Characters
+namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     abstract class Character : CombatObject
     {

@@ -2,7 +2,7 @@
 using System.Timers;
 using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.CombatObject.Characters.Enemies
+namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 {
     class Mob : Enemy
     {
