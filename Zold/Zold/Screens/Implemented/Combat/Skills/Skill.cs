@@ -25,7 +25,7 @@ namespace Zold.Screens.Implemented.Combat.Skills
                 return;
             else
             {
-                CombatScreen.Projectiles.Add(CombatScreen.MakeProjectile(StartPosition, "combat/Textures/arrow", Destination, 22, 5));
+                CombatScreen.MakeProjectile(StartPosition, "combat/Textures/arrow", Destination, 22, 5);
             }
             cooldownTimer.Enabled = true;
         }

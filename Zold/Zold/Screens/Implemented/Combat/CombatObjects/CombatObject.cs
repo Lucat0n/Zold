@@ -1,46 +1,29 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Zold.Utilities;
 
-namespace Zold.Screens.Implemented.Combat.Characters
+namespace Zold.Screens.Implemented.Combat.CombatObjects
 {
-    abstract class Character
+    abstract class CombatObject
     {
         public Vector2 Position;
-        public Vector2 tempPosition;
-        public Vector2 BottomPosition;
-        public CombatScreen CombatScreen;
-        protected SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
-        public int Hp { set; get; }
-        protected float layerDepth;
+        public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
+        protected Vector2 tempPosition;
         protected float rotation;
+        protected float layerDepth;
         protected float scale;
-        protected readonly int mapEdge;
+        protected string direction;
         protected int damage;
         protected float speed;
-        protected string action;
-        protected string direction;
         protected int height;
         protected int width;
 
-        public Character(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
+        public CombatObject(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
             this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
 
             this.height = height;
             this.width = width;
-
-            CalculateDepth();
-            tempPosition = Position;
-            layerDepth = (Position.Y - 100) / 350;
-            mapEdge = 150;
-            rotation = 0.0f;
-            scale = 1.0f;
-            damage = 5;
-            Hp = 50;
-
-            action = "Idle";
         }
 
         public abstract void Animation(GameTime gameTime);
@@ -69,6 +52,16 @@ namespace Zold.Screens.Implemented.Combat.Characters
                 direction = "Left";
 
             tempPosition = Position;
+        }
+
+        public bool CheckBoxCollision(Vector2 point, int height, int width)
+        {
+            if (Position.X < point.X + width &&
+                Position.X + this.width > point.X &&
+                Position.Y < point.Y + height &&
+                Position.Y + this.height > point.Y)
+                return true;
+            return false;
         }
     }
 }

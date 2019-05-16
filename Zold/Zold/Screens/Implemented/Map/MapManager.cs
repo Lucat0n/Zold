@@ -55,11 +55,13 @@ namespace Zold.Screens.Implemented.Map
         Texture2D dymek;
 
         //Combat
+        /*
         Combat.CombatScreen Combat;
         Combat.Characters.Player combatPlayer;
         Combat.Characters.Enemies.Enemy skeleton;
         Combat.Characters.Enemies.Enemy rat;
         List<Combat.Characters.Enemies.Enemy> enemies;
+        */
 
         //budynki
         Texture2D policja;
@@ -541,8 +543,8 @@ namespace Zold.Screens.Implemented.Map
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
                     //CHANGE STATE TO COMBAT
-                    gameScreenManager.RemoveScreen(this);
-                    gameScreenManager.InsertScreen(Combat);
+                    //gameScreenManager.RemoveScreen(this);
+                    //gameScreenManager.InsertScreen(Combat);
 
                     //if (songStart)
                     //{

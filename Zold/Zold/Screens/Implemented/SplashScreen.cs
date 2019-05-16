@@ -5,8 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat;
-using Zold.Screens.Implemented.Combat.Characters;
-using Zold.Screens.Implemented.Combat.Characters.Enemies;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 
 namespace Zold.Screens.Implemented
 {
