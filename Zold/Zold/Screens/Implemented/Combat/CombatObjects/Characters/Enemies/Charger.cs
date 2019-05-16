@@ -65,7 +65,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 chargeRange = Vector2.Distance(chargePosition, Position) + 200;
                 prepareTimer.Enabled = true;
             }
-            else if (Distance <= 400 && prepareTimer.Enabled == false)
+            else if (prepareTimer.Enabled == false)
             {
                 action = "Moving";
                 Move();
