@@ -36,7 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 attackPosition = player.CenterPosition;
                 attackTimer.Enabled = true;
             }
-            else if (Distance <= 400 && attackTimer.Enabled == false)
+            else if (attackTimer.Enabled == false)
             {
                 action = "Moving";
                 Move();

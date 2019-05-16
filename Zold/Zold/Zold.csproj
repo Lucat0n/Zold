@@ -47,6 +47,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Character.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Ranged.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\CombatObject.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Projectile.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />

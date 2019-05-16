@@ -26,7 +26,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             direction = "Right";
             speed = 2;
 
-            CenterPosition = new Vector2(position.X + base.width / 2, position.Y + base.height/2);
+            CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
             skill = new Skill(CombatScreen);
             
             attackTimer = new Timer();
@@ -36,7 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Controls()
         {
-            CenterPosition = new Vector2(Position.X + 16, Position.Y + 24);
+            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
             BottomPosition = new Vector2(Position.X, Position.Y + 44);
             CalculateDepth();
             CheckDirection();
@@ -135,16 +135,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         {
             if ((Position.X < point.X) && (Position.X + width > point.X) &&
                 (Position.Y < point.Y) && (Position.Y + height > point.Y))
-                return true;
-            return false;
-        }
-
-        public bool CheckBoxCollision(Vector2 point, int height, int width)
-        {
-            if (Position.X < point.X + width &&
-                Position.X + base.width > point.X &&
-                Position.Y < point.Y + height &&
-                Position.Y + base.height > point.Y)
                 return true;
             return false;
         }
