@@ -1,4 +1,5 @@
 ﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -60,6 +61,14 @@ namespace Zold.Utilities
             locationQuest.Description = (string)questsBase["locationQuests"][questID]["description"];
             locationQuest.LocationToVisit = (string)questsBase["locationQuests"][questID]["locationToVisit"];
             ActiveQuests.Add(questID, locationQuest);
+        }
+
+        public string GetActiveQuestName(int index, bool sorted)
+        {
+            var quests = ActiveQuests.Values.ToArray();
+            if (sorted)
+                Array.Sort(quests);
+            return quests[index].Title;
         }
 
     }
