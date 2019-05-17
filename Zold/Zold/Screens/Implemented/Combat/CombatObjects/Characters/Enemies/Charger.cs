@@ -27,7 +27,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
             charge = false;
             // todo: mapa nie może być Projectilem
-            map = new Projectile(new Vector2(leflMapEdge, topMapEdge), null, Vector2.Zero, rightMapEdge, bottomMapEdge - 150);
+            map = new Projectile(new Vector2(leflMapEdge, topMapEdge), null, Vector2.Zero, rightMapEdge, bottomMapEdge - topMapEdge);
 
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 2000;

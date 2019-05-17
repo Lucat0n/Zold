@@ -14,6 +14,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public Ranged(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
+            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
+            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
+
             mapOffset = 50;
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height / 2);
             skill = new Skill(CombatScreen);
@@ -58,7 +61,18 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             SpriteBatchSpriteSheet.Begin();
 
-            SpriteBatchSpriteSheet.Draw(Position, 11, 0);
+            if (action == "Moving" || action == "Running")
+            {
+                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
+            }
+            else
+            {
+                direction = player.Position.X >= Position.X ? "Right" : "Left";
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 3, 0);
+            }
 
             SpriteBatchSpriteSheet.End();
         }
