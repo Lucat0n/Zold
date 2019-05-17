@@ -18,8 +18,6 @@ namespace Zold.Screens.Implemented.Map
         
         TmxMap currentMap;
 
-        Texture2D tileset;
-
         // here is dope music
         SoundEffect currentSong;
         SoundEffect bgMusic;
@@ -35,12 +33,13 @@ namespace Zold.Screens.Implemented.Map
         int advenPosY = 64;
 
         // Combat
+        /*
         Combat.CombatScreen Combat;
         Combat.Characters.Player combatPlayer;
         //Combat.Characters.Enemies.Enemy skeleton;
         Combat.Characters.Enemies.Enemy rat;
         List<Combat.Characters.Enemies.Enemy> enemies;
-        
+        */
 
         Player player;
         Enemy enemy;
@@ -124,14 +123,14 @@ namespace Zold.Screens.Implemented.Map
 
             // Combat
             
-            enemies = new List<Combat.Characters.Enemies.Enemy>();
-            combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
+            //enemies = new List<Combat.Characters.Enemies.Enemy>();
+            //combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
 
             //skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
             //rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
            // enemies.Add(skeleton);
            // enemies.Add(rat);
-            Combat = new Combat.CombatScreen(combatPlayer, enemies);
+            //Combat = new Combat.CombatScreen(combatPlayer, enemies);
             
 
             //camera
@@ -197,10 +196,7 @@ namespace Zold.Screens.Implemented.Map
             {
                 player.AnimateHealth(gameTime, spriteSheetHP,550);
             }
-            if (location2)
-            {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X + bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
-            }
+           
             //postacie
             gameScreenManager.SpriteBatch.End();
             ManageLocations(gameTime);
@@ -229,14 +225,13 @@ namespace Zold.Screens.Implemented.Map
             if (!isPaused)
             {
                 player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown, gameTime);
-                ManageLocations(gameTime);
+               // ManageLocations(gameTime);
                 if (location2)
                 {
                     enemy.AI(gameTime);
                 }
-
-
             }
+
             else
             {
                 gameScreenManager.InsertScreen(new Pause.PauseScreen());
@@ -321,7 +316,7 @@ namespace Zold.Screens.Implemented.Map
             {
                 gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X+ bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
 
-                
+                //
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
@@ -336,6 +331,7 @@ namespace Zold.Screens.Implemented.Map
                     //}
                 }
             }
+            /*
             if (location3)
             {
  
@@ -343,8 +339,7 @@ namespace Zold.Screens.Implemented.Map
                 location2 = false;
                 location3 = true;
 
-                //}
-            }
+            }*/
             gameScreenManager.SpriteBatch.End();
         }
         #endregion

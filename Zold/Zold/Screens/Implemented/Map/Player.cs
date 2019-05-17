@@ -105,7 +105,7 @@ namespace Zold.Screens.Implemented.Map
                 position = m_from + ((m_to - m_from) / 2) * m_animPercent;
                 //isMoving = false;
             }
-
+            centerPosition = new Vector2(position.X + 16, position.Y + 24);
         }
 
         public void Animation(GameTime gameTime)
