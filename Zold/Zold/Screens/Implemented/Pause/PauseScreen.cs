@@ -34,7 +34,11 @@ namespace Zold.Screens.Implemented.Pause
         private bool isEscPressed = false;
         private bool isLeftPressed = false;
         private bool isRightPressed = false;
+        private bool isQPressed = false;
+        private bool isEPressed = false;
         private bool isUpPressed = false;
+        private bool activeQuestsSelected = true;
+        private byte questTitleFontSize;
         private byte masterVolume;
         private Rectangle cursorPos;
         private Rectangle mainWindow;
@@ -75,9 +79,10 @@ namespace Zold.Screens.Implemented.Pause
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     break;
                 case (PauseState.quests):
-                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/mainWindow"), secondaryWindow, Color.White);
-                    for (int i = 0; i < Math.Min(10, gameScreenManager.QuestManager.ActiveQuests.Count); i++)
-                        gameScreenManager.SpriteBatch.DrawString(font, gameScreenManager.QuestManager.GetActiveQuestName(i, false), new Vector2(secondaryWindow.X + (secondaryWindow.Height/3), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 10) * i), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.006f, secondaryWindow.Height * 0.006f), SpriteEffects.None, 1f);
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? "Aktywne [E ->]" : "Wykonane [<- Q]", new Vector2(secondaryWindow.X + (secondaryWindow.Width / 2) - questTitleFontSize * 5, 50 + secondaryWindow.Height / 50), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.003f, secondaryWindow.Height * 0.003f), SpriteEffects.None, 1f);
+                    for (int i = 0; i < Math.Min(10, activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count : gameScreenManager.QuestManager.CompletedQuests.Count); i++)
+                        gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? gameScreenManager.QuestManager.GetActiveQuestName(i, false) : gameScreenManager.QuestManager.GetCompletedQuestName(i, false), new Vector2(secondaryWindow.X + (secondaryWindow.Height/3), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 10) * i), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.006f, secondaryWindow.Height * 0.006f), SpriteEffects.None, 1f);
                     break;
                 case (PauseState.map):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
@@ -188,12 +193,26 @@ namespace Zold.Screens.Implemented.Pause
                         isUpPressed = false;
                     if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
                     {
-                        gameScreenManager.InsertScreen(new QuestDescriptionScreen(questIndex));
+                        gameScreenManager.InsertScreen(new QuestDescriptionScreen(questIndex, activeQuestsSelected));
                         isEscPressed = true;
                         isEnterPressed = true;
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Q) && !isQPressed)
+                    {
+                        isQPressed = true;
+                        activeQuestsSelected = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Q))
+                        isQPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.E) && !isEPressed)
+                    {
+                        isEPressed = true;
+                        activeQuestsSelected = false;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.E))
+                        isEPressed = false;
                     break;
                 case (PauseState.map):
                     if (keyboardState.IsKeyDown(Keys.Escape))
@@ -328,6 +347,7 @@ namespace Zold.Screens.Implemented.Pause
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
                 case (PauseState.quests):
+                    questTitleFontSize = (byte)(font.MeasureString("a").X * (secondaryWindow.Height * 0.005f));
                     cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 10 + (secondaryWindow.Height / 10) * questIndex, mainWindow.Width / 12, mainWindow.Width / 12);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 3, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;

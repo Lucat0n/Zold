@@ -71,9 +71,22 @@ namespace Zold.Utilities
             return quests[index].Title;
         }
 
+        public string GetCompletedQuestName(int index, bool sorted)
+        {
+            var quests = CompletedQuests.Values.ToArray();
+            if (sorted)
+                Array.Sort(quests);
+            return quests[index].Title;
+        }
+
         public string GetActiveQuestID(int index, bool sorted)
         {
             return ActiveQuests.ElementAt(index).Key;
+        }
+
+        public string GetCompletedQuestID(int index, bool sorted)
+        {
+            return CompletedQuests.ElementAt(index).Key;
         }
 
     }

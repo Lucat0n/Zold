@@ -17,27 +17,29 @@ namespace Zold.Screens.Implemented.Pause
     class QuestDescriptionScreen : GameScreen
     {
         private ArrayList strings;
+        private byte signsPerLine;
+        private byte lineAmount;
+        private bool isQuestActive;
         private Rectangle questBox;
         private Rectangle questBox2;
         private SByte questIndex;
         private readonly SpriteFont font;
         private Vector2 titlePos;
         private Vector2 firstLinePos;
-        private byte signsPerLine;
-        private byte lineAmount;
 
-        internal QuestDescriptionScreen(SByte questIndex)
+        internal QuestDescriptionScreen(SByte questIndex, bool isQuestActive)
         {
             IsTransparent = true;
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.questIndex = questIndex;
+            this.isQuestActive = isQuestActive;
         }
 
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), questBox2, Color.White);
-            gameScreenManager.SpriteBatch.DrawString(font, gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false), titlePos, Color.Yellow, 0.0f, Vector2.Zero, new Vector2(questBox.Height * 0.005f, questBox.Height * 0.005f), SpriteEffects.None, 1.0f);
+            gameScreenManager.SpriteBatch.DrawString(font, isQuestActive ? gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false) : gameScreenManager.QuestManager.GetCompletedQuestName(questIndex, false), titlePos, Color.Yellow, 0.0f, Vector2.Zero, new Vector2(questBox.Height * 0.005f, questBox.Height * 0.005f), SpriteEffects.None, 1.0f);
             for(int i = 0; i < strings.Count; i++)
                 gameScreenManager.SpriteBatch.DrawString(font, strings[i].ToString(), firstLinePos + new Vector2(0, i*(questBox.Height / 10)), Color.White, 0.0f, Vector2.Zero, new Vector2(questBox.Height * 0.005f, questBox.Height * 0.005f), SpriteEffects.None, 1.0f);
             gameScreenManager.SpriteBatch.End();
@@ -52,7 +54,7 @@ namespace Zold.Screens.Implemented.Pause
         private ArrayList PrepareString()
         {
             ArrayList strings = new ArrayList();
-            string[] ssize = gameScreenManager.QuestManager.ActiveQuests[gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false)].Description.Split(null);
+            string[] ssize = isQuestActive ? gameScreenManager.QuestManager.ActiveQuests[gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false)].Description.Split(null) : gameScreenManager.QuestManager.CompletedQuests[gameScreenManager.QuestManager.GetCompletedQuestID(questIndex, false)].Description.Split(null);
             StringBuilder stringBuilder = new StringBuilder();
             foreach (string s in ssize)
             {
@@ -72,15 +74,20 @@ namespace Zold.Screens.Implemented.Pause
             if(stringBuilder.Length != 0)
                 strings.Add(stringBuilder.ToString());
             strings.Add("");
-            string id = gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false);
+            string id = isQuestActive ? gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false) : gameScreenManager.QuestManager.GetCompletedQuestID(questIndex, false);
             if (id[0] == 'i')
             {
-                ItemQuest itemQuest = (ItemQuest)gameScreenManager.QuestManager.ActiveQuests[id];
+                ItemQuest itemQuest = isQuestActive ? (ItemQuest)gameScreenManager.QuestManager.ActiveQuests[id] : (ItemQuest)gameScreenManager.QuestManager.CompletedQuests[id];
                 foreach (KeyValuePair<Item, byte> pair in itemQuest.ItemsToCollect)
-                    strings.Add(pair.Key.Name + " " + (itemQuest.ItemsCollected.ContainsKey(pair.Key) ? itemQuest.ItemsCollected[pair.Key] : 0) + " / " + pair.Value.ToString());
+                {
+                    if(isQuestActive)
+                        strings.Add(pair.Key.Name + " " + (itemQuest.ItemsCollected.ContainsKey(pair.Key) ? itemQuest.ItemsCollected[pair.Key] : 0) + " / " + pair.Value.ToString());
+                    else
+                        strings.Add(pair.Key.Name + " " + pair.Value.ToString() + " / " + pair.Value.ToString());
+                }
             }else if(id[0] == 'l')
             {
-                LocationQuest LocationQuest = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests[id];
+                LocationQuest LocationQuest = isQuestActive ? (LocationQuest)gameScreenManager.QuestManager.ActiveQuests[id] : (LocationQuest)gameScreenManager.QuestManager.CompletedQuests[id];
                 strings.Add("Odwiedz lokacje: " + LocationQuest.LocationToVisit);
             }
             this.lineAmount = (byte)strings.Count;
