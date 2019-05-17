@@ -13,7 +13,7 @@
 0,0,0,0,0,36,36,36,0,0
 </data>
  </layer>
- <layer id="2" name="Interakcje" width="10" height="8" visible="0">
+ <layer id="2" name="Interakcje" width="10" height="8">
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,
@@ -25,7 +25,7 @@
 0,0,0,0,0,0,43,0,0,0
 </data>
  </layer>
- <layer id="3" name="Sciany i Podloga" width="10" height="8" visible="0">
+ <layer id="3" name="Sciany i Podloga" width="10" height="8">
   <data encoding="csv">
 3221225486,3221225480,3221225480,3221225480,3221225480,3221225480,3221225480,3221225480,3221225480,1610612750,
 2684354568,15,15,15,37,38,39,15,15,1610612744,
