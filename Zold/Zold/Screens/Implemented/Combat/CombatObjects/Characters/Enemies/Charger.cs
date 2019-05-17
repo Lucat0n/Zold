@@ -133,7 +133,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(Position, height, width))
+            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), height, width))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;
