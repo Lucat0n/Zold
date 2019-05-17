@@ -46,7 +46,7 @@ namespace Zold.Screens.Implemented.Pause
                 gameScreenManager.RemoveScreen(this);
         }
 
-        private ArrayList SplitString()
+        private ArrayList PrepareString()
         {
             ArrayList strings = new ArrayList();
             string[] ssize = gameScreenManager.QuestManager.ActiveQuests[gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false)].Description.Split(null);
@@ -68,6 +68,8 @@ namespace Zold.Screens.Implemented.Pause
             }
             if(stringBuilder.Length != 0)
                 strings.Add(stringBuilder.ToString());
+            if(gameScreenManager.QuestManager.GetActiveQuestID(questIndex)[0] == 'l')
+                strings.Add(gameScreenManager.QuestManager.GetActiveQuestName)
             return strings;
         }
 
@@ -78,7 +80,7 @@ namespace Zold.Screens.Implemented.Pause
             signsPerLine = (byte)((questBox.Width * 0.95) / (font.MeasureString("a").X * (questBox.Height * 0.005f)));
             titlePos = new Vector2(questBox.X + questBox.Width / 2 - (font.MeasureString(gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false)).X / 2) * questBox.Height * 0.005f, questBox.Y + questBox.Height / 20);
             firstLinePos = new Vector2(questBox.X + questBox.Width * 0.025f, questBox.Y + questBox.Height / 7);
-            this.strings = SplitString();
+            this.strings = PrepareString();
         }
         public override void UnloadContent() { }
         #endregion
