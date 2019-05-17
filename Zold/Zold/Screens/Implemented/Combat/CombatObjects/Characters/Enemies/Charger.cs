@@ -16,6 +16,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private bool charge;
         private bool hit;
 
+        Projectile map;
+
         public Charger(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
@@ -24,6 +26,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.MakeAnimation(4, "Death_Left", 250);
 
             charge = false;
+            // todo: mapa nie może być Projectilem
+            map = new Projectile(new Vector2(leflMapEdge, topMapEdge), null, Vector2.Zero, rightMapEdge, bottomMapEdge - 150);
 
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 2000;
@@ -129,7 +133,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || (BottomPosition.Y + 1 < topMapEdge))
+            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(Position, height, width))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

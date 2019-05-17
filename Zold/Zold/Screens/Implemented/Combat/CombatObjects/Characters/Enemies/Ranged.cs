@@ -80,13 +80,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 if (player.Position.X <= Position.X)
                 {
-                    moveDirection = new Vector2(rightMapEdge, bottomMapEdge);
-                    moveDirection.Normalize();
+                    moveDirection = CalcDirection(new Vector2(rightMapEdge, bottomMapEdge), BottomPosition);
                 }
                 else
                 {
-                    moveDirection = new Vector2(leflMapEdge, bottomMapEdge);
-                    moveDirection.Normalize();
+                    moveDirection = CalcDirection(new Vector2(leflMapEdge, bottomMapEdge), BottomPosition);
                 }
             }
             else
