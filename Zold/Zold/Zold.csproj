@@ -46,6 +46,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Screens\Camera.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Character.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Ranged.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\CombatObject.cs" />
