@@ -99,7 +99,7 @@ namespace Zold.Screens.Implemented.Pause
         {
             questBox = new Rectangle(3 * gameScreenManager.GraphicsDevice.Viewport.Width / 10, gameScreenManager.GraphicsDevice.Viewport.Height / 4, (int)(gameScreenManager.GraphicsDevice.Viewport.Width / 2.5f), gameScreenManager.GraphicsDevice.Viewport.Height / 2);
             signsPerLine = (byte)((questBox.Width * 0.95) / (font.MeasureString("a").X * (questBox.Height * 0.005f)));
-            titlePos = new Vector2(questBox.X + questBox.Width / 2 - (font.MeasureString(gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false)).X / 2) * questBox.Height * 0.005f, questBox.Y + questBox.Height / 20);
+            titlePos = new Vector2(questBox.X + questBox.Width / 2 - (isQuestActive ? font.MeasureString(gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false)).X / 2 : font.MeasureString(gameScreenManager.QuestManager.GetCompletedQuestName(questIndex, false)).X / 2) * questBox.Height * 0.005f, questBox.Y + questBox.Height / 20);
             firstLinePos = new Vector2(questBox.X + questBox.Width * 0.025f, questBox.Y + questBox.Height / 7);
             this.strings = PrepareString();
             questBox2 = new Rectangle(3 * gameScreenManager.GraphicsDevice.Viewport.Width / 10, gameScreenManager.GraphicsDevice.Viewport.Height / 4, (int)(gameScreenManager.GraphicsDevice.Viewport.Width / 2.5f), (int)(font.MeasureString("A").Y * (lineAmount+3)));

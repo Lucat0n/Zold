@@ -89,14 +89,6 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
-            /*
-            questManager.AddItemQuest("iQ1");
-            questManager.AddLocationQuest("lQ1");
-            itemManager.AddItem("bolt");
-            itemManager.AddWeapon("stick");
-            inventoryManager.GetPlayerInventory().InsertItem("bolt", itemManager.GetItem("bolt"), 3);
-            questManager.UpdateQuests();
-            */
             this.LoadContent();
         }
 
