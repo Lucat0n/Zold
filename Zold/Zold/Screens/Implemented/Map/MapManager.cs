@@ -201,7 +201,6 @@ namespace Zold.Screens.Implemented.Map
             //postacie
             gameScreenManager.SpriteBatch.End();
             ManageLocations(gameTime);
-
         }
 
         public override void Update(GameTime gameTime)
@@ -297,11 +296,13 @@ namespace Zold.Screens.Implemented.Map
                 adven = Assets.Instance.Get("placeholders/Textures/Adven");
                 gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
 
-                interactionManager.displayDialog(player, Assets.Instance.Get("placeholders/Textures/Adven"), advenPosX + bounds.X, advenPosY + bounds.Y, bounds);
+                interactionManager.displayDialog(player, adven, advenPosX + bounds.X, advenPosY + bounds.Y, bounds);
                 if (location.getPortal().X >= 0)
                 {
                     if (player.GetPosition().X == location.getPortal().X && player.GetPosition().Y == location.getPortal().Y)
                     {
+                        location = new Locations.OtherLocation(gameScreenManager, spriteSheet, player);
+                        initTheLocation(location);
                         location1 = false;
                         location2 = true;
                     }
@@ -310,11 +311,9 @@ namespace Zold.Screens.Implemented.Map
 
             if (location2)
             {
-                location = new Locations.OtherLocation(gameScreenManager, spriteSheet, player);
-                initTheLocation(location);
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), Color.White);
+                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X+ bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
 
-                enemy.AI(gametime);
+                enemy.AI(gametime,player);
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
