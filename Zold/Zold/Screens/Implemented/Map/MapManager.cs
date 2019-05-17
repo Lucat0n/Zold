@@ -77,6 +77,7 @@ namespace Zold.Screens.Implemented.Map
 
         Location location;
         Camera camera;
+        Zold.Screens.Camera cameraPlayer;
         InteractionManager interactionManager;
 
         public MapManager()
@@ -142,6 +143,8 @@ namespace Zold.Screens.Implemented.Map
             camera = new Camera(gameScreenManager, location);
 
             interactionManager = new InteractionManager(GameScreenManager, location);
+
+            cameraPlayer = new Screens.Camera(player.GetPosition());
         }
 
         public override void UnloadContent()
@@ -169,14 +172,14 @@ namespace Zold.Screens.Implemented.Map
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
 
             LayerNumbers.ForEach(layer=>
             {
-                location.drawTiles(layer, currentMap, bounds);
+                location.drawTiles(layer, currentMap, bounds, cameraPlayer.Transform());
             });
 
-            player.Animation(gameTime);
+            player.Animation(gameTime, cameraPlayer.Transform());
 
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
@@ -204,14 +207,14 @@ namespace Zold.Screens.Implemented.Map
         public override void Update(GameTime gameTime)
         {
             //camera.Follow(player);
-            if (gameScreenManager.IsFullScreenOn)
-            {
-                camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
-            }
-            else
-            {
-                camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
-            }
+            //if (gameScreenManager.IsFullScreenOn)
+            //{
+            //    camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
+            //}
+            //else
+            //{
+            //    camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
+            //}
             //if (!songStart)
             //{
             //    MediaPlayer.Play(currentSong);
@@ -236,6 +239,8 @@ namespace Zold.Screens.Implemented.Map
                 gameScreenManager.InsertScreen(new Pause.PauseScreen());
                 isPaused = false;
             }
+
+            cameraPlayer.Follow(player.GetPosition(), screenHeight, screenWdth);
         }
 
         
@@ -292,7 +297,7 @@ namespace Zold.Screens.Implemented.Map
 
         void ManageLocations(GameTime gametime) 
         {
-            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
             if (location1)
             {
                 adven = Assets.Instance.Get("placeholders/Textures/Adven");
