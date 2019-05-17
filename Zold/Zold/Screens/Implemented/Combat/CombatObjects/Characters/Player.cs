@@ -47,7 +47,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                if (BottomPosition.Y >= mapEdge)
+                if (BottomPosition.Y >= topMapEdge)
                     Position.Y -= speed;
                 attackTimer.Enabled = false;
                 action = "Moving";

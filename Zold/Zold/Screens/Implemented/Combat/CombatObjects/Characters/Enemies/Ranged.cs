@@ -8,34 +8,49 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
     class Ranged : Enemy
     {
         public Vector2 CenterPosition;
+        private Vector2 moveDirection;
         private Skill skill;
+        private int mapOffset;
 
         public Ranged(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
+            mapOffset = 50;
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height / 2);
             skill = new Skill(CombatScreen);
         }
 
         public override void AI(GameTime gameTime)
         {
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
+            CenterPosition = new Vector2(Position.X + width / 2, Position.Y + height / 2);
+            BottomPosition = new Vector2(Position.X + width, Position.Y + height);
             CalculateDepth();
             CheckDirection();
             speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerDirection = CalcDirection(player.Position, Position);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
-            if (Distance <= 600)
+            if (Distance <= 100)
             {
+                action = "Running";
+                Run();
+            }
+            else if(Distance <= 600)
+            {
+                action = "Shootin'";
                 skill.Destination = CalcDirection(player.CenterPosition, CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
                 skill.Use();
             }
+            else if (Distance <= 100)
+            {
+                action = "Running";
+                Run();
+            }
             else
             {
                 action = "Moving";
-                Move();
+                Move(playerDirection);
             }
         }
 
@@ -48,10 +63,35 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.End();
         }
 
-        public override void Move()
+        public void Run()
         {
-            Position.X += playerDirection.X * speed;
-            Position.Y += playerDirection.Y * speed;
+            if (player.Position.Y >= Position.Y && BottomPosition.Y <= topMapEdge + mapOffset )
+            {
+                if (player.Position.X <= Position.X)
+                {
+                    moveDirection = CalcDirection(new Vector2(rightMapEdge, topMapEdge), BottomPosition);
+                }
+                else if (player.Position.X > Position.X)
+                {
+                    moveDirection = CalcDirection(new Vector2(leflMapEdge, topMapEdge), BottomPosition);
+                }
+            }
+            else if (player.Position.Y <= Position.Y && BottomPosition.Y >= bottomMapEdge - mapOffset)
+            {
+                if (player.Position.X <= Position.X)
+                {
+                    moveDirection = new Vector2(rightMapEdge, bottomMapEdge);
+                    moveDirection.Normalize();
+                }
+                else
+                {
+                    moveDirection = new Vector2(leflMapEdge, bottomMapEdge);
+                    moveDirection.Normalize();
+                }
+            }
+            else
+                moveDirection = playerDirection * -1;
+            Move(moveDirection);
         }
     }
 }
