@@ -30,15 +30,27 @@ namespace Zold.Utilities
 
         public void AddItem(string name)
         {
-            Item item = new Item(name, this);
             //TUTAJ POWINNA BYĆ WCZYTANA TEKSTURA ZE SPRITESHEETA
-            items.Add(name, item);
+            if (!items.ContainsKey(name))
+            {
+                Item item = new Item(name, this);
+                items.Add(name, item);
+            }
         }
         public Item GetItem(string name)
         {
             if (!items.ContainsKey(name))
                 AddItem(name);
             return items[name];
+        }
+
+        public void AddWeapon(string name)
+        {
+            if (!items.ContainsKey(name))
+            {
+                Weapon weapon = new Weapon(name, this);
+                items.Add(name, weapon);
+            }
         }
 
         public Weapon GetWeapon(string name)

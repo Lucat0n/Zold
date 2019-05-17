@@ -11,7 +11,7 @@ namespace Zold.Inventory
 {
     class Weapon:Item
     {
-        private short baseDmg;
+        private short baseDmg = 5;
         private short range = 32;
         private float dmgMultiplier = 1.0f;
         private float defMultiplier = 1.0f;
@@ -21,16 +21,16 @@ namespace Zold.Inventory
         private int cost = 100;
 
         #region constructors
-        public Weapon(String name, ItemManager itemManager) : base(name, itemManager)
+        public Weapon(String name, ItemManager itemManager) : base(name, itemManager, "weapons")
         {
             JObject itemsBase = itemManager.ItemsBase;
-            this.baseDmg = (short)itemsBase["weapons"][name]["baseDmg"];
-            this.range = (short)itemsBase["weapons"][name]["range"];
-            this.dmgMultiplier = (float)itemsBase["weapons"][name]["dmgMultiplier"];
-            this.defMultiplier = (float)itemsBase["weapons"][name]["defMultiplier"];
-            this.Sigma = (float)itemsBase["weapons"][name]["sigma"];
-            this.speed = (float)itemsBase["weapons"][name]["speed"];
-            this.cost = (int)itemsBase["weapons"][name]["cost"];
+            this.baseDmg = itemsBase["weapons"][name]["baseDmg"]!=null ? (short)itemsBase["weapons"][name]["baseDmg"] : (short)5;
+            this.range = itemsBase["weapons"][name]["range"]!=null ? (short)itemsBase["weapons"][name]["range"] : range;
+            this.dmgMultiplier = itemsBase["weapons"][name]["dmgMultiplier"]!=null ? (float)itemsBase["weapons"][name]["dmgMultiplier"] : dmgMultiplier;
+            this.defMultiplier = itemsBase["weapons"][name]["defMultiplier"]!=null ? (float)itemsBase["weapons"][name]["defMultiplier"] : defMultiplier;
+            this.sigma = itemsBase["weapons"][name]["sigma"]!=null ? (float)itemsBase["weapons"][name]["sigma"] : sigma;
+            this.speed = itemsBase["weapons"][name]["speed"]!=null ? (float)itemsBase["weapons"][name]["speed"] : speed;
+            this.cost = itemsBase["weapons"][name]["cost"]!= null ? (int)itemsBase["weapons"][name]["cost"] : cost;
         }
         #endregion
 

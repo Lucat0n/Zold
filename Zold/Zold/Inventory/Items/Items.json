@@ -1,45 +1,33 @@
 {
   "items": {
     "healthPotion": {
-      "isBattleOnly": false,
-      "isKeyItem": false,
-      "thrownDmg": 10,
       "description": "Ma³a mikstura uleczaj¹ca. Praktycznie nic nie uzdrawia.",
       "miniature": "healthPotionIcon",
       "largeScale": "healthPotionImage"
     },
     "healthPotion2": {
-      "isBattleOnly": false,
-      "isKeyItem": false,
-      "thrownDmg": 10,
-      "description": "Œrednia mikstura uleczaj¹ca. Regeneruje ileœtam HP.",
+      "description": "Œrednia mikstura uleczaj¹ca. Regeneruje po³owê HP.",
       "miniature": "healthPotionIcon2",
       "largeScale": "healthPotionImage2"
     },
     "healthPotion3": {
-      "isBattleOnly": false,
-      "isKeyItem": false,
-      "thrownDmg": 10,
       "description": "Du¿a mikstura uleczaj¹ca. Regeneruje short.MaxValue HP.",
       "miniature": "healthPotionIcon3",
       "largeScale": "healthPotionImage3"
     },
     "bolt": {
-      "isBattleOnly": false,
-      "isKeyItem": false,
-      "thrownDmg":  10,
       "description": "Œruba, jak ka¿da inna. Powszechny przedmiot w Zold.",
       "miniature": "boltIcon",
       "largeScale": "boltImage"
-    },
+    }
+  },
+  "weapons": {
     "stick": {
-      "isBattleOnly": false,
-      "isKeyItem": false,
       "thrownDmg": 15,
       "description": "Kij od szczotki. Lepszy, ni¿ go³e piêœci.",
       "miniature": "stickIcon",
       "largeScale": "stickImage",
-      "baseDmg": 5,
+      "baseDmg": 10,
       "range": 32,
       "dmgMultiplier": 1.0,
       "defMultiplier": 1.0,

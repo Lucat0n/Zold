@@ -162,10 +162,13 @@ namespace Zold.Screens.Implemented.Pause
                     }
                     break;
                 case (PauseState.quests):
-                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                    }else if (keyboardState.IsKeyUp(Keys.Escape))
+                    {
+                        isEscPressed = false;
                     }
                     if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
                     {
@@ -185,8 +188,8 @@ namespace Zold.Screens.Implemented.Pause
                         isUpPressed = false;
                     if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
                     {
-                        isEscPressed = true;
                         gameScreenManager.InsertScreen(new QuestDescriptionScreen(questIndex));
+                        isEscPressed = true;
                         isEnterPressed = true;
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))

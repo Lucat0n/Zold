@@ -92,6 +92,8 @@ namespace Zold.Screens
             //*****
             questManager.AddItemQuest("iQ1");
             questManager.AddLocationQuest("lQ1");
+            itemManager.AddItem("bolt");
+            itemManager.AddWeapon("stick");
             //*****
             this.LoadContent();
         }
