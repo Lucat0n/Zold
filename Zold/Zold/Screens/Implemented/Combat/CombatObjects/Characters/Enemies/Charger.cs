@@ -16,6 +16,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private bool charge;
         private bool hit;
 
+        Projectile map;
+
         public Charger(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
@@ -24,6 +26,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.MakeAnimation(4, "Death_Left", 250);
 
             charge = false;
+            // todo: mapa nie może być Projectilem
+            map = new Projectile(new Vector2(leflMapEdge, topMapEdge), null, Vector2.Zero, rightMapEdge, bottomMapEdge - topMapEdge);
 
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 2000;
@@ -44,8 +48,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             playerDirection = CalcDirection(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
-            if (BottomPosition.Y < mapEdge)
-                Position.Y = mapEdge - height;
+            if (BottomPosition.Y < topMapEdge)
+                Position.Y = topMapEdge - height;
 
             if (prepareTimer.Enabled == true)
                 action = "Preparing";
@@ -68,15 +72,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (prepareTimer.Enabled == false)
             {
                 action = "Moving";
-                Move();
+                Move(playerDirection);
             }
-        }
-
-        public override void Move()
-        {
-            Position.X += playerDirection.X * speed;
-            if (BottomPosition.Y >= mapEdge)
-                Position.Y += playerDirection.Y * speed;
         }
 
         public override void Animation(GameTime gameTime)
@@ -136,7 +133,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || (BottomPosition.Y + 1 < mapEdge))
+            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), height, width))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

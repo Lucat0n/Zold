@@ -22,7 +22,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public abstract void AI(GameTime gameTime);
 
-        public abstract void Move();
+        protected void Move(Vector2 direction)
+        {
+            Position.X += direction.X * speed;
+            Position.Y += direction.Y * speed;
+        }
 
         public bool CheckPointCollision(Vector2 point)
         {

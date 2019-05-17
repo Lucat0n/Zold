@@ -39,14 +39,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (attackTimer.Enabled == false)
             {
                 action = "Moving";
-                Move();
+                Move(playerDirection);
             }
-        }
-
-        public override void Move()
-        {
-            Position.X += playerDirection.X * speed;
-            Position.Y += playerDirection.Y * speed;
         }
 
         public override void Animation(GameTime gameTime)

@@ -16,11 +16,20 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         protected float speed;
         protected int height;
         protected int width;
+        protected readonly int topMapEdge;
+        protected readonly int bottomMapEdge;
+        protected readonly int rightMapEdge;
+        protected readonly int leflMapEdge;
 
         public CombatObject(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
             this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
+
+            topMapEdge = 150;
+            bottomMapEdge = 450;
+            rightMapEdge = 750;
+            leflMapEdge = 0;
 
             this.height = height;
             this.width = width;

@@ -9,8 +9,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
         public int Hp { set; get; }
-        protected readonly int mapEdge;
-        protected string action;
+        public string action;
 
         public Character(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
@@ -23,7 +22,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             CalculateDepth();
             tempPosition = Position;
             layerDepth = (Position.Y - 100) / 350;
-            mapEdge = 150;
             rotation = 0.0f;
             scale = 1.0f;
             damage = 5;
