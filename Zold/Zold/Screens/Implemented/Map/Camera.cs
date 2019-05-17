@@ -88,5 +88,24 @@ namespace Zold.Screens.Implemented.Map
             MapManager.bounds.Y += scrolly;
         }
 
+        public Matrix Transform { get; set; }
+
+        public void Follow(Player player)
+        {
+            var position = Matrix.CreateTranslation(
+                -player.GetPosition().X - (player.texture.Width / 2),
+                -player.GetPosition().Y - (player.texture.Height / 2),
+                0
+                );
+
+            var offset = Matrix.CreateTranslation(
+                256,
+                128,
+                0
+                );
+
+            Transform = position * offset;
+        }
+
     }
 }
