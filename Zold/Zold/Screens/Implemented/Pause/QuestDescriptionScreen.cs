@@ -18,6 +18,7 @@ namespace Zold.Screens.Implemented.Pause
     {
         private ArrayList strings;
         private Rectangle questBox;
+        private Rectangle questBox2;
         private SByte questIndex;
         private readonly SpriteFont font;
         private Vector2 titlePos;
@@ -35,7 +36,7 @@ namespace Zold.Screens.Implemented.Pause
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.SpriteBatch.Begin();
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), questBox, Color.White);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), questBox2, Color.White);
             gameScreenManager.SpriteBatch.DrawString(font, gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false), titlePos, Color.Yellow, 0.0f, Vector2.Zero, new Vector2(questBox.Height * 0.005f, questBox.Height * 0.005f), SpriteEffects.None, 1.0f);
             for(int i = 0; i < strings.Count; i++)
                 gameScreenManager.SpriteBatch.DrawString(font, strings[i].ToString(), firstLinePos + new Vector2(0, i*(questBox.Height / 10)), Color.White, 0.0f, Vector2.Zero, new Vector2(questBox.Height * 0.005f, questBox.Height * 0.005f), SpriteEffects.None, 1.0f);
@@ -82,6 +83,7 @@ namespace Zold.Screens.Implemented.Pause
                 LocationQuest LocationQuest = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests[id];
                 strings.Add("Odwiedz lokacje: " + LocationQuest.LocationToVisit);
             }
+            this.lineAmount = (byte)strings.Count;
             return strings;
         }
 
@@ -93,6 +95,7 @@ namespace Zold.Screens.Implemented.Pause
             titlePos = new Vector2(questBox.X + questBox.Width / 2 - (font.MeasureString(gameScreenManager.QuestManager.GetActiveQuestName(questIndex, false)).X / 2) * questBox.Height * 0.005f, questBox.Y + questBox.Height / 20);
             firstLinePos = new Vector2(questBox.X + questBox.Width * 0.025f, questBox.Y + questBox.Height / 7);
             this.strings = PrepareString();
+            questBox2 = new Rectangle(3 * gameScreenManager.GraphicsDevice.Viewport.Width / 10, gameScreenManager.GraphicsDevice.Viewport.Height / 4, (int)(gameScreenManager.GraphicsDevice.Viewport.Width / 2.5f), (int)(font.MeasureString("A").Y * (lineAmount+3)));
         }
         public override void UnloadContent() { }
         #endregion
