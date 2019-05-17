@@ -7,8 +7,10 @@ using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
+using Zold.Inventory;
 using Zold.Utilities;
 using Zold.Screens.Implemented;
+using Zold.Quests;
 
 namespace Zold.Screens
 {
@@ -18,6 +20,9 @@ namespace Zold.Screens
         private bool isFullScreenOn = false;
         private ContentManager content;
         private ContentLoader contentLoader;
+        private readonly ItemManager itemManager;
+        private readonly InventoryManager inventoryManager;
+        private QuestManager questManager;
         private float masterVolume = 1.0f;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
@@ -70,6 +75,7 @@ namespace Zold.Screens
         }
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
+        internal QuestManager QuestManager { get => questManager; set => questManager = value; }
         #endregion
 
         #region init
@@ -80,6 +86,9 @@ namespace Zold.Screens
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentLoader = new ContentLoader(game, Content);
+            itemManager = new ItemManager(contentLoader);
+            inventoryManager = new InventoryManager(itemManager);
+            questManager = new QuestManager(inventoryManager, itemManager);
             this.LoadContent();
         }
 

@@ -1,0 +1,18 @@
+{
+  "itemQuests": {
+    "iQ1": {
+      "title": "Zepsuta reka",
+      "description": "Znajdz czesci do poskladania reki Adasia.",
+      "itemsToCollect": {
+        "bolt": 3
+      }
+    }
+  },
+  "locationQuests": {
+    "lQ1": {
+      "title": "Wyjscie",
+      "description": "Wyjdz z pokoju.",
+      "locationToVisit": "korytarz"
+    }
+  }
+}
