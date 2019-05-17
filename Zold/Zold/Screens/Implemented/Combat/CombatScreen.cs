@@ -4,6 +4,9 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Zold.Utilities;
+using Zold.Screens.Implemented.Combat.CombatObjects;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -11,35 +14,55 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        SpriteFont font;
+        List<CombatObject> objectsToRender;
+        List<Projectile> projectiles;
         string combatState;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
-            font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
+            
+            projectiles = new List<Projectile>();
+            objectsToRender = new List<CombatObject>();
+            objectsToRender.Add(player);
+            objectsToRender.AddRange(enemies);
+
+            foreach (Character character in objectsToRender)
+            {
+                character.CombatScreen = this;
+            } 
+
             combatState = "";
             IsTransparent = false;
         }
 
         public override void Update(GameTime gameTime)
         {
+            objectsToRender = objectsToRender.OrderBy(item => item.Position.Y).ToList();
+
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
+            });
+
+            projectiles.ForEach(projectile =>
+            {
+                projectile.Move(gameTime);
             });
 
             var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
+                objectsToRender.Remove(enemy);
             }
 
             if (enemies.Count == 0)
             {
                 combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
+                gameScreenManager.InsertScreen(new Map.MapManager());
             }
             else if (player.Hp <= 0)
             {
@@ -51,38 +74,26 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
-            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
         }
 
         public override void Draw(GameTime gameTime)
         {
+            // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
-            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            player.Animation(gameTime);
-
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150));
-
-            //gameScreenManager.SpriteBatch.Draw(player.GetTexture(), player.GetPosition());
-            gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.LayerDepth.ToString(), new Vector2(player.position.X, player.position.Y - 35), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
-
+            objectsToRender.ForEach(item =>
+            {
+                item.Animation(gameTime);
+            });
 
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, null, null, 0.0f, Vector2.Zero, null, SpriteEffects.None, enemy.LayerDepth);
-
-                //spriteBatch.DrawString(font, "Distance: " + enemy.Distance.ToString(), new Vector2(100, 80), Color.Black);
-                //spriteBatch.DrawString(font, "Direction: \n x: " + enemy.GetDirection().X.ToString() + " y: " + enemy.GetDirection().Y.ToString(), new Vector2(100, 100), Color.Black);
-
-                gameScreenManager.SpriteBatch.DrawString(font, "bot.Y: " + enemy.bottomPosition.Y.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 45), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.LayerDepth.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 25), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
             });
+            
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
 
             gameScreenManager.SpriteBatch.End();
         }
@@ -94,7 +105,13 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void UnloadContent()
         {
-            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+            gameScreenManager.ContentLoader.UnloadLocation("combat");
+        }
+
+        public void MakeProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        {
+            projectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
+            objectsToRender.AddRange(projectiles);
         }
     }
 }

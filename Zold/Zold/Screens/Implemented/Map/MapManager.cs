@@ -55,11 +55,13 @@ namespace Zold.Screens.Implemented.Map
         Texture2D dymek;
 
         //Combat
+        /*
         Combat.CombatScreen Combat;
-        Combat.Player combatPlayer;
-        Combat.Enemy skeleton;
-        Combat.Enemy rat;
-        List<Combat.Enemy> enemies;
+        Combat.Characters.Player combatPlayer;
+        Combat.Characters.Enemies.Enemy skeleton;
+        Combat.Characters.Enemies.Enemy rat;
+        List<Combat.Characters.Enemies.Enemy> enemies;
+        */
 
         //budynki
         Texture2D policja;
@@ -172,17 +174,17 @@ namespace Zold.Screens.Implemented.Map
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
+            /*
+            enemies = new List<Combat.Characters.Enemies.Enemy>();
 
-            enemies = new List<Combat.Enemy>();
+            combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
 
-            combatPlayer = new Combat.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight));
-
-            skeleton = new Combat.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat = new Combat.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
+            skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
+            rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
             enemies.Add(skeleton);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
-
+            */
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
             getColideObjects(map, 0);
@@ -541,8 +543,8 @@ namespace Zold.Screens.Implemented.Map
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
                     //CHANGE STATE TO COMBAT
-                    gameScreenManager.RemoveScreen(this);
-                    gameScreenManager.InsertScreen(Combat);
+                    //gameScreenManager.RemoveScreen(this);
+                    //gameScreenManager.InsertScreen(Combat);
 
                     //if (songStart)
                     //{
