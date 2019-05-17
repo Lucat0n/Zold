@@ -80,7 +80,7 @@ namespace Zold.Screens.Implemented.Pause
                     break;
                 case (PauseState.quests):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
-                    gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? "Aktywne [E ->]" : "Wykonane [<- Q]", new Vector2(secondaryWindow.X + (secondaryWindow.Width / 2) - questTitleFontSize * 5, 50 + secondaryWindow.Height / 50), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.003f, secondaryWindow.Height * 0.003f), SpriteEffects.None, 1f);
+                    gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? "Aktywne [E ->]" : " [<- Q] Wykonane", new Vector2(secondaryWindow.X + (secondaryWindow.Width / 2) - questTitleFontSize * 5, 50 + secondaryWindow.Height / 50), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.003f, secondaryWindow.Height * 0.003f), SpriteEffects.None, 1f);
                     for (int i = 0; i < Math.Min(10, activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count : gameScreenManager.QuestManager.CompletedQuests.Count); i++)
                         gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? gameScreenManager.QuestManager.GetActiveQuestName(i, false) : gameScreenManager.QuestManager.GetCompletedQuestName(i, false), new Vector2(secondaryWindow.X + (secondaryWindow.Height / 3), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 10) * i), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.006f, secondaryWindow.Height * 0.006f), SpriteEffects.None, 1f);
                     break;
@@ -101,7 +101,7 @@ namespace Zold.Screens.Implemented.Pause
                     if (!isAdjustingMusic)
                         gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     else
-                        gameScreenManager.SpriteBatch.DrawString(font, new string('_', masterVolume.ToString().Length), new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4)), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height / 90f, mainWindow.Height / 90f), SpriteEffects.None, 1f);
+                        gameScreenManager.SpriteBatch.DrawString(font, new string('_', masterVolume.ToString().Length), new Vector2(secondaryWindow.X + secondaryWindow.Width - (secondaryWindow.Width / 5), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 4)), Color.White, 0, Vector2.Zero, new Vector2(mainWindow.Height * 0.008f, mainWindow.Height * 0.008f), SpriteEffects.None, 1f);
 
                     break;
             }
