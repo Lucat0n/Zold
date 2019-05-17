@@ -25,6 +25,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             
             direction = "Right";
             speed = 2;
+            damage = 20;
 
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
             skill = new Skill(CombatScreen);
@@ -125,7 +126,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             enemies.ForEach( Enemy => {
                 if (Enemy.CheckBoxCollision(hitbox, 1, 40))
-                    Enemy.Hp -= 5;
+                    Enemy.Hp -= damage;
             });
             attackTimer.Enabled = false;
             action = "Idle";

@@ -131,7 +131,11 @@ namespace Zold.Screens
         {
             graphics.IsFullScreen = isFullScreenOn;
             ScreensToDraw.Clear();
-            ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
+            //Debug.WriteLine(ScreensToDraw.Count + " " + ScreenList.FindLastIndex(FindNonTransparent) + " " + ScreenList.Count);
+            //ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
+            for (int i= ScreenList.FindLastIndex(FindNonTransparent); i<ScreenList.Count; i++)
+                ScreensToDraw.Add(ScreenList[i]);
+            
             foreach (GameScreen gameScreen in ScreensToDraw)
                 gameScreen.Draw(gameTime);
         }
@@ -164,12 +168,12 @@ namespace Zold.Screens
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
             ScreenList.Add(gameScreen);
-            ScreensToDraw.Add(gameScreen);
+            //ScreensToDraw.Add(gameScreen);
         }
 
         public void RemoveScreen(GameScreen gameScreen)
         {
-            ScreensToDraw.Remove(gameScreen);
+            //ScreensToDraw.Remove(gameScreen);
             ScreenList.Remove(gameScreen);
             gameScreen.UnloadContent();
         }

@@ -33,13 +33,14 @@ namespace Zold.Screens.Implemented.Map
         int advenPosY = 64;
 
         // Combat
-        /*
+        
         Combat.CombatScreen Combat;
-        Combat.Characters.Player combatPlayer;
-        //Combat.Characters.Enemies.Enemy skeleton;
-        Combat.Characters.Enemies.Enemy rat;
-        List<Combat.Characters.Enemies.Enemy> enemies;
-        */
+        Combat.CombatObjects.Characters.Player combatPlayer;
+        Combat.CombatObjects.Characters.Enemies.Enemy mob;
+        Combat.CombatObjects.Characters.Enemies.Enemy ranged;
+        Combat.CombatObjects.Characters.Enemies.Enemy rat;
+        List<Combat.CombatObjects.Characters.Enemies.Enemy> enemies;
+        
         Player player;
         Enemy enemy;
 
@@ -87,6 +88,7 @@ namespace Zold.Screens.Implemented.Map
         public override void LoadContent()
         {
             gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
 
             canMoveDown = true;
             canMoveLeft = true;
@@ -120,14 +122,16 @@ namespace Zold.Screens.Implemented.Map
 
             // Combat
             
-            //enemies = new List<Combat.Characters.Enemies.Enemy>();
-            //combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
+            enemies = new List<Combat.CombatObjects.Characters.Enemies.Enemy>();
+            combatPlayer = new Combat.CombatObjects.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
 
-            //skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
-            //rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
-           // enemies.Add(skeleton);
-           // enemies.Add(rat);
-            //Combat = new Combat.CombatScreen(combatPlayer, enemies);
+            mob = new Combat.CombatObjects.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            ranged = new Combat.CombatObjects.Characters.Enemies.Ranged(combatPlayer, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            rat = new Combat.CombatObjects.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
+            enemies.Add(mob);
+            enemies.Add(ranged);
+            enemies.Add(rat);
+            Combat = new Combat.CombatScreen(combatPlayer, enemies);
             
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
@@ -315,8 +319,8 @@ namespace Zold.Screens.Implemented.Map
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
-                   // gameScreenManager.RemoveScreen(this);
-                   // gameScreenManager.InsertScreen(Combat);
+                    enemy.position.Y = 5000;
+                    gameScreenManager.InsertScreen(Combat);
 
                     //if (songStart)
                     //{
