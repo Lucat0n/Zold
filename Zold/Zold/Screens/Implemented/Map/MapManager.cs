@@ -34,13 +34,13 @@ namespace Zold.Screens.Implemented.Map
         int advenPosX = 256;
         int advenPosY = 64;
 
-        /* Combat
+        // Combat
         Combat.CombatScreen Combat;
         Combat.Characters.Player combatPlayer;
-        Combat.Characters.Enemies.Enemy skeleton;
+        //Combat.Characters.Enemies.Enemy skeleton;
         Combat.Characters.Enemies.Enemy rat;
         List<Combat.Characters.Enemies.Enemy> enemies;
-        */
+        
 
         Player player;
         Enemy enemy;
@@ -123,16 +123,16 @@ namespace Zold.Screens.Implemented.Map
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
-            /*
+            
             enemies = new List<Combat.Characters.Enemies.Enemy>();
             combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
 
-            skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
-            rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
-            enemies.Add(skeleton);
-            enemies.Add(rat);
+            //skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
+            //rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
+           // enemies.Add(skeleton);
+           // enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
-            */
+            
 
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
@@ -171,7 +171,7 @@ namespace Zold.Screens.Implemented.Map
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin(transformMatrix: camera.Transform);
+            gameScreenManager.SpriteBatch.Begin();
 
             LayerNumbers.ForEach(layer=>
             {
@@ -197,7 +197,10 @@ namespace Zold.Screens.Implemented.Map
             {
                 player.AnimateHealth(gameTime, spriteSheetHP,550);
             }
-
+            if (location2)
+            {
+                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X + bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
+            }
             //postacie
             gameScreenManager.SpriteBatch.End();
             ManageLocations(gameTime);
@@ -205,14 +208,14 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
-            camera.Follow(player);
+            //camera.Follow(player);
             if (gameScreenManager.IsFullScreenOn)
             {
-                //camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
+                camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
             }
             else
             {
-                //camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
+                camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
             }
             //if (!songStart)
             //{
@@ -227,6 +230,11 @@ namespace Zold.Screens.Implemented.Map
             {
                 player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown, gameTime);
                 ManageLocations(gameTime);
+                if (location2)
+                {
+                    enemy.AI(gameTime);
+                }
+
 
             }
             else
@@ -313,7 +321,7 @@ namespace Zold.Screens.Implemented.Map
             {
                 gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X+ bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
 
-                enemy.AI(gametime,player);
+                
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
