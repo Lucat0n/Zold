@@ -62,19 +62,16 @@ namespace Zold.Screens.Implemented.Combat
             {
                 combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
-                gameScreenManager.InsertScreen(new Map.MapManager());
             }
             else if (player.Hp <= 0)
             {
                 combatState = "Przegrana";
                 gameScreenManager.RemoveScreen(this);
-                gameScreenManager.InsertScreen(new Map.MapManager());
             }
         }
 
         public override void LoadContent()
         {
-            gameScreenManager.ContentLoader.LoadLocation("combat");
         }
 
         public override void Draw(GameTime gameTime)
@@ -92,10 +89,9 @@ namespace Zold.Screens.Implemented.Combat
             {
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + enemy.Position.Y, new Vector2(enemy.Position.X, enemy.Position.Y - 15), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "bY: " + enemy.BottomPosition.Y, new Vector2(enemy.Position.X, enemy.Position.Y - 5), Color.Black);
             });
 
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Hp, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
 
@@ -112,7 +108,6 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void UnloadContent()
         {
-            gameScreenManager.ContentLoader.UnloadLocation("combat");
         }
 
         public void MakeProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
