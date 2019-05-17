@@ -61,7 +61,7 @@
     <Compile Include="Screens\Implemented\Map\Camera.cs" />
     <Compile Include="Screens\Implemented\Map\InteractionManager.cs" />
     <Compile Include="Screens\Implemented\Map\Location.cs" />
-    <Compile Include="Screens\Implemented\Map\Locations\OtherLocation.cs" />
+    <Compile Include="Screens\Implemented\Map\Locations\Dormitory.cs" />
     <Compile Include="Screens\Implemented\Map\Locations\TheRoom.cs" />
     <Compile Include="Screens\Implemented\Map\MapManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />

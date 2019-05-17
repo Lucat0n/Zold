@@ -108,6 +108,24 @@
 #begin Content.mgcb
 /copy:Content.mgcb
 
+#begin dormitory.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dormitory.png
+
+#begin Dormitory.tmx
+/copy:Dormitory.tmx
+
+#begin dormitory.tsx
+/copy:dormitory.tsx
+
 #begin graphic/characters/main.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -119,6 +137,24 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
+
+#begin graphic/locations/Dormitory/dormitory.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/locations/Dormitory/dormitory.png
+
+#begin graphic/locations/Dormitory/Dormitory.tmx
+/copy:graphic/locations/Dormitory/Dormitory.tmx
+
+#begin graphic/locations/Dormitory/dormitory.tsx
+/copy:graphic/locations/Dormitory/dormitory.tsx
 
 #begin graphic/locations/MainRoom/MainRoom.tmx
 /copy:graphic/locations/MainRoom/MainRoom.tmx

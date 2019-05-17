@@ -10,13 +10,13 @@ using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Map.Locations
 {
-    class OtherLocation: Location
+    internal class Dormitory: Location
     {
 
         TmxMap currentMap;
-        public OtherLocation(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player) : base(gameScreenManager, spriteSheet, player)
+        public Dormitory(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player) : base(gameScreenManager, spriteSheet, player)
         {
-            currentMap = new TmxMap(@"Content/mapa2v2.tmx");
+            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/Dormitory.tmx");
         }
 
         public override List<int> getColideLayers()
@@ -34,14 +34,21 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<int> getLayerNumbers()
         {
             List<int> LayerNumbers = new List<int>();
-            LayerNumbers.Add(1);
-            LayerNumbers.Add(0);
+           // LayerNumbers.Add(2);
+            LayerNumbers.Add(3);
+            LayerNumbers.Add(4);
+            LayerNumbers.Add(5);
             return LayerNumbers;
         }
 
         public override Vector2 getPortal()
         {
             return new Vector2(-100,0);
+        }
+
+        public override Vector2 playersNewPosition()
+        {
+            return new Vector2(192, 64);
         }
     }
 }

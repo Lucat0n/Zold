@@ -53,6 +53,7 @@ namespace Zold.Screens.Implemented.Map
         public abstract List<int> getLayerNumbers();
         public abstract List<int> getColideLayers();
         public abstract Vector2 getPortal();
+        public abstract Vector2 playersNewPosition();
 
         public virtual void initMap(GameScreenManager gameScreenManager, TmxMap currentMap)
         {
@@ -161,22 +162,23 @@ namespace Zold.Screens.Implemented.Map
                 //  Console.WriteLine("tile: " + tile);
                 Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
 
-                if (ghost.X == tile.X - 32 && ghost.Y == tile.Y)
+                if (ghost.X == tile.X - 32 && ghost.Y +32== tile.Y)
                 {
                     MapManager.canMoveRight = false;
                 }
 
-                else if (ghost.X == tile.X + 32 && ghost.Y == tile.Y)
+                else if (ghost.X == tile.X + 32 && ghost.Y+32 == tile.Y)
                 {
                     MapManager.canMoveLeft = false;
                 }
 
-                else if (ghost.Y - 32 == tile.Y && tile.X == ghost.X)
+                else if (ghost.Y  == tile.Y && tile.X == ghost.X)
                 {
                     MapManager.canMoveUp = false;
+
                 }
 
-                else if (ghost.Y + 32 == tile.Y && tile.X == ghost.X)
+                else if (ghost.Y + 32*2== tile.Y && tile.X == ghost.X)
                 {
                     MapManager.canMoveDown = false;
                 }

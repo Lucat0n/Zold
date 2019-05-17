@@ -16,7 +16,7 @@ namespace Zold.Screens.Implemented.Map.Locations
 
         public TheRoom(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player) : base(gameScreenManager, spriteSheet, player)
         {
-            currentMap = new TmxMap(@"Content/MainRoom.tmx");
+            currentMap = new TmxMap(@"Content/graphic/locations/MainRoom/MainRoom.tmx");
         }
 
         public override List<int> getColideLayers()
@@ -34,14 +34,25 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<int> getLayerNumbers()
         {
             List<int> LayerNumbers = new List<int>();
-            LayerNumbers.Add(2);
+           // LayerNumbers.Add(2);
             LayerNumbers.Add(3);
+            LayerNumbers.Add(4); // sciany
+            LayerNumbers.Add(5);
+            //LayerNumbers.Add(0);
+
+            //LayerNumbers.Add(4);
+           // LayerNumbers.Add(6);
             return LayerNumbers;
         }
 
         public override Vector2 getPortal()
         {
-            return new Vector2(192, 192);
+            return new Vector2(192, 160);
+        }
+
+        public override Vector2 playersNewPosition()
+        {
+            return new Vector2(64, 96);
         }
     }
 }

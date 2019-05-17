@@ -40,7 +40,6 @@ namespace Zold.Screens.Implemented.Map
         Combat.Characters.Enemies.Enemy rat;
         List<Combat.Characters.Enemies.Enemy> enemies;
         */
-
         Player player;
         Enemy enemy;
 
@@ -115,10 +114,8 @@ namespace Zold.Screens.Implemented.Map
 
             //hpbar 
             spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250,32);
-           // hpbar = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet);
-            //player = new Player(pos, Assets.Instance.Get("placeholders/Textures/main"));
 
-            enemy = new Enemy(player, new Vector2(400, 300));
+            enemy = new Enemy(player, new Vector2(400, 200));
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
@@ -132,13 +129,12 @@ namespace Zold.Screens.Implemented.Map
            // enemies.Add(rat);
             //Combat = new Combat.CombatScreen(combatPlayer, enemies);
             
-
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
 
             location = new Locations.TheRoom(gameScreenManager, spriteSheet, player);
             initTheLocation(location);
-
+            pos = location.playersNewPosition();
             camera = new Camera(gameScreenManager, location);
 
             interactionManager = new InteractionManager(GameScreenManager, location);
@@ -164,7 +160,6 @@ namespace Zold.Screens.Implemented.Map
             {
                 location.getColideObjects(layer, currentMap, bounds, colisionTiles);
             });
-            
         }
 
         public override void Draw(GameTime gameTime)
@@ -304,7 +299,8 @@ namespace Zold.Screens.Implemented.Map
                 {
                     if (player.GetPosition().X == location.getPortal().X && player.GetPosition().Y == location.getPortal().Y)
                     {
-                        location = new Locations.OtherLocation(gameScreenManager, spriteSheet, player);
+                        location = new Locations.Dormitory(gameScreenManager, spriteSheet, player);
+                        player.SetPosition(location.playersNewPosition());
                         initTheLocation(location);
                         location1 = false;
                         location2 = true;
@@ -316,7 +312,6 @@ namespace Zold.Screens.Implemented.Map
             {
                 gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X+ bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
 
-                //
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
@@ -334,11 +329,9 @@ namespace Zold.Screens.Implemented.Map
             /*
             if (location3)
             {
- 
                 location1 = false;
                 location2 = false;
                 location3 = true;
-
             }*/
             gameScreenManager.SpriteBatch.End();
         }
