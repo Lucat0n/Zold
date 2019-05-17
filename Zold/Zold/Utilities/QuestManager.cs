@@ -56,7 +56,7 @@ namespace Zold.Utilities
 
         public void AddLocationQuest(string questID)
         {
-            LocationQuest locationQuest = new LocationQuest("lQ1", this);
+            LocationQuest locationQuest = new LocationQuest(questID, this);
             locationQuest.Title = (string)questsBase["locationQuests"][questID]["title"];
             locationQuest.Description = (string)questsBase["locationQuests"][questID]["description"];
             locationQuest.LocationToVisit = (string)questsBase["locationQuests"][questID]["locationToVisit"];

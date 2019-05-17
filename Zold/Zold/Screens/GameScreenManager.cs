@@ -90,8 +90,8 @@ namespace Zold.Screens
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
             //*****
-            //questManager.AddItemQuest("iQ1");
-            //questManager.AddLocationQuest("lQ1");
+            questManager.AddItemQuest("iQ1");
+            questManager.AddLocationQuest("lQ1");
             //*****
             this.LoadContent();
         }
