@@ -108,9 +108,10 @@ namespace Zold.Screens.Implemented.Map
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
         }
 
-        public void Animation(GameTime gameTime)
+        //TODO: wywalić matrixa z parametrów
+        public void Animation(GameTime gameTime, Matrix cameraTransform)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: cameraTransform);
             if (isMoving)
             {
                 SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), Direction, gameTime);
