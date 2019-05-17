@@ -71,5 +71,10 @@ namespace Zold.Utilities
             return quests[index].Title;
         }
 
+        public string GetActiveQuestID(int index, bool sorted)
+        {
+            return ActiveQuests.ElementAt(index).Key;
+        }
+
     }
 }

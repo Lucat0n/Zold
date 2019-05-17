@@ -49,7 +49,7 @@ namespace Zold.Screens.Implemented.Pause
         private ArrayList SplitString()
         {
             ArrayList strings = new ArrayList();
-            string[] ssize = gameScreenManager.QuestManager.ActiveQuests["iQ1"].Description.Split(null);
+            string[] ssize = gameScreenManager.QuestManager.ActiveQuests[gameScreenManager.QuestManager.GetActiveQuestID(questIndex, false)].Description.Split(null);
             StringBuilder stringBuilder = new StringBuilder();
             foreach (string s in ssize)
             {
