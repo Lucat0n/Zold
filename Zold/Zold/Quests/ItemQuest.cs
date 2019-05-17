@@ -16,28 +16,29 @@ namespace Zold.Quests
         
         public ItemQuest(String questID, QuestManager questManager):base(questID, questManager)
         {
-            itemsToCollect = new Dictionary<Item, byte>();
-            itemsCollected = new Dictionary<Item, byte>();
+            ItemsToCollect = new Dictionary<Item, byte>();
+            ItemsCollected = new Dictionary<Item, byte>();
         }
 
         #region properties
-
+        internal Dictionary<Item, byte> ItemsToCollect { get => itemsToCollect; set => itemsToCollect = value; }
+        internal Dictionary<Item, byte> ItemsCollected { get => itemsCollected; set => itemsCollected = value; }
         #endregion
 
         public void AddItemToCollect(Item item, byte amount)
         {
-            itemsToCollect.Add(item, amount);
-            itemsCollected.Add(item,
-                base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(item.Name) ? 
-                base.QuestManager.InventoryManager.GetPlayerInventory().Items[item.Name].Amount : (byte)0
+            ItemsToCollect.Add(item, amount);
+            ItemsCollected.Add(item,
+                base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(item.Id) ? 
+                base.QuestManager.InventoryManager.GetPlayerInventory().Items[item.Id].Amount : (byte)0
                 );
         }
 
         override public bool CheckCompletion()
         {
             UpdateItemsAmount();
-            foreach (KeyValuePair<Item, byte> entry in itemsToCollect)
-                if (entry.Value <= itemsCollected[entry.Key])
+            foreach (KeyValuePair<Item, byte> entry in ItemsToCollect)
+                if (entry.Value <= ItemsCollected[entry.Key])
                     continue;
                 else
                 {
@@ -50,12 +51,12 @@ namespace Zold.Quests
 
         public void UpdateItemsAmount()
         {
-            var itemsCollectedArray = itemsCollected.ToArray();
+            var itemsCollectedArray = ItemsCollected.ToArray();
             foreach(KeyValuePair<Item, byte> pair in itemsCollectedArray)
             {
-                if (base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(pair.Key.Name))
+                if (base.QuestManager.InventoryManager.GetPlayerInventory().Items.ContainsKey(pair.Key.Id))
                 {
-                    itemsCollected[pair.Key] = base.QuestManager.InventoryManager.GetPlayerInventory().Items[pair.Key.Name].Amount;
+                    ItemsCollected[pair.Key] = base.QuestManager.InventoryManager.GetPlayerInventory().Items[pair.Key.Id].Amount;
                     
                 }
             }

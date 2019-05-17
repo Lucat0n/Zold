@@ -19,40 +19,40 @@ namespace Zold.Inventory
         private String description;
         private String miniature;
         private String name;
+        private String id;
         private String largeScale;
         
         public bool IsBattleOnly { get => isBattleOnly; set => isBattleOnly = value; }
         public bool IsKeyItem { get => isKeyItem; set => isKeyItem = value; }
         public short ThrownDmg { get => thrownDmg; set => thrownDmg = value; }
         public string Description { get => description; set => description = value; }
-        public string Name { get => name; set => name = value; }
+        public string Id { get => id; set => id = value; }
         public String Miniature { get => miniature; set => miniature = value; }
         public String LargeScale { get => largeScale; set => largeScale = value; }
+        public string Name { get => name; set => name = value; }
 
-        public Item(String name, ItemManager itemManager)
+        public Item(String id, ItemManager itemManager)
         {
-            this.name = name;
+            this.id = id;
             JObject itemsBase = itemManager.ItemsBase;
-            System.Diagnostics.Debug.WriteLine(name);
-            isBattleOnly = itemsBase["items"][name]["isBattleOnly"]!=null ? (bool)itemsBase["items"][name]["isBattleOnly"] : false;
-            isKeyItem = itemsBase["items"][name]["isKeyItem"]!=null ? (bool)itemsBase["items"][name]["isKeyItem"] : false;
-            thrownDmg = itemsBase["items"][name]["thrownDmg"]!=null ? (short)itemsBase["items"][name]["thrownDmg"] : (short)10;
-            Description = itemsBase["items"][name]["thrownDmg"]!=null ? (String)itemsBase["items"][name]["description"] : "Brak opisu";
-            miniature = (String)itemsBase["items"][name]["miniature"]!=null ? (String)itemsBase["items"][name]["miniature"] : "iconPlaceholder";
-            largeScale = (String)itemsBase["items"][name]["largeScale"]!=null ? (String)itemsBase["items"][name]["largeScale"] : "largePlaceholder";
+            Name = itemsBase["items"][id]["name"]!=null ? (string)itemsBase["items"][id]["name"] : "Brak nazwy";
+            isBattleOnly = itemsBase["items"][id]["isBattleOnly"]!=null ? (bool)itemsBase["items"][id]["isBattleOnly"] : false;
+            isKeyItem = itemsBase["items"][id]["isKeyItem"]!=null ? (bool)itemsBase["items"][id]["isKeyItem"] : false;
+            thrownDmg = itemsBase["items"][id]["thrownDmg"]!=null ? (short)itemsBase["items"][id]["thrownDmg"] : (short)10;
+            Description = itemsBase["items"][id]["thrownDmg"]!=null ? (String)itemsBase["items"][id]["description"] : "Brak opisu";
+            miniature = (String)itemsBase["items"][id]["miniature"]!=null ? (String)itemsBase["items"][id]["miniature"] : "iconPlaceholder";
+            largeScale = (String)itemsBase["items"][id]["largeScale"]!=null ? (String)itemsBase["items"][id]["largeScale"] : "largePlaceholder";
         }
 
-        public Item(String name, ItemManager itemManager, String type)
+        public Item(String id, ItemManager itemManager, String type)
         {
-            this.name = name;
             JObject itemsBase = itemManager.ItemsBase;
-            System.Diagnostics.Debug.WriteLine(name);
-            isBattleOnly = itemsBase[type][name]["isBattleOnly"] != null ? (bool)itemsBase[type][name]["isBattleOnly"] : false;
-            isKeyItem = itemsBase[type][name]["isKeyItem"] != null ? (bool)itemsBase[type][name]["isKeyItem"] : false;
-            thrownDmg = itemsBase[type][name]["thrownDmg"] != null ? (short)itemsBase[type][name]["thrownDmg"] : (short)10;
-            Description = itemsBase[type][name]["thrownDmg"] != null ? (String)itemsBase[type][name]["description"] : "Brak opisu";
-            miniature = (String)itemsBase[type][name]["miniature"] != null ? (String)itemsBase[type][name]["miniature"] : "iconPlaceholder";
-            largeScale = (String)itemsBase[type][name]["largeScale"] != null ? (String)itemsBase[type][name]["largeScale"] : "largePlaceholder";
+            isBattleOnly = itemsBase[type][id]["isBattleOnly"] != null ? (bool)itemsBase[type][id]["isBattleOnly"] : false;
+            isKeyItem = itemsBase[type][id]["isKeyItem"] != null ? (bool)itemsBase[type][id]["isKeyItem"] : false;
+            thrownDmg = itemsBase[type][id]["thrownDmg"] != null ? (short)itemsBase[type][id]["thrownDmg"] : (short)10;
+            Description = itemsBase[type][id]["thrownDmg"] != null ? (String)itemsBase[type][id]["description"] : "Brak opisu";
+            miniature = (String)itemsBase[type][id]["miniature"] != null ? (String)itemsBase[type][id]["miniature"] : "iconPlaceholder";
+            largeScale = (String)itemsBase[type][id]["largeScale"] != null ? (String)itemsBase[type][id]["largeScale"] : "largePlaceholder";
         }
 
     }

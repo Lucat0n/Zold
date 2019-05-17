@@ -11,8 +11,8 @@
   "locationQuests": {
     "lQ1": {
       "title": "Wyjscie",
-      "description": "Wydostan sie z akademika.",
-      "locationToVisit": "Wyjscie"
+      "description": "Wyjdz z pokoju.",
+      "locationToVisit": "korytarz"
     }
   }
 }
