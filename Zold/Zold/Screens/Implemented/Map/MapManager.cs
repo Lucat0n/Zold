@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TiledSharp;
 using System;
 using Zold.Utilities;
+using Zold.Quests;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -302,6 +303,12 @@ namespace Zold.Screens.Implemented.Map
                         location = new Locations.Dormitory(gameScreenManager, spriteSheet, player);
                         player.SetPosition(location.playersNewPosition());
                         initTheLocation(location);
+                        if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1")){
+                            var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
+                            lq.TriggerVisit();
+                            gameScreenManager.QuestManager.UpdateQuests();
+                        }
+
                         location1 = false;
                         location2 = true;
                     }

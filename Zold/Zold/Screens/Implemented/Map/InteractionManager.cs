@@ -97,7 +97,15 @@ namespace Zold.Screens.Implemented.Map
                 {
                     
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
-                    gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], new Vector2(145, 425), Color.White);
+                    if (!(gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1") || gameScreenManager.QuestManager.CompletedQuests.ContainsKey("lQ1")))
+                    {
+                        gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz.", new Vector2(145, 425), Color.White);
+                        gameScreenManager.QuestManager.AddLocationQuest("lQ1");
+                    }
+                    if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
+                        gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz.", new Vector2(145, 425), Color.White);
+                    else
+                        gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], new Vector2(145, 425), Color.White);
                     disp = false;
 
                 }
