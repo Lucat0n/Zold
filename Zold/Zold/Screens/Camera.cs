@@ -8,41 +8,56 @@ using System.Threading.Tasks;
 
 namespace Zold.Screens
 {
-    class Camera : SpriteBatch
+    class Camera 
     {
-        private Matrix Transform { get; set; }
+        private Matrix transform;
+        private Vector2 cameraPosition;
+        private const float zoom = 1.5f;
+        private const float rotation = 0.0f;
 
-        public Camera(GraphicsDevice graphicsDevice) : base(graphicsDevice)
-        {
-
-        }
+        public Camera(Vector2 cameraPosition) => this.cameraPosition = cameraPosition;
         
-        public void Follow(Vector2 spritePosition,
-            int screenHeight, int screenWidth,
-            int spriteHeight, int spriteWidth)
+
+        public void Follow(Vector2 spritePosition, float screenHeight, float screenWidth)
         {
+            UpdateMovement(spritePosition);
+            CalculaterTransformation(screenHeight, screenWidth);
+        } 
+            
+        private void UpdateMovement(Vector2 spritePosition)
+        {
+            cameraPosition.X += ((spritePosition.X - cameraPosition.X)); 
+            cameraPosition.Y += ((spritePosition.Y - cameraPosition.Y)); 
+        }
+
+        //TODO: usunięcie magic numberów offsetu
+        private void CalculaterTransformation(float screenHeight, float screenWidth)
+        {
+            
             var position = Matrix.CreateTranslation(
-                -spritePosition.X - (spriteWidth / 2),
-                -spritePosition.Y - (spriteHeight / 2),
+                -cameraPosition.X - (screenWidth / 2),
+                -cameraPosition.Y - (screenHeight / 2),
                 0);
+
+            position *= Matrix.CreateScale(new Vector3(zoom, zoom, 0));
 
             var offset = Matrix.CreateTranslation(
-                screenWidth / 2,
-                screenHeight / 2,
+                screenWidth*1.2f,
+                screenHeight * 1.2f,
                 0);
 
-            Transform = position * offset;
+            transform = position * offset;
+
+            transform.M41 = (float)Math.Round(transform.M41, 0);
+            transform.M42 = (float)Math.Round(transform.M42, 0);
+
         }
 
-
-        public void BeginFilming()
+        public Matrix Transform()
         {
-            Begin(transformMatrix: Transform);
+            return transform;
         }
+      
 
-        public void EndFilming()
-        {
-            End();
-        } 
     }
 }

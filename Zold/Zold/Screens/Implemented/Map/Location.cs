@@ -66,7 +66,8 @@ namespace Zold.Screens.Implemented.Map
            // getColideObjects(currentMap, 0);
         }
 
-        public virtual void drawTiles(int layer, TmxMap map, Rectangle bounds)
+        //TODO: wywalić tego matrixa z parametrów
+        public virtual void drawTiles(int layer, TmxMap map, Rectangle bounds, Matrix cameraTransformation)
         {
             for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
             {
@@ -85,7 +86,7 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    spriteSheet.Begin();
+                    spriteSheet.Begin(transformMatrix: cameraTransformation);
                     spriteSheet.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
                     spriteSheet.End();
                 }

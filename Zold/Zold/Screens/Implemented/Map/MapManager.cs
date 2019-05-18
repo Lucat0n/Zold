@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using TiledSharp;
 using System;
 using Zold.Utilities;
+using Zold.Quests;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -33,13 +34,14 @@ namespace Zold.Screens.Implemented.Map
         int advenPosY = 64;
 
         // Combat
-        /*
+        
         Combat.CombatScreen Combat;
-        Combat.Characters.Player combatPlayer;
-        //Combat.Characters.Enemies.Enemy skeleton;
-        Combat.Characters.Enemies.Enemy rat;
-        List<Combat.Characters.Enemies.Enemy> enemies;
-        */
+        Combat.CombatObjects.Characters.Player combatPlayer;
+        Combat.CombatObjects.Characters.Enemies.Enemy mob;
+        Combat.CombatObjects.Characters.Enemies.Enemy ranged;
+        Combat.CombatObjects.Characters.Enemies.Enemy rat;
+        List<Combat.CombatObjects.Characters.Enemies.Enemy> enemies;
+        
         Player player;
         Enemy enemy;
 
@@ -76,6 +78,7 @@ namespace Zold.Screens.Implemented.Map
 
         Location location;
         Camera camera;
+        Zold.Screens.Camera cameraPlayer;
         InteractionManager interactionManager;
 
         public MapManager()
@@ -87,6 +90,7 @@ namespace Zold.Screens.Implemented.Map
         public override void LoadContent()
         {
             gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
 
             canMoveDown = true;
             canMoveLeft = true;
@@ -120,14 +124,16 @@ namespace Zold.Screens.Implemented.Map
 
             // Combat
             
-            //enemies = new List<Combat.Characters.Enemies.Enemy>();
-            //combatPlayer = new Combat.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight), 32 ,48);
+            enemies = new List<Combat.CombatObjects.Characters.Enemies.Enemy>();
+            combatPlayer = new Combat.CombatObjects.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
 
-            //skeleton = new Combat.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"), 32, 48);
-            //rat = new Combat.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"), 44, 20);
-           // enemies.Add(skeleton);
-           // enemies.Add(rat);
-            //Combat = new Combat.CombatScreen(combatPlayer, enemies);
+            mob = new Combat.CombatObjects.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            ranged = new Combat.CombatObjects.Characters.Enemies.Ranged(combatPlayer, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            rat = new Combat.CombatObjects.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
+            enemies.Add(mob);
+            enemies.Add(ranged);
+            enemies.Add(rat);
+            Combat = new Combat.CombatScreen(combatPlayer, enemies);
             
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
@@ -138,6 +144,8 @@ namespace Zold.Screens.Implemented.Map
             camera = new Camera(gameScreenManager, location);
 
             interactionManager = new InteractionManager(GameScreenManager, location);
+
+            cameraPlayer = new Screens.Camera(player.GetPosition());
         }
 
         public override void UnloadContent()
@@ -165,14 +173,14 @@ namespace Zold.Screens.Implemented.Map
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
 
             LayerNumbers.ForEach(layer=>
             {
-                location.drawTiles(layer, currentMap, bounds);
+                location.drawTiles(layer, currentMap, bounds, cameraPlayer.Transform());
             });
 
-            player.Animation(gameTime);
+            player.Animation(gameTime, cameraPlayer.Transform());
 
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
@@ -200,14 +208,14 @@ namespace Zold.Screens.Implemented.Map
         public override void Update(GameTime gameTime)
         {
             //camera.Follow(player);
-            if (gameScreenManager.IsFullScreenOn)
-            {
-                camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
-            }
-            else
-            {
-                camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
-            }
+            //if (gameScreenManager.IsFullScreenOn)
+            //{
+            //    camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
+            //}
+            //else
+            //{
+            //    camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
+            //}
             //if (!songStart)
             //{
             //    MediaPlayer.Play(currentSong);
@@ -232,6 +240,8 @@ namespace Zold.Screens.Implemented.Map
                 gameScreenManager.InsertScreen(new Pause.PauseScreen());
                 isPaused = false;
             }
+
+            cameraPlayer.Follow(player.GetPosition(), screenHeight, screenWdth);
         }
 
         
@@ -288,7 +298,7 @@ namespace Zold.Screens.Implemented.Map
 
         void ManageLocations(GameTime gametime) 
         {
-            gameScreenManager.SpriteBatch.Begin();
+            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
             if (location1)
             {
                 adven = Assets.Instance.Get("placeholders/Textures/Adven");
@@ -302,6 +312,12 @@ namespace Zold.Screens.Implemented.Map
                         location = new Locations.Dormitory(gameScreenManager, spriteSheet, player);
                         player.SetPosition(location.playersNewPosition());
                         initTheLocation(location);
+                        if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1")){
+                            var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
+                            lq.TriggerVisit();
+                            gameScreenManager.QuestManager.UpdateQuests();
+                        }
+
                         location1 = false;
                         location2 = true;
                     }
@@ -315,8 +331,8 @@ namespace Zold.Screens.Implemented.Map
                 if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
                     && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
                 {
-                   // gameScreenManager.RemoveScreen(this);
-                   // gameScreenManager.InsertScreen(Combat);
+                    enemy.position.Y = 5000;
+                    gameScreenManager.InsertScreen(Combat);
 
                     //if (songStart)
                     //{
