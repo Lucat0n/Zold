@@ -46,7 +46,7 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="Buffs\Buff.cs" />
+    <Compile Include="Buffs\IBuff.cs" />
     <Compile Include="Buffs\BuffFactory.cs" />
     <Compile Include="Buffs\InstantBuff.cs" />
     <Compile Include="Buffs\TimedBuff.cs" />
