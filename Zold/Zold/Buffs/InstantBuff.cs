@@ -11,9 +11,9 @@ namespace Zold.Buffs
         private string targetStat;
         private Character character;
 
-        public int Amount { get => amount; set => amount = value; }
-
+        internal int Amount { get => amount; set => amount = value; }
         public string TargetStat { get => targetStat; set => targetStat = value; }
+        internal Character Character { get => character; set => character = value; }
 
         public void Start()
         {
