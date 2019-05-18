@@ -18,7 +18,6 @@ namespace Zold.Inventory
         private float sigma = 0.25f;
         //długość ataku względem jednej sekundy
         private float speed = 1.0f;
-        private int cost = 100;
 
         #region constructors
         public Weapon(String name, ItemManager itemManager) : base(name, itemManager, "weapons")
@@ -30,7 +29,6 @@ namespace Zold.Inventory
             this.defMultiplier = itemsBase["weapons"][name]["defMultiplier"]!=null ? (float)itemsBase["weapons"][name]["defMultiplier"] : defMultiplier;
             this.sigma = itemsBase["weapons"][name]["sigma"]!=null ? (float)itemsBase["weapons"][name]["sigma"] : sigma;
             this.speed = itemsBase["weapons"][name]["speed"]!=null ? (float)itemsBase["weapons"][name]["speed"] : speed;
-            this.cost = itemsBase["weapons"][name]["cost"]!= null ? (int)itemsBase["weapons"][name]["cost"] : cost;
         }
         #endregion
 
@@ -40,7 +38,6 @@ namespace Zold.Inventory
         public float DmgMultiplier { get => dmgMultiplier; set => dmgMultiplier = value; }
         public float DefMultiplier { get => defMultiplier; set => defMultiplier = value; }
         public float Speed { get => speed; set => speed = value; }
-        public int Cost { get => cost; set => cost = value; }
         public float Sigma { get => sigma; set => sigma = value; }
         #endregion
     }

@@ -1,4 +1,13 @@
 {
+  "buffItems": {
+    "healthPotion1": {
+      "isBattleOnly": false,
+      "name": "Mikstura Uleczajaca 1",
+      "description": "Mikstura dodajaca 30HP. Mozna walic na raz.",
+      "cost": 10,
+      "amount": 30
+    }
+  },
   "items": {
     "healthPotion": {
       "name": "Mikstura HP 1",
@@ -28,6 +37,7 @@
   "weapons": {
     "stick": {
       "thrownDmg": 15,
+      "name": "Kij",
       "description": "Kij od szczotki. Lepszy, ni¿ go³e piêœci.",
       "miniature": "stickIcon",
       "largeScale": "stickImage",
