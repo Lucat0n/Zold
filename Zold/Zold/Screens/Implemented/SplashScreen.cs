@@ -102,6 +102,7 @@ namespace Zold.Screens.Implemented
             gameScreenManager.ContentLoader.UnloadLocation("splash");
             gameScreenManager.ContentLoader.UnloadLocation("combat");
             splash.Dispose();
+            Combat.UnloadContent();
         }
     }
 }

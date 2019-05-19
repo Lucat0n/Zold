@@ -12,31 +12,29 @@ namespace Zold.Buffs
     class TimedBuff : IBuff
     {
         private Character character;
-        private int duration;
-        private int delta;
-        private byte intervalsAmount;
+        private int amount;
+        private int ticksToLive;
+        private byte ticksPerUpdate;
         private string targetStat;
-        private Timer timer;
         private Type type;
         private PropertyInfo pi;
 
         public string TargetStat { get => targetStat; set => targetStat = value; }
-        public int Delta { get => delta; set => delta = value; }
-        public int Duration { get => duration; set => duration = value; }
-        public byte IntervalsAmount { get => intervalsAmount; set => intervalsAmount = value; }
+        public int Amount { get => amount; set => amount = value; }
+        public int TicksToLive { get => ticksToLive; set => ticksToLive = value; }
+        public byte TicksPerUpdate { get => ticksPerUpdate; set => ticksPerUpdate = value; }
         internal Character Character { get => character; set => character = value; }
 
         public void Start()
         {
             type = typeof(Character);
             pi = type.GetProperty(targetStat);
-            float temp = Duration / IntervalsAmount;
-            timer = new Timer((e) => { ModifyStats(); }, null, 0, (int)(temp * 1000));
+            if (ticksToLive%ticksPerUpdate == 0)
+                pi.SetValue(character, (int)pi.GetValue(character) + amount);
+            if (--ticksToLive <= 0)
+                character.buffSet.Remove(this);
+            Debug.WriteLine("ticki: " + ticksToLive + " hp: " + character.Hp);
         }
 
-        private void ModifyStats()
-        {
-            pi.SetValue(character, (int)pi.GetValue(character) + delta, null);
-        }
     }
 }

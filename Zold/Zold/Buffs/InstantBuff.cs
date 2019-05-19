@@ -10,6 +10,14 @@ namespace Zold.Buffs
         private int amount;
         private string targetStat;
         private Character character;
+        Type type;
+        PropertyInfo pi;
+
+        public InstantBuff()
+        {
+            type = typeof(Character);
+            pi = type.GetProperty(targetStat);
+        }
 
         internal int Amount { get => amount; set => amount = value; }
         public string TargetStat { get => targetStat; set => targetStat = value; }
@@ -17,11 +25,10 @@ namespace Zold.Buffs
 
         public void Start()
         {
-            Type type = typeof(Character);
-            PropertyInfo pi = type.GetProperty(targetStat);
             int value = (int)pi.GetValue(null);
             value += amount;
             pi.SetValue(character, Convert.ChangeType(value, pi.PropertyType), null);
+            character.buffSet.Remove(this);
         }
     }
 }

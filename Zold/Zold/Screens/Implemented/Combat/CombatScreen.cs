@@ -7,6 +7,9 @@ using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.CombatObjects;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using System.Threading;
+using Zold.Buffs;
+using System.Threading.Tasks;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -17,6 +20,9 @@ namespace Zold.Screens.Implemented.Combat
         List<CombatObject> objectsToRender;
         List<Projectile> projectiles;
         string combatState;
+        Timer timer;
+
+        private bool isEscPressed = false;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
@@ -35,6 +41,8 @@ namespace Zold.Screens.Implemented.Combat
 
             combatState = "";
             IsTransparent = false;
+
+            timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
         }
 
         public override void Update(GameTime gameTime)
@@ -104,10 +112,21 @@ namespace Zold.Screens.Implemented.Combat
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
         {
             player.Controls();
+
+            if(keyboardState.IsKeyDown(Keys.F6) && !isEscPressed)
+            {
+                isEscPressed = true;
+                AddBuff(player, BuffFactory.CreateTimedBuff(0, -10, player));
+            }else if (keyboardState.IsKeyUp(Keys.F6))
+            {
+                isEscPressed = false;
+            }
         }
 
         public override void UnloadContent()
         {
+            timer.Change(Timeout.Infinite, Timeout.Infinite);
+            timer.Dispose();
         }
 
         public void MakeProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
@@ -115,5 +134,23 @@ namespace Zold.Screens.Implemented.Combat
             projectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
             objectsToRender.AddRange(projectiles);
         }
+
+        private void OnTimerTick()
+        {
+            player.UpdateBuffs();
+            Parallel.ForEach(enemies, enemy =>
+            {
+                enemy.UpdateBuffs();
+            });
+        }
+
+        public void AddBuff(Character c, IBuff buff)
+        {
+            c.buffSet.Add(buff);
+            IBuff temp;
+            c.buffSet.TryGetValue(buff, out temp);
+            temp.Start();
+        }
+
     }
 }
