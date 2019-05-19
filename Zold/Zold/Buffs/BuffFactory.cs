@@ -16,15 +16,14 @@ namespace Zold.Buffs
         /// </summary>
         /// <param name="amount">O ile ma być zmieniona dana statystyka</param>
         /// <param name="targetStatID">Docelowa statystyka do zmiany. 0 - HP</param>
-        /// <param name="character">Docelowa postać, na którą ma działać buff.</param>
-        public static InstantBuff CreateInstantBuff(int amount, byte targetStatID, Character character)
+        public static InstantBuff CreateInstantBuff(int amount, byte targetStatID)
         {
             InstantBuff ib = new InstantBuff
             {
                 Amount = amount,
                 TargetStat = targetStats[targetStatID],
-                Character = character
             };
+            ib.Init();
             return ib;
         }
 
@@ -33,17 +32,16 @@ namespace Zold.Buffs
         /// </summary>
         /// <param name="targetStatID">Docelowa statystyka do zmiany. 0 - HP</param>
         /// <param name="delta">Przyrost, o jaki ma się zmieniać statystyka co interwał.</param>
-        /// <param name="character">Docelowa postać, na którą ma działać buff.</param>
-        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta, Character character)
+        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta)
         {
             TimedBuff tb = new TimedBuff
             {
-                Character = character,
                 TargetStat = targetStats[targetStatID],
                 Amount = delta,
                 TicksToLive = 10,
                 TicksPerUpdate = 2
             };
+            tb.Init();
             return tb;
         }
 
@@ -53,17 +51,16 @@ namespace Zold.Buffs
         /// <param name="targetStatID">Docelowa statystyka do zmiany. 0 - HP</param>
         /// <param name="delta">Przyrost, o jaki ma się zmieniać statystyka co interwał.</param>
         /// <param name="duration">Czas trwania buffa.</param>
-        /// <param name="character">Docelowa postać, na którą ma działać buff.</param>
-        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta, int duration, Character character)
+        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta, int duration)
         {
             TimedBuff tb = new TimedBuff
             {
-                Character = character,
                 TargetStat = targetStats[targetStatID],
                 Amount = delta,
                 TicksToLive = duration,
                 TicksPerUpdate = 2
             };
+            tb.Init();
             return tb;
         }
 
@@ -74,17 +71,16 @@ namespace Zold.Buffs
         /// <param name="delta">Przyrost, o jaki ma się zmieniać statystyka co interwał.</param>
         /// <param name="duration">Czas trwania buffa.</param>
         /// <param name="ticksPerUpdate">Co ile ticków ma być modyfikowana statystyka.</param>
-        /// <param name="character">Docelowa postać, na którą ma działać buff.</param>
-        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta, int duration, byte ticksPerUpdate, Character character)
+        public static TimedBuff CreateTimedBuff(byte targetStatID, int delta, int duration, byte ticksPerUpdate)
         {
             TimedBuff tb = new TimedBuff
             {
-                Character = character,
                 TargetStat = targetStats[targetStatID],
                 Amount = delta,
                 TicksToLive = duration,
                 TicksPerUpdate = ticksPerUpdate
             };
+            tb.Init();
             return tb;
         }
     }

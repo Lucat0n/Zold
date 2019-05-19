@@ -116,7 +116,7 @@ namespace Zold.Screens.Implemented.Combat
             if(keyboardState.IsKeyDown(Keys.F6) && !isEscPressed)
             {
                 isEscPressed = true;
-                AddBuff(player, BuffFactory.CreateTimedBuff(0, -10, player));
+                AddBuff(player, BuffFactory.CreateTimedBuff(0, -10));
             }else if (keyboardState.IsKeyUp(Keys.F6))
             {
                 isEscPressed = false;
@@ -146,6 +146,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public void AddBuff(Character c, IBuff buff)
         {
+            buff.Character = c;
             c.buffSet.Add(buff);
             IBuff temp;
             c.buffSet.TryGetValue(buff, out temp);

@@ -23,12 +23,16 @@ namespace Zold.Buffs
         public int Amount { get => amount; set => amount = value; }
         public int TicksToLive { get => ticksToLive; set => ticksToLive = value; }
         public byte TicksPerUpdate { get => ticksPerUpdate; set => ticksPerUpdate = value; }
-        internal Character Character { get => character; set => character = value; }
+        public Character Character { get => character; set => character = value; }
 
-        public void Start()
+        public void Init()
         {
             type = typeof(Character);
             pi = type.GetProperty(targetStat);
+        }
+
+        public void Start()
+        {
             if (ticksToLive%ticksPerUpdate == 0)
                 pi.SetValue(character, (int)pi.GetValue(character) + amount);
             if (--ticksToLive <= 0)
