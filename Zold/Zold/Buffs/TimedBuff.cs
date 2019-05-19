@@ -17,6 +17,8 @@ namespace Zold.Buffs
         private byte intervalsAmount;
         private string targetStat;
         private Timer timer;
+        private Type type;
+        private PropertyInfo pi;
 
         public string TargetStat { get => targetStat; set => targetStat = value; }
         public int Delta { get => delta; set => delta = value; }
@@ -26,17 +28,15 @@ namespace Zold.Buffs
 
         public void Start()
         {
+            type = typeof(Character);
+            pi = type.GetProperty(targetStat);
             float temp = Duration / IntervalsAmount;
             timer = new Timer((e) => { ModifyStats(); }, null, 0, (int)(temp * 1000));
         }
 
         private void ModifyStats()
         {
-            Type type = typeof(Character);
-            PropertyInfo pi = type.GetProperty(targetStat);
-            int value = (int)pi.GetValue(character);
-            value += Delta;
-            pi.SetValue(character, Convert.ChangeType(value, pi.PropertyType), null);
+            pi.SetValue(character, (int)pi.GetValue(character) + delta, null);
         }
     }
 }
