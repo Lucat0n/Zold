@@ -50,7 +50,7 @@
     <Compile Include="Buffs\BuffFactory.cs" />
     <Compile Include="Buffs\InstantBuff.cs" />
     <Compile Include="Buffs\TimedBuff.cs" />
-    <Compile Include="Inventory\Items\BuffItem.cs" />
+    <Compile Include="Inventory\Items\InstantBuffItem.cs" />
     <Compile Include="Screens\Camera.cs" />
     <Compile Include="Inventory\Items\Item.cs" />
     <Compile Include="Quests\LocationQuest.cs" />

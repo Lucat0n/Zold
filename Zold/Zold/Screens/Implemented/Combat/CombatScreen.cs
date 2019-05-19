@@ -148,8 +148,7 @@ namespace Zold.Screens.Implemented.Combat
         {
             buff.Character = c;
             c.buffSet.Add(buff);
-            IBuff temp;
-            c.buffSet.TryGetValue(buff, out temp);
+            c.buffSet.TryGetValue(buff, out IBuff temp);
             temp.Start();
         }
 

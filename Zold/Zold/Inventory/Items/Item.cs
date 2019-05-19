@@ -53,7 +53,7 @@ namespace Zold.Inventory
             isBattleOnly = itemsBase[type][id]["isBattleOnly"] != null ? (bool)itemsBase[type][id]["isBattleOnly"] : false;
             isKeyItem = itemsBase[type][id]["isKeyItem"] != null ? (bool)itemsBase[type][id]["isKeyItem"] : false;
             thrownDmg = itemsBase[type][id]["thrownDmg"] != null ? (short)itemsBase[type][id]["thrownDmg"] : (short)10;
-            this.cost = itemsBase[type][id]["cost"] != null ? (int)itemsBase["weapons"][name]["cost"] : 100;
+            //this.cost = itemsBase[type][id]["cost"] != null ? (int)itemsBase["weapons"][name]["cost"] : 100;
             Description = itemsBase[type][id]["thrownDmg"] != null ? (string)itemsBase[type][id]["description"] : "Brak opisu";
             miniature = itemsBase[type][id]["miniature"] != null ? (string)itemsBase[type][id]["miniature"] : "iconPlaceholder";
             largeScale = itemsBase[type][id]["largeScale"] != null ? (string)itemsBase[type][id]["largeScale"] : "largePlaceholder";
