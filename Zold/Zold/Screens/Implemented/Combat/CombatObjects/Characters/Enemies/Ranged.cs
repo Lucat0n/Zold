@@ -43,7 +43,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 skill.Destination = CalcDirection(player.CenterPosition, CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
-                skill.Use();
+                skill.Use("Enemy", 5);
             }
             else if (Distance <= 100)
             {
