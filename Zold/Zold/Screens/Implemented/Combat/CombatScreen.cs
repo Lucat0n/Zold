@@ -18,8 +18,7 @@ namespace Zold.Screens.Implemented.Combat
         Player player;
         List<Enemy> enemies;
         List<CombatObject> charactersToRender;
-        List<Projectile> enemyProjectiles;
-        List<Projectile> playerProjectiles;
+        List<Projectile> projectiles;
         string combatState;
         Timer timer;
 
@@ -30,8 +29,7 @@ namespace Zold.Screens.Implemented.Combat
             this.player = player;
             this.enemies = enemies;
             
-            enemyProjectiles = new List<Projectile>();
-            playerProjectiles = new List<Projectile>();
+            projectiles = new List<Projectile>();
             charactersToRender = new List<CombatObject>();
             charactersToRender.Add(player);
             charactersToRender.AddRange(enemies);
@@ -49,6 +47,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Update(GameTime gameTime)
         {
+            checkProjectileCollisions();
             charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
 
             enemies.ForEach(enemy =>
@@ -56,11 +55,7 @@ namespace Zold.Screens.Implemented.Combat
                 enemy.AI(gameTime);
             });
 
-            enemyProjectiles.ForEach(projectile =>
-            {
-                projectile.Move(gameTime);
-            });
-            playerProjectiles.ForEach(projectile =>
+            projectiles.ForEach(projectile =>
             {
                 projectile.Move(gameTime);
             });
@@ -105,16 +100,12 @@ namespace Zold.Screens.Implemented.Combat
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
             });
 
-            enemyProjectiles.ForEach(projectile =>
-            {
-                projectile.Animation(gameTime);
-            });
-            playerProjectiles.ForEach(projectile =>
+            projectiles.ForEach(projectile =>
             {
                 projectile.Animation(gameTime);
             });
 
-            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Hp, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Hp, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
 
@@ -146,12 +137,16 @@ namespace Zold.Screens.Implemented.Combat
 
         public void MakeEnemyProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
         {
-            enemyProjectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
+            Projectile projectile = new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            projectile.Targets.Add(player);
+            projectiles.Add(projectile);
         }
 
         public void MakePlayerProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
         {
-            playerProjectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
+            Projectile projectile = new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            projectile.Targets.AddRange(enemies);
+            projectiles.Add(projectile);
         }
 
         private void OnTimerTick()
@@ -171,5 +166,21 @@ namespace Zold.Screens.Implemented.Combat
             temp.Start();
         }
 
+        private void checkProjectileCollisions()
+        {
+            Character toDelete = null;
+            projectiles.ForEach(projectile =>
+            {
+                projectile.Targets.ForEach(target =>
+                {
+                    if (target.CheckBoxCollision(projectile.Position, target))
+                    {
+                        toDelete = target;
+                        target.Hp -= projectile.Damage;
+                    }
+                });
+                projectile.Targets.Remove(toDelete);
+            });
+        }
     }
 }
