@@ -12,10 +12,12 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         public double Distance { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
+        public int lvl { get; set; }
 
-        public Enemy(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, SpriteBatchSpriteSheet, height, width)
+        public Enemy(Player player, int lvl, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, SpriteBatchSpriteSheet, height, width)
         {
             this.player = player;
+            this.lvl = lvl;
 
             direction = "Left";
         }
