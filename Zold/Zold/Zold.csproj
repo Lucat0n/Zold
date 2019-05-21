@@ -54,7 +54,7 @@
     <Compile Include="Buffs\TimedBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedIncrementBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedPercentageBuff.cs" />
-    <Compile Include="Inventory\Items\InstantBuffItem.cs" />
+    <Compile Include="Inventory\Items\BuffItem.cs" />
     <Compile Include="Screens\Camera.cs" />
     <Compile Include="Inventory\Items\Item.cs" />
     <Compile Include="Quests\LocationQuest.cs" />

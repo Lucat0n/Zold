@@ -20,21 +20,12 @@ namespace Zold.Inventory.Items
         {
             JObject itemsBase = itemManager.ItemsBase;
             List<IBuff> buffsList = new List<IBuff>();
-            //Debug.WriteLine((double)(itemsBase["buffItems"][id]["buffs"][0]["amount"]) == Math.Floor((double)itemsBase["buffItems"][id]["buffs"][0]["amount"]));
-            //Debug.WriteLine(0 == Math.Floor((double)itemsBase["buffItems"][id]["buffs"][0]["amount"]));
-            //JEŚLI LICZBA==MATH.FLOOR(Liczba) || LICZBA!=0 TO ZRÓB INSTANT, JAK NIE TO PERCENTAGE
             foreach (JToken buff in itemsBase["buffItems"][id]["buffs"])
             {
                 if (0 == (int)buff["amount"] || (double)buff["amount"] != Math.Floor((double)buff["amount"]))
-                {
-                    Debug.WriteLine("Robię procenty");
                     buffsList.Add(BuffFactory.CreateInstantBuff((float)buff["amount"], (byte)buff["targetStat"]));
-                }
                 else
-                {
-                    Debug.WriteLine("Robię całe");
                     buffsList.Add(BuffFactory.CreateInstantBuff((int)buff["amount"], (byte)buff["targetStat"]));
-                }   
             }
                 
             buffs = buffsList.ToArray();
