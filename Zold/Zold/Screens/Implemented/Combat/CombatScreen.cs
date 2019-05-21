@@ -17,7 +17,7 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        List<CombatObject> charactersToRender;
+        List<Character> charactersToRender;
         List<Projectile> projectiles;
         string combatState;
         Timer timer;
@@ -30,7 +30,7 @@ namespace Zold.Screens.Implemented.Combat
             this.enemies = enemies;
             
             projectiles = new List<Projectile>();
-            charactersToRender = new List<CombatObject>();
+            charactersToRender = new List<Character>();
             charactersToRender.Add(player);
             charactersToRender.AddRange(enemies);
 
@@ -151,10 +151,9 @@ namespace Zold.Screens.Implemented.Combat
 
         private void OnTimerTick()
         {
-            player.UpdateBuffs();
-            Parallel.ForEach(enemies, enemy =>
+            Parallel.ForEach(charactersToRender, character =>
             {
-                enemy.UpdateBuffs();
+                character.UpdateBuffs();
             });
         }
 
