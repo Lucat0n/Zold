@@ -15,6 +15,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
         public int Hp { set; get; }
+        public int MaxHp { get; }
         public string action;
         public HashSet<IBuff> buffSet = new HashSet<IBuff>();
 
@@ -33,6 +34,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             scale = 1.0f;
             damage = 5;
             Hp = 50;
+            MaxHp = Hp;
 
             action = "Idle";
         }
