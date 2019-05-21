@@ -17,8 +17,9 @@ namespace Zold.Screens.Implemented.Combat
     {
         Player player;
         List<Enemy> enemies;
-        List<CombatObject> objectsToRender;
-        List<Projectile> projectiles;
+        List<CombatObject> charactersToRender;
+        List<Projectile> enemyProjectiles;
+        List<Projectile> playerProjectiles;
         string combatState;
         Timer timer;
 
@@ -29,12 +30,13 @@ namespace Zold.Screens.Implemented.Combat
             this.player = player;
             this.enemies = enemies;
             
-            projectiles = new List<Projectile>();
-            objectsToRender = new List<CombatObject>();
-            objectsToRender.Add(player);
-            objectsToRender.AddRange(enemies);
+            enemyProjectiles = new List<Projectile>();
+            playerProjectiles = new List<Projectile>();
+            charactersToRender = new List<CombatObject>();
+            charactersToRender.Add(player);
+            charactersToRender.AddRange(enemies);
 
-            foreach (Character character in objectsToRender)
+            foreach (Character character in charactersToRender)
             {
                 character.CombatScreen = this;
             } 
@@ -47,14 +49,18 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Update(GameTime gameTime)
         {
-            objectsToRender = objectsToRender.OrderBy(item => item.Position.Y).ToList();
+            charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
 
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
             });
 
-            projectiles.ForEach(projectile =>
+            enemyProjectiles.ForEach(projectile =>
+            {
+                projectile.Move(gameTime);
+            });
+            playerProjectiles.ForEach(projectile =>
             {
                 projectile.Move(gameTime);
             });
@@ -63,7 +69,7 @@ namespace Zold.Screens.Implemented.Combat
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
-                objectsToRender.Remove(enemy);
+                charactersToRender.Remove(enemy);
             }
 
             if (enemies.Count == 0)
@@ -88,7 +94,7 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            objectsToRender.ForEach(item =>
+            charactersToRender.ForEach(item =>
             {
                 item.Animation(gameTime);
             });
@@ -97,6 +103,15 @@ namespace Zold.Screens.Implemented.Combat
             {
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
+            });
+
+            enemyProjectiles.ForEach(projectile =>
+            {
+                projectile.Animation(gameTime);
+            });
+            playerProjectiles.ForEach(projectile =>
+            {
+                projectile.Animation(gameTime);
             });
 
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Hp, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
@@ -129,10 +144,14 @@ namespace Zold.Screens.Implemented.Combat
             timer.Dispose();
         }
 
-        public void MakeProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        public void MakeEnemyProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
         {
-            projectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
-            objectsToRender.AddRange(projectiles);
+            enemyProjectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
+        }
+
+        public void MakePlayerProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        {
+            playerProjectiles.Add(new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height));
         }
 
         private void OnTimerTick()

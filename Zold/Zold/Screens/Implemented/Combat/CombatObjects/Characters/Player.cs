@@ -87,7 +87,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
                     skill.Destination = CalcDirection(new Vector2(CenterPosition.X - 1, CenterPosition.Y), CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
-                skill.Use();
+                skill.Use("Player");
             }
         }
 
