@@ -28,7 +28,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             speed = 2;
             Damage = 20;
 
-            range = new Projectile(Vector2.Zero, null, Vector2.Zero, 40, 1);
+            range = new Projectile(Vector2.Zero, 0, null, Vector2.Zero, 40, 1);
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
             skill = new Skill(CombatScreen);
             
@@ -89,7 +89,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
                     skill.Destination = CalcDirection(new Vector2(CenterPosition.X - 1, CenterPosition.Y), CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
-                skill.Use("Player");
+                skill.Use("Player", 10);
             }
         }
 

@@ -135,16 +135,16 @@ namespace Zold.Screens.Implemented.Combat
             timer.Dispose();
         }
 
-        public void MakeEnemyProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        public void MakeEnemyProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
         {
-            Projectile projectile = new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
             projectile.Targets.Add(player);
             projectiles.Add(projectile);
         }
 
-        public void MakePlayerProjectile(Vector2 position, string texture, Vector2 destination, int width, int height)
+        public void MakePlayerProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
         {
-            Projectile projectile = new Projectile(position, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
             projectile.Targets.AddRange(enemies);
             projectiles.Add(projectile);
         }

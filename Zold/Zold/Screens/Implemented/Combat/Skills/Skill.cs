@@ -19,7 +19,7 @@ namespace Zold.Screens.Implemented.Combat.Skills
             cooldownTimer.Elapsed += new ElapsedEventHandler(Ready);
         }
 
-        public void Use(string owner)
+        public void Use(string owner, int dmg)
         {
             if (cooldownTimer.Enabled == true)
                 return;
@@ -27,11 +27,11 @@ namespace Zold.Screens.Implemented.Combat.Skills
             {
                 if(owner == "Player")
                 {
-                    CombatScreen.MakePlayerProjectile(StartPosition, "combat/Textures/arrow", Destination, 22, 5);
+                    CombatScreen.MakePlayerProjectile(StartPosition, dmg, "combat/Textures/arrow", Destination, 22, 5);
                 }
                 else
                 {
-                    CombatScreen.MakeEnemyProjectile(StartPosition, "combat/Textures/arrow", Destination, 22, 5);
+                    CombatScreen.MakeEnemyProjectile(StartPosition, dmg, "combat/Textures/arrow", Destination, 22, 5);
                 }
             }
             cooldownTimer.Enabled = true;

@@ -10,17 +10,17 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public List<Character> Targets;
         private Vector2 destinationDirections;
 
-        public Projectile(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, Vector2 destinationDirections, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
+        public Projectile(Vector2 Position, int dmg, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, Vector2 destinationDirections, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
             this.Position = Position;
             this.destinationDirections = destinationDirections;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
             this.width = width;
             this.height = height;
+            this.Damage = dmg;
 
             Targets = new List<Character>();
             speed = 5;
-            Damage = 1;
         }
 
         public void Move(GameTime gameTime)
