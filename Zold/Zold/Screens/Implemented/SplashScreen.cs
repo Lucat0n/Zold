@@ -17,11 +17,7 @@ namespace Zold.Screens.Implemented
 
         //Combat
         CombatScreen Combat;
-        Player combatPlayer;
-        Enemy punk;
-        Enemy ranged;
-        Enemy rat;
-        List<Enemy> enemies;
+        CombatBuilder combatBuilder;
 
         public SplashScreen()
         {
@@ -73,7 +69,6 @@ namespace Zold.Screens.Implemented
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
-                gameScreenManager.RemoveScreen(this);
                 gameScreenManager.InsertScreen(Combat);
             }
         }
@@ -85,16 +80,12 @@ namespace Zold.Screens.Implemented
             splash = Assets.Instance.Get("splash/Textures/rzprod");
 
             // Combat
-            enemies = new List<Enemy>();
-            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
-            punk = new Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            ranged = new Ranged(combatPlayer, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            rat = new Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
-
-            enemies.Add(punk);
-            enemies.Add(ranged);
-            enemies.Add(rat);
-            Combat = new CombatScreen(combatPlayer, enemies);
+            combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice);
+            combatBuilder.AddPlayer();
+            combatBuilder.AddPunk(1, 300, 300);
+            combatBuilder.AddRanged(1, 400, 300);
+            combatBuilder.AddRat(1, 300, 350);
+            Combat = combatBuilder.Build();
         }
 
         public override void UnloadContent()

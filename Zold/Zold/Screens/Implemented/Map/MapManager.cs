@@ -127,9 +127,9 @@ namespace Zold.Screens.Implemented.Map
             enemies = new List<Combat.CombatObjects.Characters.Enemies.Enemy>();
             combatPlayer = new Combat.CombatObjects.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
 
-            mob = new Combat.CombatObjects.Characters.Enemies.Mob(combatPlayer, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            ranged = new Combat.CombatObjects.Characters.Enemies.Ranged(combatPlayer, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            rat = new Combat.CombatObjects.Characters.Enemies.Charger(combatPlayer, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
+            mob = new Combat.CombatObjects.Characters.Enemies.Mob(combatPlayer, 1, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            ranged = new Combat.CombatObjects.Characters.Enemies.Ranged(combatPlayer, 1, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
+            rat = new Combat.CombatObjects.Characters.Enemies.Charger(combatPlayer, 1, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
             enemies.Add(mob);
             enemies.Add(ranged);
             enemies.Add(rat);

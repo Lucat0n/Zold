@@ -12,7 +12,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private Skill skill;
         private int mapOffset;
 
-        public Ranged(Player player, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, position, SpriteBatchSpriteSheet, width, height)
+        public Ranged(Player player, int lvl, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, lvl, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
