@@ -127,13 +127,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             Position.Y += chargeDirection.Y * chargeSpeed;
             chargeCheck += chargeSpeed;
 
-            if (player.CheckBoxCollision(Position, this) && !hit)
+            if (player.CheckBoxCollision(Position, height, width) && !hit)
             {
                 player.Hp -= 10;
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), this))
+            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), height, width))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

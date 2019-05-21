@@ -65,7 +65,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private void Attack(object source, ElapsedEventArgs e)
         {
             if (player.CheckPointCollision(attackPosition))
-                player.Hp -= Damage;
+                player.Hp -= damage;
             attackTimer.Enabled = false;
         }
     }

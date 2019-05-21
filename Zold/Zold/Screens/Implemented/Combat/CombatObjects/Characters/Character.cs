@@ -32,7 +32,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             layerDepth = (Position.Y - 100) / 350;
             rotation = 0.0f;
             scale = 1.0f;
-            Damage = 5;
+            damage = 5;
             Hp = 50;
             MaxHp = Hp;
 
