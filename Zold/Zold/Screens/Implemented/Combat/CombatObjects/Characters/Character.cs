@@ -1,5 +1,11 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using System.Diagnostics;
+using System.Linq;
+using System.Threading;
+using System.Threading.Tasks;
+using Zold.Buffs;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
@@ -9,7 +15,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
         public int Hp { set; get; }
+        public int MaxHp { get; }
         public string action;
+        public HashSet<IBuff> buffSet = new HashSet<IBuff>();
 
         public Character(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
@@ -26,8 +34,16 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             scale = 1.0f;
             damage = 5;
             Hp = 50;
+            MaxHp = Hp;
 
             action = "Idle";
+        }
+
+        public void UpdateBuffs()
+        {
+            IBuff[] buffs = buffSet.ToArray();
+            foreach (IBuff buff in buffs)
+                buff.Start();
         }
     }
 }

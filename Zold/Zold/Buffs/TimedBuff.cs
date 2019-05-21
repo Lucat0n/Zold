@@ -9,34 +9,27 @@ using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 
 namespace Zold.Buffs
 {
-    class TimedBuff : IBuff
+    abstract class TimedBuff : IBuff
     {
-        private Character character;
-        private int duration;
-        private int delta;
-        private byte intervalsAmount;
+        protected Character character;
+        protected int ticksToLive;
+        protected byte ticksPerUpdate;
         private string targetStat;
-        private Timer timer;
+        private Type type;
+        protected PropertyInfo pi;
 
         public string TargetStat { get => targetStat; set => targetStat = value; }
-        public int Delta { get => delta; set => delta = value; }
-        public int Duration { get => duration; set => duration = value; }
-        public byte IntervalsAmount { get => intervalsAmount; set => intervalsAmount = value; }
-        internal Character Character { get => character; set => character = value; }
+        public int TicksToLive { get => ticksToLive; set => ticksToLive = value; }
+        public byte TicksPerUpdate { get => ticksPerUpdate; set => ticksPerUpdate = value; }
+        public Character Character { get => character; set => character = value; }
 
-        public void Start()
+        public virtual void Init()
         {
-            float temp = Duration / IntervalsAmount;
-            timer = new Timer((e) => { ModifyStats(); }, null, 0, (int)(temp * 1000));
+            type = typeof(Character);
+            pi = type.GetProperty(targetStat);
         }
 
-        private void ModifyStats()
-        {
-            Type type = typeof(Character);
-            PropertyInfo pi = type.GetProperty(targetStat);
-            int value = (int)pi.GetValue(character);
-            value += Delta;
-            pi.SetValue(character, Convert.ChangeType(value, pi.PropertyType), null);
-        }
+        public abstract void Start();
+
     }
 }

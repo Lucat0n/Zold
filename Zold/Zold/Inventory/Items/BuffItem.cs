@@ -1,30 +1,35 @@
-﻿using System;
+﻿using Newtonsoft.Json.Linq;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using Zold.Buffs;
 using Zold.Utilities;
 
 namespace Zold.Inventory.Items
 {
     /// <summary>
-    /// Itemek służący do tymczasowej zmiany statystyki postaci
+    /// Itemek dający buffa postaci
     /// </summary>
     class BuffItem : Item
     {
-        private float attackBuff = 1.0f;
-        private float defenseBuff = 1.0f;
-        private float rangeBuff = 1.0f;
-        private float speedBuff = 1.0f;
-        private TimeSpan effectDuration = TimeSpan.Zero;
+        private IBuff[] buffs;
         public BuffItem(string id, ItemManager itemManager, string type) : base(id, itemManager, type)
         {
-            IsBattleOnly = true;
+            JObject itemsBase = itemManager.ItemsBase;
+            List<IBuff> buffsList = new List<IBuff>();
+            foreach (JToken buff in itemsBase["buffItems"][id]["buffs"])
+            {
+                if (0 == (int)buff["amount"] || (double)buff["amount"] != Math.Floor((double)buff["amount"]))
+                    buffsList.Add(BuffFactory.CreateInstantBuff((float)buff["amount"], (byte)buff["targetStat"]));
+                else
+                    buffsList.Add(BuffFactory.CreateInstantBuff((int)buff["amount"], (byte)buff["targetStat"]));
+            }
+                
+            buffs = buffsList.ToArray();
         }
-
-        public float AttackBuff { get => attackBuff; set => attackBuff = value; }
-        public float DefenseBuff { get => defenseBuff; set => defenseBuff = value; }
-        public float RangeBuff { get => rangeBuff; set => rangeBuff = value; }
-        public float SpeedBuff { get => speedBuff; set => speedBuff = value; }
+        internal IBuff[] Buffs { get => buffs; set => buffs = value; }
     }
 }

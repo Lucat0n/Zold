@@ -11,6 +11,7 @@ using Zold.Inventory;
 using Zold.Utilities;
 using Zold.Screens.Implemented;
 using Zold.Quests;
+using Zold.Inventory.Items;
 
 namespace Zold.Screens
 {
@@ -89,6 +90,9 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
+            //*****
+            BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
+            //*****
             this.LoadContent();
         }
 

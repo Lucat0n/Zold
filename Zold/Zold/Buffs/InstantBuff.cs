@@ -5,23 +5,23 @@ using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 
 namespace Zold.Buffs
 {
-    class InstantBuff : IBuff
+    abstract class InstantBuff : IBuff
     {
-        private int amount;
-        private string targetStat;
-        private Character character;
+        protected string targetStat;
+        protected Character character;
+        protected Type type;
+        protected PropertyInfo pi;
 
-        internal int Amount { get => amount; set => amount = value; }
         public string TargetStat { get => targetStat; set => targetStat = value; }
-        internal Character Character { get => character; set => character = value; }
+        public Character Character { get => character; set => character = value; }
 
-        public void Start()
+        public virtual void Init()
         {
-            Type type = typeof(Character);
-            PropertyInfo pi = type.GetProperty(targetStat);
-            int value = (int)pi.GetValue(null);
-            value += amount;
-            pi.SetValue(character, Convert.ChangeType(value, pi.PropertyType), null);
+            type = typeof(Character);
+            pi = type.GetProperty(targetStat);
         }
+
+        public abstract void Start();
+
     }
 }

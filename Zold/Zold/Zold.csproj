@@ -49,7 +49,11 @@
     <Compile Include="Buffs\IBuff.cs" />
     <Compile Include="Buffs\BuffFactory.cs" />
     <Compile Include="Buffs\InstantBuff.cs" />
+    <Compile Include="Buffs\Implemented\InstantIncrementBuff.cs" />
+    <Compile Include="Buffs\Implemented\InstantPercentageBuff.cs" />
     <Compile Include="Buffs\TimedBuff.cs" />
+    <Compile Include="Buffs\Implemented\TimedIncrementBuff.cs" />
+    <Compile Include="Buffs\Implemented\TimedPercentageBuff.cs" />
     <Compile Include="Inventory\Items\BuffItem.cs" />
     <Compile Include="Screens\Camera.cs" />
     <Compile Include="Inventory\Items\Item.cs" />

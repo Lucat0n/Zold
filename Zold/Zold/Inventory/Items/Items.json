@@ -1,11 +1,37 @@
 {
   "buffItems": {
     "healthPotion1": {
-      "isBattleOnly": false,
       "name": "Mikstura Uleczajaca 1",
-      "description": "Mikstura dodajaca 30HP. Mozna walic na raz.",
+      "description": "Mikstura dodajaca 30HP.",
       "cost": 10,
-      "amount": 30
+      "buffs": [
+        {
+          "targetStat": 0,
+          "amount": 30
+        }
+      ]
+    },
+    "healthPotion2": {
+      "name": "Mikstura Uleczajaca 2",
+      "description": "Mikstura dodajaca 100HP.",
+      "cost": 40,
+      "buffs": [
+        {
+          "targetStat": 0,
+          "amount": 90
+        }
+      ]
+    },
+    "healthPotion3": {
+      "name": "Mikstura Uleczajaca 3",
+      "description": "Mikstura dodajaca 350HP.",
+      "cost": 100,
+      "buffs": [
+        {
+          "targetStat": 0,
+          "amount": 350
+        }
+      ]
     }
   },
   "items": {
