@@ -16,7 +16,9 @@ namespace Zold.Screens.Implemented.Map
         public List<Rectangle> colisionTiles = new List<Rectangle>();
         public List<int> LayerNumbers = new List<int>();
         public List<int> ColideLayers = new List<int>();
-        
+        public List<Npc> ListofNpcs = new List<Npc>();
+        public List<Enemy> ListofEnemies = new List<Enemy>();
+
         TmxMap currentMap;
 
         // here is dope music
@@ -29,21 +31,21 @@ namespace Zold.Screens.Implemented.Map
         // //postacie
         Vector2 pos;
 
-        Texture2D adven;
-        int advenPosX = 256;
-        int advenPosY = 64;
+        //Texture2D adven;
+        //int advenPosX = 256;
+        //int advenPosY = 64;
 
         // Combat
-        
+
         Combat.CombatScreen Combat;
         Combat.CombatObjects.Characters.Player combatPlayer;
         Combat.CombatObjects.Characters.Enemies.Enemy mob;
         Combat.CombatObjects.Characters.Enemies.Enemy ranged;
         Combat.CombatObjects.Characters.Enemies.Enemy rat;
         List<Combat.CombatObjects.Characters.Enemies.Enemy> enemies;
-        
+
         Player player;
-        Enemy enemy;
+        //Enemy enemy;
 
         //bools
         bool wasPaused = false;
@@ -63,7 +65,7 @@ namespace Zold.Screens.Implemented.Map
         public static int screenWdth = 800;
         public static int screenHeight = 480;
 
-        public static Rectangle bounds; //camera bounds 
+        //public static Rectangle bounds; //camera bounds 
 
         SpriteBatchSpriteSheet spriteSheet;
         SpriteBatchSpriteSheet spriteSheetHP;
@@ -77,9 +79,11 @@ namespace Zold.Screens.Implemented.Map
         int hp;
 
         Location location;
-        Camera camera;
         Zold.Screens.Camera cameraPlayer;
         InteractionManager interactionManager;
+
+        Effect effect;
+        RenderTarget2D lightsTarget;
 
         public MapManager()
         {
@@ -106,6 +110,10 @@ namespace Zold.Screens.Implemented.Map
 
             //loading fonts
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
+            effect = Assets.Instance.Get("placeholders/shaders/testShader");
+
+            var pp = gameScreenManager.GraphicsDevice.PresentationParameters;
+            lightsTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
 
             location1 = true;
             location2 = false;
@@ -117,13 +125,13 @@ namespace Zold.Screens.Implemented.Map
             player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet, hp);
 
             //hpbar 
-            spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250,32);
+            spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250, 32);
 
-            enemy = new Enemy(player, new Vector2(400, 200));
-            enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
+           // enemy = new Enemy(player, new Vector2(400, 200));
+           // enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
-            
+
             enemies = new List<Combat.CombatObjects.Characters.Enemies.Enemy>();
             combatPlayer = new Combat.CombatObjects.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
 
@@ -134,14 +142,11 @@ namespace Zold.Screens.Implemented.Map
             enemies.Add(ranged);
             enemies.Add(rat);
             Combat = new Combat.CombatScreen(combatPlayer, enemies);
-            
-            //camera
-            bounds = new Rectangle(0, 0, 0, 0);
+          
 
             location = new Locations.TheRoom(gameScreenManager, spriteSheet, player);
             initTheLocation(location);
             pos = location.playersNewPosition();
-            camera = new Camera(gameScreenManager, location);
 
             interactionManager = new InteractionManager(GameScreenManager, location);
 
@@ -163,75 +168,101 @@ namespace Zold.Screens.Implemented.Map
 
             LayerNumbers = location.getLayerNumbers();
             ColideLayers = location.getColideLayers();
+            ListofNpcs = location.GetCharacters();
+            ListofEnemies = location.GetEnemies();
 
             ColideLayers.ForEach(layer =>
             {
-                location.getColideObjects(layer, currentMap, bounds, colisionTiles);
+                location.getColideObjects(layer, currentMap, colisionTiles);
             });
         }
 
         public override void Draw(GameTime gameTime)
         {
-            gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
 
-            LayerNumbers.ForEach(layer=>
+            gameScreenManager.GraphicsDevice.Clear(Color.Black);
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+
+            LayerNumbers.ForEach(layer =>
             {
-                location.drawTiles(layer, currentMap, bounds, cameraPlayer.Transform());
+                //effect.CurrentTechnique.Passes[0].Apply();
+                location.drawTiles(layer, currentMap, cameraPlayer.Transform());
             });
+
+            if (ListofNpcs != null)
+            {
+                ListofNpcs.ForEach(npc =>
+                {
+                //effect.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
+                Texture2D tex = npc.GetTexture();
+                    gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
+                    interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y);
+                });
+            }
+
+            //gameScreenManager.SpriteBatch.End();
+            if (ListofEnemies != null)
+            {
+                ListofEnemies.ForEach(npc =>
+                {
+                   // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
+                    //gameScreenManager.GraphicsDevice.Clear(Color.Black);
+                    //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+
+                    effect.CurrentTechnique.Passes[0].Apply();
+                    Texture2D tex = npc.GetTexture();
+                    gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
+                    // gameScreenManager.SpriteBatch.End();
+                });
+            }
+
+            //gameScreenManager.GraphicsDevice.SetRenderTarget(null);
+           // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
             player.Animation(gameTime, cameraPlayer.Transform());
 
-            gameScreenManager.SpriteBatch.DrawString(dialog, "X: "+player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: "+player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "boundsX: "+bounds.X.ToString(), new Vector2(10, 70), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "boundsY: "+bounds.Y.ToString(), new Vector2(10, 110), Color.White);
-            
-           // gameScreenManager.SpriteBatch.Draw(player.texture, player.GetPosition(), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
 
-            //hpbar
             if (gameScreenManager.IsFullScreenOn)
             {
-                int posY= GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300;
+                int posY = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300;
                 player.AnimateHealth(gameTime, spriteSheetHP, posY);
             }
             else
             {
-                player.AnimateHealth(gameTime, spriteSheetHP,550);
+                player.AnimateHealth(gameTime, spriteSheetHP, 550);
             }
-           
-            //postacie
+            
             gameScreenManager.SpriteBatch.End();
             ManageLocations(gameTime);
         }
 
         public override void Update(GameTime gameTime)
         {
-            //camera.Follow(player);
-            //if (gameScreenManager.IsFullScreenOn)
-            //{
-            //    camera.moveCamera(256, 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 256, GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height - 256, gameTime, player, currentMap,bounds, colisionTiles);
-            //}
-            //else
-            //{
-            //    camera.moveCamera(128, 128, 650, 352,gameTime, player, currentMap, bounds, colisionTiles); /// trub okienkowy
-            //}
-            //if (!songStart)
-            //{
-            //    MediaPlayer.Play(currentSong);
-            //    songStart = true;
-            //}
-            
+ 
             location.checkIfColide(colisionTiles);
             dontGoOutsideMap();
 
             if (!isPaused)
             {
-                player.move(player.Width, player.Height, canMoveLeft,canMoveUp, canMoveRight, canMoveDown, gameTime);
-               // ManageLocations(gameTime);
-                if (location2)
+                player.move(player.Width, player.Height, canMoveLeft, canMoveUp, canMoveRight, canMoveDown, gameTime);
+                // ManageLocations(gameTime);
+                
+                if (ListofEnemies != null)
                 {
-                    enemy.AI(gameTime);
+                    ListofEnemies.ForEach(enemy =>
+                    {
+                        enemy.AI(gameTime);
+                        
+                            Rectangle ghostPlayer = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
+                            Rectangle ghostEnemy = new Rectangle((int)enemy.GetPosition().X, (int)enemy.GetPosition().Y, 32, 48);
+                            if (ghostPlayer.Intersects(ghostEnemy))
+                            {
+                                enemy.position.Y = 5000;
+                                gameScreenManager.InsertScreen(Combat);
+                            }       
+                    });
                 }
             }
 
@@ -244,7 +275,7 @@ namespace Zold.Screens.Implemented.Map
             cameraPlayer.Follow(player.GetPosition(), screenHeight, screenWdth);
         }
 
-        
+
         void dontGoOutsideMap()
         {
             int sh;
@@ -270,25 +301,26 @@ namespace Zold.Screens.Implemented.Map
                 canMoveUp = false;
             }
 
-            if (player.GetPosition().Y +playerHeight >sh)
+            if (player.GetPosition().Y + playerHeight > sh)
             {
                 canMoveDown = false;
             }
-            if (player.GetPosition().X + playerWidth >= sw )
+            if (player.GetPosition().X + playerWidth >= sw)
             {
                 canMoveRight = false;
             }
         }
 
-       
+
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
         {
-            if(keyboardState.IsKeyDown(Keys.Escape) && !pressed) 
+            if (keyboardState.IsKeyDown(Keys.Escape) && !pressed)
             {
                 pressed = true;
                 isPaused = !isPaused;
                 //Debug.WriteLine(isPaused ? "paused" : "unpaused");
-            }else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
+            }
+            else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
             {
                 pressed = false;
             }
@@ -296,23 +328,21 @@ namespace Zold.Screens.Implemented.Map
 
         #region managelocations
 
-        void ManageLocations(GameTime gametime) 
+        void ManageLocations(GameTime gametime) // Trzeba zmienic to bo wstyd xD, Tylko jak?
         {
-            gameScreenManager.SpriteBatch.Begin(transformMatrix: cameraPlayer.Transform());
+            //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
             if (location1)
             {
-                adven = Assets.Instance.Get("placeholders/Textures/Adven");
-                gameScreenManager.SpriteBatch.Draw(adven, new Rectangle(advenPosX + bounds.X, advenPosY + bounds.Y, adven.Width, adven.Height), Color.White);
 
-                interactionManager.displayDialog(player, adven, advenPosX + bounds.X, advenPosY + bounds.Y, bounds);
-                if (location.getPortal().X >= 0)
+                if (location.getPortal() != null)
                 {
                     if (player.GetPosition().X == location.getPortal().X && player.GetPosition().Y == location.getPortal().Y)
                     {
                         location = new Locations.Dormitory(gameScreenManager, spriteSheet, player);
                         player.SetPosition(location.playersNewPosition());
                         initTheLocation(location);
-                        if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1")){
+                        if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
+                        {
                             var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
                             lq.TriggerVisit();
                             gameScreenManager.QuestManager.UpdateQuests();
@@ -326,30 +356,10 @@ namespace Zold.Screens.Implemented.Map
 
             if (location2)
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), new Vector2(enemy.GetPosition().X+ bounds.X, enemy.GetPosition().Y + bounds.Y), Color.White);
 
-                if (player.GetPosition().X + player.Width >= enemy.GetPosition().X
-                    && player.GetPosition().Y + player.Width >= enemy.GetPosition().Y)
-                {
-                    enemy.position.Y = 5000;
-                    gameScreenManager.InsertScreen(Combat);
-
-                    //if (songStart)
-                    //{
-                    //    MediaPlayer.Stop();
-                    //    combatMusic.Play();
-                    //    songStart = false;
-                    //}
-                }
             }
-            /*
-            if (location3)
-            {
-                location1 = false;
-                location2 = false;
-                location3 = true;
-            }*/
-            gameScreenManager.SpriteBatch.End();
+ 
+           // gameScreenManager.SpriteBatch.End();
         }
         #endregion
 

@@ -16,9 +16,10 @@ namespace Zold.Screens.Implemented.Map
 
     abstract class Location
     {
-       // public List<Rectangle> colisionTiles = new List<Rectangle>();
+        // public List<Rectangle> colisionTiles = new List<Rectangle>();
         // // // TILES
         //TmxMap map;
+        public static List<TmxMap> LisatofLocations = new List<TmxMap>();
         TmxMap map2;
         TmxMap currentMap;
 
@@ -33,20 +34,17 @@ namespace Zold.Screens.Implemented.Map
         int screenHeight = 480;
 
         SpriteBatchSpriteSheet spriteSheet;
+        Effect effect;
 
 
         Player player;
 
-        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet,  Player player)
+        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player)
         {
             this.gameScreenManager = gameScreenManager;
             this.spriteSheet = spriteSheet;
             this.player = player;
-            //map = new TmxMap(@"Content/MainRoom.tmx");
-           // map2 = new TmxMap(@"Content/mapa2v2.tmx");
             currentMap = getCurrentMap();
-
-            //initMap();
         }
 
         public abstract TmxMap getCurrentMap();
@@ -54,6 +52,10 @@ namespace Zold.Screens.Implemented.Map
         public abstract List<int> getColideLayers();
         public abstract Vector2 getPortal();
         public abstract Vector2 playersNewPosition();
+        public abstract List<Npc> GetCharacters();
+        public abstract Npc GetCharacter(int i);
+        public abstract List<Enemy> GetEnemies();
+        public abstract Enemy Getenemy(int i);
 
         public virtual void initMap(GameScreenManager gameScreenManager, TmxMap currentMap)
         {
@@ -63,11 +65,11 @@ namespace Zold.Screens.Implemented.Map
             tileHeight = currentMap.Tilesets[0].TileHeight;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
-           // getColideObjects(currentMap, 0);
+            // getColideObjects(currentMap, 0);
         }
 
         //TODO: wywalić tego matrixa z parametrów
-        public virtual void drawTiles(int layer, TmxMap map, Rectangle bounds, Matrix cameraTransformation)
+        public virtual void drawTiles(int layer, TmxMap map, Matrix cameraTransformation)
         {
             for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
             {
@@ -86,14 +88,15 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    spriteSheet.Begin(transformMatrix: cameraTransformation);
-                    spriteSheet.Draw(tileset, new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend,  transformMatrix: cameraTransformation);
+                    //effect.CurrentTechnique.Passes[0].Apply();
+                    spriteSheet.Draw(tileset, new Rectangle((int)x , (int)y , tileWidth, tileHeight), tilesetRec, Color.White);
                     spriteSheet.End();
                 }
             }
         }
 
-        public virtual void getColideObjects(int warstwa, TmxMap map, Rectangle bounds, List<Rectangle> colisionTiles)
+        public virtual void getColideObjects(int warstwa, TmxMap map, List<Rectangle> colisionTiles)
         {
             colisionTiles.Clear();
             for (var i = 0; i < map.Layers[warstwa].Tiles.Count; i++)
@@ -111,7 +114,7 @@ namespace Zold.Screens.Implemented.Map
                     float x = (i % map.Width) * map.TileWidth;
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
-                    colisionTiles.Add(new Rectangle((int)x + bounds.X, (int)y + bounds.Y, tileWidth, tileHeight));
+                    colisionTiles.Add(new Rectangle((int)x , (int)y, tileWidth, tileHeight));
                 }
             }
         }
@@ -163,23 +166,23 @@ namespace Zold.Screens.Implemented.Map
                 //  Console.WriteLine("tile: " + tile);
                 Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
 
-                if (ghost.X == tile.X - 32 && ghost.Y +32== tile.Y)
+                if (ghost.X == tile.X - 32 && ghost.Y + 32 == tile.Y)
                 {
                     MapManager.canMoveRight = false;
                 }
 
-                else if (ghost.X == tile.X + 32 && ghost.Y+32 == tile.Y)
+                else if (ghost.X == tile.X + 32 && ghost.Y + 32 == tile.Y)
                 {
                     MapManager.canMoveLeft = false;
                 }
 
-                else if (ghost.Y  == tile.Y && tile.X == ghost.X)
+                else if (ghost.Y == tile.Y && tile.X == ghost.X)
                 {
                     MapManager.canMoveUp = false;
 
                 }
 
-                else if (ghost.Y + 32*2== tile.Y && tile.X == ghost.X)
+                else if (ghost.Y + 32 * 2 == tile.Y && tile.X == ghost.X)
                 {
                     MapManager.canMoveDown = false;
                 }
@@ -187,5 +190,5 @@ namespace Zold.Screens.Implemented.Map
             }
 
         }
-        }
+    }
 }
