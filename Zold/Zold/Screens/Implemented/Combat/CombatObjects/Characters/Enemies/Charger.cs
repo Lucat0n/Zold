@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Timers;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
@@ -18,7 +19,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         Projectile map;
 
-        public Charger(Player player, int lvl, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, lvl, position, SpriteBatchSpriteSheet, width, height)
+        public Charger(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
             SpriteBatchSpriteSheet.MakeAnimation(1, "Left", 250);
@@ -129,7 +130,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
             if (player.CheckBoxCollision(Position, this) && !hit)
             {
-                player.Hp -= 10;
+                player.Statistics.Health -= Statistics.Damage;
                 hit = true;
             }
 

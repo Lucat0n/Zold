@@ -8,6 +8,7 @@ using TiledSharp;
 using System;
 using Zold.Utilities;
 using Zold.Quests;
+using Zold.Screens.Implemented.Combat;
 
 namespace Zold.Screens.Implemented.Map
 {
@@ -34,13 +35,7 @@ namespace Zold.Screens.Implemented.Map
         int advenPosY = 64;
 
         // Combat
-        
         Combat.CombatScreen Combat;
-        Combat.CombatObjects.Characters.Player combatPlayer;
-        Combat.CombatObjects.Characters.Enemies.Enemy mob;
-        Combat.CombatObjects.Characters.Enemies.Enemy ranged;
-        Combat.CombatObjects.Characters.Enemies.Enemy rat;
-        List<Combat.CombatObjects.Characters.Enemies.Enemy> enemies;
         
         Player player;
         Enemy enemy;
@@ -123,18 +118,13 @@ namespace Zold.Screens.Implemented.Map
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
-            
-            enemies = new List<Combat.CombatObjects.Characters.Enemies.Enemy>();
-            combatPlayer = new Combat.CombatObjects.Characters.Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
+            CombatBuilder combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice);
+            combatBuilder.AddPlayer();
+            combatBuilder.AddPunk(1, 300, 300);
+            combatBuilder.AddRanged(1, 400, 300);
+            combatBuilder.AddRat(1, 300, 350);
+            Combat = combatBuilder.Build();
 
-            mob = new Combat.CombatObjects.Characters.Enemies.Mob(combatPlayer, 1, new Vector2(300, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            ranged = new Combat.CombatObjects.Characters.Enemies.Ranged(combatPlayer, 1, new Vector2(400, 300), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/punk"), 20, 3, 32, 56), 32, 56);
-            rat = new Combat.CombatObjects.Characters.Enemies.Charger(combatPlayer, 1, new Vector2(300, 400), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/rat"), 5, 4, 44, 20), 44, 20);
-            enemies.Add(mob);
-            enemies.Add(ranged);
-            enemies.Add(rat);
-            Combat = new Combat.CombatScreen(combatPlayer, enemies);
-            
             //camera
             bounds = new Rectangle(0, 0, 0, 0);
 

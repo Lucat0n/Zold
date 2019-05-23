@@ -7,7 +7,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
     {
         public Vector2 Position;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
-        public int Damage;
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;

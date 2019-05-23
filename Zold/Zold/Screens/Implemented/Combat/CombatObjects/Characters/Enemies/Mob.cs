@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Timers;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
@@ -8,7 +9,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
     {
         private Timer attackTimer;
 
-        public Mob(Player player, int lvl, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, lvl, position, SpriteBatchSpriteSheet, width, height)
+        public Mob(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
@@ -65,7 +66,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private void Attack(object source, ElapsedEventArgs e)
         {
             if (player.CheckPointCollision(attackPosition))
-                player.Hp -= Damage;
+                player.Statistics.Health -= Statistics.Damage;
             attackTimer.Enabled = false;
         }
     }

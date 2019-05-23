@@ -5,6 +5,7 @@ using System.Timers;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.Skills;
+using Zold.Statistics;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
@@ -16,17 +17,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         private List<Enemy> enemies;
         private Skill skill;
 
-        public Player(Vector2 position, int hp, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, SpriteBatchSpriteSheet, width, height)
+        public Player(Vector2 position, Stats statistics, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, statistics, SpriteBatchSpriteSheet, width, height)
         {
-            this.Hp = hp;
             this.enemies = enemies;
 
             SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
             
             direction = "Right";
-            speed = 2;
-            Damage = 20;
 
             range = new Projectile(Vector2.Zero, 0, null, Vector2.Zero, 40, 1);
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
@@ -51,25 +49,25 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (BottomPosition.Y >= topMapEdge)
-                    Position.Y -= speed;
+                    Position.Y -= Statistics.Speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                Position.Y += speed;
+                Position.Y += Statistics.Speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                Position.X -= speed;
+                Position.X -= Statistics.Speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                Position.X += speed;
+                Position.X += Statistics.Speed;
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
@@ -128,7 +126,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             enemies.ForEach( Enemy => {
                 if (Enemy.CheckBoxCollision(hitbox, range))
-                    Enemy.Hp -= Damage;
+                    Enemy.Statistics.Health -= Statistics.Damage;
             });
             attackTimer.Enabled = false;
             action = "Idle";
