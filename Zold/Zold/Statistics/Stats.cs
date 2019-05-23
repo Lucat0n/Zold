@@ -6,10 +6,15 @@ namespace Zold.Statistics
     {
         public int Level;
         public int Health;
+        [JsonProperty("MaxHealth")]
         public int MaxHealth;
+        [JsonProperty("Damage")]
         public int Damage;
+        [JsonProperty("Speed")]
         public int Speed;
+        [JsonProperty("Defence")]
         public int Defence;
+        [JsonProperty("Attack")]
         public int Attack;
 
         public Stats()

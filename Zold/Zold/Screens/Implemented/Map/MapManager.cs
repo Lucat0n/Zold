@@ -118,8 +118,7 @@ namespace Zold.Screens.Implemented.Map
             enemy.SetTexture(Assets.Instance.Get("placeholders/Textures/rat"));
 
             // Combat
-            CombatBuilder combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice);
-            combatBuilder.AddPlayer();
+            CombatBuilder combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice, new Statistics.Stats());
             combatBuilder.AddPunk(1, 300, 300);
             combatBuilder.AddRanged(1, 400, 300);
             combatBuilder.AddRat(1, 300, 350);

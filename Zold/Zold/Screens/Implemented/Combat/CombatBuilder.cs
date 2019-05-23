@@ -1,12 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat
@@ -17,12 +14,14 @@ namespace Zold.Screens.Implemented.Combat
         StatisticsManager statistics;
         List<Enemy> enemies = new List<Enemy>();
         GraphicsDevice graphicsDevice;
+        Stats playerStats;
 
-        public CombatBuilder(GraphicsDevice graphicsDevice)
+        public CombatBuilder(GraphicsDevice graphicsDevice, Stats playerStats)
         {
+            this.playerStats = playerStats;
             statistics = new StatisticsManager();
+            player = new Player(new Vector2(0, 200), playerStats, enemies, new SpriteBatchSpriteSheet(graphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
             this.graphicsDevice = graphicsDevice;
-            Reset();
         }
 
         public void Reset()
@@ -31,9 +30,9 @@ namespace Zold.Screens.Implemented.Combat
             enemies.Clear();
         }
 
-        public void AddPlayer()
+        public void SetPlayerPosition(int positionX, int positionY)
         {
-            player = new Player(new Vector2(0, 200), new Statistics.Stats(), enemies, new SpriteBatchSpriteSheet(graphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
+            player = new Player(new Vector2(positionX, positionY), playerStats, enemies, new SpriteBatchSpriteSheet(graphicsDevice, Assets.Instance.Get("combat/Textures/main"), 4, 3, 32, 48), 32, 48);
         }
 
         public void AddRat(int lvl, int positionX, int positionY)
