@@ -11,6 +11,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
     class Player : Character
     {
         public Vector2 CenterPosition;
+        private Projectile range;
         private Timer attackTimer;
         private List<Enemy> enemies;
         private Skill skill;
@@ -25,8 +26,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             
             direction = "Right";
             speed = 2;
-            damage = 20;
+            Damage = 20;
 
+            range = new Projectile(Vector2.Zero, 0, null, Vector2.Zero, 40, 1);
             CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
             skill = new Skill(CombatScreen);
             
@@ -87,7 +89,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
                     skill.Destination = CalcDirection(new Vector2(CenterPosition.X - 1, CenterPosition.Y), CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
-                skill.Use();
+                skill.Use("Player", 10);
             }
         }
 
@@ -125,8 +127,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
                 hitbox = new Vector2(CenterPosition.X - 40, CenterPosition.Y);
 
             enemies.ForEach( Enemy => {
-                if (Enemy.CheckBoxCollision(hitbox, 1, 40))
-                    Enemy.Hp -= damage;
+                if (Enemy.CheckBoxCollision(hitbox, range))
+                    Enemy.Hp -= Damage;
             });
             attackTimer.Enabled = false;
             action = "Idle";
