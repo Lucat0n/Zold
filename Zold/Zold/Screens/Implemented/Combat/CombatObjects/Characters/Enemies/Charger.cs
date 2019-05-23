@@ -8,7 +8,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
     {
         private Timer prepareTimer;
         private Timer cooldownTimer;
-        public float chargeSpeed { get; set; }
+        private float chargeSpeed;
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
         private float chargeRange;

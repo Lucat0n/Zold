@@ -15,6 +15,7 @@ namespace Zold.Screens.Implemented.Combat
 {
     class CombatScreen : GameScreen
     {
+        StatisticsManager Statistics;
         Player player;
         List<Enemy> enemies;
         List<CombatObject> objectsToRender;
@@ -26,6 +27,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
+            Statistics = new StatisticsManager();
             this.player = player;
             this.enemies = enemies;
             
