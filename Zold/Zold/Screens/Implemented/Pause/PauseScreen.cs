@@ -51,6 +51,7 @@ namespace Zold.Screens.Implemented.Pause
         private TimeSpan cooldown;
         private TimeSpan buttonBlock;
         private SByte index = 0;
+        private SByte itemsIndex = 0;
         private SByte optionsIndex = 0;
         private SByte questIndex = 0;
         #endregion
@@ -153,7 +154,7 @@ namespace Zold.Screens.Implemented.Pause
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
                     break;
-                case (PauseState.equipment):
+                case PauseState.equipment:
                     if (keyboardState.IsKeyDown(Keys.Escape))
                     {
                         isEscPressed = true;
@@ -161,11 +162,37 @@ namespace Zold.Screens.Implemented.Pause
                     }
                     break;
                 case (PauseState.items):
-                    if (keyboardState.IsKeyDown(Keys.Escape))
+                    if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
                     }
+                    else if (keyboardState.IsKeyUp(Keys.Escape))
+                        isEscPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
+                    {
+                        if (++itemsIndex > itemsToDisplay.Count()-1)
+                            itemsIndex = 0;
+                        isDownPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Down))
+                        isDownPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
+                    {
+                        if (--itemsIndex < 0)
+                            itemsIndex = (sbyte)(itemsToDisplay.Count()-1);
+                        isUpPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Up))
+                        isUpPressed = false;
+                    if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
+                    {
+                        gameScreenManager.InsertScreen(new ItemDecisionScreen(itemsToDisplay[itemsIndex].Item, cursorPos.Y));
+                        isEscPressed = true;
+                        isEnterPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Enter))
+                        isEnterPressed = false;
                     break;
                 case (PauseState.perks):
                     if (keyboardState.IsKeyDown(Keys.Escape))
@@ -356,7 +383,7 @@ namespace Zold.Screens.Implemented.Pause
                     break;
                 case (PauseState.items):
                     itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
-                    cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 16), 50 + secondaryWindow.Height / 8 + (secondaryWindow.Height / 10) * questIndex, mainWindow.Width / 12, mainWindow.Width / 10);
+                    cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 16), 50 + secondaryWindow.Height / 8 + (secondaryWindow.Height / 10) * itemsIndex, mainWindow.Width / 12, mainWindow.Width / 10);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
                 case (PauseState.perks):
