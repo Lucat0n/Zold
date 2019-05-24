@@ -37,7 +37,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Controls()
         {
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
+            CenterPosition = new Vector2(Position.X + width / 2, Position.Y + height / 2);
             BottomPosition = new Vector2(Position.X, Position.Y + 44);
             CalculateDepth();
             CheckDirection();
@@ -49,25 +49,25 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (BottomPosition.Y >= topMapEdge)
-                    Position.Y -= Statistics.Speed;
+                    Position.Y -= GetSpeed();
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                Position.Y += Statistics.Speed;
+                Position.Y += GetSpeed();
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                Position.X -= Statistics.Speed;
+                Position.X -= GetSpeed();
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                Position.X += Statistics.Speed;
+                Position.X += GetSpeed();
                 attackTimer.Enabled = false;
                 action = "Moving";
             }

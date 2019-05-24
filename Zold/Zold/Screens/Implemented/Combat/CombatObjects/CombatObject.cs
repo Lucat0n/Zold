@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects
@@ -7,12 +8,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
     {
         public Vector2 Position;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
+        public Stats Statistics;
+        public float BaseSpeed { set; protected get; }
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
         protected float scale;
         protected string direction;
-        protected float speed;
         protected int height;
         protected int width;
         protected readonly int topMapEdge;
@@ -70,6 +72,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
                 Position.Y + this.height > point.Y)
                 return true;
             return false;
+        }
+
+        protected float GetSpeed()
+        {
+            return BaseSpeed * Statistics.Speed;
         }
     }
 }

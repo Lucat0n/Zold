@@ -25,8 +25,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         protected void Move(Vector2 direction)
         {
-            Position.X += direction.X * speed;
-            Position.Y += direction.Y * speed;
+            Position.X += direction.X * GetSpeed();
+            Position.Y += direction.Y * GetSpeed();
         }
 
         public bool CheckPointCollision(Vector2 point)
