@@ -36,19 +36,19 @@
   },
   "items": {
     "healthPotion": {
-      "name": "Mikstura HP 1",
+      "name": "Mikstura Uleczajaca 1",
       "description": "Ma³a mikstura uleczaj¹ca. Praktycznie nic nie uzdrawia.",
       "miniature": "healthPotionIcon",
       "largeScale": "healthPotionImage"
     },
     "healthPotion2": {
-      "name": "Mikstura HP 2",
+      "name": "Mikstura Uleczajaca 2",
       "description": "Œrednia mikstura uleczaj¹ca. Regeneruje po³owê HP.",
       "miniature": "healthPotionIcon2",
       "largeScale": "healthPotionImage2"
     },
     "healthPotion3": {
-      "name": "Mikstura HP 3",
+      "name": "Mikstura Uleczajaca 3",
       "description": "Du¿a mikstura uleczaj¹ca. Regeneruje short.MaxValue HP.",
       "miniature": "healthPotionIcon3",
       "largeScale": "healthPotionImage3"

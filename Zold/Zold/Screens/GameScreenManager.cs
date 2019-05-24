@@ -77,6 +77,8 @@ namespace Zold.Screens
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
         internal QuestManager QuestManager { get => questManager; set => questManager = value; }
+
+        internal InventoryManager InventoryManager => inventoryManager;
         #endregion
 
         #region init
@@ -92,6 +94,11 @@ namespace Zold.Screens
             questManager = new QuestManager(inventoryManager, itemManager);
             //*****
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
+            itemManager.AddItem("healthPotion");
+            inventoryManager.GetPlayerInventory().InsertItem("healthPotion" , itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem("healthPotion" , itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem("healthPotion2" , itemManager.GetItem("healthPotion2"));
+            inventoryManager.GetPlayerInventory().InsertItem("bolt" , itemManager.GetItem("bolt"));
             //*****
             this.LoadContent();
         }
