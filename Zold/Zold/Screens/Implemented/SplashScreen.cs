@@ -80,8 +80,7 @@ namespace Zold.Screens.Implemented
             splash = Assets.Instance.Get("splash/Textures/rzprod");
 
             // Combat
-            combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice);
-            combatBuilder.AddPlayer();
+            combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice, new Statistics.Stats());
             combatBuilder.AddPunk(1, 300, 300);
             combatBuilder.AddRanged(1, 400, 300);
             combatBuilder.AddRat(1, 300, 350);
