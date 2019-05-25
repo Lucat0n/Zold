@@ -18,7 +18,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
             this.width = width;
             this.height = height;
-            Statistics = new Stats(0, 0, damage, 4, 0, 0);
+            Statistics = new Stats(0, 0, damage, 200, 0, 0);
 
             Targets = new List<Character>();
         }

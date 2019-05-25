@@ -3,21 +3,21 @@
     "Rat": {
       "MaxHealth": 40,
       "Damage": 20,
-      "Speed": 2,
+      "Speed": 150,
       "Defence": 10,
       "Attack": 10
     },
     "Punk": {
       "MaxHealth": 80,
       "Damage": 15,
-      "Speed": 2,
+      "Speed": 110,
       "Defence": 10,
       "Attack": 10
     },
     "Ranged": {
       "MaxHealth": 60,
       "Damage": 10,
-      "Speed": 1,
+      "Speed": 80,
       "Defence": 10,
       "Attack": 10
     }
