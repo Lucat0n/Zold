@@ -48,6 +48,8 @@ namespace Zold.Screens.Implemented.Combat
             checkProjectileCollisions();
             charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
 
+            charactersToRender.ForEach(character => character.BaseSpeed = gameScreenManager.baseSpeed);
+
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
@@ -55,6 +57,7 @@ namespace Zold.Screens.Implemented.Combat
 
             projectiles.ForEach(projectile =>
             {
+                projectile.BaseSpeed = gameScreenManager.baseSpeed;
                 projectile.Move(gameTime);
             });
 
@@ -171,7 +174,7 @@ namespace Zold.Screens.Implemented.Combat
                     if (target.CheckBoxCollision(projectile.Position, target))
                     {
                         toDelete = target;
-                        target.Statistics.Health -= projectile.Damage;
+                        target.Statistics.Health -= projectile.Statistics.Damage;
                     }
                 });
                 projectile.Targets.Remove(toDelete);

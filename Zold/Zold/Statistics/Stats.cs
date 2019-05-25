@@ -23,7 +23,7 @@ namespace Zold.Statistics
             MaxHealth = 80;
             Health = MaxHealth;
             Damage = 20;
-            Speed = 2;
+            Speed = 120;
             Defence = 5;
             Attack = 5;
         }

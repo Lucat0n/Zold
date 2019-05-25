@@ -15,7 +15,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
     {
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
-        public Stats Statistics;
         public string action;
         public HashSet<IBuff> buffSet = new HashSet<IBuff>();
 

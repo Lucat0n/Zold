@@ -29,7 +29,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             BottomPosition = new Vector2(Position.X + width, Position.Y + height);
             CalculateDepth();
             CheckDirection();
-            speed = 60f * (float)gameTime.ElapsedGameTime.TotalSeconds;
             playerDirection = CalcDirection(player.Position, Position);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 

@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +29,7 @@ namespace Zold.Screens
         private SpriteBatch spriteBatch;
         SpriteFont spriteFont;
         private Texture2D blank;
+        public float baseSpeed { get; set; }
 
         private MouseState mouseState;
         private KeyboardState keyboardState;
@@ -122,6 +120,7 @@ namespace Zold.Screens
         public override void Update(GameTime gameTime)
         {
             UpdateInput();
+            baseSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (ScreensToDraw.Count > 0)
             {
                 ScreensToDraw[ScreensToDraw.Count - 1].HandleInput(mouseState, cursor, keyboardState);
