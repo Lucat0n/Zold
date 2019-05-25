@@ -95,10 +95,11 @@ namespace Zold.Screens
             //*****
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
             itemManager.AddItem("healthPotion");
+            itemManager.AddWeapon("stick");
             inventoryManager.GetPlayerInventory().InsertItem("healthPotion" , itemManager.GetItem("healthPotion"));
             inventoryManager.GetPlayerInventory().InsertItem("healthPotion" , itemManager.GetItem("healthPotion"));
             inventoryManager.GetPlayerInventory().InsertItem("healthPotion2" , itemManager.GetItem("healthPotion2"));
-            inventoryManager.GetPlayerInventory().InsertItem("bolt" , itemManager.GetItem("bolt"));
+            inventoryManager.GetPlayerInventory().InsertItem("stick" , itemManager.GetWeapon("stick"));
             //*****
             this.LoadContent();
         }

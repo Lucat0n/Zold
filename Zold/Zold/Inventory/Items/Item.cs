@@ -50,6 +50,7 @@ namespace Zold.Inventory
         public Item(string id, ItemManager itemManager, string type)
         {
             JObject itemsBase = itemManager.ItemsBase;
+            Name = itemsBase[type][id]["name"] != null ? (string)itemsBase[type][id]["name"] : "Brak nazwy";
             isBattleOnly = itemsBase[type][id]["isBattleOnly"] != null ? (bool)itemsBase[type][id]["isBattleOnly"] : false;
             isKeyItem = itemsBase[type][id]["isKeyItem"] != null ? (bool)itemsBase[type][id]["isKeyItem"] : false;
             thrownDmg = itemsBase[type][id]["thrownDmg"] != null ? (short)itemsBase[type][id]["thrownDmg"] : (short)10;
