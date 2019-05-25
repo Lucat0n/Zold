@@ -1,12 +1,14 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Collections.Generic;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects
 {
     class Projectile : CombatObject
     {
+        public List<Character> Targets;
         private Vector2 destinationDirections;
-        private string owner;
 
         public Projectile(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, Vector2 destinationDirections, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
@@ -16,8 +18,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             this.width = width;
             this.height = height;
 
+            Targets = new List<Character>();
             speed = 5;
-            damage = 1;
+            Damage = 1;
         }
 
         public void Move(GameTime gameTime)
