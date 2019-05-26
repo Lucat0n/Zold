@@ -72,6 +72,9 @@ namespace Zold.Screens.Implemented.Pause
             //gameScreenManager.SpriteBatch.DrawString(font, mainOptions[i], new Vector2(50 + (int)(mainWindow.Width / 2.5), 50 + mainWindow.Height / 10 + (mainWindow.Height / 6) * i), Color.White);
             switch (pauseState)
             {
+                case PauseState.main:
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
+                    break;
                 case (PauseState.items):
                     itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
@@ -80,18 +83,24 @@ namespace Zold.Screens.Implemented.Pause
                         gameScreenManager.SpriteBatch.DrawString(font, itemsToDisplay[i].Item.Name, new Vector2(secondaryWindow.X + (secondaryWindow.Width / 8), 50 + (secondaryWindow.Height / 10)*(i+1)), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.005f, secondaryWindow.Height * 0.005f), SpriteEffects.None, 1f);
                         gameScreenManager.SpriteBatch.DrawString(font, "x" + itemsToDisplay[i].Amount.ToString(), new Vector2(secondaryWindow.Right - (secondaryWindow.Width / 6), 50 + (secondaryWindow.Height / 10)*(i+1)), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.005f, secondaryWindow.Height * 0.005f), SpriteEffects.None, 1f);
                     }
+                    if(itemsToDisplay.Count()>0)
+                        gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
                 case (PauseState.equipment):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
                 case (PauseState.perks):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
                 case (PauseState.quests):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? "Aktywne [E ->]" : " [<- Q] Wykonane", new Vector2(secondaryWindow.X + (secondaryWindow.Width / 2) - questTitleFontSize * 5, 50 + secondaryWindow.Height / 50), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.003f, secondaryWindow.Height * 0.003f), SpriteEffects.None, 1f);
                     for (int i = 0; i < Math.Min(10, activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count : gameScreenManager.QuestManager.CompletedQuests.Count); i++)
                         gameScreenManager.SpriteBatch.DrawString(font, activeQuestsSelected ? gameScreenManager.QuestManager.GetActiveQuestName(i, false) : gameScreenManager.QuestManager.GetCompletedQuestName(i, false), new Vector2(secondaryWindow.X + (secondaryWindow.Height / 3), 50 + secondaryWindow.Height / 18 + (secondaryWindow.Height / 10) * i), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.006f, secondaryWindow.Height * 0.006f), SpriteEffects.None, 1f);
+                    if((activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count : gameScreenManager.QuestManager.CompletedQuests.Count) > 0)
+                        gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
                 case (PauseState.map):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
@@ -114,7 +123,7 @@ namespace Zold.Screens.Implemented.Pause
 
                     break;
             }
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
+            //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
             gameScreenManager.SpriteBatch.End();
         }
 
