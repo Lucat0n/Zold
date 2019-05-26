@@ -111,6 +111,8 @@ namespace Zold.Screens.Implemented.Pause
                                 tm = null;
                                 break;
                             case 1:
+                                gameScreenManager.InsertScreen(new ItemPreviewScreen(item));
+                                isEscPressed = true;
                                 break;
                             case 2:
                                 tm += RemoveItem;
@@ -125,6 +127,8 @@ namespace Zold.Screens.Implemented.Pause
                         switch (decision)
                         {
                             case 0:
+                                gameScreenManager.InsertScreen(new ItemPreviewScreen(item));
+                                isEscPressed = true;
                                 break;
                             case 1:
                                 tm += RemoveItem;
