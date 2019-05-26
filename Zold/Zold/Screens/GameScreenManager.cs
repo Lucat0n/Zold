@@ -92,7 +92,7 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
-            /*
+            
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
             itemManager.AddItem("healthPotion");
             itemManager.AddWeapon("stick");
@@ -102,7 +102,7 @@ namespace Zold.Screens
             inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
             inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
             inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
-            */
+            
             this.LoadContent();
         }
 

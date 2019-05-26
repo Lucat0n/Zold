@@ -22,14 +22,11 @@ namespace Zold.Screens.Implemented.Pause
         private bool isEnterPressed = false;
         private bool isEnterPressed2 = false;
         private bool isEscPressed = false;
-        private bool isEscPressed2 = false;
-        private bool isConfirmationDisplayed = false;
         private Item item;
         private int yPos;
         private Rectangle decisionBox;
         private Rectangle decisionBox2;
         private Rectangle cursor;
-        private sbyte confirmation;
         private sbyte decision;
         private sbyte maxDecision;
         private SpriteFont font;
@@ -39,7 +36,6 @@ namespace Zold.Screens.Implemented.Pause
         public ItemDecisionScreen(Item item, int yPos)
         {
             IsTransparent = true;
-            confirmation = 2;
             decision = 0;
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.item = item;
@@ -74,45 +70,25 @@ namespace Zold.Screens.Implemented.Pause
         {
             if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
             {
-                if (isConfirmationDisplayed)
-                {
-                    isConfirmationDisplayed = false;
-                    isEscPressed = true;
-                    isEscPressed2 = true;
-                    isEnterPressed2 = true;
-                }
-                else if (!isEscPressed2)
+                if (!isEscPressed)
                     gameScreenManager.RemoveScreen(this);
             }
             else if (keyboardState.IsKeyUp(Keys.Escape))
             {
                 isEscPressed = false;
-                isEscPressed2 = false;
             }
             if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
             {
-                if (!isConfirmationDisplayed)
-                {
                     if (++decision > maxDecision)
                         decision = 0;
-                }
-                else
-                    if (++confirmation > 2)
-                    confirmation = 1;
                 isDownPressed = true;
             }
             else if (keyboardState.IsKeyUp(Keys.Down))
                 isDownPressed = false;
             if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
             {
-                if (!isConfirmationDisplayed)
-                {
-                    if (--decision < 0)
-                        decision = maxDecision;
-                }
-                else
-                    if (--confirmation < 1)
-                    confirmation = 2;
+                if (--decision < 0)
+                    decision = maxDecision;
                 isUpPressed = true;
             }
             else if (keyboardState.IsKeyUp(Keys.Up))
@@ -121,14 +97,6 @@ namespace Zold.Screens.Implemented.Pause
             {
                 isEnterPressed = true;
                 isEnterPressed2 = !isEnterPressed2;
-                Debug.WriteLine(isEnterPressed2);
-                if (isConfirmationDisplayed)
-                {
-                    isEnterPressed2 = true;
-                    if (confirmation == 2)
-                        isConfirmationDisplayed = false;
-                    return;
-                }
                 if (!isEnterPressed2)
                 {
                     isEnterPressed2 = true;
@@ -232,5 +200,7 @@ namespace Zold.Screens.Implemented.Pause
             gameScreenManager.InventoryManager.GetPlayerInventory().RemoveItem(item.Name, 1);
             gameScreenManager.RemoveScreen(this);
         }
+
+        //TODO - EquipItem()
     }
 }

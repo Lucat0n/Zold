@@ -383,6 +383,8 @@ namespace Zold.Screens.Implemented.Pause
                     break;
                 case (PauseState.items):
                     //itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
+                    if (itemsIndex > itemsToDisplay.Count()-1)
+                        itemsIndex--;
                     cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 16), 50 + secondaryWindow.Height / 8 + (secondaryWindow.Height / 10) * itemsIndex, mainWindow.Width / 12, mainWindow.Width / 10);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
