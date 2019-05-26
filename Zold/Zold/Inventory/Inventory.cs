@@ -80,6 +80,8 @@ namespace Zold.Inventory
             {
                 Items[name].Amount -= amount;
             }
+            if (Items[name].Amount == 0)
+                RemoveItem(name);
         }
 
         /// <summary>

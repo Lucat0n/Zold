@@ -73,12 +73,12 @@ namespace Zold.Screens.Implemented.Pause
             switch (pauseState)
             {
                 case (PauseState.items):
+                    itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     for(int i=0; i<Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().GetWholeInventory().Count); i++)
                     {
                         gameScreenManager.SpriteBatch.DrawString(font, itemsToDisplay[i].Item.Name, new Vector2(secondaryWindow.X + (secondaryWindow.Width / 8), 50 + (secondaryWindow.Height / 10)*(i+1)), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.005f, secondaryWindow.Height * 0.005f), SpriteEffects.None, 1f);
-                        gameScreenManager.SpriteBatch.DrawString(font, "x" + gameScreenManager.InventoryManager.GetPlayerInventory().GetWholeInventory().Values.ToArray()[i].ToString(), new Vector2(secondaryWindow.Right - (secondaryWindow.Width / 6), 50 + (secondaryWindow.Height / 10)*(i+1)), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.005f, secondaryWindow.Height * 0.005f), SpriteEffects.None, 1f);
-
+                        gameScreenManager.SpriteBatch.DrawString(font, "x" + itemsToDisplay[i].Amount.ToString(), new Vector2(secondaryWindow.Right - (secondaryWindow.Width / 6), 50 + (secondaryWindow.Height / 10)*(i+1)), Color.White, 0, Vector2.Zero, new Vector2(secondaryWindow.Height * 0.005f, secondaryWindow.Height * 0.005f), SpriteEffects.None, 1f);
                     }
                     break;
                 case (PauseState.equipment):
@@ -375,14 +375,14 @@ namespace Zold.Screens.Implemented.Pause
             mainWindow = new Rectangle(50, 50, gameScreenManager.GraphicsDevice.Viewport.Height / 3, (int)(gameScreenManager.GraphicsDevice.Viewport.Height / 2.5f));
             switch (pauseState)
             {
-                case (PauseState.main):
+                case PauseState.main:
                     cursorPos = new Rectangle(50 + mainWindow.Width / 4, 50 + mainWindow.Height / 10 + (mainWindow.Height / 7) * index, mainWindow.Width / 12, mainWindow.Width / 12);
                     break;
                 case (PauseState.equipment):
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
                 case (PauseState.items):
-                    itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
+                    //itemsToDisplay = (from entry in gameScreenManager.InventoryManager.GetPlayerInventory().Items orderby entry.Value.Item.Name ascending select entry.Value).Take(Math.Min(8, gameScreenManager.InventoryManager.GetPlayerInventory().Items.Count)).ToArray();
                     cursorPos = new Rectangle(secondaryWindow.X + (secondaryWindow.Width / 16), 50 + secondaryWindow.Height / 8 + (secondaryWindow.Height / 10) * itemsIndex, mainWindow.Width / 12, mainWindow.Width / 10);
                     secondaryWindow = new Rectangle(80 + mainWindow.Width, 50, gameScreenManager.GraphicsDevice.Viewport.Width / 2, gameScreenManager.GraphicsDevice.Viewport.Height / 2);
                     break;
