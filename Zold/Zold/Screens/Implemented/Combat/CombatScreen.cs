@@ -18,7 +18,6 @@ namespace Zold.Screens.Implemented.Combat
     class CombatScreen : GameScreen
     {
         Player player;
-        TmxMap currentMap;
         List<Enemy> enemies;
         List<Character> charactersToRender;
         List<Projectile> projectiles;
@@ -26,6 +25,8 @@ namespace Zold.Screens.Implemented.Combat
 
         private bool isEscPressed = false;
 
+        private TmxMap currentMap;
+        private SpriteBatchSpriteSheet mapSprite;
         private Texture2D tileset;
         private int tileWidth;
         private int tileHeight;
@@ -89,18 +90,19 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
-            currentMap = new TmxMap(@"Content/Dormitory-combat.tmx");
+            currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
+            mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
             InitMap(currentMap);
         }
 
         public override void Draw(GameTime gameTime)
         {
-            DrawTiles(0, currentMap);
 
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
+            DrawTiles(0, currentMap);
             charactersToRender.ForEach(item =>
             {
                 item.Animation(gameTime);
@@ -123,6 +125,7 @@ namespace Zold.Screens.Implemented.Combat
 
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 450), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+
 
             gameScreenManager.SpriteBatch.End();
         }
@@ -196,7 +199,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public virtual void InitMap(TmxMap currentMap)
         {
-            tileset = gameScreenManager.Content.Load<Texture2D>(currentMap.Tilesets[0].Name.ToString());
+            tileset = gameScreenManager.Content.Load<Texture2D>("graphic\\combat\\" + currentMap.Tilesets[0].Name.ToString());
             tileWidth = currentMap.Tilesets[0].TileWidth;
             tileHeight = currentMap.Tilesets[0].TileHeight;
             tilesetTilesWide = tileset.Width / tileWidth;
@@ -218,9 +221,9 @@ namespace Zold.Screens.Implemented.Combat
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    gameScreenManager.SpriteBatch.Begin();
-                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
-                    gameScreenManager.SpriteBatch.End();
+                    mapSprite.Begin();
+                    mapSprite.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    mapSprite.End();
                 }
             }
         }
