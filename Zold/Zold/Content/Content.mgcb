@@ -126,6 +126,9 @@
 #begin dormitory.tsx
 /copy:dormitory.tsx
 
+#begin Dormitory-combat.tmx
+/copy:Dormitory-combat.tmx
+
 #begin graphic/characters/main.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -137,6 +140,24 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
+
+#begin graphic/combat/combat_city.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/combat/combat_city.png
+
+#begin graphic/combat/combat_city.tmx
+/copy:graphic/combat/combat_city.tmx
+
+#begin graphic/combat/combat_city.tsx
+/copy:graphic/combat/combat_city.tsx
 
 #begin graphic/locations/Dormitory/dormitory_I.png
 /importer:TextureImporter

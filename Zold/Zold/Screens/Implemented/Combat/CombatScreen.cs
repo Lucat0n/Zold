@@ -10,12 +10,15 @@ using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 using System.Threading;
 using Zold.Buffs;
 using System.Threading.Tasks;
+using TiledSharp;
+using System;
 
 namespace Zold.Screens.Implemented.Combat
 {
     class CombatScreen : GameScreen
     {
         Player player;
+        TmxMap currentMap;
         List<Enemy> enemies;
         List<Character> charactersToRender;
         List<Projectile> projectiles;
@@ -23,11 +26,17 @@ namespace Zold.Screens.Implemented.Combat
 
         private bool isEscPressed = false;
 
+        private Texture2D tileset;
+        private int tileWidth;
+        private int tileHeight;
+        private int tilesetTilesWide;
+        private int tilesetTilesHigh;
+
         public CombatScreen(Player player, List<Enemy> enemies)
         {
             this.player = player;
             this.enemies = enemies;
-            
+
             projectiles = new List<Projectile>();
             charactersToRender = new List<Character>();
             charactersToRender.Add(player);
@@ -45,7 +54,7 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void Update(GameTime gameTime)
         {
-            checkProjectileCollisions();
+            CheckProjectileCollisions();
             charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
 
             charactersToRender.ForEach(character => character.BaseSpeed = gameScreenManager.baseSpeed);
@@ -80,10 +89,14 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
+            currentMap = new TmxMap(@"Content/Dormitory-combat.tmx");
+            InitMap(currentMap);
         }
 
         public override void Draw(GameTime gameTime)
         {
+            DrawTiles(0, currentMap);
+
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
@@ -164,7 +177,7 @@ namespace Zold.Screens.Implemented.Combat
             temp.Start();
         }
 
-        private void checkProjectileCollisions()
+        private void CheckProjectileCollisions()
         {
             Character toDelete = null;
             projectiles.ForEach(projectile =>
@@ -179,6 +192,37 @@ namespace Zold.Screens.Implemented.Combat
                 });
                 projectile.Targets.Remove(toDelete);
             });
+        }
+
+        public virtual void InitMap(TmxMap currentMap)
+        {
+            tileset = gameScreenManager.Content.Load<Texture2D>(currentMap.Tilesets[0].Name.ToString());
+            tileWidth = currentMap.Tilesets[0].TileWidth;
+            tileHeight = currentMap.Tilesets[0].TileHeight;
+            tilesetTilesWide = tileset.Width / tileWidth;
+            tilesetTilesHigh = tileset.Height / tileHeight;
+        }
+
+        public virtual void DrawTiles(int layer, TmxMap map)
+        {
+            for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
+            {
+                int gid = map.Layers[layer].Tiles[i].Gid;
+
+                if (gid != 0)
+                {
+                    int tileFrame = gid - 1;
+                    int column = tileFrame % tilesetTilesWide;
+                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
+                    float x = (i % map.Width) * map.TileWidth;
+                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+
+                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
+                    gameScreenManager.SpriteBatch.Begin();
+                    gameScreenManager.SpriteBatch.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    gameScreenManager.SpriteBatch.End();
+                }
+            }
         }
     }
 }
