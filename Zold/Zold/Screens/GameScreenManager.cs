@@ -75,6 +75,8 @@ namespace Zold.Screens
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
         internal QuestManager QuestManager { get => questManager; set => questManager = value; }
+
+        internal InventoryManager InventoryManager => inventoryManager;
         #endregion
 
         #region init
@@ -88,9 +90,17 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
-            //*****
+            
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
-            //*****
+            itemManager.AddItem("healthPotion");
+            itemManager.AddWeapon("stick");
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion2").Name, itemManager.GetItem("healthPotion2"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            
             this.LoadContent();
         }
 
