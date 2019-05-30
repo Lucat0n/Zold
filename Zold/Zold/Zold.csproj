@@ -59,6 +59,7 @@
     <Compile Include="Inventory\Items\Item.cs" />
     <Compile Include="Quests\LocationQuest.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatBuilder.cs" />
+    <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
     <Compile Include="Screens\Implemented\Map\Npc.cs" />
     <Compile Include="Screens\Implemented\Pause\QuestDescriptionScreen.cs" />
     <Compile Include="Utilities\InventoryManager.cs" />

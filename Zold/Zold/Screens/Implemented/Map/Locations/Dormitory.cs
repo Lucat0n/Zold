@@ -76,5 +76,6 @@ namespace Zold.Screens.Implemented.Map.Locations
         {
             return new Vector2(192, 64);
         }
+
     }
 }

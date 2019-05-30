@@ -25,7 +25,7 @@ namespace Zold.Screens.Implemented.Map
         SpriteFont dialog;
         public List<string> powiedzonka = new List<string>();
 
-        Vector2 TextPosition = new Vector2(41, 242);
+        Vector2 TextPosition = new Vector2(42, 412);
 
         public InteractionManager(GameScreenManager gameScreenManager, Location location)
         {
@@ -78,14 +78,14 @@ namespace Zold.Screens.Implemented.Map
                 }
                 else
                 {
-                    tlo = new Rectangle(-15, 240, width, 30);
+                    tlo = new Rectangle(-15, 410, width, 30);
                 }
 
                 if (!disp)
                 {
                     dymek = Assets.Instance.Get("placeholders/Textures/dymek");
                     gameScreenManager.SpriteBatch.Draw(dymek, new Rectangle(posx - 12, posy - 14 , dymek.Width * 2, dymek.Height * 2), Color.White);
-                    if (Keyboard.GetState().IsKeyDown(Keys.Space) && !disp)
+                    if (Keyboard.GetState().IsKeyDown(Keys.Enter) && !disp)
                     {
                         disp = true;
                     }
@@ -94,17 +94,27 @@ namespace Zold.Screens.Implemented.Map
 
                 if (disp)
                 {
-                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
+
+                   // gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
                     if (!(gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1") || gameScreenManager.QuestManager.CompletedQuests.ContainsKey("lQ1")))
                     {
-                        gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);
+                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,"Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz."));
+                        //    gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);
                         gameScreenManager.QuestManager.AddLocationQuest("lQ1");
                     }
                     if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
-                        gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);
+                    {
+                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,"Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz."));
+                    }
+
+                    //      gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);
                     else
-                        gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], TextPosition, Color.White);
-                    disp = false;
+                    {
+                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,powiedzonka[index]));
+                    }
+                        //   gameScreenManager.SpriteBatch.DrawString(dialog, powiedzonka[index], TextPosition, Color.White);
+
+                        disp = false;
 
                 }
             }
