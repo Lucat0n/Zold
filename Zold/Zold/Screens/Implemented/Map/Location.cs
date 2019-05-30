@@ -145,10 +145,7 @@ namespace Zold.Screens.Implemented.Map
                     {
                         
 
-                        Console.WriteLine("Horizontal flip: " + flipH);
-                        Console.WriteLine("verticaal flip: " + flipV);
-                        Console.WriteLine("diagonal flip: " + flipD);
-                        Console.WriteLine("gid: " + xx);
+                        
                         Console.WriteLine("----------------------- ");
 
 
@@ -160,7 +157,7 @@ namespace Zold.Screens.Implemented.Map
                     }
                     if (layer == 4 && (!flipD && !flipV && !flipH))
                     {
-                        Console.WriteLine("*************************************************DIAGOAL flip: " + flipD + " with id " + gid);
+                        
                         tileFrame = gid - 1;
                     }
                     else
@@ -222,37 +219,37 @@ namespace Zold.Screens.Implemented.Map
                     if (xx == "Sciany" || xx =="Podloga" || xx == "Meble")
                     {
 
-                        if (layer == 4 && flipV && flipH && flipD)
+                        if (layer == 5 && flipV && flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && flipV && !flipH && !flipD)
+                        else if (layer == 5 && flipV && !flipH && !flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && flipV && !flipH && flipD)
+                        else if (layer == 5 && flipV && !flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //    spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && flipV && flipH && !flipD)
+                        else if (layer == 5 && flipV && flipH && !flipD)
                         {
                             // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && !flipV && flipH && !flipD)
+                        else if (layer == 5 && !flipV && flipH && !flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && !flipV && !flipH && flipD)
+                        else if (layer == 5 && !flipV && !flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 4 && !flipV && flipH && flipD)
+                        else if (layer == 5 && !flipV && flipH && flipD)
                         {
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(90 * Math.PI / 180), new Vector2(0, 32), SpriteEffects.None, 1);
@@ -311,6 +308,10 @@ namespace Zold.Screens.Implemented.Map
                         }
                         else if (layer == 3)
                         {
+                            Console.WriteLine("Horizontal flip: " + flipH);
+                        Console.WriteLine("verticaal flip: " + flipV);
+                        Console.WriteLine("diagonal flip: " + flipD);
+                        Console.WriteLine("gid: " + xx);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                         }
 

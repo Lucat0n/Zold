@@ -185,6 +185,10 @@ namespace Zold.Screens.Implemented.Map
 
             LayerNumbers.ForEach(layer =>
             {
+                if(layer == 5)
+                {
+                    player.Animation(gameTime, cameraPlayer.Transform());
+                }
                 //effect.CurrentTechnique.Passes[0].Apply();
                 location.drawTiles(layer, currentMap, cameraPlayer.Transform());
             });
@@ -219,7 +223,7 @@ namespace Zold.Screens.Implemented.Map
             //gameScreenManager.GraphicsDevice.SetRenderTarget(null);
            // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
-            player.Animation(gameTime, cameraPlayer.Transform());
+            // player.Animation(gameTime, cameraPlayer.Transform());
 
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
