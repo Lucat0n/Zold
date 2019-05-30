@@ -7,6 +7,7 @@ using Microsoft.Xna.Framework.Input;
 using Microsoft.Xna.Framework.Media;
 using Microsoft.Xna.Framework.Audio;
 using Zold.Utilities;
+using Zold.Screens.Implemented.Cutscenes;
 
 namespace Zold.Screens.Implemented
 {
@@ -156,7 +157,7 @@ namespace Zold.Screens.Implemented
                 case MenuState.Play:
                     bg.Dispose();
                     gameScreenManager.RemoveScreen(this);
-                    gameScreenManager.InsertScreen(new Map.MapManager());
+                    gameScreenManager.InsertScreen(new SubtitlesScreen("Dawno, dawno temu, w odleglym akademiku..."));
                     break;
             }
         }

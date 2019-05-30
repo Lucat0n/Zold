@@ -59,6 +59,7 @@
     <Compile Include="Inventory\Items\Item.cs" />
     <Compile Include="Quests\LocationQuest.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatBuilder.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\SubtitlesScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ItemPreviewScreen.cs" />
