@@ -61,7 +61,11 @@
     <Compile Include="Screens\Implemented\Combat\CombatBuilder.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
     <Compile Include="Screens\Implemented\Map\Npc.cs" />
+    <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\ItemPreviewScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\QuestDescriptionScreen.cs" />
+    <Compile Include="Statistics\Stats.cs" />
     <Compile Include="Utilities\InventoryManager.cs" />
     <Compile Include="Utilities\ItemManager.cs" />
     <Compile Include="Inventory\Items\Weapon.cs" />
@@ -98,6 +102,7 @@
     <Compile Include="Screens\Implemented\Map\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\StatisticManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
@@ -169,6 +174,7 @@
     <None Include="Inventory\Items\Items.json" />
     <None Include="packages.config" />
     <None Include="Quests\Quests.json" />
+    <None Include="Statistics\Statistics.json" />
   </ItemGroup>
   <ItemGroup>
     <WCFMetadata Include="Connected Services\" />

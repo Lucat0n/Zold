@@ -55,6 +55,8 @@ namespace Zold.Utilities
 
         public Weapon GetWeapon(string name)
         {
+            if (!items.ContainsKey(name))
+                AddWeapon(name);
             return (Weapon)items[name];
         }
     }

@@ -19,7 +19,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         TmxMap currentMap;
         public Dormitory(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player) : base(gameScreenManager, spriteSheet, player)
         {
-            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/Dormitory.tmx");
+            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_v.tmx");
             this.player = player;
         }
 
