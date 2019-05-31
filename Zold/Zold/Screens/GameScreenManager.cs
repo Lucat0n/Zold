@@ -1,7 +1,4 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
@@ -32,6 +29,7 @@ namespace Zold.Screens
         private SpriteBatch spriteBatch;
         SpriteFont spriteFont;
         private Texture2D blank;
+        public float baseSpeed { get; set; }
 
         private MouseState mouseState;
         private KeyboardState keyboardState;
@@ -77,6 +75,8 @@ namespace Zold.Screens
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
         internal QuestManager QuestManager { get => questManager; set => questManager = value; }
+
+        internal InventoryManager InventoryManager => inventoryManager;
         #endregion
 
         #region init
@@ -90,9 +90,17 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
-            //*****
+            
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
-            //*****
+            itemManager.AddItem("healthPotion");
+            itemManager.AddWeapon("stick");
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion2").Name, itemManager.GetItem("healthPotion2"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            
             this.LoadContent();
         }
 
@@ -122,6 +130,7 @@ namespace Zold.Screens
         public override void Update(GameTime gameTime)
         {
             UpdateInput();
+            baseSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (ScreensToDraw.Count > 0)
             {
                 ScreensToDraw[ScreensToDraw.Count - 1].HandleInput(mouseState, cursor, keyboardState);

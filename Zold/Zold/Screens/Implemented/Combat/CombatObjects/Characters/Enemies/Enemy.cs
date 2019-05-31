@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
@@ -12,12 +13,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         public double Distance { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
-        public int lvl { get; set; }
 
-        public Enemy(Player player, int lvl, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, SpriteBatchSpriteSheet, height, width)
+        public Enemy(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, statistics, SpriteBatchSpriteSheet, height, width)
         {
             this.player = player;
-            this.lvl = lvl;
 
             direction = "Left";
         }
@@ -26,8 +25,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         protected void Move(Vector2 direction)
         {
-            Position.X += direction.X * speed;
-            Position.Y += direction.Y * speed;
+            Position.X += direction.X * GetSpeed();
+            Position.Y += direction.Y * GetSpeed();
         }
 
         public bool CheckPointCollision(Vector2 point)

@@ -80,6 +80,8 @@ namespace Zold.Inventory
             {
                 Items[name].Amount -= amount;
             }
+            if (Items[name].Amount == 0)
+                RemoveItem(name);
         }
 
         /// <summary>
@@ -107,7 +109,7 @@ namespace Zold.Inventory
         }
 
         /// <summary>
-        /// Zwraca parę słownik par przedmiot-liczba sztuk
+        /// Zwraca słownik par przedmiot-liczba sztuk
         /// </summary>
         /// <returns></returns>
         public Dictionary<Item, byte> GetWholeInventory()

@@ -19,7 +19,6 @@ namespace Zold.Screens.Implemented.Combat
         List<Enemy> enemies;
         List<Character> charactersToRender;
         List<Projectile> projectiles;
-        string combatState;
         Timer timer;
 
         private bool isEscPressed = false;
@@ -38,8 +37,7 @@ namespace Zold.Screens.Implemented.Combat
             {
                 character.CombatScreen = this;
             } 
-
-            combatState = "";
+            
             IsTransparent = false;
 
             timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
@@ -50,6 +48,8 @@ namespace Zold.Screens.Implemented.Combat
             checkProjectileCollisions();
             charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
 
+            charactersToRender.ForEach(character => character.BaseSpeed = gameScreenManager.baseSpeed);
+
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
@@ -57,10 +57,11 @@ namespace Zold.Screens.Implemented.Combat
 
             projectiles.ForEach(projectile =>
             {
+                projectile.BaseSpeed = gameScreenManager.baseSpeed;
                 projectile.Move(gameTime);
             });
 
-            var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
+            var enemiesToDelete = enemies.Where(x => x.Statistics.Health <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
@@ -69,12 +70,10 @@ namespace Zold.Screens.Implemented.Combat
 
             if (enemies.Count == 0)
             {
-                combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
             }
-            else if (player.Hp <= 0)
+            else if (player.Statistics.Health <= 0)
             {
-                combatState = "Przegrana";
                 gameScreenManager.RemoveScreen(this);
             }
         }
@@ -96,7 +95,7 @@ namespace Zold.Screens.Implemented.Combat
 
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Hp.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Statistics.Health.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
             });
 
@@ -105,7 +104,7 @@ namespace Zold.Screens.Implemented.Combat
                 projectile.Animation(gameTime);
             });
 
-            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Hp, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Statistics.Health, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
 
@@ -131,8 +130,8 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void UnloadContent()
         {
-            timer.Change(Timeout.Infinite, Timeout.Infinite);
-            timer.Dispose();
+           // timer.Change(Timeout.Infinite, Timeout.Infinite);
+           // timer.Dispose();
         }
 
         public void MakeEnemyProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
@@ -175,7 +174,7 @@ namespace Zold.Screens.Implemented.Combat
                     if (target.CheckBoxCollision(projectile.Position, target))
                     {
                         toDelete = target;
-                        target.Hp -= projectile.Damage;
+                        target.Statistics.Health -= projectile.Statistics.Damage;
                     }
                 });
                 projectile.Targets.Remove(toDelete);

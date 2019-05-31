@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Collections.Generic;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Statistics;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects
@@ -10,23 +11,22 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public List<Character> Targets;
         private Vector2 destinationDirections;
 
-        public Projectile(Vector2 Position, int dmg, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, Vector2 destinationDirections, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
+        public Projectile(Vector2 Position, int damage, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, Vector2 destinationDirections, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
             this.Position = Position;
             this.destinationDirections = destinationDirections;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
             this.width = width;
             this.height = height;
-            this.Damage = dmg;
+            Statistics = new Stats(0, 0, damage, 200, 0, 0);
 
             Targets = new List<Character>();
-            speed = 5;
         }
 
         public void Move(GameTime gameTime)
         {
-            Position.X += destinationDirections.X * speed;
-            Position.Y += destinationDirections.Y * speed;
+            Position.X += destinationDirections.X * GetSpeed();
+            Position.Y += destinationDirections.Y * GetSpeed();
         }
 
         public override void Animation(GameTime gameTime)

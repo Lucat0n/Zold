@@ -138,7 +138,7 @@
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
 
-#begin graphic/locations/Dormitory/dormitory.png
+#begin graphic/locations/Dormitory/dormitory_I.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -148,13 +148,34 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:graphic/locations/Dormitory/dormitory.png
+/build:graphic/locations/Dormitory/dormitory_I.png
 
-#begin graphic/locations/Dormitory/Dormitory.tmx
-/copy:graphic/locations/Dormitory/Dormitory.tmx
+#begin graphic/locations/Dormitory/dormitory_i.tmx
+/copy:graphic/locations/Dormitory/dormitory_i.tmx
 
-#begin graphic/locations/Dormitory/dormitory.tsx
-/copy:graphic/locations/Dormitory/dormitory.tsx
+#begin graphic/locations/Dormitory/dormitory_i.tmx.wx8188
+/copy:graphic/locations/Dormitory/dormitory_i.tmx.wx8188
+
+#begin graphic/locations/Dormitory/dormitory_I.tsx
+/copy:graphic/locations/Dormitory/dormitory_I.tsx
+
+#begin graphic/locations/Dormitory/dormitory_v.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/locations/Dormitory/dormitory_v.png
+
+#begin graphic/locations/Dormitory/dormitory_v.tmx
+/copy:graphic/locations/Dormitory/dormitory_v.tmx
+
+#begin graphic/locations/Dormitory/dormitory_v.tsx
+/copy:graphic/locations/Dormitory/dormitory_v.tsx
 
 #begin graphic/locations/MainRoom/MainRoom.tmx
 /copy:graphic/locations/MainRoom/MainRoom.tmx
