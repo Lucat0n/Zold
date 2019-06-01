@@ -45,7 +45,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             CheckDirection();
             BottomPosition = new Vector2(Position.X, Position.Y + height);
             chargeSpeed = BaseSpeed * 350;
-            playerDirection = CalcDirection(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
+            playerDirection = CalcDirection(Position, new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height));
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
             if (BottomPosition.Y < topMapEdge)
@@ -64,7 +64,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
                 chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height);
-                chargeDirection = CalcDirection(chargePosition, Position);
+                chargeDirection = CalcDirection(Position, chargePosition);
                 chargeCheck = 0;
                 chargeRange = Vector2.Distance(chargePosition, Position) + 200;
                 prepareTimer.Enabled = true;

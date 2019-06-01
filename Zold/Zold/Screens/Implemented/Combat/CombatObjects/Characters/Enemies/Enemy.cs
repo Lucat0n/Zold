@@ -36,5 +36,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 return true;
             return false;
         }
+
+        protected void GetPlayerDirection()
+        {
+            playerDirection = CalcDirection(Position, player.Position);
+        }
     }
 }

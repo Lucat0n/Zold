@@ -29,7 +29,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             BottomPosition = new Vector2(Position.X + width, Position.Y + height);
             CalculateDepth();
             CheckDirection();
-            playerDirection = CalcDirection(player.Position, Position);
+            playerDirection = CalcDirection(Position, player.Position);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
 
             if (Distance <= 100)
@@ -40,7 +40,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if(Distance <= 600)
             {
                 action = "Shootin'";
-                skill.Destination = CalcDirection(player.CenterPosition, CenterPosition);
+                skill.Destination = CalcDirection(CenterPosition, player.CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
                 skill.Use("Enemy", Statistics.Damage);
@@ -83,22 +83,22 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 if (player.Position.X <= Position.X)
                 {
-                    moveDirection = CalcDirection(new Vector2(rightMapEdge, topMapEdge), BottomPosition);
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, topMapEdge));
                 }
                 else if (player.Position.X > Position.X)
                 {
-                    moveDirection = CalcDirection(new Vector2(leflMapEdge, topMapEdge), BottomPosition);
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, topMapEdge));
                 }
             }
             else if (player.Position.Y <= Position.Y && BottomPosition.Y >= bottomMapEdge - mapOffset)
             {
                 if (player.Position.X <= Position.X)
                 {
-                    moveDirection = CalcDirection(new Vector2(rightMapEdge, bottomMapEdge), BottomPosition);
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, bottomMapEdge));
                 }
                 else
                 {
-                    moveDirection = CalcDirection(new Vector2(leflMapEdge, bottomMapEdge), BottomPosition);
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, bottomMapEdge));
                 }
             }
             else

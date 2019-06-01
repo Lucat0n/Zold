@@ -11,7 +11,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     class Player : Character
     {
-        public Vector2 CenterPosition;
         private Projectile range;
         private Timer attackTimer;
         private List<Enemy> enemies;
@@ -27,7 +26,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             direction = "Right";
 
             range = new Projectile(Vector2.Zero, 0, null, Vector2.Zero, 40, 1);
-            CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height/2);
             skill = new Skill(CombatScreen);
             
             attackTimer = new Timer();
@@ -49,25 +47,25 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
                 if (BottomPosition.Y >= topMapEdge)
-                    Position.Y -= GetSpeed();
+                    UpdatePosition(0, -GetSpeed());
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                Position.Y += GetSpeed();
+                UpdatePosition(0, GetSpeed());
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                Position.X -= GetSpeed();
+                UpdatePosition(-GetSpeed(), 0);
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                Position.X += GetSpeed();
+                UpdatePosition(GetSpeed(), 0);
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
@@ -81,10 +79,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             {
                 if (direction == "Right")
                 {
-                    skill.Destination = CalcDirection(new Vector2(CenterPosition.X + 1, CenterPosition.Y), CenterPosition);
+                    skill.Destination = CalcDirection(CenterPosition, new Vector2(CenterPosition.X + 1, CenterPosition.Y));
                 }
                 else
-                    skill.Destination = CalcDirection(new Vector2(CenterPosition.X - 1, CenterPosition.Y), CenterPosition);
+                    skill.Destination = CalcDirection(CenterPosition, new Vector2(CenterPosition.X - 1, CenterPosition.Y));
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
                 skill.Use("Player", 10);

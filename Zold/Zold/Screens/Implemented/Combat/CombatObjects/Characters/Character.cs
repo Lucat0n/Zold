@@ -13,6 +13,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     abstract class Character : CombatObject
     {
+        public Vector2 TopPosition;
+        public Vector2 CenterPosition;
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
         public string action;
@@ -27,6 +29,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             this.height = height;
             this.width = width;
 
+            TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
+            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
+            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
+
             CalculateDepth();
             tempPosition = Position;
             layerDepth = (Position.Y - 100) / 350;
@@ -34,6 +40,18 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             scale = 1.0f;
 
             action = "Idle";
+        }
+
+        protected void UpdatePosition(float x, float y)
+        {
+            Position.X += x;
+            Position.Y += y;
+            TopPosition.Y += y;
+            TopPosition.X += x;
+            CenterPosition.X += x;
+            CenterPosition.Y += y;
+            BottomPosition.X += x;
+            BottomPosition.Y += y;
         }
 
         public void UpdateBuffs()

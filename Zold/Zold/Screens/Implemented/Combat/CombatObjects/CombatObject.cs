@@ -49,7 +49,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public Vector2 CalcDirection(Vector2 vector1, Vector2 vector2)
         {
             Vector2 result = new Vector2();
-            result = new Vector2(vector1.X - vector2.X, vector1.Y - vector2.Y);
+            result = new Vector2(vector2.X - vector1.X, vector2.Y - vector1.Y);
             result.Normalize();
             return result;
         }
