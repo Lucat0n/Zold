@@ -31,7 +31,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
             CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
+            BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
 
             CalculateDepth();
             tempPosition = Position;

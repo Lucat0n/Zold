@@ -43,13 +43,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
-            BottomPosition = new Vector2(Position.X, Position.Y + height);
             chargeSpeed = BaseSpeed * 350;
-            playerDirection = CalcDirection(Position, new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height));
-            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
-
-            if (BottomPosition.Y < topMapEdge)
-                Position.Y = topMapEdge - height;
+            playerDirection = CalcDirection(BottomPosition, new Vector2(player.BottomPosition.X, player.BottomPosition.Y));
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), BottomPosition);
 
             if (prepareTimer.Enabled == true)
                 action = "Preparing";
@@ -64,7 +60,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
                 chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height);
-                chargeDirection = CalcDirection(Position, chargePosition);
+                chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 chargeCheck = 0;
                 chargeRange = Vector2.Distance(chargePosition, Position) + 200;
                 prepareTimer.Enabled = true;
@@ -123,8 +119,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         private void Charge()
         {
-            Position.X += chargeDirection.X * chargeSpeed;
-            Position.Y += chargeDirection.Y * chargeSpeed;
+            UpdatePosition(chargeDirection.X * chargeSpeed, chargeDirection.Y * chargeSpeed);
             chargeCheck += chargeSpeed;
 
             if (player.CheckBoxCollision(Position, this) && !hit)

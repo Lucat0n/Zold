@@ -8,7 +8,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 {
     class Ranged : Enemy
     {
-        public Vector2 CenterPosition;
         private Vector2 moveDirection;
         private Skill skill;
         private int mapOffset;
@@ -19,14 +18,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
 
             mapOffset = 50;
-            CenterPosition = new Vector2(position.X + this.width / 2, position.Y + this.height / 2);
             skill = new Skill(CombatScreen);
         }
 
         public override void AI(GameTime gameTime)
         {
-            CenterPosition = new Vector2(Position.X + width / 2, Position.Y + height / 2);
-            BottomPosition = new Vector2(Position.X + width, Position.Y + height);
             CalculateDepth();
             CheckDirection();
             playerDirection = CalcDirection(Position, player.Position);
