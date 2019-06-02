@@ -138,7 +138,7 @@ namespace Zold.Screens.Implemented.Map
             Combat = combatBuilder.Build();
 
             //camera
-            bounds = new Rectangle(0, 0, 0, 0);
+           // bounds = new Rectangle(0, 0, 0, 0);
 
             location = new Locations.TheRoom(gameScreenManager, spriteSheet, player);
             initTheLocation(location);
