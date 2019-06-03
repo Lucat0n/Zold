@@ -75,20 +75,20 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public void Run()
         {
-            if (player.Position.Y >= Position.Y && BottomPosition.Y <= topMapEdge + mapOffset )
+            if (player.BottomPosition.Y >= BottomPosition.Y && BottomPosition.Y <= topMapEdge + mapOffset )
             {
-                if (player.Position.X <= Position.X)
+                if (player.BottomPosition.X <= BottomPosition.X)
                 {
                     moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, topMapEdge));
                 }
-                else if (player.Position.X > Position.X)
+                else if (player.BottomPosition.X > BottomPosition.X)
                 {
                     moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, topMapEdge));
                 }
             }
-            else if (player.Position.Y <= Position.Y && BottomPosition.Y >= bottomMapEdge - mapOffset)
+            else if (player.BottomPosition.Y <= BottomPosition.Y && BottomPosition.Y >= bottomMapEdge - mapOffset)
             {
-                if (player.Position.X <= Position.X)
+                if (player.BottomPosition.X <= BottomPosition.X)
                 {
                     moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, bottomMapEdge));
                 }
