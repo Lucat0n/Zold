@@ -75,7 +75,23 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public void Run()
         {
-            if (player.BottomPosition.Y >= BottomPosition.Y && BottomPosition.Y <= topMapEdge + mapOffset )
+            //if (IsCloseToBot() && IsCloseToRight())
+            //{
+            //    // TO DO
+            //}
+            //else if (IsCloseToBot() && IsCloseToLeft())
+            //{
+            //    // TO DO
+            //}
+            //else if (IsCloseToTop() && IsCloseToRight())
+            //{
+            //    // TO DO
+            //}
+            //else if (IsCloseToTop() && IsCloseToLeft())
+            //{
+            //    // TO DO
+            //}
+            if (IsCloseToTop())
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
@@ -86,7 +102,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                     moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, topMapEdge));
                 }
             }
-            else if (player.BottomPosition.Y <= BottomPosition.Y && BottomPosition.Y >= bottomMapEdge - mapOffset)
+            
+            else if (IsCloseToBot())
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
@@ -97,9 +114,51 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                     moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, bottomMapEdge));
                 }
             }
+            else if (IsCloseToRight())
+            {
+                if (player.BottomPosition.Y <= BottomPosition.Y)
+                {
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, bottomMapEdge));
+                }
+                else
+                {
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(rightMapEdge, topMapEdge));
+                }
+            }
+            else if (IsCloseToLeft())
+            {
+                if (player.BottomPosition.Y <= BottomPosition.Y)
+                {
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, bottomMapEdge));
+                }
+                else
+                {
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(leflMapEdge, topMapEdge));
+                }
+            }
             else
                 moveDirection = playerDirection * -1;
             Move(moveDirection);
+        }
+
+        private bool IsCloseToLeft()
+        {
+            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= rightMapEdge - mapOffset;
+        }
+
+        private bool IsCloseToRight()
+        {
+            return player.BottomPosition.X <= BottomPosition.X && BottomPosition.X >= rightMapEdge - mapOffset;
+        }
+
+        private bool IsCloseToBot()
+        {
+            return player.BottomPosition.Y <= BottomPosition.Y && BottomPosition.Y >= bottomMapEdge - mapOffset;
+        }
+
+        private bool IsCloseToTop()
+        {
+            return player.BottomPosition.Y >= BottomPosition.Y && BottomPosition.Y <= topMapEdge + mapOffset;
         }
     }
 }
