@@ -105,27 +105,26 @@ namespace Zold.Screens.Implemented.Combat
             DrawTiles(0, currentMap);
             charactersToRender.ForEach(item =>
             {
-                item.Animation(gameTime);
+                item.Draw(gameTime);
             });
-
+            projectiles.ForEach(projectile =>
+            {
+                projectile.Draw(gameTime);
+            });
+            /*
             enemies.ForEach(enemy =>
             {
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Statistics.Health.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
                 gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
             });
 
-            projectiles.ForEach(projectile =>
-            {
-                projectile.Animation(gameTime);
-            });
-
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Statistics.Health, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
             gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
+            */
 
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
             gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 450), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
-
 
             gameScreenManager.SpriteBatch.End();
         }

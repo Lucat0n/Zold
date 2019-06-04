@@ -36,7 +36,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             this.width = width;
         }
 
-        public abstract void Animation(GameTime gameTime);
+        public abstract void Draw(GameTime gameTime);
+
+
 
         public void CalculateDepth()
         {

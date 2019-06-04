@@ -19,6 +19,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public CombatScreen CombatScreen;
         public string action;
         public HashSet<IBuff> buffSet = new HashSet<IBuff>();
+        protected double actualHealthWidth;
+        protected int healthWidth;
+        protected Rectangle healthRectangle;
+        protected Rectangle healthBackgorundRectangle;
 
         public Character(Vector2 Position, Stats Statistics, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
@@ -33,6 +37,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
             BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
 
+            healthWidth = 48;
+            healthBackgorundRectangle = new Rectangle((int)Position.X, (int)Position.Y - 10, healthWidth, 7);
+
             CalculateDepth();
             tempPosition = Position;
             layerDepth = (Position.Y - 100) / 350;
@@ -40,6 +47,20 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             scale = 1.0f;
 
             action = "Idle";
+        }
+
+        protected void GetHeathPercentage()
+        {
+            actualHealthWidth = ((double)Statistics.Health / (double)Statistics.MaxHealth) * healthWidth;
+            healthRectangle = new Rectangle((int)Position.X, (int)Position.Y - 15, (int)actualHealthWidth, 7);
+        }
+
+        protected void DrawHealth(SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
+        {
+            GetHeathPercentage();
+            SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/black"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthBackgorundRectangle, Color.White);
+            SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/red"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
+            SpriteBatchSpriteSheet.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), Statistics.Health.ToString(), new Vector2(CenterPosition.X - healthWidth *0.15f, Position.Y - 25), Color.Black);
         }
 
         protected void UpdatePosition(float x, float y)

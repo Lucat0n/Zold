@@ -29,7 +29,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             Position.Y += destinationDirections.Y * GetSpeed();
         }
 
-        public override void Animation(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
             CheckDirection();
