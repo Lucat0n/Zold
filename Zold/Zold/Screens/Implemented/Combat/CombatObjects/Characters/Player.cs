@@ -95,7 +95,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
-            DrawHealth(SpriteBatchSpriteSheet);
+            DrawHealth(SpriteBatchSpriteSheet, "green");
 
             if (action == "Moving")
             {

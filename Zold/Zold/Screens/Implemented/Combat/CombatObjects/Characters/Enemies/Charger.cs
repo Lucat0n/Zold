@@ -73,7 +73,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
-            DrawHealth(SpriteBatchSpriteSheet);
+            DrawHealth(SpriteBatchSpriteSheet, "red");
 
             if (action == "Moving")
             {

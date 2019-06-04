@@ -55,12 +55,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             healthRectangle = new Rectangle((int)Position.X, (int)Position.Y - 15, (int)actualHealthWidth, 7);
         }
 
-        protected void DrawHealth(SpriteBatchSpriteSheet SpriteBatchSpriteSheet)
+        protected void DrawHealth(SpriteBatchSpriteSheet SpriteBatchSpriteSheet, string color)
         {
             GetHeathPercentage();
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/black"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthBackgorundRectangle, Color.White);
-            SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/red"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
-            SpriteBatchSpriteSheet.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), Statistics.Health.ToString(), new Vector2(CenterPosition.X - healthWidth *0.15f, Position.Y - 25), Color.Black);
+            SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/" + color), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
         }
 
         protected void UpdatePosition(float x, float y)
