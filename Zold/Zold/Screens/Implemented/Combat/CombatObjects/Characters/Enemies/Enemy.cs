@@ -25,8 +25,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         protected void Move(Vector2 direction)
         {
-            Position.X += direction.X * GetSpeed();
-            Position.Y += direction.Y * GetSpeed();
+            UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());
         }
 
         public bool CheckPointCollision(Vector2 point)
@@ -35,6 +34,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 (Position.Y < point.Y) && (Position.Y + height > point.Y))
                 return true;
             return false;
+        }
+
+        protected void GetPlayerDirection()
+        {
+            playerDirection = CalcDirection(BottomPosition, player.BottomPosition);
         }
     }
 }

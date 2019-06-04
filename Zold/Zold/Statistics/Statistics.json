@@ -3,7 +3,7 @@
     "Rat": {
       "MaxHealth": 40,
       "Damage": 20,
-      "Speed": 150,
+      "Speed": 100,
       "Defence": 10,
       "Attack": 10
     },

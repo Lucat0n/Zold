@@ -33,6 +33,18 @@
 /processorParam:TextureFormat=Color
 /build:combat/Textures/arrow.png
 
+#begin combat/Textures/black.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/black.png
+
 #begin combat/Textures/fox.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -44,6 +56,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:combat/Textures/fox.png
+
+#begin combat/Textures/green.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/green.png
 
 #begin combat/Textures/line.png
 /importer:TextureImporter
@@ -93,6 +117,18 @@
 /processorParam:TextureFormat=Color
 /build:combat/Textures/rat.png
 
+#begin combat/Textures/red.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/red.png
+
 #begin combat/Textures/skeleton.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -126,6 +162,9 @@
 #begin dormitory.tsx
 /copy:dormitory.tsx
 
+#begin Dormitory-combat.tmx
+/copy:Dormitory-combat.tmx
+
 #begin graphic/characters/main.png
 /importer:TextureImporter
 /processor:TextureProcessor
@@ -137,6 +176,24 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
+
+#begin graphic/combat/combat_city.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/combat/combat_city.png
+
+#begin graphic/combat/combat_city.tmx
+/copy:graphic/combat/combat_city.tmx
+
+#begin graphic/combat/combat_city.tsx
+/copy:graphic/combat/combat_city.tsx
 
 #begin graphic/locations/Dormitory/dormitory_I.png
 /importer:TextureImporter

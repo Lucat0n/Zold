@@ -43,13 +43,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
-            BottomPosition = new Vector2(Position.X, Position.Y + height);
             chargeSpeed = BaseSpeed * 350;
-            playerDirection = CalcDirection(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
-            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
-
-            if (BottomPosition.Y < topMapEdge)
-                Position.Y = topMapEdge - height;
+            playerDirection = CalcDirection(BottomPosition, new Vector2(player.BottomPosition.X, player.BottomPosition.Y));
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), BottomPosition);
 
             if (prepareTimer.Enabled == true)
                 action = "Preparing";
@@ -64,9 +60,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
                 chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height);
-                chargeDirection = CalcDirection(chargePosition, Position);
-                chargeCheck = 0;
-                chargeRange = Vector2.Distance(chargePosition, Position) + 200;
+                chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 prepareTimer.Enabled = true;
             }
             else if (prepareTimer.Enabled == false)
@@ -76,9 +70,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
         }
 
-        public override void Animation(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
+            DrawHealth(SpriteBatchSpriteSheet, "red");
 
             if (action == "Moving")
             {
@@ -123,8 +118,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         private void Charge()
         {
-            Position.X += chargeDirection.X * chargeSpeed;
-            Position.Y += chargeDirection.Y * chargeSpeed;
+            UpdatePosition(chargeDirection.X * chargeSpeed, chargeDirection.Y * chargeSpeed);
             chargeCheck += chargeSpeed;
 
             if (player.CheckBoxCollision(Position, this) && !hit)
@@ -133,7 +127,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if ((chargeCheck > chargeRange) || !map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), this))
+            if (!map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), this))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

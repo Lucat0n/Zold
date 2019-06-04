@@ -23,8 +23,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
-            playerDirection = CalcDirection(player.Position, Position);
-            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
+            playerDirection = CalcDirection(BottomPosition, player.BottomPosition);
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y), BottomPosition);
 
             if (attackTimer.Enabled == true)
                 action = "Attacking";
@@ -43,9 +43,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
         }
 
-        public override void Animation(GameTime gameTime)
+        public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
+            DrawHealth(SpriteBatchSpriteSheet, "red");
 
             if (action == "Moving")
             {
