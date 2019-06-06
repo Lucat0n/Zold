@@ -1,11 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
 using System.Reflection;
-using System.Text;
-using System.Threading;
-using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 using Zold.Statistics;
 
 namespace Zold.Buffs
@@ -28,7 +22,6 @@ namespace Zold.Buffs
         {
             type = typeof(Stats);
             pi = type.GetProperty("Health");
-            Debug.WriteLine(pi);
         }
 
         public abstract void Start();

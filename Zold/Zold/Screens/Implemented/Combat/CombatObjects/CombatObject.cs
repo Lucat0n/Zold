@@ -6,10 +6,12 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 {
     abstract class CombatObject
     {
+        public CombatScreen CombatScreen;
         public Vector2 Position;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public Stats Statistics;
         public float BaseSpeed { set; protected get; }
+        public CombatObject Map { set; protected get; }
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
@@ -17,28 +19,17 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         protected string direction;
         protected int height;
         protected int width;
-        protected readonly int topMapEdge;
-        protected readonly int bottomMapEdge;
-        protected readonly int rightMapEdge;
-        protected readonly int leflMapEdge;
 
         public CombatObject(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
             this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
 
-            topMapEdge = 150;
-            bottomMapEdge = 450;
-            rightMapEdge = 750;
-            leflMapEdge = 0;
-
             this.height = height;
             this.width = width;
         }
 
         public abstract void Draw(GameTime gameTime);
-
-
 
         public void CalculateDepth()
         {
@@ -72,6 +63,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
                 Position.X + this.width > point.X &&
                 Position.Y < point.Y + target.height &&
                 Position.Y + this.height > point.Y)
+                return true;
+            return false;
+        }
+
+        public bool CheckPointCollision(Vector2 point)
+        {
+            if ((Position.X < point.X) && (Position.X + width > point.X) &&
+                (Position.Y < point.Y) && (Position.Y + height > point.Y))
                 return true;
             return false;
         }

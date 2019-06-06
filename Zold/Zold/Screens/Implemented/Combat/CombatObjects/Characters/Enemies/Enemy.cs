@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -26,14 +25,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         protected void Move(Vector2 direction)
         {
             UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());
-        }
-
-        public bool CheckPointCollision(Vector2 point)
-        {
-            if ((Position.X < point.X) && (Position.X + width > point.X) &&
-                (Position.Y < point.Y) && (Position.Y + height > point.Y))
-                return true;
-            return false;
         }
 
         protected void GetPlayerDirection()

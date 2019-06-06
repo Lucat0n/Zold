@@ -1,11 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Zold.Buffs;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -16,7 +9,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 TopPosition;
         public Vector2 CenterPosition;
         public Vector2 BottomPosition;
-        public CombatScreen CombatScreen;
         public string action;
         protected double actualHealthWidth;
         protected int healthWidth;

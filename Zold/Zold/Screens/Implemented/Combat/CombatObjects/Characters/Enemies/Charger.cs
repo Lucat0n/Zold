@@ -17,8 +17,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private bool charge;
         private bool hit;
 
-        Projectile map;
-
         public Charger(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
             SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
@@ -27,8 +25,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.MakeAnimation(4, "Death_Left", 250);
 
             charge = false;
-            // todo: mapa nie może być Projectilem
-            map = new Projectile(new Vector2(leflMapEdge, topMapEdge), 0, null, Vector2.Zero, rightMapEdge, bottomMapEdge - topMapEdge);
 
             cooldownTimer = new Timer();
             cooldownTimer.Interval = 2000;
@@ -59,7 +55,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
-                chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height);
+                chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y);
                 chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 prepareTimer.Enabled = true;
             }
@@ -127,7 +123,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if (!map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), this))
+            if (!Map.CheckPointCollision(BottomPosition))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

@@ -18,11 +18,15 @@ namespace Zold.Screens.Implemented.Combat
 {
     class CombatScreen : GameScreen
     {
-        Player player;
-        List<Enemy> enemies;
-        List<Character> charactersToRender;
-        List<Projectile> projectiles;
-        Timer timer;
+        public Player player;
+        public List<Enemy> enemies;
+        public List<Character> charactersToRender;
+        public List<Projectile> projectiles;
+        public Timer timer;
+        public int TopMapEdge;
+        public int BottomMapEdge;
+        public int RightMapEdge;
+        public int LeflMapEdge;
 
         private bool isEscPressed = false;
 
@@ -41,14 +45,7 @@ namespace Zold.Screens.Implemented.Combat
 
             projectiles = new List<Projectile>();
             charactersToRender = new List<Character>();
-            charactersToRender.Add(player);
-            charactersToRender.AddRange(enemies);
 
-            foreach (Character character in charactersToRender)
-            {
-                character.CombatScreen = this;
-            } 
-            
             IsTransparent = false;
 
             timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
@@ -93,7 +90,17 @@ namespace Zold.Screens.Implemented.Combat
         {
             currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
+            
+            charactersToRender.Add(player);
+            charactersToRender.AddRange(enemies);
+
             InitMap(currentMap);
+
+            foreach (Character character in charactersToRender)
+            {
+                character.CombatScreen = this;
+                character.Map = new Projectile(new Vector2(LeflMapEdge, TopMapEdge), 0, null, Vector2.Zero, RightMapEdge, BottomMapEdge - TopMapEdge);
+            }
         }
 
         public override void Draw(GameTime gameTime)
@@ -204,6 +211,11 @@ namespace Zold.Screens.Implemented.Combat
             tileHeight = currentMap.Tilesets[0].TileHeight;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
+
+            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
+            BottomMapEdge = tileset.Height;
+            RightMapEdge = tileset.Width;
+            LeflMapEdge = 0;
         }
 
         public virtual void DrawTiles(int layer, TmxMap map)
