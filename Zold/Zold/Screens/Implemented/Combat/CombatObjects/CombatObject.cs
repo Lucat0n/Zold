@@ -11,6 +11,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public Stats Statistics;
         public float BaseSpeed { set; protected get; }
+        public CombatObject Map { set; protected get; }
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
@@ -29,8 +30,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         }
 
         public abstract void Draw(GameTime gameTime);
-
-
 
         public void CalculateDepth()
         {

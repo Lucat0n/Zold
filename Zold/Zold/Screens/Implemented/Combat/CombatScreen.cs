@@ -44,14 +44,7 @@ namespace Zold.Screens.Implemented.Combat
 
             projectiles = new List<Projectile>();
             charactersToRender = new List<Character>();
-            charactersToRender.Add(player);
-            charactersToRender.AddRange(enemies);
 
-            foreach (Character character in charactersToRender)
-            {
-                character.CombatScreen = this;
-            } 
-            
             IsTransparent = false;
 
             timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
@@ -96,7 +89,17 @@ namespace Zold.Screens.Implemented.Combat
         {
             currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
+            
+            charactersToRender.Add(player);
+            charactersToRender.AddRange(enemies);
+
             InitMap(currentMap);
+
+            foreach (Character character in charactersToRender)
+            {
+                character.CombatScreen = this;
+                character.Map = new Projectile(new Vector2(LeflMapEdge, TopMapEdge), 0, null, Vector2.Zero, RightMapEdge, BottomMapEdge - TopMapEdge);
+            }
         }
 
         public override void Draw(GameTime gameTime)
