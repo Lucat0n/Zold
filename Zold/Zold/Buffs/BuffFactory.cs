@@ -10,7 +10,7 @@ namespace Zold.Buffs
 {
     class BuffFactory
     {
-        private static string[] targetStats = new string[] { "Hp" };
+        private static string[] targetStats = new string[] { "Health" };
 
         /// <summary>
         /// Zwraca buffa działającego jednorazowo i natychmiastowo.

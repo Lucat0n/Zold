@@ -15,9 +15,9 @@ namespace Zold.Buffs.Implemented
         public override void Start()
         {
             if (ticksToLive % ticksPerUpdate == 0)
-                pi.SetValue(character, (int)pi.GetValue(character) + amount);
+                pi.SetValue(statistics, (int)pi.GetValue(statistics) + amount);
             if (--ticksToLive <= 0)
-                character.buffSet.Remove(this);
+                statistics.buffSet.Remove(this);
         }
     }
 }

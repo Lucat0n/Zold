@@ -18,7 +18,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 BottomPosition;
         public CombatScreen CombatScreen;
         public string action;
-        public HashSet<IBuff> buffSet = new HashSet<IBuff>();
         protected double actualHealthWidth;
         protected int healthWidth;
         protected Rectangle healthRectangle;
@@ -72,13 +71,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             CenterPosition.Y += y;
             BottomPosition.X += x;
             BottomPosition.Y += y;
-        }
-
-        public void UpdateBuffs()
-        {
-            IBuff[] buffs = buffSet.ToArray();
-            foreach (IBuff buff in buffs)
-                buff.Start();
         }
     }
 }

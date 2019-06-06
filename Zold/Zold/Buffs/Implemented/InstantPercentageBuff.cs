@@ -32,8 +32,8 @@ namespace Zold.Buffs.Implemented
             else
                 value = (int)pi.GetValue(null);
             value = (int)(value * amount);
-            pi.SetValue(character, Convert.ChangeType(value, pi.PropertyType));
-            character.buffSet.Remove(this);
+            pi.SetValue(statistics, Convert.ChangeType(value, pi.PropertyType));
+            statistics.buffSet.Remove(this);
         }
     }
 }
