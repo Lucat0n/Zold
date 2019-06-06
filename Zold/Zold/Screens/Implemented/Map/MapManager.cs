@@ -324,6 +324,8 @@ namespace Zold.Screens.Implemented.Map
             {
                 pressed = false;
             }
+            if (keyboardState.IsKeyDown(Keys.F4))
+                gameScreenManager.InsertScreen(new WorldMapScreen());
         }
 
         #region managelocations

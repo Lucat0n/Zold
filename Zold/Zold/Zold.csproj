@@ -65,6 +65,7 @@
     <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ItemPreviewScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\QuestDescriptionScreen.cs" />
+    <Compile Include="Screens\Implemented\WorldMapScreen.cs" />
     <Compile Include="Statistics\Stats.cs" />
     <Compile Include="Utilities\InventoryManager.cs" />
     <Compile Include="Utilities\ItemManager.cs" />
