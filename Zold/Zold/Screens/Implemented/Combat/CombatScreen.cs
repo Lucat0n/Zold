@@ -12,7 +12,7 @@ using Zold.Buffs;
 using System.Threading.Tasks;
 using TiledSharp;
 using System;
-using System.Diagnostics;
+using Zold.Statistics;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -144,7 +144,7 @@ namespace Zold.Screens.Implemented.Combat
             if(keyboardState.IsKeyDown(Keys.F6) && !isEscPressed)
             {
                 isEscPressed = true;
-                AddBuff(player, BuffFactory.CreateTimedBuff(-10, 0));
+                AddBuff(player.Statistics, BuffFactory.CreateTimedBuff(-10, 0));
             }else if (keyboardState.IsKeyUp(Keys.F6))
             {
                 isEscPressed = false;
@@ -175,15 +175,15 @@ namespace Zold.Screens.Implemented.Combat
         {
             Parallel.ForEach(charactersToRender, character =>
             {
-                character.UpdateBuffs();
+                character.Statistics.UpdateBuffs();
             });
         }
 
-        public void AddBuff(Character c, IBuff buff)
+        public void AddBuff(Stats s, IBuff buff)
         {
-            buff.Character = c;
-            c.buffSet.Add(buff);
-            c.buffSet.TryGetValue(buff, out IBuff temp);
+            buff.Statistics = s;
+            s.buffSet.Add(buff);
+            s.buffSet.TryGetValue(buff, out IBuff temp);
             temp.Start();
         }
 

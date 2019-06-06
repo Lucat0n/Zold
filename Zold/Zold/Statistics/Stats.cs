@@ -1,27 +1,35 @@
 ﻿using Newtonsoft.Json;
+using System.Collections.Generic;
+using System.Linq;
+using Zold.Buffs;
 
 namespace Zold.Statistics
 {
     class Stats
     {
-        public int Level;
-        public int Health;
-        [JsonProperty("MaxHealth")]
-        public int MaxHealth;
-        [JsonProperty("Damage")]
-        public int Damage;
-        [JsonProperty("Speed")]
-        public int Speed;
-        [JsonProperty("Defence")]
-        public int Defence;
-        [JsonProperty("Attack")]
-        public int Attack;
+        public HashSet<IBuff> buffSet = new HashSet<IBuff>();
+
+        private int level;
+        private int health;
+        private int maxHealth;
+        private int damage;
+        private int speed;
+        private int defence;
+        private int attack;
+
+        public int Health { get => health; set => health = value; }
+        public int Level { get => level; set => level = value; }
+        public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+        public int Damage { get => damage; set => damage = value; }
+        public int Speed { get => speed; set => speed = value; }
+        public int Defence { get => defence; set => defence = value; }
+        public int Attack { get => attack; set => attack = value; }
 
         public Stats()
         {
             Level = 1;
             MaxHealth = 80;
-            Health = MaxHealth;
+            health = MaxHealth;
             Damage = 20;
             Speed = 120;
             Defence = 5;
@@ -38,6 +46,13 @@ namespace Zold.Statistics
             this.Attack = Attack;
 
             Health = MaxHealth;
+        }
+
+        public void UpdateBuffs()
+        {
+            IBuff[] buffs = buffSet.ToArray();
+            foreach (IBuff buff in buffs)
+                buff.Start();
         }
     }
 }

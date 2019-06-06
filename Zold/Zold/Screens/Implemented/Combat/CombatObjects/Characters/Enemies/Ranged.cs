@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using System.Timers;
 using Zold.Screens.Implemented.Combat.Skills;
 using Zold.Statistics;
 using Zold.Utilities;

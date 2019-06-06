@@ -1,11 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading;
-using System.Threading.Tasks;
-using Zold.Buffs;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -17,7 +10,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         public Vector2 CenterPosition;
         public Vector2 BottomPosition;
         public string action;
-        public HashSet<IBuff> buffSet = new HashSet<IBuff>();
         protected double actualHealthWidth;
         protected int healthWidth;
         protected Rectangle healthRectangle;
@@ -71,13 +63,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             CenterPosition.Y += y;
             BottomPosition.X += x;
             BottomPosition.Y += y;
-        }
-
-        public void UpdateBuffs()
-        {
-            IBuff[] buffs = buffSet.ToArray();
-            foreach (IBuff buff in buffs)
-                buff.Start();
         }
     }
 }

@@ -2,18 +2,19 @@
 using System.Diagnostics;
 using System.Reflection;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Statistics;
 
 namespace Zold.Buffs
 {
     abstract class InstantBuff : IBuff
     {
         protected string targetStat;
-        protected Character character;
+        protected Stats statistics;
         protected Type type;
         protected PropertyInfo pi;
 
         public string TargetStat { get => targetStat; set => targetStat = value; }
-        public Character Character { get => character; set => character = value; }
+        public Stats Statistics { get => statistics; set => statistics = value; }
 
         public virtual void Init()
         {

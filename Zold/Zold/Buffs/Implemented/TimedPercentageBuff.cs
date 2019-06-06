@@ -18,15 +18,15 @@ namespace Zold.Buffs.Implemented
         {
             if (!isTriggered)
             {
-                originalAmount = (int)pi.GetValue(character);
-                int targetAmount = (int)((float)pi.GetValue(character) * Amount);
-                pi.SetValue(character, targetAmount);
+                originalAmount = (int)pi.GetValue(statistics);
+                int targetAmount = (int)((float)pi.GetValue(statistics) * Amount);
+                pi.SetValue(statistics, targetAmount);
                 isTriggered = true;
             }
             if (--ticksToLive <= 0)
             {
-                pi.SetValue(character, originalAmount);
-                character.buffSet.Remove(this);
+                pi.SetValue(statistics, originalAmount);
+                statistics.buffSet.Remove(this);
             }
         }
     }
