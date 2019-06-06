@@ -28,6 +28,7 @@ namespace Zold.Buffs
         {
             type = typeof(Stats);
             pi = type.GetProperty("Health");
+            Debug.WriteLine(pi);
         }
 
         public abstract void Start();

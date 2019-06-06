@@ -10,13 +10,13 @@ namespace Zold.Buffs
 {
     class BuffFactory
     {
-        private static string[] targetStats = new string[] { "Health" };
+        private static string[] targetStats = new string[] { "Health", "MaxHealth", "Damage", "Speed", "Defence", "Attack" };
 
         /// <summary>
         /// Zwraca buffa działającego jednorazowo i natychmiastowo.
         /// </summary>
         /// <param name="amount">O ile ma być zmieniona dana statystyka</param>
-        /// <param name="targetStatID">Docelowa statystyka do zmiany. 0 - HP</param>
+        /// <param name="targetStatID">Docelowa statystyka do zmiany. 0 - HP, 1 - MaxHP, 2 - Damage, 3 - Speed, 4 - Defence, 5 - Attack</param>
         public static InstantBuff CreateInstantBuff(int amount, byte targetStatID)
         {
             InstantBuff ib = new InstantIncrementBuff

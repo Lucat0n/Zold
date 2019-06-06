@@ -9,19 +9,27 @@ namespace Zold.Statistics
     {
         public HashSet<IBuff> buffSet = new HashSet<IBuff>();
 
-        public int Level;
-        public int Health;
-        public int MaxHealth;
-        public int Damage;
-        public int Speed;
-        public int Defence;
-        public int Attack;
+        private int level;
+        private int health;
+        private int maxHealth;
+        private int damage;
+        private int speed;
+        private int defence;
+        private int attack;
+
+        public int Health { get => health; set => health = value; }
+        public int Level { get => level; set => level = value; }
+        public int MaxHealth { get => maxHealth; set => maxHealth = value; }
+        public int Damage { get => damage; set => damage = value; }
+        public int Speed { get => speed; set => speed = value; }
+        public int Defence { get => defence; set => defence = value; }
+        public int Attack { get => attack; set => attack = value; }
 
         public Stats()
         {
             Level = 1;
             MaxHealth = 80;
-            Health = MaxHealth;
+            health = MaxHealth;
             Damage = 20;
             Speed = 120;
             Defence = 5;
