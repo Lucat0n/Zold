@@ -55,7 +55,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
             {
-                chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height);
+                chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y);
                 chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 prepareTimer.Enabled = true;
             }
@@ -123,7 +123,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 hit = true;
             }
 
-            if (!Map.CheckBoxCollision(new Vector2(Position.X, Position.Y+1), this))
+            if (!Map.CheckPointCollision(BottomPosition))
             {
                 charge = false;
                 cooldownTimer.Enabled = true;

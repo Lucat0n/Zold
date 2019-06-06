@@ -28,14 +28,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());
         }
 
-        public bool CheckPointCollision(Vector2 point)
-        {
-            if ((Position.X < point.X) && (Position.X + width > point.X) &&
-                (Position.Y < point.Y) && (Position.Y + height > point.Y))
-                return true;
-            return false;
-        }
-
         protected void GetPlayerDirection()
         {
             playerDirection = CalcDirection(BottomPosition, player.BottomPosition);

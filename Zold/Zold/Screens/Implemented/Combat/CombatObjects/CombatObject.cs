@@ -67,6 +67,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             return false;
         }
 
+        public bool CheckPointCollision(Vector2 point)
+        {
+            if ((Position.X < point.X) && (Position.X + width > point.X) &&
+                (Position.Y < point.Y) && (Position.Y + height > point.Y))
+                return true;
+            return false;
+        }
+
         protected float GetSpeed()
         {
             return BaseSpeed * Statistics.Speed;
