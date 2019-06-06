@@ -12,6 +12,7 @@ using Zold.Buffs;
 using System.Threading.Tasks;
 using TiledSharp;
 using System;
+using System.Diagnostics;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -211,7 +212,7 @@ namespace Zold.Screens.Implemented.Combat
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
 
-            TopMapEdge = 0;
+            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
             BottomMapEdge = tileset.Height;
             RightMapEdge = tileset.Width;
             LeflMapEdge = 0;
