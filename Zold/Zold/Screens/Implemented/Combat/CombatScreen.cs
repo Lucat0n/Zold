@@ -17,11 +17,15 @@ namespace Zold.Screens.Implemented.Combat
 {
     class CombatScreen : GameScreen
     {
-        Player player;
-        List<Enemy> enemies;
-        List<Character> charactersToRender;
-        List<Projectile> projectiles;
-        Timer timer;
+        public Player player;
+        public List<Enemy> enemies;
+        public List<Character> charactersToRender;
+        public List<Projectile> projectiles;
+        public Timer timer;
+        public int TopMapEdge;
+        public int BottomMapEdge;
+        public int RightMapEdge;
+        public int LeflMapEdge;
 
         private bool isEscPressed = false;
 
@@ -203,6 +207,11 @@ namespace Zold.Screens.Implemented.Combat
             tileHeight = currentMap.Tilesets[0].TileHeight;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
+
+            TopMapEdge = 0;
+            BottomMapEdge = tileset.Height;
+            RightMapEdge = tileset.Width;
+            LeflMapEdge = 0;
         }
 
         public virtual void DrawTiles(int layer, TmxMap map)
