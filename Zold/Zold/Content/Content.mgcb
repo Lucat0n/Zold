@@ -431,6 +431,12 @@
 /processorParam:Quality=Best
 /build:placeholders/Music/wesola.wav
 
+#begin placeholders/shaders/opacityShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/opacityShader.fx
+
 #begin placeholders/shaders/testShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor

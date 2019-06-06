@@ -83,6 +83,7 @@ namespace Zold.Screens.Implemented.Map
         InteractionManager interactionManager;
 
         Effect effect;
+        Effect opacity;
         RenderTarget2D lightsTarget;
 
         public MapManager()
@@ -111,6 +112,7 @@ namespace Zold.Screens.Implemented.Map
             //loading fonts
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
             effect = Assets.Instance.Get("placeholders/shaders/testShader");
+            opacity = Assets.Instance.Get("placeholders/shaders/opacityShader");
 
             var pp = gameScreenManager.GraphicsDevice.PresentationParameters;
             lightsTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
@@ -123,6 +125,8 @@ namespace Zold.Screens.Implemented.Map
 
             spriteSheet = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, playerWidth, playerHeight);
             player = new Map.Player(pos, Assets.Instance.Get("placeholders/Textures/main"), 2.7f, spriteSheet, hp);
+
+            
 
             //hpbar 
             spriteSheetHP = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/hpbars"), 101, 1, 250, 32);
@@ -193,8 +197,11 @@ namespace Zold.Screens.Implemented.Map
             {
                 ListofNpcs.ForEach(npc =>
                 {
-                //effect.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
-                Texture2D tex = npc.GetTexture();
+                    
+                    
+                    effect.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
+
+                    Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
                     interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y);
                 });
@@ -205,11 +212,12 @@ namespace Zold.Screens.Implemented.Map
             {
                 ListofEnemies.ForEach(npc =>
                 {
-                   // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
+                    // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
                     //gameScreenManager.GraphicsDevice.Clear(Color.Black);
                     //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
-                    effect.CurrentTechnique.Passes[0].Apply();
+                    opacity.Parameters["param1"].SetValue(1.5f);
+                    opacity.CurrentTechnique.Passes[0].Apply();
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
                     // gameScreenManager.SpriteBatch.End();

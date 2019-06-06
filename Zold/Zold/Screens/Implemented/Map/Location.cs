@@ -23,16 +23,7 @@ namespace Zold.Screens.Implemented.Map
         // // // TILES
         //TmxMap map;
 
-        private const uint FlippedHorizontallyFlag = 0x80000000;
-        private const uint FlippedVerticallyFlag = 0x40000000;
-        private const uint FlippedDiagonallyFlag = 0x20000000;
-
-        internal const byte HorizontalFlipDrawFlag = 1;
-        internal const byte VerticalFlipDrawFlag = 2;
-        internal const byte DiagonallyFlipDrawFlag = 4;
-        public byte[] FlipAndRotate;
-
-
+        
         public static List<TmxMap> LisatofLocations = new List<TmxMap>();
         TmxMap map2;
         TmxMap currentMap;
@@ -51,12 +42,22 @@ namespace Zold.Screens.Implemented.Map
 
         Player player;
 
+        Effect opacity;
+        float currentOp;
+        List<Rectangle> opacityTiles;
+
+        float opacityValue;
+
         public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player)
         {
             this.gameScreenManager = gameScreenManager;
             this.spriteSheet = spriteSheet;
             this.player = player;
             currentMap = getCurrentMap();
+
+            opacity =Assets.Instance.Get("placeholders/shaders/opacityShader");
+            opacityTiles = new List<Rectangle>();
+            currentOp = 0.55f;
         }
 
         public abstract TmxMap getCurrentMap();
@@ -84,8 +85,11 @@ namespace Zold.Screens.Implemented.Map
         //TODO: wywalić tego matrixa z parametrów
         public virtual void drawTiles(int layer, TmxMap map, Matrix cameraTransformation)
         {
+
             long tileFrame;
             Effect effect = Assets.Instance.Get("placeholders/shaders/testShader");
+            Rectangle rect;
+            Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
 
             for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
             {
@@ -125,39 +129,47 @@ namespace Zold.Screens.Implemented.Map
 
                     if (xx == "Sciany" || xx =="Podloga" || xx == "Meble")
                     {
+                       
 
                         if (layer == 5 && flipV && flipH && flipD)
                         {
+                            
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && flipV && !flipH && !flipD)
                         {
+                            
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && flipV && !flipH && flipD)
                         {
+                            
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //    spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && flipV && flipH && !flipD)
                         {
+                            
                             // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && !flipV && flipH && !flipD)
                         {
+                            
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && !flipV && !flipH && flipD)
                         {
+                            
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 5 && !flipV && flipH && flipD)
                         {
+                            
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(90 * Math.PI / 180), new Vector2(0, 32), SpriteEffects.None, 1);
                         }
@@ -166,10 +178,27 @@ namespace Zold.Screens.Implemented.Map
                             // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                         }
+                        else if (layer == 4)
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                        }
 
                         else
                         {
-                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            rect =new Rectangle((int)x, (int)y, tileWidth, tileHeight);
+                            
+                            if (ghost.Intersects(rect))
+                            {
+                                opacity.Parameters["param1"].SetValue(0.75f);
+                                opacity.CurrentTechnique.Passes[0].Apply();
+                                spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            }
+                            else
+                            {
+                                opacity.Parameters["param1"].SetValue(1f);
+                                opacity.CurrentTechnique.Passes[0].Apply();
+                                spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            }
                         }
                     }
 
@@ -215,11 +244,18 @@ namespace Zold.Screens.Implemented.Map
                         }
                         else if (layer == 3)
                         {
-                        //Console.WriteLine("Horizontal flip: " + flipH);
-                        //Console.WriteLine("verticaal flip: " + flipV);
-                        //Console.WriteLine("diagonal flip: " + flipD);
-                        //Console.WriteLine("gid: " + xx);
+                            rect = new Rectangle((int)x, (int)y, tileWidth, tileHeight);
+
+                            opacity.Parameters["param1"].SetValue(0.55f);
+                            opacity.CurrentTechnique.Passes[0].Apply();
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+
+                            if (ghost.Intersects(rect))
+                            {
+                                opacity.Parameters["param1"].SetValue(1f);
+                                opacity.CurrentTechnique.Passes[0].Apply();
+                                spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            }
                         }
 
                         else
@@ -227,8 +263,6 @@ namespace Zold.Screens.Implemented.Map
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                         }
                     }
-
-                    // spriteSheet.Draw(tileset, new Vector2(0,0), new Rectangle((int)x , (int)y , tileWidth, tileHeight), Color.White, (float)Math.PI, new Vector2(0,0), 1, SpriteEffects.None, 0);
 
                     spriteSheet.End();
                 }
@@ -254,6 +288,8 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     colisionTiles.Add(new Rectangle((int)x, (int)y, tileWidth, tileHeight));
+
+                    
                 }
             }
         }
@@ -299,11 +335,13 @@ namespace Zold.Screens.Implemented.Map
             MapManager.canMoveLeft = true;
             MapManager.canMoveDown = true;
             MapManager.canMoveUp = true;
+            Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
+            
 
             foreach (Rectangle tile in colisionTiles)
             {
                 //  Console.WriteLine("tile: " + tile);
-                Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
+                
 
                 if (ghost.X == tile.X - 32 && ghost.Y + 32 == tile.Y)
                 {
