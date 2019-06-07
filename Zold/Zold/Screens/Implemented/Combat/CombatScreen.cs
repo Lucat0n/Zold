@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Statistics;
+using Zold.Screens.Implemented.Combat.Skills;
 
 namespace Zold.Screens.Implemented.Combat
 {
@@ -99,7 +100,7 @@ namespace Zold.Screens.Implemented.Combat
             foreach (Character character in charactersToRender)
             {
                 character.CombatScreen = this;
-                character.Map = new Projectile(new Vector2(LeflMapEdge, TopMapEdge), 0, null, Vector2.Zero, RightMapEdge, BottomMapEdge - TopMapEdge);
+                character.Map = new CombatObjects.Map(new Vector2(LeflMapEdge, TopMapEdge), null, RightMapEdge, BottomMapEdge - TopMapEdge);
             }
         }
 
@@ -119,20 +120,6 @@ namespace Zold.Screens.Implemented.Combat
             {
                 projectile.Draw(gameTime);
             });
-            /*
-            enemies.ForEach(enemy =>
-            {
-                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Statistics.Health.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
-            });
-
-            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Statistics.Health, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
-            */
-
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 450), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
 
             gameScreenManager.SpriteBatch.End();
         }
@@ -157,16 +144,16 @@ namespace Zold.Screens.Implemented.Combat
            // timer.Dispose();
         }
 
-        public void MakeEnemyProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
+        public void MakeEnemyProjectile(Vector2 position, Vector2 destination, Skill skill, int dmg, string texture, int width, int height)
         {
-            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.Add(player);
             projectiles.Add(projectile);
         }
 
-        public void MakePlayerProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
+        public void MakePlayerProjectile(Vector2 position, Vector2 destination, Skill skill, int dmg, string texture, int width, int height)
         {
-            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.AddRange(enemies);
             projectiles.Add(projectile);
         }
@@ -198,6 +185,8 @@ namespace Zold.Screens.Implemented.Combat
                     {
                         toDelete = target;
                         target.Statistics.Health -= projectile.Statistics.Damage;
+                        if (projectile.Skill != null)
+                            projectile.Skill.ApplyEffect(target);
                     }
                 });
                 projectile.Targets.Remove(toDelete);

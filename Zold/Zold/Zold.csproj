@@ -59,6 +59,9 @@
     <Compile Include="Inventory\Items\Item.cs" />
     <Compile Include="Quests\LocationQuest.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatBuilder.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Map.cs" />
+    <Compile Include="Screens\Implemented\Combat\Skills\Implemented\SlowingShot.cs" />
+    <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
     <Compile Include="Screens\Implemented\Map\Npc.cs" />
     <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />
@@ -74,7 +77,7 @@
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Ranged.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\CombatObject.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Projectile.cs" />
-    <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
+    <Compile Include="Screens\Implemented\Combat\Skills\Implemented\ShootEnemy.cs" />
     <Compile Include="Screens\Implemented\Map\InteractionManager.cs" />
     <Compile Include="Screens\Implemented\Map\Location.cs" />
     <Compile Include="Screens\Implemented\Map\Locations\Dormitory.cs" />
