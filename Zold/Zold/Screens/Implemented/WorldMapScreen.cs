@@ -19,6 +19,7 @@ namespace Zold.Screens.Implemented
         private bool isUpPressed = false;
         private List<mapNode> locations;
         private mapNode playerLocation;
+        private SpriteFont font;
         private Texture2D background;
         private Texture2D friendlyLocation;
         private Texture2D hostileLocation;
@@ -30,8 +31,10 @@ namespace Zold.Screens.Implemented
             playerLocation = new mapNode(new Point(310, 310), "Dormitory", null);
             playerLocation.IsVisited = true;
             playerLocation.IsFriendly = true;
+            playerLocation.Name = "Akademik";
             mapNode[] mn = new mapNode[] { null, playerLocation, null, null };
             mapNode dormitoryOutside = new mapNode(new Point(400, 200), "DormOutside", mn);
+            dormitoryOutside.Name = "Dziedziniec akademika";
             playerLocation.Neighbours[3] = dormitoryOutside;
             locations.Add(playerLocation);
             locations.Add(dormitoryOutside);
@@ -83,7 +86,10 @@ namespace Zold.Screens.Implemented
             gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0,0,gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
             foreach (mapNode mn in locations)
             {
-                gameScreenManager.SpriteBatch.Draw(mn.IsVisited ? (mn.IsFriendly ? friendlyLocation : hostileLocation) : unknownLocation, new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width/40, gameScreenManager.GraphicsDevice.Viewport.Width / 40)), Color.White);
+                Rectangle r = new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 40));
+                gameScreenManager.SpriteBatch.Draw(mn.IsVisited ? (mn.IsFriendly ? friendlyLocation : hostileLocation) : unknownLocation, r, Color.White);
+                //gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(400,400/*r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom + r.Height/2*/), Color.White, 0.0f, Vector2.Zero, 0.05f, SpriteEffects.None, 1f);
+                gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Orange);
             }
             gameScreenManager.SpriteBatch.End();
         }
@@ -141,6 +147,7 @@ namespace Zold.Screens.Implemented
             hostileLocation = Assets.Instance.Get("worldMap/Textures/hostileLoc");
             unknownLocation = Assets.Instance.Get("worldMap/Textures/unknownLoc");
             background = Assets.Instance.Get("worldMap/Textures/ulicapixelated");
+            font = Assets.Instance.Get("placeholders/Fonts/dialog");
         }
 
         public override void UnloadContent()
