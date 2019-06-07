@@ -289,7 +289,7 @@ namespace Zold.Screens.Implemented.Map
                         else if (layer == 4 && flipV && flipH && !flipD)
                         {
                             // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
-                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White*0, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
                         else if (layer == 4 && !flipV && flipH && !flipD)
                         {
