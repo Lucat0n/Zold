@@ -1,0 +1,48 @@
+{
+  "Statistics": {
+    "Rat": {
+      "MaxHealth": 40,
+      "Damage": 20,
+      "Speed": 100,
+      "Defence": 10,
+      "Attack": 10
+    },
+    "Punk": {
+      "MaxHealth": 80,
+      "Damage": 15,
+      "Speed": 110,
+      "Defence": 10,
+      "Attack": 10
+    },
+    "Ranged": {
+      "MaxHealth": 60,
+      "Damage": 10,
+      "Speed": 80,
+      "Defence": 10,
+      "Attack": 10
+    }
+  },
+  "Multipliers": {
+      "Rat": {
+        "MaxHealth": 5,
+        "Damage": 4,
+        "Speed": 0,
+        "Defence": 0,
+        "Attack": 0
+      },
+      "Punk": {
+        "MaxHealth": 8,
+        "Damage": 2,
+        "Speed": 0,
+        "Defence": 0,
+        "Attack": 0
+      },
+      "Ranged": {
+        "MaxHealth": 8,
+        "Damage": 2,
+        "Speed": 0,
+        "Defence": 0,
+        "Attack": 0
+      }
+  }
+}

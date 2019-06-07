@@ -18,7 +18,12 @@
 241,242,243,244,245,246,247,248,249,250,251,252,253,254,255,256,257,258,259,260
 </data>
  </layer>
+
  <layer id="7" name="postacie" width="20" height="13">
+ 	<properties>
+    <property name="Height" type="integer" value="5"/>
+   </properties>
+
   <data encoding="csv">
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,
 0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,

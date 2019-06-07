@@ -58,6 +58,13 @@ namespace Zold.Utilities
                             Assets.Instance.Set(name, Content.Load<SpriteFont>(directory + "/Fonts/" + Path.GetFileNameWithoutExtension(fileName)));
                         }
                         break;
+                    case "shaders":
+                        foreach (string fileName in Directory.GetFiles(dir + "/shaders"))
+                        {
+                            name = directory + "/shaders/" + Path.GetFileNameWithoutExtension(fileName);
+                            Assets.Instance.Set(name, Content.Load<Effect>(directory + "/shaders/" + Path.GetFileNameWithoutExtension(fileName)));
+                        }
+                        break;
                 }
             }
         }

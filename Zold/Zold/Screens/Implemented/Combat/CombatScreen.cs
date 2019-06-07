@@ -4,87 +4,135 @@ using Microsoft.Xna.Framework.Input;
 using System.Collections.Generic;
 using System.Linq;
 using Zold.Utilities;
-using Zold.Screens.Implemented.Combat.Enemies;
+using Zold.Screens.Implemented.Combat.CombatObjects;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using System.Threading;
+using Zold.Buffs;
+using System.Threading.Tasks;
+using TiledSharp;
+using System;
+using Zold.Statistics;
 
 namespace Zold.Screens.Implemented.Combat
 {
     class CombatScreen : GameScreen
     {
-        Player player;
-        List<Enemy> enemies;
-        SpriteFont font;
-        string combatState;
+        public Player player;
+        public List<Enemy> enemies;
+        public List<Character> charactersToRender;
+        public List<Projectile> projectiles;
+        public Timer timer;
+        public int TopMapEdge;
+        public int BottomMapEdge;
+        public int RightMapEdge;
+        public int LeflMapEdge;
+
+        private bool isEscPressed = false;
+
+        private TmxMap currentMap;
+        private SpriteBatchSpriteSheet mapSprite;
+        private Texture2D tileset;
+        private int tileWidth;
+        private int tileHeight;
+        private int tilesetTilesWide;
+        private int tilesetTilesHigh;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
-            font = Assets.Instance.Get("placeholders/Fonts/dialog");
             this.player = player;
             this.enemies = enemies;
-            combatState = "";
+
+            projectiles = new List<Projectile>();
+            charactersToRender = new List<Character>();
+
             IsTransparent = false;
+
+            timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
         }
 
         public override void Update(GameTime gameTime)
         {
+            CheckProjectileCollisions();
+            charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
+
+            charactersToRender.ForEach(character => character.BaseSpeed = gameScreenManager.baseSpeed);
+
             enemies.ForEach(enemy =>
             {
                 enemy.AI(gameTime);
             });
 
-            var enemiesToDelete = enemies.Where(x => x.Hp <= 0).ToArray();
+            projectiles.ForEach(projectile =>
+            {
+                projectile.BaseSpeed = gameScreenManager.baseSpeed;
+                projectile.Move(gameTime);
+            });
+
+            var enemiesToDelete = enemies.Where(x => x.Statistics.Health <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
+                charactersToRender.Remove(enemy);
             }
 
             if (enemies.Count == 0)
             {
-                combatState = "Wygrana";
                 gameScreenManager.RemoveScreen(this);
             }
-            else if (player.Hp <= 0)
+            else if (player.Statistics.Health <= 0)
             {
-                combatState = "Przegrana";
                 gameScreenManager.RemoveScreen(this);
-                gameScreenManager.InsertScreen(new Map.MapManager());
             }
         }
 
         public override void LoadContent()
         {
-            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
+            mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
+            
+            charactersToRender.Add(player);
+            charactersToRender.AddRange(enemies);
+
+            InitMap(currentMap);
+
+            foreach (Character character in charactersToRender)
+            {
+                character.CombatScreen = this;
+                character.Map = new Projectile(new Vector2(LeflMapEdge, TopMapEdge), 0, null, Vector2.Zero, RightMapEdge, BottomMapEdge - TopMapEdge);
+            }
         }
 
         public override void Draw(GameTime gameTime)
         {
+
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            player.Animation(gameTime);
-            
-            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
-
-            #region debug-text
-            // Debug text
-            gameScreenManager.SpriteBatch.DrawString(font, combatState, new Vector2(400, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "HP: " + player.Hp.ToString(), new Vector2(15, 15), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Y: " + player.position.Y.ToString(), new Vector2(player.position.X, player.position.Y - 25), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + player.SpriteBatchSpriteSheet.LayerDepth.ToString(), new Vector2(player.position.X, player.position.Y - 35), Color.Black);
-            gameScreenManager.SpriteBatch.DrawString(font, player.Action, new Vector2(player.position.X, player.position.Y - 15), Color.Black);
-            #endregion
-
+            DrawTiles(0, currentMap);
+            charactersToRender.ForEach(item =>
+            {
+                item.Draw(gameTime);
+            });
+            projectiles.ForEach(projectile =>
+            {
+                projectile.Draw(gameTime);
+            });
+            /*
             enemies.ForEach(enemy =>
             {
-                gameScreenManager.SpriteBatch.Draw(enemy.GetTexture(), enemy.GetPosition(), null, Color.White, enemy.Rotation, Vector2.Zero, enemy.Scale, SpriteEffects.None, enemy.LayerDepth);
-
-                #region debug-text
-                // Debug text
-                gameScreenManager.SpriteBatch.DrawString(font, "HP: " + enemy.Hp.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 35), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, "Depth: " + enemy.LayerDepth.ToString(), new Vector2(enemy.position.X, enemy.position.Y - 25), Color.Black);
-                gameScreenManager.SpriteBatch.DrawString(font, enemy.Action, new Vector2(enemy.position.X, enemy.position.Y - 15), Color.Black);
-                #endregion
+                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + enemy.Statistics.Health.ToString(), new Vector2(enemy.Position.X, enemy.Position.Y - 35), Color.Black);
+                gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Action: " + enemy.action, new Vector2(enemy.Position.X, enemy.Position.Y - 25), Color.Black);
             });
+
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "HP: " + player.Statistics.Health, new Vector2(player.Position.X, player.Position.Y - 35), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "Y: " + player.Position.Y, new Vector2(player.Position.X, player.Position.Y - 25), Color.Black);
+            gameScreenManager.SpriteBatch.DrawString(Assets.Instance.Get("combat/Fonts/dialog"), "X: " + player.Position.X, new Vector2(player.Position.X, player.Position.Y - 15), Color.Black);
+            */
+
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 150), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
+            gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("combat/Textures/line"), new Vector2(0, 450), null, Color.White, 0.0f, Vector2.Zero, 1.0f, SpriteEffects.None, 0.0f);
 
             gameScreenManager.SpriteBatch.End();
         }
@@ -92,11 +140,104 @@ namespace Zold.Screens.Implemented.Combat
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
         {
             player.Controls();
+
+            if(keyboardState.IsKeyDown(Keys.F6) && !isEscPressed)
+            {
+                isEscPressed = true;
+                AddBuff(player.Statistics, BuffFactory.CreateTimedBuff(-10, 0));
+            }else if (keyboardState.IsKeyUp(Keys.F6))
+            {
+                isEscPressed = false;
+            }
         }
 
         public override void UnloadContent()
         {
-            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+           // timer.Change(Timeout.Infinite, Timeout.Infinite);
+           // timer.Dispose();
+        }
+
+        public void MakeEnemyProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
+        {
+            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            projectile.Targets.Add(player);
+            projectiles.Add(projectile);
+        }
+
+        public void MakePlayerProjectile(Vector2 position, int dmg, string texture, Vector2 destination, int width, int height)
+        {
+            Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
+            projectile.Targets.AddRange(enemies);
+            projectiles.Add(projectile);
+        }
+
+        private void OnTimerTick()
+        {
+            Parallel.ForEach(charactersToRender, character =>
+            {
+                character.Statistics.UpdateBuffs();
+            });
+        }
+
+        public void AddBuff(Stats s, IBuff buff)
+        {
+            buff.Statistics = s;
+            s.buffSet.Add(buff);
+            s.buffSet.TryGetValue(buff, out IBuff temp);
+            temp.Start();
+        }
+
+        private void CheckProjectileCollisions()
+        {
+            Character toDelete = null;
+            projectiles.ForEach(projectile =>
+            {
+                projectile.Targets.ForEach(target =>
+                {
+                    if (target.CheckBoxCollision(projectile.Position, target))
+                    {
+                        toDelete = target;
+                        target.Statistics.Health -= projectile.Statistics.Damage;
+                    }
+                });
+                projectile.Targets.Remove(toDelete);
+            });
+        }
+
+        public virtual void InitMap(TmxMap currentMap)
+        {
+            tileset = gameScreenManager.Content.Load<Texture2D>("graphic\\combat\\" + currentMap.Tilesets[0].Name.ToString());
+            tileWidth = currentMap.Tilesets[0].TileWidth;
+            tileHeight = currentMap.Tilesets[0].TileHeight;
+            tilesetTilesWide = tileset.Width / tileWidth;
+            tilesetTilesHigh = tileset.Height / tileHeight;
+
+            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
+            BottomMapEdge = tileset.Height;
+            RightMapEdge = tileset.Width;
+            LeflMapEdge = 0;
+        }
+
+        public virtual void DrawTiles(int layer, TmxMap map)
+        {
+            for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
+            {
+                int gid = map.Layers[layer].Tiles[i].Gid;
+
+                if (gid != 0)
+                {
+                    int tileFrame = gid - 1;
+                    int column = tileFrame % tilesetTilesWide;
+                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
+                    float x = (i % map.Width) * map.TileWidth;
+                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+
+                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
+                    mapSprite.Begin();
+                    mapSprite.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                    mapSprite.End();
+                }
+            }
         }
     }
 }
