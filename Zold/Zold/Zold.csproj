@@ -46,31 +46,71 @@
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="Buffs\IBuff.cs" />
+    <Compile Include="Buffs\BuffFactory.cs" />
+    <Compile Include="Buffs\InstantBuff.cs" />
+    <Compile Include="Buffs\Implemented\InstantIncrementBuff.cs" />
+    <Compile Include="Buffs\Implemented\InstantPercentageBuff.cs" />
+    <Compile Include="Buffs\TimedBuff.cs" />
+    <Compile Include="Buffs\Implemented\TimedIncrementBuff.cs" />
+    <Compile Include="Buffs\Implemented\TimedPercentageBuff.cs" />
+    <Compile Include="Inventory\Items\BuffItem.cs" />
+    <Compile Include="Screens\Camera.cs" />
+    <Compile Include="Inventory\Items\Item.cs" />
+    <Compile Include="Quests\LocationQuest.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatBuilder.cs" />
+    <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
+    <Compile Include="Screens\Implemented\Map\Npc.cs" />
+    <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\ItemPreviewScreen.cs" />
+    <Compile Include="Screens\Implemented\Pause\QuestDescriptionScreen.cs" />
+    <Compile Include="Statistics\Stats.cs" />
+    <Compile Include="Utilities\InventoryManager.cs" />
+    <Compile Include="Utilities\ItemManager.cs" />
+    <Compile Include="Inventory\Items\Weapon.cs" />
+    <Compile Include="Inventory\Inventory.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Character.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Ranged.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\CombatObject.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Projectile.cs" />
+    <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
+    <Compile Include="Screens\Implemented\Map\InteractionManager.cs" />
+    <Compile Include="Screens\Implemented\Map\Location.cs" />
+    <Compile Include="Screens\Implemented\Map\Locations\Dormitory.cs" />
+    <Compile Include="Screens\Implemented\Map\Locations\TheRoom.cs" />
     <Compile Include="Screens\Implemented\Map\MapManager.cs" />
     <Compile Include="Screens\GameScreen.cs" />
     <Compile Include="Screens\GameScreenManager.cs" />
-    <Compile Include="Screens\Implemented\Combat\Enemies\Charger.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Charger.cs" />
     <Compile Include="Screens\Implemented\Combat\CombatScreen.cs" />
-    <Compile Include="Screens\Implemented\Combat\Enemies\Enemy.cs" />
-    <Compile Include="Screens\Implemented\Combat\Enemies\Mob.cs" />
-    <Compile Include="Screens\Implemented\Combat\Player.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Enemy.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Enemies\Mob.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Characters\Player.cs" />
     <Compile Include="Screens\Implemented\MenuScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\PauseScreen.cs" />
     <Compile Include="Screens\Implemented\SplashScreen.cs" />
     <Compile Include="Utilities\Animation.cs" />
     <Compile Include="Utilities\Assets.cs" />
     <Compile Include="Utilities\ContentLoader.cs" />
+    <Compile Include="Quests\Quest.cs" />
+    <Compile Include="Quests\ItemQuest.cs" />
+    <Compile Include="Utilities\QuestManager.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Screens\Implemented\Map\Enemy.cs" />
     <Compile Include="Screens\Implemented\Map\Player.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Utilities\StatisticManager.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="MonoGame.Framework">
       <HintPath>$(MonoGameInstallDirectory)\MonoGame\v3.0\Assemblies\DesktopGL\MonoGame.Framework.dll</HintPath>
+    </Reference>
+    <Reference Include="Newtonsoft.Json, Version=12.0.0.0, Culture=neutral, PublicKeyToken=30ad4fe6b2a6aeed, processorArchitecture=MSIL">
+      <HintPath>..\packages\Newtonsoft.Json.12.0.2\lib\net45\Newtonsoft.Json.dll</HintPath>
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Xml" />
@@ -131,10 +171,22 @@
     </None>
     <None Include="app.config" />
     <None Include="app.manifest" />
+    <None Include="Inventory\Items\Items.json" />
     <None Include="packages.config" />
+    <None Include="Quests\Quests.json" />
+    <None Include="Statistics\Statistics.json" />
   </ItemGroup>
+  <ItemGroup>
+    <WCFMetadata Include="Connected Services\" />
+  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <Import Project="$(MSBuildExtensionsPath)\MonoGame\v3.0\MonoGame.Content.Builder.targets" />
+  <ProjectExtensions>
+    <VisualStudio>
+      <UserProperties inventory_4items_4items_1json__JsonSchema="http://json.schemastore.org/pattern" />
+    </VisualStudio>
+  </ProjectExtensions>
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.
   <Target Name="BeforeBuild">

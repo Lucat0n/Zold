@@ -12,7 +12,7 @@ namespace Zold
     public class Game1 : Game
     {
         public GraphicsDeviceManager graphics;
-        GameScreenManager gameScreenManager;
+        private GameScreenManager gameScreenManager;
 
         public Game1()
         {

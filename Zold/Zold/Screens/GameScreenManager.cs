@@ -1,14 +1,14 @@
-﻿using System;
-using System.Diagnostics;
-using System.Linq;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Content;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 //using Microsoft.Xna.Framework.GamerServices;
+using Zold.Inventory;
 using Zold.Utilities;
 using Zold.Screens.Implemented;
+using Zold.Quests;
+using Zold.Inventory.Items;
 
 namespace Zold.Screens
 {
@@ -18,6 +18,9 @@ namespace Zold.Screens
         private bool isFullScreenOn = false;
         private ContentManager content;
         private ContentLoader contentLoader;
+        private readonly ItemManager itemManager;
+        private readonly InventoryManager inventoryManager;
+        private QuestManager questManager;
         private float masterVolume = 1.0f;
         private GraphicsDeviceManager graphics;
         private Rectangle cursor;
@@ -26,6 +29,7 @@ namespace Zold.Screens
         private SpriteBatch spriteBatch;
         SpriteFont spriteFont;
         private Texture2D blank;
+        public float baseSpeed { get; set; }
 
         private MouseState mouseState;
         private KeyboardState keyboardState;
@@ -70,6 +74,9 @@ namespace Zold.Screens
         }
 
         internal ContentLoader ContentLoader { get => contentLoader; set => contentLoader = value; }
+        internal QuestManager QuestManager { get => questManager; set => questManager = value; }
+
+        internal InventoryManager InventoryManager => inventoryManager;
         #endregion
 
         #region init
@@ -80,6 +87,20 @@ namespace Zold.Screens
             content.RootDirectory = "Content";
             spriteBatch = new SpriteBatch(GraphicsDevice);
             ContentLoader = new ContentLoader(game, Content);
+            itemManager = new ItemManager(contentLoader);
+            inventoryManager = new InventoryManager(itemManager);
+            questManager = new QuestManager(inventoryManager, itemManager);
+            
+            BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
+            itemManager.AddItem("healthPotion");
+            itemManager.AddWeapon("stick");
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion").Name, itemManager.GetItem("healthPotion"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetItem("healthPotion2").Name, itemManager.GetItem("healthPotion2"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            inventoryManager.GetPlayerInventory().InsertItem(itemManager.GetWeapon("stick").Name, itemManager.GetWeapon("stick"));
+            
             this.LoadContent();
         }
 
@@ -109,6 +130,7 @@ namespace Zold.Screens
         public override void Update(GameTime gameTime)
         {
             UpdateInput();
+            baseSpeed = (float)gameTime.ElapsedGameTime.TotalSeconds;
             if (ScreensToDraw.Count > 0)
             {
                 ScreensToDraw[ScreensToDraw.Count - 1].HandleInput(mouseState, cursor, keyboardState);
@@ -122,7 +144,11 @@ namespace Zold.Screens
         {
             graphics.IsFullScreen = isFullScreenOn;
             ScreensToDraw.Clear();
-            ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
+            //Debug.WriteLine(ScreensToDraw.Count + " " + ScreenList.FindLastIndex(FindNonTransparent) + " " + ScreenList.Count);
+            //ScreensToDraw = ScreenList.GetRange(ScreenList.FindLastIndex(FindNonTransparent), ScreenList.Count);
+            for (int i= ScreenList.FindLastIndex(FindNonTransparent); i<ScreenList.Count; i++)
+                ScreensToDraw.Add(ScreenList[i]);
+            
             foreach (GameScreen gameScreen in ScreensToDraw)
                 gameScreen.Draw(gameTime);
         }
@@ -155,12 +181,12 @@ namespace Zold.Screens
             gameScreen.GameScreenManager = this;
             gameScreen.LoadContent();
             ScreenList.Add(gameScreen);
-            ScreensToDraw.Add(gameScreen);
+            //ScreensToDraw.Add(gameScreen);
         }
 
         public void RemoveScreen(GameScreen gameScreen)
         {
-            ScreensToDraw.Remove(gameScreen);
+            //ScreensToDraw.Remove(gameScreen);
             ScreenList.Remove(gameScreen);
             gameScreen.UnloadContent();
         }

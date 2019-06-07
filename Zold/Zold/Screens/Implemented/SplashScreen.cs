@@ -5,6 +5,8 @@ using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Utilities;
 using Zold.Screens.Implemented.Combat;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 
 namespace Zold.Screens.Implemented
 {
@@ -15,10 +17,7 @@ namespace Zold.Screens.Implemented
 
         //Combat
         CombatScreen Combat;
-        Player combatPlayer;
-        Combat.Enemies.Enemy skeleton;
-        Combat.Enemies.Enemy rat;
-        List<Combat.Enemies.Enemy> enemies;
+        CombatBuilder combatBuilder;
 
         public SplashScreen()
         {
@@ -70,7 +69,6 @@ namespace Zold.Screens.Implemented
             }
             if (Keyboard.GetState().IsKeyDown(Keys.F1))
             {
-                gameScreenManager.RemoveScreen(this);
                 gameScreenManager.InsertScreen(Combat);
             }
         }
@@ -78,24 +76,23 @@ namespace Zold.Screens.Implemented
         public override void LoadContent()
         {
             gameScreenManager.ContentLoader.LoadLocation("splash");
-            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+            gameScreenManager.ContentLoader.LoadLocation("combat");
             splash = Assets.Instance.Get("splash/Textures/rzprod");
 
             // Combat
-            enemies = new List<Combat.Enemies.Enemy>();
-            combatPlayer = new Player(new Vector2(0, 200), 100, enemies, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("placeholders/Textures/main"), 4, 3, 32, 48));
-            skeleton = new Combat.Enemies.Mob(combatPlayer, new Vector2(300, 300), Assets.Instance.Get("placeholders/Textures/skeleton"));
-            rat = new Combat.Enemies.Charger(combatPlayer, new Vector2(300, 400), Assets.Instance.Get("placeholders/Textures/rat"));
-            enemies.Add(skeleton);
-            enemies.Add(rat);
-            Combat = new Combat.CombatScreen(combatPlayer, enemies);
+            combatBuilder = new CombatBuilder(gameScreenManager.GraphicsDevice, new Statistics.Stats());
+            combatBuilder.AddPunk(1, 300, 300);
+            combatBuilder.AddRanged(1, 400, 300);
+            combatBuilder.AddRat(1, 300, 350);
+            Combat = combatBuilder.Build();
         }
 
         public override void UnloadContent()
         {
             gameScreenManager.ContentLoader.UnloadLocation("splash");
-            gameScreenManager.ContentLoader.UnloadLocation("placeholders");
+            gameScreenManager.ContentLoader.UnloadLocation("combat");
             splash.Dispose();
+            Combat.UnloadContent();
         }
     }
 }

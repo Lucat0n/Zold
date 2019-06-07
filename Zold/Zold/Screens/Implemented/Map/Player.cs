@@ -24,6 +24,11 @@ namespace Zold.Screens.Implemented.Map
         public bool isMoving;
 
         public int hp;
+        Vector2 m_from;
+        Vector2 m_to;
+
+        float m_animPercent = 1;
+        float m_animSpeed = 1.0f / .5f;
 
         public Player(Vector2 position, Texture2D texture, float sped, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int hp)
         {
@@ -43,54 +48,70 @@ namespace Zold.Screens.Implemented.Map
             isMoving = false;
         }
 
-        public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown)
+        public void move(int wid, int heigh, bool canMoveLeft, bool canMoveUp, bool canMoveRight, bool canMoveDown, GameTime gt)
         {
-           
-               // previous = current;
-                current = Keyboard.GetState();
 
-                if (canMoveRight && current.IsKeyDown(Keys.Right)  && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
+            current = Keyboard.GetState();
+
+            if (m_animPercent == 1)
+            {
+                // Can check for inputs
+                if (canMoveRight && current.IsKeyDown(Keys.Right) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down)) // Check for pressed only, so the player can hold the key down.
                 {
-                    position.X += speed;
+                    m_from = GetPosition();
+                    m_to = GetPosition() + new Vector2(64, 0); // Set the destination tile position
+                    m_animPercent = 0;
                     Direction = "right";
                     isMoving = true;
                 }
 
                 else if (canMoveUp && current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
                 {
-                    position.Y -= speed;
+                    m_from = GetPosition();
+                    m_to = GetPosition() + new Vector2(0, -64); // Set the destination tile position
+                    m_animPercent = 0;
                     Direction = "up";
                     isMoving = true;
-
                 }
 
+                else if (canMoveDown && current.IsKeyDown(Keys.Down) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
+                {
+                    m_from = GetPosition();
+                    m_to = GetPosition() + new Vector2(0, 64); // Set the destination tile position
+                    m_animPercent = 0;
+                    Direction = "down";
+                    isMoving = true;
+                }
 
-            else if (canMoveDown && current.IsKeyDown(Keys.Down) && !current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Right))
-            {
-                position.Y += speed;
-                Direction = "down";
-                isMoving = true;
+                else if (canMoveLeft && current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
+                {
+                    m_from = GetPosition();
+                    m_to = GetPosition() + new Vector2(-64, 0); // Set the destination tile position
+                    m_animPercent = 0;
+                    Direction = "left";
+                    isMoving = true;
+                }
+                else
+                {
+                    isMoving = false;
+                }
 
             }
-            else if (canMoveLeft && current.IsKeyDown(Keys.Left) && !current.IsKeyDown(Keys.Up) && !current.IsKeyDown(Keys.Down))
-            {
-                position.X -= speed;
-                Direction = "left";
-                isMoving = true;
-
-            }
-
             else
             {
-                isMoving =false;
+                // Animate to the new position
+                m_animPercent += 4 * (float)gt.ElapsedGameTime.TotalSeconds;
+                if (m_animPercent >= 1) m_animPercent = 1;
+                position = m_from + ((m_to - m_from) / 2) * m_animPercent;
+                //isMoving = false;
             }
             centerPosition = new Vector2(position.X + 16, position.Y + 24);
-            
         }
 
-        public void Animation(GameTime gameTime)
+        //TODO: wywalić matrixa z parametrów
+        public void Animation(GameTime gameTime, Matrix cameraTransform)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: cameraTransform);
             if (isMoving)
             {
                 SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), Direction, gameTime);

@@ -18,6 +18,13 @@ namespace Zold.Screens.Implemented.Map
         public float Speed { get; private set; }
         public double Distance { get; private set; }
 
+        public Enemy(Player player, Vector2 position, Texture2D texture)
+        {
+            this.player = player;
+            this.position = position;
+            this.texture = texture;
+        }
+
         public Enemy(Player player, Vector2 position)
         {
             this.player = player;

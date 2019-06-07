@@ -30,7 +30,8 @@ namespace Zold.Utilities
 
         public void Set(string name, dynamic value)
         {
-            AssetList.Add(name, value);
+            if(!AssetList.ContainsKey(name))
+                AssetList.Add(name, value);
         }
 
         public dynamic Get(string name)
