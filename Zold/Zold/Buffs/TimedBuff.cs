@@ -21,7 +21,7 @@ namespace Zold.Buffs
         public virtual void Init()
         {
             type = typeof(Stats);
-            pi = type.GetProperty("Health");
+            pi = type.GetProperty(targetStat);
         }
 
         public abstract void Start();
