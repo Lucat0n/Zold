@@ -746,6 +746,18 @@
 /processorParam:TextureFormat=Color
 /build:worldMap/Textures/hostileLoc.png
 
+#begin worldMap/Textures/lineTex.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:worldMap/Textures/lineTex.png
+
 #begin worldMap/Textures/ulicapixelated.png
 /importer:TextureImporter
 /processor:TextureProcessor

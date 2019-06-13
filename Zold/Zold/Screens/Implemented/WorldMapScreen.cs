@@ -18,16 +18,19 @@ namespace Zold.Screens.Implemented
         private bool isRightPressed = false;
         private bool isUpPressed = false;
         private List<mapNode> locations;
+        private List<Tuple<mapNode, mapNode>> visitedVertices;
         private mapNode playerLocation;
         private SpriteFont font;
         private Texture2D background;
         private Texture2D friendlyLocation;
         private Texture2D hostileLocation;
+        private Texture2D line;
         private Texture2D unknownLocation;
 
         internal WorldMapScreen()
         {
             locations = new List<mapNode>();
+            visitedVertices = new List<Tuple<mapNode, mapNode>>();
             playerLocation = new mapNode(new Point(310, 310), "Dormitory", null);
             playerLocation.IsVisited = true;
             playerLocation.IsFriendly = true;
@@ -84,12 +87,23 @@ namespace Zold.Screens.Implemented
         {
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0,0,gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+            
             foreach (mapNode mn in locations)
             {
                 Rectangle r = new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 40));
+                foreach (mapNode neigh in mn.Neighbours)
+                {
+                    //IF TU MA BYĆ CZY ISTNIEJE TA DROGA TO NIE RYSUJ JAK NIE TO RYSUJ
+                    if (neigh != null)
+                    {
+                        gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width/2 - r.Width / 12, mn.Location.Y + r.Height/2, neigh.Location.X - mn.Location.X, r.Width / 6), Color.NavajoWhite);
+                        gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width/2 - r.Width / 8, mn.Location.Y + r.Height/2, 4, neigh.Location.Y - mn.Location.Y), Color.NavajoWhite);
+                    }
+                }
                 gameScreenManager.SpriteBatch.Draw(mn.IsVisited ? (mn.IsFriendly ? friendlyLocation : hostileLocation) : unknownLocation, r, Color.White);
                 //gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(400,400/*r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom + r.Height/2*/), Color.White, 0.0f, Vector2.Zero, 0.05f, SpriteEffects.None, 1f);
                 gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Orange);
+                
             }
             gameScreenManager.SpriteBatch.End();
         }
@@ -147,6 +161,7 @@ namespace Zold.Screens.Implemented
             hostileLocation = Assets.Instance.Get("worldMap/Textures/hostileLoc");
             unknownLocation = Assets.Instance.Get("worldMap/Textures/unknownLoc");
             background = Assets.Instance.Get("worldMap/Textures/ulicapixelated");
+            line = Assets.Instance.Get("worldMap/Textures/lineTex");
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
         }
 
