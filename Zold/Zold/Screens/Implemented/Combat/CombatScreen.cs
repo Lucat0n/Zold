@@ -7,6 +7,7 @@ using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.CombatObjects;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Screens.Implemented.Combat.Utilities;
 using System.Threading;
 using Zold.Buffs;
 using System.Threading.Tasks;
@@ -23,20 +24,9 @@ namespace Zold.Screens.Implemented.Combat
         public List<Character> charactersToRender;
         public List<Projectile> projectiles;
         public Timer timer;
-        public int TopMapEdge;
-        public int BottomMapEdge;
-        public int RightMapEdge;
-        public int LeflMapEdge;
+        public Utilities.Map Map;
 
         private bool isEscPressed = false;
-
-        private TmxMap currentMap;
-        private SpriteBatchSpriteSheet mapSprite;
-        private Texture2D tileset;
-        private int tileWidth;
-        private int tileHeight;
-        private int tilesetTilesWide;
-        private int tilesetTilesHigh;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
@@ -88,18 +78,15 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
-            currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
-            mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
-            
             charactersToRender.Add(player);
             charactersToRender.AddRange(enemies);
 
-            InitMap(currentMap);
+            Map = new Utilities.Map(gameScreenManager);
 
             foreach (Character character in charactersToRender)
             {
                 character.CombatScreen = this;
-                character.Map = new Projectile(new Vector2(LeflMapEdge, TopMapEdge), 0, null, Vector2.Zero, RightMapEdge, BottomMapEdge - TopMapEdge);
+                character.Map = new Projectile(new Vector2(Map.LeflMapEdge, Map.TopMapEdge), 0, null, Vector2.Zero, Map.RightMapEdge, Map.BottomMapEdge - Map.TopMapEdge);
             }
         }
 
@@ -110,7 +97,7 @@ namespace Zold.Screens.Implemented.Combat
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            DrawTiles(0, currentMap);
+            Map.DrawTiles(0);
             charactersToRender.ForEach(item =>
             {
                 item.Draw(gameTime);
@@ -202,42 +189,6 @@ namespace Zold.Screens.Implemented.Combat
                 });
                 projectile.Targets.Remove(toDelete);
             });
-        }
-
-        public virtual void InitMap(TmxMap currentMap)
-        {
-            tileset = gameScreenManager.Content.Load<Texture2D>("graphic\\combat\\" + currentMap.Tilesets[0].Name.ToString());
-            tileWidth = currentMap.Tilesets[0].TileWidth;
-            tileHeight = currentMap.Tilesets[0].TileHeight;
-            tilesetTilesWide = tileset.Width / tileWidth;
-            tilesetTilesHigh = tileset.Height / tileHeight;
-
-            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
-            BottomMapEdge = tileset.Height;
-            RightMapEdge = tileset.Width;
-            LeflMapEdge = 0;
-        }
-
-        public virtual void DrawTiles(int layer, TmxMap map)
-        {
-            for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
-            {
-                int gid = map.Layers[layer].Tiles[i].Gid;
-
-                if (gid != 0)
-                {
-                    int tileFrame = gid - 1;
-                    int column = tileFrame % tilesetTilesWide;
-                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
-                    float x = (i % map.Width) * map.TileWidth;
-                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
-
-                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    mapSprite.Begin();
-                    mapSprite.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
-                    mapSprite.End();
-                }
-            }
         }
     }
 }

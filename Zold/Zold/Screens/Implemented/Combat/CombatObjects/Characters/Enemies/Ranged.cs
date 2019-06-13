@@ -95,11 +95,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.RightMapEdge, CombatScreen.TopMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.TopMapEdge));
                 }
                 else if (player.BottomPosition.X > BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.LeflMapEdge, CombatScreen.TopMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.TopMapEdge));
                 }
             }
             
@@ -107,33 +107,33 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.RightMapEdge, CombatScreen.BottomMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.BottomMapEdge));
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.LeflMapEdge, CombatScreen.BottomMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.BottomMapEdge));
                 }
             }
             else if (IsCloseToRight())
             {
                 if (player.BottomPosition.Y <= BottomPosition.Y)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.RightMapEdge, CombatScreen.BottomMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.BottomMapEdge));
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.RightMapEdge, CombatScreen.TopMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.TopMapEdge));
                 }
             }
             else if (IsCloseToLeft())
             {
                 if (player.BottomPosition.Y <= BottomPosition.Y)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.LeflMapEdge, CombatScreen.BottomMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.BottomMapEdge));
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.LeflMapEdge, CombatScreen.TopMapEdge));
+                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.TopMapEdge));
                 }
             }
             else
@@ -143,22 +143,22 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         private bool IsCloseToLeft()
         {
-            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.RightMapEdge - mapOffset;
+            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.Map.RightMapEdge - mapOffset;
         }
 
         private bool IsCloseToRight()
         {
-            return player.BottomPosition.X <= BottomPosition.X && BottomPosition.X >= CombatScreen.RightMapEdge - mapOffset;
+            return player.BottomPosition.X <= BottomPosition.X && BottomPosition.X >= CombatScreen.Map.RightMapEdge - mapOffset;
         }
 
         private bool IsCloseToBot()
         {
-            return player.BottomPosition.Y <= BottomPosition.Y && BottomPosition.Y >= CombatScreen.BottomMapEdge - mapOffset;
+            return player.BottomPosition.Y <= BottomPosition.Y && BottomPosition.Y >= CombatScreen.Map.BottomMapEdge - mapOffset;
         }
 
         private bool IsCloseToTop()
         {
-            return player.BottomPosition.Y >= BottomPosition.Y && BottomPosition.Y <= CombatScreen.TopMapEdge + mapOffset;
+            return player.BottomPosition.Y >= BottomPosition.Y && BottomPosition.Y <= CombatScreen.Map.TopMapEdge + mapOffset;
         }
     }
 }

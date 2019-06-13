@@ -46,28 +46,28 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                if (BottomPosition.Y >= CombatScreen.TopMapEdge)
+                if (BottomPosition.Y >= CombatScreen.Map.TopMapEdge)
                     UpdatePosition(0, -GetSpeed());
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                if (BottomPosition.Y <= CombatScreen.BottomMapEdge)
+                if (BottomPosition.Y <= CombatScreen.Map.BottomMapEdge)
                     UpdatePosition(0, GetSpeed());
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                if (BottomPosition.X >= CombatScreen.LeflMapEdge)
+                if (BottomPosition.X >= CombatScreen.Map.LeflMapEdge)
                     UpdatePosition(-GetSpeed(), 0);
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                if (BottomPosition.X <= CombatScreen.RightMapEdge)
+                if (BottomPosition.X <= CombatScreen.Map.RightMapEdge)
                     UpdatePosition(GetSpeed(), 0);
                 attackTimer.Enabled = false;
                 action = "Moving";
