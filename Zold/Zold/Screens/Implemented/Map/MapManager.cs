@@ -85,6 +85,9 @@ namespace Zold.Screens.Implemented.Map
         Effect effect;
         RenderTarget2D lightsTarget;
 
+        public static float CurrentScreenWidth { get; set; }
+        public static float CurrentScreenHeight { get; set; }
+
         public MapManager()
         {
 
@@ -147,6 +150,7 @@ namespace Zold.Screens.Implemented.Map
             interactionManager = new InteractionManager(GameScreenManager, location);
 
             cameraPlayer = new Screens.Camera(player.GetPosition());
+            ExploreCamera.SetTargetToFollow(player.)
         }
 
         public override void UnloadContent()
@@ -284,6 +288,8 @@ namespace Zold.Screens.Implemented.Map
             {
                 sh = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 sw = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                CurrentScreenHeight = sh;
+                CurrentScreenWidth = sw;
             }
             else
             {
