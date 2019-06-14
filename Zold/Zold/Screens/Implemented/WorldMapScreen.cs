@@ -35,12 +35,17 @@ namespace Zold.Screens.Implemented
             playerLocation.IsVisited = true;
             playerLocation.IsFriendly = true;
             playerLocation.Name = "Akademik";
-            mapNode[] mn = new mapNode[] { null, playerLocation, null, null };
+            mapNode[] mn = new mapNode[] { playerLocation,null, null, null };
             mapNode dormitoryOutside = new mapNode(new Point(400, 200), "DormOutside", mn);
+            mapNode[] mn2 = new mapNode[] { playerLocation, null, null, null };
+            mapNode dormitoryOutside2 = new mapNode(new Point(100, 150), "DormOutside2", mn2);
             dormitoryOutside.Name = "Dziedziniec akademika";
+            dormitoryOutside2.Name = "Dziedziniec akademika2";
             playerLocation.Neighbours[3] = dormitoryOutside;
+            playerLocation.Neighbours[1] = dormitoryOutside2;
             locations.Add(playerLocation);
             locations.Add(dormitoryOutside);
+            locations.Add(dormitoryOutside2);
         }
 
         internal class mapNode
@@ -86,24 +91,67 @@ namespace Zold.Screens.Implemented
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.SpriteBatch.Begin();
-            gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0,0,gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
-            
+            gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0, 0, gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+
             foreach (mapNode mn in locations)
             {
                 Rectangle r = new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 40));
-                foreach (mapNode neigh in mn.Neighbours)
+                for (int i = 0; i < 4; i++)
                 {
                     //IF TU MA BYĆ CZY ISTNIEJE TA DROGA TO NIE RYSUJ JAK NIE TO RYSUJ
-                    if (neigh != null)
+                    /*if (mn.Neighbours[i] != null)
                     {
-                        gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width/2 - r.Width / 12, mn.Location.Y + r.Height/2, neigh.Location.X - mn.Location.X, r.Width / 6), Color.NavajoWhite);
-                        gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width/2 - r.Width / 8, mn.Location.Y + r.Height/2, 4, neigh.Location.Y - mn.Location.Y), Color.NavajoWhite);
+                        if (i % 2 == 1)
+                        {
+                            if (mn.Location.Y < mn.Neighbours[i].Location.Y)
+                            {
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Width / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Width / 8), Color.Yellow);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width / 16, mn.Location.Y + r.Height / 2, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.Green);
+                            }
+                            else
+                            {
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Neighbours[i].Location.Y + r.Height / 2 - r.Width / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Width / 8), Color.Yellow);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width / 16, mn.Location.Y + r.Height / 2, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.Green);
+
+                            }
+                        }
+                        else
+                        {
+                            if (mn.Location.X < mn.Neighbours[i].Location.X)
+                            {
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Width / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Width / 8), Color.Indigo);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2 - r.Width / 16, mn.Location.Y + r.Height / 2, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.IndianRed);
+                            }
+                            else
+                            {
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Width / 16,mn.Location.X - mn.Neighbours[i].Location.X, r.Width / 8), Color.Indigo);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2 - r.Width / 16, mn.Location.Y + r.Height / 2, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.IndianRed);
+                            }
+                        }
+                    }*/
+                    if (mn.Neighbours[i] != null)
+                    {
+                        switch (i)
+                        {
+                            case 0:
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Width/16, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.Red);
+                                break;
+                            case 1:
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Location.X - mn.Neighbours[i].Location.X, r.Height / 8), Color.Blue);
+                                break;
+                            case 2:
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width/16, mn.Neighbours[i].Location.Y + r.Height / 2 - r.Width / 16, r.Width / 8,mn.Location.Y - mn.Neighbours[i].Location.Y), Color.LightSeaGreen);
+                                break;
+                            case 3:
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Height / 8), Color.Indigo);
+                                break;
+                        }   
                     }
                 }
                 gameScreenManager.SpriteBatch.Draw(mn.IsVisited ? (mn.IsFriendly ? friendlyLocation : hostileLocation) : unknownLocation, r, Color.White);
                 //gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(400,400/*r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom + r.Height/2*/), Color.White, 0.0f, Vector2.Zero, 0.05f, SpriteEffects.None, 1f);
-                gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Orange);
-                
+                gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width / 2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Orange);
+
             }
             gameScreenManager.SpriteBatch.End();
         }
