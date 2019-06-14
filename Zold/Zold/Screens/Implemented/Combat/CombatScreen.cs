@@ -28,6 +28,9 @@ namespace Zold.Screens.Implemented.Combat
 
         private bool isEscPressed = false;
 
+        //DEBUG
+        Texture2D pixel;
+
         public CombatScreen(Player player, List<Enemy> enemies)
         {
             this.player = player;
@@ -96,6 +99,16 @@ namespace Zold.Screens.Implemented.Combat
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
+
+            // DEBUG - grid
+            pixel = new Texture2D(GameScreenManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { Color.White });
+            for (int x = 0; x < 40; x++)
+                for (int y = 0; y < 16; y++)
+                {
+                    Map.Nodes[x + "_" + y].DrawBorder(pixel, Color.Green, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
+                }
+            // END OF DEBUG
 
             Map.DrawTiles(0);
             charactersToRender.ForEach(item =>

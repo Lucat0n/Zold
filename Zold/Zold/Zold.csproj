@@ -60,6 +60,7 @@
     <Compile Include="Quests\LocationQuest.cs" />
     <Compile Include="Screens\Implemented\Combat\Utilities\CombatBuilder.cs" />
     <Compile Include="Screens\Implemented\Combat\Utilities\Map.cs" />
+    <Compile Include="Screens\Implemented\Combat\Utilities\Node.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
     <Compile Include="Screens\Implemented\Map\Npc.cs" />
     <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />

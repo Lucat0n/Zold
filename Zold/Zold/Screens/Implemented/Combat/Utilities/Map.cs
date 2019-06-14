@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
+using System.Collections.Generic;
 using TiledSharp;
 using Zold.Utilities;
 
@@ -15,9 +16,11 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         private Texture2D tileset;
         private int tileWidth;
         private int tileHeight;
-        private int tilesetTilesWide;
-        private int tilesetTilesHigh;
+        private int tilesetTilesWidth;
+        private int tilesetTilesHeight;
+        private int tilesetHeightOffset;
 
+        public Dictionary<string,Node> Nodes;
         public int TopMapEdge;
         public int BottomMapEdge;
         public int RightMapEdge;
@@ -31,6 +34,19 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
 
             InitMap(currentMap);
+            CreateNodeGrid();
+        }
+
+        private void CreateNodeGrid()
+        {
+            int nodesX = tileset.Width / 16;
+            int nodesY = (tileset.Height - TopMapEdge) / 16;
+            Nodes = new Dictionary<string, Node>(nodesX * nodesY);
+            for (int x = 0; x < nodesX; x++)
+                for (int y = 0; y < nodesY; y++)
+                {
+                    Nodes.Add(x + "_" + y, new Node(x, y, TopMapEdge));
+                }
         }
 
         public virtual void InitMap(TmxMap currentMap)
@@ -38,10 +54,11 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             tileset = gameScreenManager.Content.Load<Texture2D>("graphic\\combat\\" + currentMap.Tilesets[0].Name.ToString());
             tileWidth = currentMap.Tilesets[0].TileWidth;
             tileHeight = currentMap.Tilesets[0].TileHeight;
-            tilesetTilesWide = tileset.Width / tileWidth;
-            tilesetTilesHigh = tileset.Height / tileHeight;
+            tilesetTilesWidth = tileset.Width / tileWidth;
+            tilesetTilesHeight = tileset.Height / tileHeight;
+            tilesetHeightOffset = int.Parse(currentMap.Layers[1].Properties["Height"]);
 
-            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
+            TopMapEdge = tilesetHeightOffset * tileHeight;
             BottomMapEdge = tileset.Height;
             RightMapEdge = tileset.Width;
             LeflMapEdge = 0;
@@ -56,8 +73,8 @@ namespace Zold.Screens.Implemented.Combat.Utilities
                 if (gid != 0)
                 {
                     int tileFrame = gid - 1;
-                    int column = tileFrame % tilesetTilesWide;
-                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
+                    int column = tileFrame % tilesetTilesWidth;
+                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWidth);
                     float x = (i % currentMap.Width) * currentMap.TileWidth;
                     float y = (float)Math.Floor(i / (double)currentMap.Width) * currentMap.TileHeight;
 
