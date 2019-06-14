@@ -19,6 +19,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         public readonly int PosY;
 
         // Border
+        Color borderColor;
         Rectangle topBorder;
         Rectangle leftBorder;
         Rectangle rightBorder;
@@ -43,8 +44,13 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             centerDot = new Rectangle((int)Center.X-1, (int)Center.Y-1, 3, 3);
         }
 
-        public void DrawBorder(Texture2D pixel, Color borderColor, GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
+        public void DrawBorder(Texture2D pixel, GraphicsDevice graphicsDevice, SpriteBatch spriteBatch)
         {
+            if (Passable)
+                borderColor = Color.Green;
+            else
+                borderColor = Color.Red;
+
             // Draw top line
             spriteBatch.Draw(pixel, topBorder, borderColor);
             // Draw left line

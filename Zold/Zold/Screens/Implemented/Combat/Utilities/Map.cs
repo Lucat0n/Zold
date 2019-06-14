@@ -3,13 +3,15 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using System.Collections.Generic;
 using TiledSharp;
+using Zold.Screens.Implemented.Combat.CombatObjects;
 using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.Utilities
 {
     class Map
     {
-        GameScreenManager gameScreenManager;
+        private GameScreenManager gameScreenManager;
+        private CombatScreen combatScreen;
 
         private TmxMap currentMap;
         private SpriteBatchSpriteSheet mapSprite;
@@ -19,6 +21,8 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         private int tilesetTilesWidth;
         private int tilesetTilesHeight;
         private int tilesetHeightOffset;
+        private int nodesY;
+        private int nodesX;
 
         public Dictionary<string,Node> Nodes;
         public int TopMapEdge;
@@ -26,21 +30,38 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         public int RightMapEdge;
         public int LeflMapEdge;
 
-        public Map(GameScreenManager gameScreenManager)
+        public Map(GameScreenManager gameScreenManager, CombatScreen combatScreen)
         {
             this.gameScreenManager = gameScreenManager;
+            this.combatScreen = combatScreen;
 
             currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
 
             InitMap(currentMap);
             CreateNodeGrid();
+            GenerateRandomObstacles(gameScreenManager, combatScreen, 10);
+        }
+
+        private void GenerateRandomObstacles(GameScreenManager gameScreenManager, CombatScreen combatScreen, int count)
+        {
+            Random rand = new Random();
+            for (int i = 0; i < count; i++)
+            {
+                int randX = rand.Next(0, nodesX);
+                int randY = rand.Next(0, nodesY);
+                Node node = Nodes[randX + "_" + randY];
+                Node node2 = Nodes[randX + 1 + "_" + randY];
+                combatScreen.AddObstacle(new Obstacle(new Vector2(node.PosX, node.PosY - node.Width), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/stone"), 1, 1, 32, 32), node.Height, node.Width));
+                node.Passable = false;
+                node2.Passable = false;
+            }
         }
 
         private void CreateNodeGrid()
         {
-            int nodesX = tileset.Width / 16;
-            int nodesY = (tileset.Height - TopMapEdge) / 16;
+            nodesX = tileset.Width / 16;
+            nodesY = (tileset.Height - TopMapEdge) / 16;
             Nodes = new Dictionary<string, Node>(nodesX * nodesY);
             for (int x = 0; x < nodesX; x++)
                 for (int y = 0; y < nodesY; y++)

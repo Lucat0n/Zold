@@ -23,6 +23,7 @@ namespace Zold.Screens.Implemented.Combat
         public List<Enemy> enemies;
         public List<Character> charactersToRender;
         public List<Projectile> projectiles;
+        public List<CombatObject> objects;
         public Timer timer;
         public Utilities.Map Map;
 
@@ -38,6 +39,7 @@ namespace Zold.Screens.Implemented.Combat
 
             projectiles = new List<Projectile>();
             charactersToRender = new List<Character>();
+            objects = new List<CombatObject>();
 
             IsTransparent = false;
 
@@ -84,7 +86,7 @@ namespace Zold.Screens.Implemented.Combat
             charactersToRender.Add(player);
             charactersToRender.AddRange(enemies);
 
-            Map = new Utilities.Map(gameScreenManager);
+            Map = new Utilities.Map(gameScreenManager, this);
 
             foreach (Character character in charactersToRender)
             {
@@ -106,7 +108,7 @@ namespace Zold.Screens.Implemented.Combat
             for (int x = 0; x < 40; x++)
                 for (int y = 0; y < 16; y++)
                 {
-                    Map.Nodes[x + "_" + y].DrawBorder(pixel, Color.Green, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
+                    Map.Nodes[x + "_" + y].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
                 }
             // END OF DEBUG
 
@@ -118,6 +120,9 @@ namespace Zold.Screens.Implemented.Combat
             projectiles.ForEach(projectile =>
             {
                 projectile.Draw(gameTime);
+            });
+            objects.ForEach(obj => {
+                obj.Draw(gameTime);
             });
             /*
             enemies.ForEach(enemy =>
@@ -169,6 +174,11 @@ namespace Zold.Screens.Implemented.Combat
             Projectile projectile = new Projectile(position, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), destination, width, height);
             projectile.Targets.AddRange(enemies);
             projectiles.Add(projectile);
+        }
+
+        public void AddObstacle(Obstacle obstacle)
+        {
+            objects.Add(obstacle);
         }
 
         private void OnTimerTick()
