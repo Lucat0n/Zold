@@ -12,11 +12,19 @@ namespace Zold.Screens
     {
         private Matrix transform;
         private Vector2 cameraPosition;
-        private const float zoom = 1.5f;
-        private const float rotation = 0.0f;
+        private float zoom;
+        private float rotation;
 
-        public Camera(Vector2 cameraPosition) => this.cameraPosition = cameraPosition;
-        
+        public Camera(float zoom, float rotation, Vector2 cameraPosition)
+        {
+            this.zoom = zoom;
+            this.rotation = rotation;
+            this.cameraPosition = cameraPosition;
+        }
+
+        public Camera(Vector2 cameraPosition) {
+            this.cameraPosition = cameraPosition;
+        }
 
         public void Follow(Vector2 spritePosition, float screenHeight, float screenWidth)
         {
