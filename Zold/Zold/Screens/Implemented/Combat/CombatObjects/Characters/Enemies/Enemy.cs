@@ -22,6 +22,11 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public abstract void AI(GameTime gameTime);
 
+        public override void Update(GameTime gameTime)
+        {
+            AI(gameTime);
+        }
+
         protected void Move(Vector2 direction)
         {
             UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());

@@ -33,6 +33,31 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
+        public override void Draw(GameTime gameTime)
+        {
+            SpriteBatchSpriteSheet.Begin();
+            DrawHealth(SpriteBatchSpriteSheet, "green");
+
+            if (action == "Moving")
+            {
+                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
+            }
+            else
+            {
+                if (direction == "Right")
+                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
+                if (direction == "Left")
+                    SpriteBatchSpriteSheet.Draw(Position, 3, 0);
+            }
+
+            SpriteBatchSpriteSheet.End();
+        }
+
+        public override void Update(GameTime gameTime)
+        {
+            Controls();
+        }
+
         public void Controls()
         {
             CenterPosition = new Vector2(Position.X + width / 2, Position.Y + height / 2);
@@ -90,26 +115,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
                 skill.StartPosition = CenterPosition;
                 skill.Use("Player", 10);
             }
-        }
-
-        public override void Draw(GameTime gameTime)
-        {
-            SpriteBatchSpriteSheet.Begin();
-            DrawHealth(SpriteBatchSpriteSheet, "green");
-
-            if (action == "Moving")
-            {
-                SpriteBatchSpriteSheet.PlayFullAniamtion(Position, direction, gameTime);
-            }
-            else
-            {
-                if (direction == "Right")
-                    SpriteBatchSpriteSheet.Draw(Position, 1, 0);
-                if (direction == "Left")
-                    SpriteBatchSpriteSheet.Draw(Position, 3, 0);
-            }
-
-            SpriteBatchSpriteSheet.End();
         }
 
         private void Block()

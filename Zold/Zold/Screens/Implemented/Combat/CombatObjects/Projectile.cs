@@ -23,10 +23,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             Targets = new List<Character>();
         }
 
-        public void Move(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            Position.X += destinationDirections.X * GetSpeed();
-            Position.Y += destinationDirections.Y * GetSpeed();
+            UpdatePosition(destinationDirections);
         }
 
         public override void Draw(GameTime gameTime)

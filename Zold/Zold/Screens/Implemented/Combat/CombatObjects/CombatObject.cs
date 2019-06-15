@@ -8,6 +8,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
     {
         public CombatScreen CombatScreen;
         public Vector2 Position;
+        public Vector2 TopPosition;
+        public Vector2 CenterPosition;
+        public Vector2 BottomPosition;
         public SpriteBatchSpriteSheet SpriteBatchSpriteSheet;
         public Stats Statistics;
         public float BaseSpeed { set; protected get; }
@@ -27,9 +30,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
             this.height = height;
             this.width = width;
+            
+            TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
+            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
+            BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
         }
 
         public abstract void Draw(GameTime gameTime);
+        public abstract void Update(GameTime gameTime);
 
         public void CalculateDepth()
         {
@@ -73,6 +81,26 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
                 (Position.Y < point.Y) && (Position.Y + height > point.Y))
                 return true;
             return false;
+        }
+
+        protected void UpdatePosition(float x, float y)
+        {
+            Position.X += x;
+            Position.Y += y;
+            TopPosition.Y += y;
+            TopPosition.X += x;
+            CenterPosition.X += x;
+            CenterPosition.Y += y;
+            BottomPosition.X += x;
+            BottomPosition.Y += y;
+        }
+
+        protected void UpdatePosition(Vector2 direction)
+        {
+            Position += direction;
+            TopPosition += direction;
+            CenterPosition += direction;
+            BottomPosition += direction;
         }
 
         protected float GetSpeed()

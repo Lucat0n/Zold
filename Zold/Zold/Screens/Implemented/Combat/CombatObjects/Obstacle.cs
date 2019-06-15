@@ -22,5 +22,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
             SpriteBatchSpriteSheet.End();
         }
+
+        public override void Update(GameTime gameTime) { }
     }
 }

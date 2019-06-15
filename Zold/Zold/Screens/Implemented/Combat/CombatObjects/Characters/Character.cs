@@ -6,9 +6,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     abstract class Character : CombatObject
     {
-        public Vector2 TopPosition;
-        public Vector2 CenterPosition;
-        public Vector2 BottomPosition;
         public string action;
         protected double actualHealthWidth;
         protected int healthWidth;
@@ -20,13 +17,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             this.Position = Position;
             this.Statistics = Statistics;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
-
-            this.height = height;
-            this.width = width;
-
-            TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
-            BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
 
             healthWidth = 48;
             healthBackgorundRectangle = new Rectangle((int)Position.X, (int)Position.Y - 10, healthWidth, 7);
@@ -51,18 +41,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             GetHeathPercentage();
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/black"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthBackgorundRectangle, Color.White);
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/" + color), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
-        }
-
-        protected void UpdatePosition(float x, float y)
-        {
-            Position.X += x;
-            Position.Y += y;
-            TopPosition.Y += y;
-            TopPosition.X += x;
-            CenterPosition.X += x;
-            CenterPosition.Y += y;
-            BottomPosition.X += x;
-            BottomPosition.Y += y;
         }
     }
 }
