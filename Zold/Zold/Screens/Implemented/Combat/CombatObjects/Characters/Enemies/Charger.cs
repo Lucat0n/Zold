@@ -114,10 +114,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         private void Charge()
         {
-            UpdatePosition(chargeDirection.X * chargeSpeed, chargeDirection.Y * chargeSpeed);
+            UpdatePosition(chargeDirection * chargeSpeed);
             chargeCheck += chargeSpeed;
 
-            if (player.CheckBoxCollision(Position, this) && !hit)
+            if (player.CheckBoxCollision(this) && !hit)
             {
                 player.Statistics.Health -= Statistics.Damage;
                 hit = true;

@@ -28,7 +28,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
         public override void Update(GameTime gameTime)
         {
-            UpdatePosition(destinationDirections);
+            UpdatePosition(destinationDirections * 80);
         }
 
         public override void Draw(GameTime gameTime)

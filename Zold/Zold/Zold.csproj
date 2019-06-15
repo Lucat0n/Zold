@@ -62,7 +62,7 @@
     <Compile Include="Screens\Implemented\Combat\Utilities\CombatBuilder.cs" />
     <Compile Include="Screens\Implemented\Combat\Utilities\Map.cs" />
     <Compile Include="Screens\Implemented\Combat\Utilities\Node.cs" />
-    <Compile Include="Screens\Implemented\Combat\CombatObjects\Map.cs" />
+    <Compile Include="Screens\Implemented\Combat\CombatObjects\Box.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Implemented\SlowingShot.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />

@@ -25,6 +25,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         private int nodesX;
 
         public Dictionary<string,Node> Nodes;
+        public List<Node> CollisionNodes;
         public int TopMapEdge;
         public int BottomMapEdge;
         public int RightMapEdge;
@@ -34,6 +35,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         {
             this.gameScreenManager = gameScreenManager;
             this.combatScreen = combatScreen;
+            CollisionNodes = new List<Node>();
 
             currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
@@ -50,16 +52,18 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             {
                 int randX = rand.Next(0, nodesX);
                 int randY = rand.Next(0, nodesY);
-                Node node = Nodes[randX + "_" + randY];
+                Node node1 = Nodes[randX + "_" + randY];
                 Node node2 = Nodes[randX + 1 + "_" + randY];
-                if (!node.Passable || !node2.Passable)
+                if (!node1.Passable || !node2.Passable)
                 {
                     i--;
                     continue;
                 }
-                combatScreen.AddObstacle(new Obstacle(new Vector2(node.PosX, node.PosY - node.Width), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/stone"), 1, 1, 32, 32), node.Height, node.Width));
-                node.Passable = false;
+                combatScreen.AddObstacle(new Obstacle(new Vector2(node1.PosX, node1.PosY - node1.Width), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/stone"), 1, 1, 32, 32), node1.Height, node1.Width));
+                node1.Passable = false;
                 node2.Passable = false;
+                CollisionNodes.Add(node1);
+                CollisionNodes.Add(node2);
             }
         }
 

@@ -7,12 +7,13 @@ using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.Skills;
 using Zold.Statistics;
 using Zold.Screens.Implemented.Combat.Skills.Implemented;
+using Zold.Screens.Implemented.Combat.Utilities;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     class Player : Character
     {
-        private Map range;
+        private Box range;
         private Timer attackTimer;
         private List<Enemy> enemies;
         private SlowingShot skill;
@@ -26,7 +27,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             
             direction = "Right";
 
-            range = new Map(Vector2.Zero, null, 40, 1);
+            HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
+            range = new Box(Vector2.Zero, null, 40, 1);
             skill = new SlowingShot(CombatScreen);
             
             attackTimer = new Timer();
@@ -56,48 +58,60 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public override void Update(GameTime gameTime)
         {
+            CalculateDepth();
+            CheckDirection();
+            SpriteBatchSpriteSheet.LayerDepth = layerDepth;
             Controls();
         }
 
         public void Controls()
         {
-            CenterPosition = new Vector2(Position.X + width / 2, Position.Y + height / 2);
-            BottomPosition = new Vector2(Position.X, Position.Y + 44);
-            CalculateDepth();
-            CheckDirection();
-            SpriteBatchSpriteSheet.LayerDepth = layerDepth;
+            Node collisionNode = CombatScreen.CheckNodeCollision(this);
 
             if (attackTimer.Enabled == false)
                 action = "Idle";
 
             if (Keyboard.GetState().IsKeyDown(Keys.Up))
             {
-                if (BottomPosition.Y >= CombatScreen.Map.TopMapEdge)
+                if (BottomPosition.Y >= CombatScreen.Map.TopMapEdge && collisionNode == null)
+                {
                     UpdatePosition(0, -GetSpeed());
+                }
+
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Down))
             {
-                if (BottomPosition.Y <= CombatScreen.Map.BottomMapEdge)
+                if (BottomPosition.Y <= CombatScreen.Map.BottomMapEdge && collisionNode == null)
+                {
                     UpdatePosition(0, GetSpeed());
+                }
+
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Left))
             {
-                if (BottomPosition.X >= CombatScreen.Map.LeflMapEdge)
+                if (BottomPosition.X >= CombatScreen.Map.LeflMapEdge && collisionNode == null)
+                {
                     UpdatePosition(-GetSpeed(), 0);
+                }
+
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
             if (Keyboard.GetState().IsKeyDown(Keys.Right))
             {
-                if (BottomPosition.X <= CombatScreen.Map.RightMapEdge)
+                if (BottomPosition.X <= CombatScreen.Map.RightMapEdge && collisionNode == null)
+                {
                     UpdatePosition(GetSpeed(), 0);
+                }
+
                 attackTimer.Enabled = false;
                 action = "Moving";
             }
+            collisionNode = null;
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {
@@ -123,15 +137,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Attack(object source, ElapsedEventArgs e)
         {
-            Vector2 hitbox;
-
             if (direction == "Right")
-                hitbox = CenterPosition;
+                range.Position = CenterPosition;
             else
-                hitbox = new Vector2(CenterPosition.X - 40, CenterPosition.Y);
+                range.Position = new Vector2(CenterPosition.X - 40, CenterPosition.Y);
 
             enemies.ForEach( Enemy => {
-                if (Enemy.CheckBoxCollision(hitbox, range))
+                if (Enemy.CheckBoxCollision(range))
                     Enemy.Statistics.Health -= Statistics.Damage;
             });
             attackTimer.Enabled = false;

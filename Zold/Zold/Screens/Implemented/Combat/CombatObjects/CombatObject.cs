@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using System;
+using Zold.Screens.Implemented.Combat.Utilities;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -15,6 +17,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public Stats Statistics;
         public float BaseSpeed { set; protected get; }
         public CombatObject Map { set; protected get; }
+        public Rectangle HitBox;
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
@@ -27,6 +30,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         {
             this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
+            HitBox = new Rectangle();
 
             this.height = height;
             this.width = width;
@@ -65,12 +69,12 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             tempPosition = Position;
         }
 
-        public bool CheckBoxCollision(Vector2 point, CombatObject target)
+        public bool CheckBoxCollision(CombatObject target)
         {
-            if (Position.X < point.X + target.width &&
-                Position.X + this.width > point.X &&
-                Position.Y < point.Y + target.height &&
-                Position.Y + this.height > point.Y)
+            if (Position.X < target.Position.X + target.width &&
+                Position.X + width > target.Position.X &&
+                Position.Y < target.Position.Y + target.height &&
+                Position.Y + height > target.Position.Y)
                 return true;
             return false;
         }
@@ -93,6 +97,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             CenterPosition.Y += y;
             BottomPosition.X += x;
             BottomPosition.Y += y;
+            HitBox.X += Math.Sign(x);
+            HitBox.Y += Math.Sign(y);
         }
 
         protected void UpdatePosition(Vector2 direction)

@@ -82,7 +82,7 @@ namespace Zold.Screens.Implemented.Combat
                 if(obj is Character)
                 {
                     obj.CombatScreen = this;
-                    obj.Map = new CombatObjects.Map(new Vector2(LeflMapEdge, TopMapEdge), null, RightMapEdge, BottomMapEdge - TopMapEdge);
+                    obj.Map = new Box(new Vector2(Map.LeflMapEdge, Map.TopMapEdge), null, Map.RightMapEdge, Map.BottomMapEdge - Map.TopMapEdge);
                 }
             }
         }
@@ -178,7 +178,7 @@ namespace Zold.Screens.Implemented.Combat
                     projectile = (Projectile)obj;
                     projectile.Targets.ForEach(target =>
                     {
-                        if (target.CheckBoxCollision(projectile.Position, target))
+                        if (target.CheckBoxCollision(projectile))
                         {
                             toDelete = target;
                             target.Statistics.Health -= projectile.Statistics.Damage;
@@ -189,6 +189,29 @@ namespace Zold.Screens.Implemented.Combat
                     projectile.Targets.Remove(toDelete);
                 }
             });
+        }
+
+        private bool CheckNodeCollisions()
+        {
+            bool collision = false;
+            Map.CollisionNodes.ForEach(node =>
+            {
+                if (node.HitBox.Intersects(player.HitBox))
+                    collision = true;
+            });
+            return collision;
+        }
+
+        public Node CheckNodeCollision(CombatObject obj)
+        {
+            Node collision = null;
+            Map.CollisionNodes.ForEach(node =>
+            {
+                if ((node.PosX < obj.BottomPosition.X) && (node.PosX + node.Width > obj.BottomPosition.X) &&
+                (node.PosY < obj.BottomPosition.Y) && (node.PosY + node.Height > obj.BottomPosition.Y))
+                    collision = node;
+            });
+            return collision;
         }
     }
 }

@@ -29,7 +29,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         protected void Move(Vector2 direction)
         {
-            UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());
+            UpdatePosition(direction * GetSpeed());
         }
 
         protected void GetPlayerDirection()
