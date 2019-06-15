@@ -52,6 +52,11 @@ namespace Zold.Screens.Implemented.Combat.Utilities
                 int randY = rand.Next(0, nodesY);
                 Node node = Nodes[randX + "_" + randY];
                 Node node2 = Nodes[randX + 1 + "_" + randY];
+                if (!node.Passable || !node2.Passable)
+                {
+                    i--;
+                    continue;
+                }
                 combatScreen.AddObstacle(new Obstacle(new Vector2(node.PosX, node.PosY - node.Width), new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get("combat/Textures/stone"), 1, 1, 32, 32), node.Height, node.Width));
                 node.Passable = false;
                 node2.Passable = false;
@@ -63,8 +68,8 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             nodesX = tileset.Width / 16;
             nodesY = (tileset.Height - TopMapEdge) / 16;
             Nodes = new Dictionary<string, Node>(nodesX * nodesY);
-            for (int x = 0; x < nodesX; x++)
-                for (int y = 0; y < nodesY; y++)
+            for (int x = 0; x <= nodesX; x++)
+                for (int y = 0; y <= nodesY; y++)
                 {
                     Nodes.Add(x + "_" + y, new Node(x, y, TopMapEdge));
                 }
