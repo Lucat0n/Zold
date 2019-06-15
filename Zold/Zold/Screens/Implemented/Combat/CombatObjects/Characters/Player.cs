@@ -6,15 +6,16 @@ using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.Skills;
 using Zold.Statistics;
+using Zold.Screens.Implemented.Combat.Skills.Implemented;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     class Player : Character
     {
-        private Projectile range;
+        private Map range;
         private Timer attackTimer;
         private List<Enemy> enemies;
-        private Skill skill;
+        private SlowingShot skill;
 
         public Player(Vector2 position, Stats statistics, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, statistics, SpriteBatchSpriteSheet, width, height)
         {
@@ -25,8 +26,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             
             direction = "Right";
 
-            range = new Projectile(Vector2.Zero, 0, null, Vector2.Zero, 40, 1);
-            skill = new Skill(CombatScreen);
+            range = new Map(Vector2.Zero, null, 40, 1);
+            skill = new SlowingShot(CombatScreen);
             
             attackTimer = new Timer();
             attackTimer.Interval = 500;
@@ -105,15 +106,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             }
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
+                skill.CombatScreen = CombatScreen;
                 if (direction == "Right")
                 {
-                    skill.Destination = CalcDirection(CenterPosition, new Vector2(CenterPosition.X + 1, CenterPosition.Y));
+                    skill.Use(CenterPosition, 10, CalcDirection(CenterPosition, new Vector2(CenterPosition.X + 1, CenterPosition.Y)));
                 }
                 else
-                    skill.Destination = CalcDirection(CenterPosition, new Vector2(CenterPosition.X - 1, CenterPosition.Y));
-                skill.CombatScreen = CombatScreen;
-                skill.StartPosition = CenterPosition;
-                skill.Use("Player", 10);
+                    skill.Use(CenterPosition, 10, CalcDirection(CenterPosition, new Vector2(CenterPosition.X - 1, CenterPosition.Y)));
             }
         }
 
@@ -137,14 +136,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             });
             attackTimer.Enabled = false;
             action = "Idle";
-        }
-
-        public bool CheckPointCollision(Vector2 point)
-        {
-            if ((Position.X < point.X) && (Position.X + width > point.X) &&
-                (Position.Y < point.Y) && (Position.Y + height > point.Y))
-                return true;
-            return false;
         }
     }
 }

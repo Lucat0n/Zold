@@ -8,7 +8,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
     class Ranged : Enemy
     {
         private Vector2 moveDirection;
-        private Skill skill;
+        private ShootEnemy skill;
         private int mapOffset;
 
         public Ranged(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
@@ -17,7 +17,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
 
             mapOffset = 50;
-            skill = new Skill(CombatScreen);
+            skill = new ShootEnemy(CombatScreen, Statistics.Damage);
         }
 
         public override void AI(GameTime gameTime)
@@ -30,24 +30,21 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             if (Distance <= 100)
             {
                 action = "Running";
+                skill.CooldownTimer.Interval = 1000;
                 Run();
             }
-            else if(Distance <= 600)
+            else if(Distance <= 500)
             {
                 action = "Shootin'";
                 skill.Destination = CalcDirection(CenterPosition, player.CenterPosition);
                 skill.CombatScreen = CombatScreen;
                 skill.StartPosition = CenterPosition;
-                skill.Use("Enemy", Statistics.Damage);
-            }
-            else if (Distance <= 100)
-            {
-                action = "Running";
-                Run();
+                skill.Use();
             }
             else
             {
                 action = "Moving";
+                skill.CooldownTimer.Interval = 1000;
                 Move(playerDirection);
             }
         }

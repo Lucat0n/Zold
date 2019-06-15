@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -19,7 +20,8 @@ namespace Zold.Buffs.Implemented
             if (!isTriggered)
             {
                 originalAmount = (int)pi.GetValue(statistics);
-                int targetAmount = (int)((float)pi.GetValue(statistics) * Amount);
+                float temp = (float)originalAmount;
+                int targetAmount = (int)(temp * Amount);
                 pi.SetValue(statistics, targetAmount);
                 isTriggered = true;
             }
