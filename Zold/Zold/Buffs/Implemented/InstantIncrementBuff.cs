@@ -14,7 +14,7 @@ namespace Zold.Buffs.Implemented
 
         public override void Start()
         {
-            int value = (int)pi.GetValue(null);
+            int value = (int)pi.GetValue(statistics);
             value += amount;
             pi.SetValue(statistics, Convert.ChangeType(value, pi.PropertyType));
             statistics.buffSet.Remove(this);
