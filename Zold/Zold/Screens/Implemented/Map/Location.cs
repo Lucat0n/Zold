@@ -25,6 +25,7 @@ namespace Zold.Screens.Implemented.Map
 
         
         public static List<TmxMap> LisatofLocations = new List<TmxMap>();
+       // public static List<Location> ListofPlaces = new List<Location>();
         TmxMap map2;
         TmxMap currentMap;
 
@@ -44,16 +45,21 @@ namespace Zold.Screens.Implemented.Map
 
         Effect opacity;
         float currentOp;
+        public bool postproc;
         List<Rectangle> opacityTiles;
 
         float opacityValue;
 
-        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player)
+        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc)
         {
             this.gameScreenManager = gameScreenManager;
             this.spriteSheet = spriteSheet;
             this.player = player;
+            this.postproc = postproc;
             currentMap = getCurrentMap();
+
+            //ListofPlaces.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player,false));
+          //  ListofPlaces.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player,true));
 
             opacity =Assets.Instance.Get("placeholders/shaders/opacityShader");
             opacityTiles = new List<Rectangle>();
@@ -79,6 +85,14 @@ namespace Zold.Screens.Implemented.Map
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
             // getColideObjects(currentMap, 0);
+        }
+
+        public List<Location> ListofPlaces()
+        {
+           List<Location> ListofLocs = new List<Location>();
+           ListofLocs.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player,false));
+           ListofLocs.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player,true));
+           return ListofLocs;
         }
 
 
@@ -124,7 +138,7 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraTransformation);
+                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, transformMatrix: cameraTransformation);
 
 
                     if (xx == "Sciany" || xx =="Podloga" || xx == "Meble")

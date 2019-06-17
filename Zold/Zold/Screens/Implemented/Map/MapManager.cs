@@ -20,6 +20,8 @@ namespace Zold.Screens.Implemented.Map
         public List<Npc> ListofNpcs = new List<Npc>();
         public List<Enemy> ListofEnemies = new List<Enemy>();
 
+        public static List<Location> ListofPlaces = new List<Location>();
+
         TmxMap currentMap;
 
         // here is dope music
@@ -84,7 +86,10 @@ namespace Zold.Screens.Implemented.Map
 
         Effect effect;
         Effect opacity;
-        RenderTarget2D lightsTarget;
+        Effect light;
+        RenderTarget2D lightsTarget, mainTarget;
+
+        bool postprocessing;
 
         public MapManager()
         {
@@ -113,9 +118,11 @@ namespace Zold.Screens.Implemented.Map
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
             effect = Assets.Instance.Get("placeholders/shaders/testShader");
             opacity = Assets.Instance.Get("placeholders/shaders/opacityShader");
+            light = Assets.Instance.Get("placeholders/shaders/lightShader");
 
             var pp = gameScreenManager.GraphicsDevice.PresentationParameters;
             lightsTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            mainTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
 
             location1 = true;
             location2 = false;
@@ -144,7 +151,9 @@ namespace Zold.Screens.Implemented.Map
             //camera
            // bounds = new Rectangle(0, 0, 0, 0);
 
-            location = new Locations.TheRoom(gameScreenManager, spriteSheet, player);
+            location = new Locations.TheRoom(gameScreenManager, spriteSheet, player,false);
+            ListofPlaces = location.ListofPlaces();
+            ListofPlaces[0] = location;
             initTheLocation(location);
             pos = location.playersNewPosition();
 
@@ -163,6 +172,8 @@ namespace Zold.Screens.Implemented.Map
 
         void initTheLocation(Location location)
         {
+
+            postprocessing = location.postproc;
             currentMap = location.getCurrentMap();
             location.initMap(gameScreenManager, currentMap);
 
@@ -179,6 +190,27 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Draw(GameTime gameTime)
         {
+            if (postprocessing)
+            {
+
+
+                Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask");
+                gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
+                gameScreenManager.GraphicsDevice.Clear(Color.Black);
+                gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraPlayer.Transform());
+
+                // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
+                gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 120, (int)player.GetPosition().Y - 120, lightMask.Width + 25, lightMask.Height + 25), Color.White);
+                // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(100,100, lightMask.Width / 2, lightMask.Height / 2), Color.White);
+                //  gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(200,100, lightMask.Width /2, lightMask.Height / 2), Color.White);
+
+                // gameScreenManager.SpriteBatch.Draw(lightMask, new Vector2((int)npc.GetPosition().X, (int)npc.GetPosition().Y), Color.White);
+
+                gameScreenManager.SpriteBatch.End();
+
+
+                gameScreenManager.GraphicsDevice.SetRenderTarget(mainTarget);
+            }
 
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
@@ -193,20 +225,32 @@ namespace Zold.Screens.Implemented.Map
                 location.drawTiles(layer, currentMap, cameraPlayer.Transform());
             });
 
+            gameScreenManager.SpriteBatch.End();
+
             if (ListofNpcs != null)
             {
                 ListofNpcs.ForEach(npc =>
                 {
-                    
-                    
-                    effect.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
+
+
+
+                    //gameScreenManager.GraphicsDevice.SetRenderTarget(mainTarget);
+                    //gameScreenManager.GraphicsDevice.Clear(Color.DarkGreen);
+
+                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+
 
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
+
                     interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y);
+                    gameScreenManager.SpriteBatch.End();
+
                 });
             }
 
+         //   gameScreenManager.GraphicsDevice.SetRenderTarget(null);
+           // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
             //gameScreenManager.SpriteBatch.End();
             if (ListofEnemies != null)
             {
@@ -214,21 +258,36 @@ namespace Zold.Screens.Implemented.Map
                 {
                     // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
                     //gameScreenManager.GraphicsDevice.Clear(Color.Black);
-                    //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
                     opacity.Parameters["param1"].SetValue(1.5f);
                     opacity.CurrentTechnique.Passes[0].Apply();
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
-                    // gameScreenManager.SpriteBatch.End();
+
+
+                     gameScreenManager.SpriteBatch.End();
+
+                    
                 });
             }
 
+            if (postprocessing)
+            {
+                gameScreenManager.GraphicsDevice.SetRenderTarget(null);
+                gameScreenManager.GraphicsDevice.Clear(Color.Black);
+                gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
+                light.Parameters["lightMask"].SetValue(lightsTarget);
+                light.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
+                gameScreenManager.SpriteBatch.Draw(mainTarget, new Vector2(0, 0), Color.White);
+                gameScreenManager.SpriteBatch.End();
+            }
+
             //gameScreenManager.GraphicsDevice.SetRenderTarget(null);
-           // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+            // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
             // player.Animation(gameTime, cameraPlayer.Transform());
-
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
 
@@ -338,34 +397,40 @@ namespace Zold.Screens.Implemented.Map
 
         void ManageLocations(GameTime gametime) // Trzeba zmienic to bo wstyd xD, Tylko jak?
         {
-            //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
-            if (location1)
-            {
 
-                if (location.getPortal() != null)
+            foreach(var place in ListofPlaces){
+
+                if (place == location)
                 {
-                    if (player.GetPosition().X == location.getPortal().X && player.GetPosition().Y == location.getPortal().Y)
+                    if (location.getPortal() != null)
                     {
-                        location = new Locations.Dormitory(gameScreenManager, spriteSheet, player);
-                        player.SetPosition(location.playersNewPosition());
-                        initTheLocation(location);
-                        if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
+                        if (player.GetPosition().X == location.getPortal().X && player.GetPosition().Y == location.getPortal().Y)
                         {
-                            var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
-                            lq.TriggerVisit();
-                            gameScreenManager.QuestManager.UpdateQuests();
-                        }
+                            location = ListofPlaces[ListofPlaces.IndexOf(place)+1];
+                            player.SetPosition(location.playersNewPosition());
+                            initTheLocation(location);
+                            if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
+                            {
+                                var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
+                                lq.TriggerVisit();
+                                gameScreenManager.QuestManager.UpdateQuests();
+                            }
 
-                        location1 = false;
-                        location2 = true;
+                        }
                     }
                 }
             }
+            //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+            //if (location1)
+            //{
 
-            if (location2)
-            {
+               
+            //}
 
-            }
+            //if (location2)
+            //{
+
+            //}
  
            // gameScreenManager.SpriteBatch.End();
         }
