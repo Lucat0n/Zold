@@ -66,52 +66,40 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Controls()
         {
-            Node collisionNode = CombatScreen.CheckNodeCollision(this);
-
             if (attackTimer.Enabled == false)
                 action = "Idle";
 
-            if (Keyboard.GetState().IsKeyDown(Keys.Up))
+            if (Keyboard.GetState().IsKeyDown(Keys.Up) && BottomPosition.Y >= CombatScreen.Map.TopMapEdge && attackTimer.Enabled == false)
             {
-                if (BottomPosition.Y >= CombatScreen.Map.TopMapEdge && collisionNode == null)
-                {
-                    UpdatePosition(0, -GetSpeed());
-                }
-
-                attackTimer.Enabled = false;
+                Velocity.Y = -1;
                 action = "Moving";
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Down))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Down) && BottomPosition.Y <= CombatScreen.Map.BottomMapEdge && attackTimer.Enabled == false)
             {
-                if (BottomPosition.Y <= CombatScreen.Map.BottomMapEdge && collisionNode == null)
-                {
-                    UpdatePosition(0, GetSpeed());
-                }
-
-                attackTimer.Enabled = false;
+                Velocity.Y = 1;
                 action = "Moving";
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Left))
+            else
             {
-                if (BottomPosition.X >= CombatScreen.Map.LeflMapEdge && collisionNode == null)
-                {
-                    UpdatePosition(-GetSpeed(), 0);
-                }
+                Velocity.Y = 0;
+            }
 
-                attackTimer.Enabled = false;
+            if (Keyboard.GetState().IsKeyDown(Keys.Left) && BottomPosition.X >= CombatScreen.Map.LeflMapEdge && attackTimer.Enabled == false)
+            {
+                Velocity.X = -1;
                 action = "Moving";
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.Right))
+            else if (Keyboard.GetState().IsKeyDown(Keys.Right) && BottomPosition.X <= CombatScreen.Map.RightMapEdge && attackTimer.Enabled == false)
             {
-                if (BottomPosition.X <= CombatScreen.Map.RightMapEdge && collisionNode == null)
-                {
-                    UpdatePosition(GetSpeed(), 0);
-                }
-
-                attackTimer.Enabled = false;
+                Velocity.X = 1;
                 action = "Moving";
             }
-            collisionNode = null;
+            else
+            {
+                Velocity.X = 0;
+            }
+            UpdatePosition(Velocity * GetSpeed());
+            CombatScreen.CheckNodeCollision(this);
 
             if (Keyboard.GetState().IsKeyDown(Keys.A))
             {

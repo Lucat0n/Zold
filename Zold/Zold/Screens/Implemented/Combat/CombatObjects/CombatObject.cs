@@ -18,13 +18,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public float BaseSpeed { set; protected get; }
         public CombatObject Map { set; protected get; }
         public Rectangle HitBox;
+        public Vector2 Velocity;
+        public int Height;
+        public int Width;
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
         protected float scale;
         protected string direction;
-        protected int height;
-        protected int width;
 
         public CombatObject(Vector2 Position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height)
         {
@@ -32,12 +33,12 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
             HitBox = new Rectangle();
 
-            this.height = height;
-            this.width = width;
+            this.Height = height;
+            this.Width = width;
             
-            TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
-            BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
+            TopPosition = new Vector2(Position.X + this.Width / 2, Position.Y);
+            CenterPosition = new Vector2(Position.X + this.Width / 2, Position.Y + this.Height / 2);
+            BottomPosition = new Vector2(Position.X + this.Width / 2, Position.Y + this.Height);
         }
 
         public abstract void Draw(GameTime gameTime);
@@ -71,18 +72,18 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
         public bool CheckBoxCollision(CombatObject target)
         {
-            if (Position.X < target.Position.X + target.width &&
-                Position.X + width > target.Position.X &&
-                Position.Y < target.Position.Y + target.height &&
-                Position.Y + height > target.Position.Y)
+            if (Position.X < target.Position.X + target.Width &&
+                Position.X + Width > target.Position.X &&
+                Position.Y < target.Position.Y + target.Height &&
+                Position.Y + Height > target.Position.Y)
                 return true;
             return false;
         }
 
         public bool CheckPointCollision(Vector2 point)
         {
-            if ((Position.X < point.X) && (Position.X + width > point.X) &&
-                (Position.Y < point.Y) && (Position.Y + height > point.Y))
+            if ((Position.X < point.X) && (Position.X + Width > point.X) &&
+                (Position.Y < point.Y) && (Position.Y + Height > point.Y))
                 return true;
             return false;
         }
@@ -107,6 +108,18 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             TopPosition += direction;
             CenterPosition += direction;
             BottomPosition += direction;
+            HitBox.X += Math.Sign(direction.X);
+            HitBox.Y += Math.Sign(direction.Y);
+        }
+
+        public void SetPosition(Vector2 position)
+        {
+            Position = position;
+            TopPosition = new Vector2(position.X + Width / 2, position.Y);
+            CenterPosition = new Vector2(position.X + Width / 2, position.Y + Height / 2);
+            BottomPosition = new Vector2(position.X + Width / 2, position.Y + Height);
+            HitBox.X = Math.Sign(position.X);
+            HitBox.Y = Math.Sign(position.Y);
         }
 
         protected float GetSpeed()

@@ -41,7 +41,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             CheckDirection();
             chargeSpeed = BaseSpeed * 350;
             playerDirection = CalcDirection(BottomPosition, new Vector2(player.BottomPosition.X, player.BottomPosition.Y));
-            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), BottomPosition);
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - Height), BottomPosition);
 
             if (prepareTimer.Enabled == true)
                 action = "Preparing";

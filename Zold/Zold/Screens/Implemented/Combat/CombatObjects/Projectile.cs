@@ -19,8 +19,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             this.destinationDirections = destinationDirections;
             this.Skill = Skill;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
             Statistics = new Stats(0, 0, damage, 200, 0, 0);
 
             Targets = new List<Character>();

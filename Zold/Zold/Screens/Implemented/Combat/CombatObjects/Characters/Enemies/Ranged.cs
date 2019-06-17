@@ -25,7 +25,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             CalculateDepth();
             CheckDirection();
             playerDirection = CalcDirection(Position, player.Position);
-            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - height), Position);
+            Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - Height), Position);
 
             if (Distance <= 100)
             {

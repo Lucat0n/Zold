@@ -202,14 +202,35 @@ namespace Zold.Screens.Implemented.Combat
             return collision;
         }
 
-        public Node CheckNodeCollision(CombatObject obj)
+        public bool CheckNodeCollision(CombatObject obj)
         {
-            Node collision = null;
+            bool collision = false;
             Map.CollisionNodes.ForEach(node =>
             {
                 if ((node.PosX < obj.BottomPosition.X) && (node.PosX + node.Width > obj.BottomPosition.X) &&
                 (node.PosY < obj.BottomPosition.Y) && (node.PosY + node.Height > obj.BottomPosition.Y))
-                    collision = node;
+                {
+                    collision = true;
+                    if (obj is Character)
+                    {
+                        Vector2 newPos = obj.Position;
+
+                        if (obj.Velocity.X > 0) // object came from the right
+                            newPos.X = node.PosX - obj.Width / 2;
+                        else if (obj.Velocity.X < 0) // object came from the left
+                            newPos.X = node.PosX + node.Width - obj.Width / 2;
+                        if (obj.Velocity.Y > 0) // object came from the top
+                            newPos.Y = node.PosY - obj.Height;
+                        else if (obj.Velocity.Y < 0) // object came from the bottom
+                            newPos.Y = node.PosY + node.Height - obj.Height;
+
+                        obj.SetPosition(newPos);
+                    }
+                    else if (obj is Projectile)
+                    {
+                        objects.Remove(obj);
+                    }
+                }
             });
             return collision;
         }
