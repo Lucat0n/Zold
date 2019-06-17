@@ -73,6 +73,7 @@ namespace Zold.Screens.Implemented.Map
             currentOp = 0.55f;
         }
 
+        public abstract string getLocQuest();
         public abstract TmxMap getCurrentMap();
         public abstract List<int> getLayerNumbers();
         public abstract List<int> getColideLayers();
@@ -107,6 +108,10 @@ namespace Zold.Screens.Implemented.Map
         public virtual void drawTiles(int layer, TmxMap map, Matrix cameraTransformation)
         {
             long tileFrame;
+
+            Rectangle rect;
+            Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
+
             Effect effect = Assets.Instance.Get("placeholders/shaders/testShader");
 
             for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
@@ -191,7 +196,20 @@ namespace Zold.Screens.Implemented.Map
 
                         else
                         {
-                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            rect = new Rectangle((int)x, (int)y, tileWidth, tileHeight);
+
+                            if (ghost.Intersects(rect))
+                            {
+                                opacity.Parameters["param1"].SetValue(0.75f);
+                                opacity.CurrentTechnique.Passes[0].Apply();
+                                spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            }
+                            else
+                            {
+                                opacity.Parameters["param1"].SetValue(1f);
+                                opacity.CurrentTechnique.Passes[0].Apply();
+                                spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            }
                         }
                     }
 

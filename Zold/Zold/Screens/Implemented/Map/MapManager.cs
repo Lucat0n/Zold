@@ -18,6 +18,7 @@ namespace Zold.Screens.Implemented.Map
         public List<int> LayerNumbers = new List<int>();
         public List<int> ColideLayers = new List<int>();
         public List<Npc> ListofNpcs = new List<Npc>();
+        public List<Color> ListofColors = new List<Color>();
         public List<Enemy> ListofEnemies = new List<Enemy>();
 
         public static List<Location> ListofPlaces = new List<Location>();
@@ -33,7 +34,7 @@ namespace Zold.Screens.Implemented.Map
 
         // //postacie
         Vector2 pos;
-        
+
         // Combat
         Combat.CombatScreen Combat;
         Combat.CombatObjects.Characters.Player combatPlayer;
@@ -49,9 +50,7 @@ namespace Zold.Screens.Implemented.Map
         bool wasPaused = false;
         bool songStart = false;
         bool pressed = false;
-        bool location1;
-        bool location2;
-        bool location3;
+
         bool isPaused = false;
         private bool isEscPressed = false;
 
@@ -86,6 +85,7 @@ namespace Zold.Screens.Implemented.Map
         RenderTarget2D lightsTarget, mainTarget;
 
         bool postprocessing;
+        private object random;
 
         public MapManager()
         {
@@ -95,6 +95,15 @@ namespace Zold.Screens.Implemented.Map
         #region init
         public override void LoadContent()
         {
+            //ListofColors.Add(Color.Green);
+            ListofColors.Add(Color.Blue);
+            ListofColors.Add(Color.Red);
+            //ListofColors.Add(Color.Orange);
+            //ListofColors.Add(Color.Cyan);
+            //ListofColors.Add(Color.Yellow);
+            //ListofColors.Add(Color.Purple);
+
+
             gameScreenManager.ContentLoader.LoadLocation("placeholders");
             gameScreenManager.ContentLoader.LoadLocation("combat");
 
@@ -119,10 +128,6 @@ namespace Zold.Screens.Implemented.Map
             var pp = gameScreenManager.GraphicsDevice.PresentationParameters;
             lightsTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
             mainTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
-
-            location1 = true;
-            location2 = false;
-            location3 = false;
 
             pos = new Vector2(64, 96);
 
@@ -187,10 +192,10 @@ namespace Zold.Screens.Implemented.Map
             if (postprocessing)
             {
 
-
+                var rand = new Random().Next(ListofColors.Count);
                 Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask");
                 gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
-                gameScreenManager.GraphicsDevice.Clear(Color.Black);
+                gameScreenManager.GraphicsDevice.Clear(ListofColors[rand]);
                 gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraPlayer.Transform());
 
                 // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
@@ -226,10 +231,6 @@ namespace Zold.Screens.Implemented.Map
                 ListofNpcs.ForEach(npc =>
                 {
 
-
-
-                    //gameScreenManager.GraphicsDevice.SetRenderTarget(mainTarget);
-                    //gameScreenManager.GraphicsDevice.Clear(Color.DarkGreen);
 
                     gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
@@ -404,42 +405,22 @@ namespace Zold.Screens.Implemented.Map
                             location = ListofPlaces[ListofPlaces.IndexOf(place) + 1];
                             player.SetPosition(location.playersNewPosition());
                             initTheLocation(location);
-                            if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
+                            if (location.getLocQuest() != null)
                             {
-                                var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests["lQ1"];
-                                lq.TriggerVisit();
-                                gameScreenManager.QuestManager.UpdateQuests();
+                                if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey(location.getLocQuest()))
+                                {
+                                    var lq = (LocationQuest)gameScreenManager.QuestManager.ActiveQuests[location.getLocQuest()];
+                                    lq.TriggerVisit();
+                                    gameScreenManager.QuestManager.UpdateQuests();
+                                }
                             }
 
                         }
                     }
                 }
             }
-            //gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
-            //if (location1)
-            //{
-
-
-            //}
-
-            //if (location2)
-            //{
-
-            //}
-
-            // gameScreenManager.SpriteBatch.End();
+            #endregion
+            #endregion
         }
-        #endregion
-
-        /*private void CalculatePause(GameTime gameTime)
-        {
-            this.PauseCooldown -= new TimeSpan(0,0,0,gameTime.ElapsedGameTime.Milliseconds);
-            if (PauseCooldown <= TimeSpan.Zero)
-            {
-                Debug.WriteLine("Halo salut");
-                wasPaused = false;
-            }
-        }*/
     }
 }
-#endregion

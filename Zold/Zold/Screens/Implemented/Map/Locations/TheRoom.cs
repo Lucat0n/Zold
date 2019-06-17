@@ -81,5 +81,10 @@ namespace Zold.Screens.Implemented.Map.Locations
         {
             return null;
         }
+
+        public override string getLocQuest()
+        {
+            return "lQ1";
+        }
     }
 }
