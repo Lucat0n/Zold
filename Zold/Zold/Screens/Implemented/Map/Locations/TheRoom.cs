@@ -16,7 +16,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         List<int> colisions;
         List<Npc> characters;
 
-        public TheRoom(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player) : base(gameScreenManager, spriteSheet, player)
+        public TheRoom(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player,postproc)
         {
             currentMap = new TmxMap(@"Content/graphic/locations/MainRoom/MainRoom.tmx");
 
@@ -54,6 +54,7 @@ namespace Zold.Screens.Implemented.Map.Locations
             LayerNumbers.Add(3);
             LayerNumbers.Add(4); // sciany
             LayerNumbers.Add(5);
+            LayerNumbers.Add(6);
             //LayerNumbers.Add(0);
 
             //LayerNumbers.Add(4);

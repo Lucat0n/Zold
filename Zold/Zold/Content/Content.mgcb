@@ -488,6 +488,18 @@
 /processorParam:Quality=Best
 /build:placeholders/Music/wesola.wav
 
+#begin placeholders/shaders/lightShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/lightShader.fx
+
+#begin placeholders/shaders/opacityShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/opacityShader.fx
+
 #begin placeholders/shaders/testShader.fx
 /importer:EffectImporter
 /processor:EffectProcessor
@@ -589,6 +601,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/hpbars.png
+
+#begin placeholders/Textures/lightmask.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/lightmask.png
 
 #begin placeholders/Textures/mag.png
 /importer:TextureImporter

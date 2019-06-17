@@ -51,12 +51,26 @@ namespace Zold.Screens.Implemented.Map
 
         Player player;
 
-        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player)
+        Effect opacity;
+        float currentOp;
+
+        List<Rectangle> opacityTiles;
+
+        public bool postproc;
+        public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc)
         {
             this.gameScreenManager = gameScreenManager;
             this.spriteSheet = spriteSheet;
             this.player = player;
+            this.postproc = postproc;
             currentMap = getCurrentMap();
+
+            //ListofPlaces.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player,false));
+            //  ListofPlaces.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player,true));
+
+            opacity = Assets.Instance.Get("placeholders/shaders/opacityShader");
+            opacityTiles = new List<Rectangle>();
+            currentOp = 0.55f;
         }
 
         public abstract TmxMap getCurrentMap();
@@ -78,6 +92,14 @@ namespace Zold.Screens.Implemented.Map
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
             // getColideObjects(currentMap, 0);
+        }
+
+        public List<Location> ListofPlaces()
+        {
+            List<Location> ListofLocs = new List<Location>();
+            ListofLocs.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player, false));
+            ListofLocs.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player, true));
+            return ListofLocs;
         }
 
 
@@ -120,43 +142,43 @@ namespace Zold.Screens.Implemented.Map
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraTransformation);
+                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, transformMatrix: cameraTransformation);
 
 
                     if (xx == "Sciany" || xx =="Podloga" || xx == "Meble")
                     {
 
-                        if (layer == 5 && flipV && flipH && flipD)
+                        if (layer == 6 && flipV && flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && flipV && !flipH && !flipD)
+                        else if (layer == 6 && flipV && !flipH && !flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White * 0);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && flipV && !flipH && flipD)
+                        else if (layer == 6 && flipV && !flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //    spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && flipV && flipH && !flipD)
+                        else if (layer == 6 && flipV && flipH && !flipD)
                         {
                             // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && !flipV && flipH && !flipD)
+                        else if (layer == 6 && !flipV && flipH && !flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
                             //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && !flipV && !flipH && flipD)
+                        else if (layer == 6 && !flipV && !flipH && flipD)
                         {
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
                         }
-                        else if (layer == 5 && !flipV && flipH && flipD)
+                        else if (layer == 6 && !flipV && flipH && flipD)
                         {
                             //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(90 * Math.PI / 180), new Vector2(0, 32), SpriteEffects.None, 1);
