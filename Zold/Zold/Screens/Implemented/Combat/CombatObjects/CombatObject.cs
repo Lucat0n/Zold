@@ -21,6 +21,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public Vector2 Velocity;
         public int Height;
         public int Width;
+        protected string name;
         protected Vector2 tempPosition;
         protected float rotation;
         protected float layerDepth;
@@ -63,9 +64,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public void CheckDirection()
         {
             if (Position.X > tempPosition.X)
-                direction = "Right";
+                direction = "Right_" + name;
             else if (Position.X < tempPosition.X)
-                direction = "Left";
+                direction = "Left_" + name;
 
             tempPosition = Position;
         }

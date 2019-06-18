@@ -13,9 +13,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public Ranged(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
-            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
-
+            name = "Ranged";
             mapOffset = 50;
             skill = new ShootEnemy(CombatScreen, Statistics.Damage);
         }
@@ -60,10 +58,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else
             {
-                direction = player.Position.X >= Position.X ? "Right" : "Left";
-                if (direction == "Right")
+                direction = player.Position.X >= Position.X ? "Right_Charger" : "Left_Charger";
+                if (direction == "Right_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
-                if (direction == "Left")
+                if (direction == "Left_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 3, 0);
             }
 

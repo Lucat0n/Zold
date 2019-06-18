@@ -19,10 +19,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public Charger(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
-            SpriteBatchSpriteSheet.MakeAnimation(0, "Right", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(1, "Left", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(3, "Death_Right", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(4, "Death_Left", 250);
+            name = "Charger";
 
             charge = false;
 
@@ -77,23 +74,23 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else if (action == "Charging")
             {
-                if (direction == "Right")
+                if (direction == "Right_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 4, 0);
-                if (direction == "Left")
+                if (direction == "Left_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 4, 1);
             }
             else if (action == "Preparing")
             {
-                if (direction == "Right")
+                if (direction == "Right_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 0, 0);
-                if (direction == "Left")
+                if (direction == "Left_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
             }
             else if (action == "Idle")
             {
-                if (direction == "Right")
+                if (direction == "Right_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 0, 0);
-                if (direction == "Left")
+                if (direction == "Left_Charger")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
             }
 

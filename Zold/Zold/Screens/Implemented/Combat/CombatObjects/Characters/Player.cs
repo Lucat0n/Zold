@@ -20,12 +20,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public Player(Vector2 position, Stats statistics, List<Enemy> enemies, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height): base(position, statistics, SpriteBatchSpriteSheet, width, height)
         {
+            name = "Player";
             this.enemies = enemies;
-
-            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
             
-            direction = "Right";
+            direction = "Right_Charger";
 
             HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             range = new Box(Vector2.Zero, null, 40, 1);
@@ -47,9 +45,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             }
             else
             {
-                if (direction == "Right")
+                if (direction == "Right_Player")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
-                if (direction == "Left")
+                if (direction == "Left_Player")
                     SpriteBatchSpriteSheet.Draw(Position, 3, 0);
             }
 
@@ -109,7 +107,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 skill.CombatScreen = CombatScreen;
-                if (direction == "Right")
+                if (direction == "Right_Charger")
                 {
                     skill.Use(CenterPosition, 10, CalcDirection(CenterPosition, new Vector2(CenterPosition.X + 1, CenterPosition.Y)));
                 }
@@ -125,7 +123,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Attack(object source, ElapsedEventArgs e)
         {
-            if (direction == "Right")
+            if (direction == "Right_Charger")
                 range.Position = CenterPosition;
             else
                 range.Position = new Vector2(CenterPosition.X - 40, CenterPosition.Y);

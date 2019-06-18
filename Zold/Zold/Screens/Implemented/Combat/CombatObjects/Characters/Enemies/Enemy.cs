@@ -17,7 +17,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             this.player = player;
 
-            direction = "Left";
+            direction = "Left_" + name;
         }
 
         public abstract void AI(GameTime gameTime);
