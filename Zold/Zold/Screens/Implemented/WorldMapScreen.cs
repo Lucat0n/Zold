@@ -15,8 +15,12 @@ namespace Zold.Screens.Implemented
     {
         private bool isDownPressed = false;
         private bool isLeftPressed = false;
+        private bool isMoving = false;
         private bool isRightPressed = false;
         private bool isUpPressed = false;
+        private byte locationToVisit;
+        private int route;
+        private int routeProgress;
         private Zold.Utilities.Map map;
         private SpriteFont font;
         private Texture2D background;
@@ -33,6 +37,7 @@ namespace Zold.Screens.Implemented
         {
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0, 0, gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
+            gameScreenManager.SpriteBatch.Draw(line, new Rectangle(new Point(map.PlayerLocation.Location.X, map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Width / 20), new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 20)), Color.White);
             foreach (var mn in map.Locations)
             {
                 Rectangle r = new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 40));
@@ -74,16 +79,16 @@ namespace Zold.Screens.Implemented
                         switch (i)
                         {
                             case 0:
-                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Width/16, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.Red);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width / 16, mn.Location.Y + r.Height / 2 - r.Width/16, r.Width / 8, mn.Neighbours[i].Location.Y - mn.Location.Y), Color.AntiqueWhite);
                                 break;
                             case 1:
-                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Location.X - mn.Neighbours[i].Location.X, r.Height / 8), Color.Blue);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Neighbours[i].Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Location.X - mn.Neighbours[i].Location.X, r.Height / 8), Color.AntiqueWhite);
                                 break;
                             case 2:
-                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width/16, mn.Neighbours[i].Location.Y + r.Height / 2 - r.Width / 16, r.Width / 8,mn.Location.Y - mn.Neighbours[i].Location.Y), Color.LightSeaGreen);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2 - r.Width / 16, mn.Neighbours[i].Location.Y + r.Height / 2 - r.Width / 16, r.Width / 8,mn.Location.Y - mn.Neighbours[i].Location.Y), Color.AntiqueWhite);
                                 break;
                             case 3:
-                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Height / 8), Color.Indigo);
+                                gameScreenManager.SpriteBatch.Draw(line, new Rectangle(mn.Location.X + r.Width / 2, mn.Location.Y + r.Height / 2 - r.Height / 16, mn.Neighbours[i].Location.X - mn.Location.X, r.Height / 8), Color.AntiqueWhite);
                                 break;
                         }   
                     }
@@ -102,45 +107,68 @@ namespace Zold.Screens.Implemented
                 gameScreenManager.RemoveScreen(this);
             if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
             {
-                if (map.PlayerLocation.Neighbours[0] != null)
+                if (!isMoving && map.PlayerLocation.Neighbours[0] != null)
                 {
-                    map.PlayerLocation = map.PlayerLocation.Neighbours[0];
-                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
+                    route = Math.Abs(map.PlayerLocation.Location.Y - map.PlayerLocation.Neighbours[0].Location.Y) + Math.Abs(map.PlayerLocation.Location.X - map.PlayerLocation.Neighbours[0].Location.X);
+                    Debug.WriteLine(route);
+                    isMoving = true;
+                    locationToVisit = 0;
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Down))
                 isDownPressed = false;
-            if (keyboardState.IsKeyDown(Keys.Left) && !isLeftPressed)
+            if (!isMoving && keyboardState.IsKeyDown(Keys.Left) && !isLeftPressed)
             {
                 if (map.PlayerLocation.Neighbours[1] != null)
                 {
-                    map.PlayerLocation = map.PlayerLocation.Neighbours[1];
-                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
+                    route = Math.Abs(map.PlayerLocation.Location.Y - map.PlayerLocation.Neighbours[1].Location.Y) + Math.Abs(map.PlayerLocation.Location.X - map.PlayerLocation.Neighbours[1].Location.X);
+                    Debug.WriteLine(route);
+                    isMoving = true;
+                    locationToVisit = 1;
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Left))
                 isLeftPressed = false;
-            if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
+            if (!isMoving && keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
             {
                 if (map.PlayerLocation.Neighbours[2] != null)
                 {
-                    map.PlayerLocation = map.PlayerLocation.Neighbours[2];
-                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
+                    route = Math.Abs(map.PlayerLocation.Location.Y - map.PlayerLocation.Neighbours[2].Location.Y) + Math.Abs(map.PlayerLocation.Location.X - map.PlayerLocation.Neighbours[2].Location.X);
+                    Debug.WriteLine(route);
+                    isMoving = true;
+                    locationToVisit = 2;
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Up))
                 isUpPressed = false;
-            if (keyboardState.IsKeyDown(Keys.Right) && !isRightPressed)
+            if (!isMoving && keyboardState.IsKeyDown(Keys.Right) && !isRightPressed)
             {
                 if (map.PlayerLocation.Neighbours[3] != null)
                 {
-                    map.PlayerLocation = map.PlayerLocation.Neighbours[3];
-                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
+                    route = Math.Abs(map.PlayerLocation.Location.Y - map.PlayerLocation.Neighbours[3].Location.Y) + Math.Abs(map.PlayerLocation.Location.X - map.PlayerLocation.Neighbours[3].Location.X);
+                    Debug.WriteLine(route);
+                    isMoving = true;
+                    locationToVisit = 3;
                 }
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
                 isRightPressed = false;
         }
+
+        public override void Update(GameTime gametime)
+        {
+            if (isMoving)
+            {
+                if (route-- > 0)
+                    routeProgress++;
+                else
+                {
+                    isMoving = false;
+                    map.PlayerLocation = map.PlayerLocation.Neighbours[locationToVisit];
+                }
+            }
+        }
+
 
         public override void LoadContent()
         {
