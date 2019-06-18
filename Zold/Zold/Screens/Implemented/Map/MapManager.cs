@@ -95,13 +95,16 @@ namespace Zold.Screens.Implemented.Map
         #region init
         public override void LoadContent()
         {
-            //ListofColors.Add(Color.Green);
+            ListofColors.Add(Color.Green);
+            ListofColors.Add(Color.DarkGreen);
             ListofColors.Add(Color.Blue);
             ListofColors.Add(Color.Red);
-            //ListofColors.Add(Color.Orange);
-            //ListofColors.Add(Color.Cyan);
-            //ListofColors.Add(Color.Yellow);
-            //ListofColors.Add(Color.Purple);
+            ListofColors.Add(Color.Orange);
+            ListofColors.Add(Color.Cyan);
+            ListofColors.Add(Color.Yellow);
+            ListofColors.Add(Color.Purple);
+            ListofColors.Add(Color.Indigo);
+            ListofColors.Add(Color.Crimson);
 
 
             gameScreenManager.ContentLoader.LoadLocation("placeholders");
@@ -146,9 +149,7 @@ namespace Zold.Screens.Implemented.Map
             combatBuilder.AddRanged(1, 400, 300);
             combatBuilder.AddRat(1, 300, 350);
             Combat = combatBuilder.Build();
-
-            //camera
-            // bounds = new Rectangle(0, 0, 0, 0);
+            
 
             location = new Locations.TheRoom(gameScreenManager, spriteSheet, player, false);
             ListofPlaces = location.ListofPlaces();
@@ -192,14 +193,14 @@ namespace Zold.Screens.Implemented.Map
             if (postprocessing)
             {
 
-                var rand = new Random().Next(ListofColors.Count);
-                Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask");
+               // var rand = new Random().Next(ListofColors.Count);
+                Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask3");
                 gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
-                gameScreenManager.GraphicsDevice.Clear(ListofColors[rand]);
+                gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
                 gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraPlayer.Transform());
 
                 // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
-                gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 120, (int)player.GetPosition().Y - 120, lightMask.Width + 25, lightMask.Height + 25), Color.White);
+                gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 120, (int)player.GetPosition().Y - 120, lightMask.Width + 15, lightMask.Height + 15), Color.White);
                 // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(100,100, lightMask.Width / 2, lightMask.Height / 2), Color.White);
                 //  gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(200,100, lightMask.Width /2, lightMask.Height / 2), Color.White);
 
@@ -270,7 +271,7 @@ namespace Zold.Screens.Implemented.Map
             if (postprocessing)
             {
                 gameScreenManager.GraphicsDevice.SetRenderTarget(null);
-                gameScreenManager.GraphicsDevice.Clear(Color.Black);
+                gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
                 gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
                 light.Parameters["lightMask"].SetValue(lightsTarget);
                 light.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
@@ -283,8 +284,8 @@ namespace Zold.Screens.Implemented.Map
 
             // player.Animation(gameTime, cameraPlayer.Transform());
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
-            gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString(), new Vector2(10, 10), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString(), new Vector2(10, 40), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString(), new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString(), new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 90), Color.White);
 
             if (gameScreenManager.IsFullScreenOn)
             {
@@ -390,7 +391,7 @@ namespace Zold.Screens.Implemented.Map
 
         #region managelocations
 
-        void ManageLocations(GameTime gametime) // Trzeba zmienic to bo wstyd xD, Tylko jak?
+        void ManageLocations(GameTime gametime) 
         {
 
             foreach (var place in ListofPlaces)

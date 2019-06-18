@@ -100,6 +100,7 @@ namespace Zold.Screens.Implemented.Map
             List<Location> ListofLocs = new List<Location>();
             ListofLocs.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player, false));
             ListofLocs.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player, true));
+            ListofLocs.Add(new Locations.DormitoryFirstFloor(gameScreenManager, spriteSheet, player, false));
             return ListofLocs;
         }
 
@@ -213,7 +214,7 @@ namespace Zold.Screens.Implemented.Map
                         }
                     }
 
-                    if (xx == "sciany2" || xx == "podloga2" || xx == "meble2")
+                    if (xx == "sciany2" || xx == "podloga2" || xx == "meble2" || xx == "sciany3" || xx == "podloga3" || xx == "meble3")
                     {
 
                         //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);

@@ -10,16 +10,16 @@ using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Map.Locations
 {
-    internal class Dormitory : Location
+    internal class DormitoryFirstFloor : Location
     {
         List<Enemy> enemies;
         Player player;
 
 
         TmxMap currentMap;
-        public Dormitory(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
+        public DormitoryFirstFloor(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
         {
-            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_v.tmx");
+            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_i.tmx");
             this.player = player;
         }
 
@@ -48,7 +48,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Enemy> GetEnemies()
         {
             enemies = new List<Enemy>();
-            enemies.Add(new Enemy(player, new Vector2(400, 200), Assets.Instance.Get("placeholders/Textures/rat") ));
+            enemies.Add(new Enemy(player, new Vector2(400, 200), Assets.Instance.Get("placeholders/Textures/rat")));
             return enemies;
         }
 
@@ -60,7 +60,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<int> getLayerNumbers()
         {
             List<int> LayerNumbers = new List<int>();
-            // LayerNumbers.Add(2);
+            //LayerNumbers.Add(2);
             LayerNumbers.Add(3);
             LayerNumbers.Add(4);
             LayerNumbers.Add(5);
@@ -69,12 +69,12 @@ namespace Zold.Screens.Implemented.Map.Locations
 
         public override Vector2 getPortal()
         {
-            return new Vector2(544, 64);
+            return new Vector2(0, 544);
         }
 
         public override Vector2 playersNewPosition()
         {
-            return new Vector2(192, 64);
+            return new Vector2(544,224);
         }
 
         public override string getLocQuest()
