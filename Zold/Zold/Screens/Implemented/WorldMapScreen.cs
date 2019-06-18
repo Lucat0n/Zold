@@ -17,9 +17,7 @@ namespace Zold.Screens.Implemented
         private bool isLeftPressed = false;
         private bool isRightPressed = false;
         private bool isUpPressed = false;
-        private List<mapNode> locations;
-        private List<Tuple<mapNode, mapNode>> visitedVertices;
-        private mapNode playerLocation;
+        private Zold.Utilities.Map map;
         private SpriteFont font;
         private Texture2D background;
         private Texture2D friendlyLocation;
@@ -29,71 +27,13 @@ namespace Zold.Screens.Implemented
 
         internal WorldMapScreen()
         {
-            locations = new List<mapNode>();
-            visitedVertices = new List<Tuple<mapNode, mapNode>>();
-            playerLocation = new mapNode(new Point(310, 310), "Dormitory", null);
-            playerLocation.IsVisited = true;
-            playerLocation.IsFriendly = true;
-            playerLocation.Name = "Akademik";
-            mapNode[] mn = new mapNode[] { playerLocation,null, null, null };
-            mapNode dormitoryOutside = new mapNode(new Point(400, 200), "DormOutside", mn);
-            mapNode[] mn2 = new mapNode[] { playerLocation, null, null, null };
-            mapNode dormitoryOutside2 = new mapNode(new Point(100, 150), "DormOutside2", mn2);
-            dormitoryOutside.Name = "Dziedziniec akademika";
-            dormitoryOutside2.Name = "Dziedziniec akademika2";
-            playerLocation.Neighbours[3] = dormitoryOutside;
-            playerLocation.Neighbours[1] = dormitoryOutside2;
-            locations.Add(playerLocation);
-            locations.Add(dormitoryOutside);
-            locations.Add(dormitoryOutside2);
-        }
-
-        internal class mapNode
-        {
-            private Point location;
-            private mapNode[] neighbours;
-            private String name;
-            private String targetMapID;
-            private bool isFriendly = false;
-            private bool isVisited = false;
-
-            public mapNode()
-            {
-                location = new Point();
-                neighbours = new mapNode[4];
-                targetMapID = "";
-            }
-
-            public mapNode(Point location, String targetMapID, mapNode[] neighbours)
-            {
-                this.location = location;
-                this.neighbours = neighbours ?? new mapNode[4];
-                this.targetMapID = targetMapID;
-            }
-
-            public mapNode(Point location, String targetMapID, bool isFriendly, bool isVisited, mapNode[] neighbours)
-            {
-                this.location = location;
-                this.neighbours = neighbours ?? new mapNode[4];
-                this.targetMapID = targetMapID;
-                this.isFriendly = isFriendly;
-                this.isVisited = isVisited;
-            }
-
-            public string Name { get => name; set => name = value; }
-            internal bool IsFriendly { get => isFriendly; set => isFriendly = value; }
-            internal bool IsVisited { get => isVisited; set => isVisited = value; }
-            internal Point Location { get => location; set => location = value; }
-            internal mapNode[] Neighbours { get => neighbours; }
-            internal String TargetMapID { get => targetMapID; set => targetMapID = value; }
         }
 
         public override void Draw(GameTime gameTime)
         {
             gameScreenManager.SpriteBatch.Begin();
             gameScreenManager.SpriteBatch.Draw(background, new Rectangle(0, 0, gameScreenManager.GraphicsDevice.Viewport.Width, gameScreenManager.GraphicsDevice.Viewport.Height), Color.White);
-
-            foreach (mapNode mn in locations)
+            foreach (var mn in map.Locations)
             {
                 Rectangle r = new Rectangle(mn.Location, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 40));
                 for (int i = 0; i < 4; i++)
@@ -162,40 +102,40 @@ namespace Zold.Screens.Implemented
                 gameScreenManager.RemoveScreen(this);
             if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
             {
-                if (playerLocation.Neighbours[0] != null)
+                if (map.PlayerLocation.Neighbours[0] != null)
                 {
-                    playerLocation = playerLocation.Neighbours[0];
-                    Debug.WriteLine(playerLocation.TargetMapID);
+                    map.PlayerLocation = map.PlayerLocation.Neighbours[0];
+                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Down))
                 isDownPressed = false;
             if (keyboardState.IsKeyDown(Keys.Left) && !isLeftPressed)
             {
-                if (playerLocation.Neighbours[1] != null)
+                if (map.PlayerLocation.Neighbours[1] != null)
                 {
-                    playerLocation = playerLocation.Neighbours[1];
-                    Debug.WriteLine(playerLocation.TargetMapID);
+                    map.PlayerLocation = map.PlayerLocation.Neighbours[1];
+                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Left))
                 isLeftPressed = false;
             if (keyboardState.IsKeyDown(Keys.Up) && !isUpPressed)
             {
-                if (playerLocation.Neighbours[2] != null)
+                if (map.PlayerLocation.Neighbours[2] != null)
                 {
-                    playerLocation = playerLocation.Neighbours[2];
-                    Debug.WriteLine(playerLocation.TargetMapID);
+                    map.PlayerLocation = map.PlayerLocation.Neighbours[2];
+                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
                 }
             }
             else if (keyboardState.IsKeyUp(Keys.Up))
                 isUpPressed = false;
             if (keyboardState.IsKeyDown(Keys.Right) && !isRightPressed)
             {
-                if (playerLocation.Neighbours[3] != null)
+                if (map.PlayerLocation.Neighbours[3] != null)
                 {
-                    playerLocation = playerLocation.Neighbours[3];
-                    Debug.WriteLine(playerLocation.TargetMapID);
+                    map.PlayerLocation = map.PlayerLocation.Neighbours[3];
+                    Debug.WriteLine(map.PlayerLocation.TargetMapID);
                 }
             }
             else if (keyboardState.IsKeyDown(Keys.Right))
@@ -211,6 +151,7 @@ namespace Zold.Screens.Implemented
             background = Assets.Instance.Get("worldMap/Textures/ulicapixelated");
             line = Assets.Instance.Get("worldMap/Textures/lineTex");
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
+            map = gameScreenManager.Map;
         }
 
         public override void UnloadContent()
