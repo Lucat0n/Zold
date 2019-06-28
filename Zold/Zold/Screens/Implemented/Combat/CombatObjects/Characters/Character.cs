@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using RoyT.AStar;
+using System;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -7,6 +9,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
     abstract class Character : CombatObject
     {
         public string action;
+        public Position GridPosition;
         protected double actualHealthWidth;
         protected int healthWidth;
         protected Rectangle healthRectangle;
@@ -20,6 +23,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             healthWidth = 48;
             healthBackgorundRectangle = new Rectangle((int)Position.X, (int)Position.Y - 10, healthWidth, 7);
+            GridPosition = new Position();
 
             CalculateDepth();
             tempPosition = Position;
@@ -41,6 +45,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             GetHeathPercentage();
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/black"), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthBackgorundRectangle, Color.White);
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/" + color), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
+        }
+
+        protected void SetGridPosition()
+        {
+            CombatScreen.Map.Nodes[GridPosition].Occupied = false;
+            GridPosition = new Position((int)BottomPosition.X / CombatScreen.Map.NodeWidth, ((int)BottomPosition.Y  - CombatScreen.Map.TopMapEdge) / CombatScreen.Map.NodeHeight);
+            CombatScreen.Map.Nodes[GridPosition].Occupied = true;
         }
     }
 }

@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using RoyT.AStar;
+using System;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -12,6 +14,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         public double Distance { get; set; }
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
+        protected Position[] path;
 
         public Enemy(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, statistics, SpriteBatchSpriteSheet, height, width)
         {
@@ -24,6 +27,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public override void Update(GameTime gameTime)
         {
+            SetPath();
+            SetGridPosition();
             AI(gameTime);
         }
 
@@ -35,6 +40,29 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         protected void GetPlayerDirection()
         {
             playerDirection = CalcDirection(BottomPosition, player.BottomPosition);
+        }
+
+        protected Vector2 GetNextNodeDirection()
+        {
+            if (path != null)
+                return CalcDirection(BottomPosition, CombatScreen.Map.Nodes[path[1]].Center);
+            return Vector2.Zero;
+        }
+
+        private void SetPath()
+        {
+            if (path != null)
+            {
+                Array.ForEach(path, node =>
+                {
+                    CombatScreen.Map.Nodes[node].Path = false;
+                });
+            }
+            path = CombatScreen.Map.PathfindingGrid.GetPath(GridPosition, player.GridPosition);
+            Array.ForEach(path, node =>
+            {
+                CombatScreen.Map.Nodes[node].Path = true;
+            });
         }
     }
 }

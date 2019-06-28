@@ -59,7 +59,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (prepareTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(playerDirection);
+                Move(GetNextNodeDirection());
             }
         }
 

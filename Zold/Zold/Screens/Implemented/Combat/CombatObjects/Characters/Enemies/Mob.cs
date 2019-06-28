@@ -21,7 +21,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
-            playerDirection = CalcDirection(BottomPosition, player.BottomPosition);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y), BottomPosition);
 
             if (attackTimer.Enabled == true)
@@ -37,7 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (attackTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(playerDirection);
+                Move(GetNextNodeDirection());
             }
         }
 

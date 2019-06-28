@@ -8,6 +8,7 @@ using Zold.Screens.Implemented.Combat.Skills;
 using Zold.Statistics;
 using Zold.Screens.Implemented.Combat.Skills.Implemented;
 using Zold.Screens.Implemented.Combat.Utilities;
+using System;
 
 namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
@@ -58,6 +59,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         {
             CalculateDepth();
             CheckDirection();
+            SetGridPosition();
             SpriteBatchSpriteSheet.LayerDepth = layerDepth;
             Controls();
         }

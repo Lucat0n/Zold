@@ -99,7 +99,7 @@ namespace Zold.Screens.Implemented.Combat
             for (int x = 0; x < 40; x++)
                 for (int y = 0; y < 16; y++)
                 {
-                    Map.Nodes[x + "_" + y].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
+                    Map.Nodes[new RoyT.AStar.Position(x,y)].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
                 }
             // END OF DEBUG
 
