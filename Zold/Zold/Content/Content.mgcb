@@ -141,6 +141,18 @@
 /processorParam:TextureFormat=Color
 /build:combat/Textures/skeleton.png
 
+#begin combat/Textures/stone.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/stone.png
+
 #begin Content.mgcb
 /copy:Content.mgcb
 

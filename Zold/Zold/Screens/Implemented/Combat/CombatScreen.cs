@@ -7,6 +7,7 @@ using Zold.Utilities;
 using Zold.Screens.Implemented.Combat.CombatObjects;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Screens.Implemented.Combat.Utilities;
 using System.Threading;
 using Zold.Buffs;
 using System.Threading.Tasks;
@@ -21,31 +22,21 @@ namespace Zold.Screens.Implemented.Combat
     {
         public Player player;
         public List<Enemy> enemies;
-        public List<Character> charactersToRender;
-        public List<Projectile> projectiles;
+        public List<CombatObject> objects;
         public Timer timer;
-        public int TopMapEdge;
-        public int BottomMapEdge;
-        public int RightMapEdge;
-        public int LeflMapEdge;
+        public Utilities.Map Map;
 
         private bool isEscPressed = false;
 
-        private TmxMap currentMap;
-        private SpriteBatchSpriteSheet mapSprite;
-        private Texture2D tileset;
-        private int tileWidth;
-        private int tileHeight;
-        private int tilesetTilesWide;
-        private int tilesetTilesHigh;
+        //DEBUG
+        Texture2D pixel;
 
         public CombatScreen(Player player, List<Enemy> enemies)
         {
             this.player = player;
             this.enemies = enemies;
-
-            projectiles = new List<Projectile>();
-            charactersToRender = new List<Character>();
+            
+            objects = new List<CombatObject>();
 
             IsTransparent = false;
 
@@ -55,26 +46,18 @@ namespace Zold.Screens.Implemented.Combat
         public override void Update(GameTime gameTime)
         {
             CheckProjectileCollisions();
-            charactersToRender = charactersToRender.OrderBy(item => item.Position.Y).ToList();
+            objects = objects.OrderBy(item => item.BottomPosition.Y).ToList();
 
-            charactersToRender.ForEach(character => character.BaseSpeed = gameScreenManager.baseSpeed);
-
-            enemies.ForEach(enemy =>
-            {
-                enemy.AI(gameTime);
-            });
-
-            projectiles.ForEach(projectile =>
-            {
-                projectile.BaseSpeed = gameScreenManager.baseSpeed;
-                projectile.Move(gameTime);
+            objects.ForEach(obj => {
+                obj.BaseSpeed = gameScreenManager.baseSpeed;
+                obj.Update(gameTime);
             });
 
             var enemiesToDelete = enemies.Where(x => x.Statistics.Health <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
             {
                 enemies.Remove(enemy);
-                charactersToRender.Remove(enemy);
+                objects.Remove(enemy);
             }
 
             if (enemies.Count == 0)
@@ -89,36 +72,40 @@ namespace Zold.Screens.Implemented.Combat
 
         public override void LoadContent()
         {
-            currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
-            mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
-            
-            charactersToRender.Add(player);
-            charactersToRender.AddRange(enemies);
+            objects.Add(player);
+            objects.AddRange(enemies);
 
-            InitMap(currentMap);
+            Map = new Utilities.Map(gameScreenManager, this);
 
-            foreach (Character character in charactersToRender)
+            foreach (CombatObject obj in objects)
             {
-                character.CombatScreen = this;
-                character.Map = new CombatObjects.Map(new Vector2(LeflMapEdge, TopMapEdge), null, RightMapEdge, BottomMapEdge - TopMapEdge);
+                if(obj is Character)
+                {
+                    obj.CombatScreen = this;
+                    obj.Map = new Box(new Vector2(Map.LeflMapEdge, Map.TopMapEdge), null, Map.RightMapEdge, Map.BottomMapEdge - Map.TopMapEdge);
+                }
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
 
-            DrawTiles(0, currentMap);
-            charactersToRender.ForEach(item =>
-            {
-                item.Draw(gameTime);
-            });
-            projectiles.ForEach(projectile =>
-            {
-                projectile.Draw(gameTime);
+            // DEBUG - grid
+            pixel = new Texture2D(GameScreenManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
+            pixel.SetData(new[] { Color.White });
+            for (int x = 0; x < 40; x++)
+                for (int y = 0; y < 16; y++)
+                {
+                    Map.Nodes[x + "_" + y].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
+                }
+            // END OF DEBUG
+
+            Map.DrawTiles(0);
+            objects.ForEach(obj => {
+                obj.Draw(gameTime);
             });
 
             gameScreenManager.SpriteBatch.End();
@@ -148,21 +135,27 @@ namespace Zold.Screens.Implemented.Combat
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.Add(player);
-            projectiles.Add(projectile);
+            objects.Add(projectile);
         }
 
         public void MakePlayerProjectile(Vector2 position, Vector2 destination, Skill skill, int dmg, string texture, int width, int height)
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.AddRange(enemies);
-            projectiles.Add(projectile);
+            objects.Add(projectile);
+        }
+
+        public void AddObstacle(Obstacle obstacle)
+        {
+            objects.Add(obstacle);
         }
 
         private void OnTimerTick()
         {
-            Parallel.ForEach(charactersToRender, character =>
+            Parallel.ForEach(objects, obj =>
             {
-                character.Statistics.UpdateBuffs();
+                if (obj is Character)
+                    obj.Statistics.UpdateBuffs();
             });
         }
 
@@ -177,56 +170,69 @@ namespace Zold.Screens.Implemented.Combat
         private void CheckProjectileCollisions()
         {
             Character toDelete = null;
-            projectiles.ForEach(projectile =>
+            Projectile projectile = null;
+            objects.ForEach(obj =>
             {
-                projectile.Targets.ForEach(target =>
+                if (obj is Projectile)
                 {
-                    if (target.CheckBoxCollision(projectile.Position, target))
+                    projectile = (Projectile)obj;
+                    projectile.Targets.ForEach(target =>
                     {
-                        toDelete = target;
-                        target.Statistics.Health -= projectile.Statistics.Damage;
-                        if (projectile.Skill != null)
-                            projectile.Skill.ApplyEffect(target);
-                    }
-                });
-                projectile.Targets.Remove(toDelete);
+                        if (target.CheckBoxCollision(projectile))
+                        {
+                            toDelete = target;
+                            target.Statistics.Health -= projectile.Statistics.Damage;
+                            if (projectile.Skill != null)
+                                projectile.Skill.ApplyEffect(target);
+                        }
+                    });
+                    projectile.Targets.Remove(toDelete);
+                }
             });
         }
 
-        public virtual void InitMap(TmxMap currentMap)
+        private bool CheckNodeCollisions()
         {
-            tileset = gameScreenManager.Content.Load<Texture2D>("graphic\\combat\\" + currentMap.Tilesets[0].Name.ToString());
-            tileWidth = currentMap.Tilesets[0].TileWidth;
-            tileHeight = currentMap.Tilesets[0].TileHeight;
-            tilesetTilesWide = tileset.Width / tileWidth;
-            tilesetTilesHigh = tileset.Height / tileHeight;
-
-            TopMapEdge = int.Parse(currentMap.Layers[1].Properties["Height"]) * tileHeight;
-            BottomMapEdge = tileset.Height;
-            RightMapEdge = tileset.Width;
-            LeflMapEdge = 0;
+            bool collision = false;
+            Map.CollisionNodes.ForEach(node =>
+            {
+                if (node.HitBox.Intersects(player.HitBox))
+                    collision = true;
+            });
+            return collision;
         }
 
-        public virtual void DrawTiles(int layer, TmxMap map)
+        public bool CheckNodeCollision(CombatObject obj)
         {
-            for (var i = 0; i < map.Layers[layer].Tiles.Count; i++)
+            bool collision = false;
+            Map.CollisionNodes.ForEach(node =>
             {
-                int gid = map.Layers[layer].Tiles[i].Gid;
-
-                if (gid != 0)
+                if ((node.PosX < obj.BottomPosition.X) && (node.PosX + node.Width > obj.BottomPosition.X) &&
+                (node.PosY < obj.BottomPosition.Y) && (node.PosY + node.Height > obj.BottomPosition.Y))
                 {
-                    int tileFrame = gid - 1;
-                    int column = tileFrame % tilesetTilesWide;
-                    int row = (int)Math.Floor((double)tileFrame / (double)tilesetTilesWide);
-                    float x = (i % map.Width) * map.TileWidth;
-                    float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
+                    collision = true;
+                    if (obj is Character)
+                    {
+                        Vector2 newPos = obj.Position;
 
-                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    mapSprite.Begin();
-                    mapSprite.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
-                    mapSprite.End();
+                        if (obj.Velocity.X > 0) // object came from the right
+                            newPos.X = node.PosX - obj.Width / 2;
+                        else if (obj.Velocity.X < 0) // object came from the left
+                            newPos.X = node.PosX + node.Width - obj.Width / 2;
+                        if (obj.Velocity.Y > 0) // object came from the top
+                            newPos.Y = node.PosY - obj.Height;
+                        else if (obj.Velocity.Y < 0) // object came from the bottom
+                            newPos.Y = node.PosY + node.Height - obj.Height;
+
+                        obj.SetPosition(newPos);
+                    }
+                    else if (obj is Projectile)
+                    {
+                        objects.Remove(obj);
+                    }
                 }
-            }
+            });
+            return collision;
         }
     }
 }

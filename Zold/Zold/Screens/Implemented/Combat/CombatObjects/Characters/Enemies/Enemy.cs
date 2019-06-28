@@ -17,14 +17,19 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             this.player = player;
 
-            direction = "Left";
+            direction = "Left_" + name;
         }
 
         public abstract void AI(GameTime gameTime);
 
+        public override void Update(GameTime gameTime)
+        {
+            AI(gameTime);
+        }
+
         protected void Move(Vector2 direction)
         {
-            UpdatePosition(direction.X * GetSpeed(), direction.Y * GetSpeed());
+            UpdatePosition(direction * GetSpeed());
         }
 
         protected void GetPlayerDirection()

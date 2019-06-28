@@ -18,6 +18,7 @@ namespace Zold.Screens.Implemented
         //Combat
         CombatScreen Combat;
         CombatBuilder combatBuilder;
+        bool flag = true;
 
         public SplashScreen()
         {
@@ -67,8 +68,9 @@ namespace Zold.Screens.Implemented
             {
                 this.ScreenState = ScreenState.FadeOut;
             }
-            if (Keyboard.GetState().IsKeyDown(Keys.F1))
+            if (Keyboard.GetState().IsKeyDown(Keys.F1) && flag)
             {
+                flag = false;
                 gameScreenManager.InsertScreen(Combat);
             }
         }

@@ -15,30 +15,30 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
         public Projectile(Vector2 Position, Vector2 destinationDirections, Skill Skill, int damage, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(Position, SpriteBatchSpriteSheet, width, height)
         {
+            name = "Projectile";
             this.Position = Position;
             this.destinationDirections = destinationDirections;
             this.Skill = Skill;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
-            this.width = width;
-            this.height = height;
+            this.Width = width;
+            this.Height = height;
             Statistics = new Stats(0, 0, damage, 200, 0, 0);
 
             Targets = new List<Character>();
         }
 
-        public void Move(GameTime gameTime)
+        public override void Update(GameTime gameTime)
         {
-            Position.X += destinationDirections.X * GetSpeed();
-            Position.Y += destinationDirections.Y * GetSpeed();
+            UpdatePosition(destinationDirections * 80);
         }
 
         public override void Draw(GameTime gameTime)
         {
             SpriteBatchSpriteSheet.Begin();
             CheckDirection();
-            if (direction == "Right")
+            if (direction == "Right_Projectile")
                 SpriteBatchSpriteSheet.Draw(Position, 0, 0);
-            if (direction == "Left")
+            if (direction == "Left_Projectile")
                 SpriteBatchSpriteSheet.Draw(Position, 1, 0);
             SpriteBatchSpriteSheet.End();
         }
