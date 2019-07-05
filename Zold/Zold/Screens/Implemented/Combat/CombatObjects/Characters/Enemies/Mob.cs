@@ -36,7 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (attackTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(GetNextNodeDirection());
+                Move(player.BottomPosition);
             }
         }
 

@@ -56,10 +56,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 prepareTimer.Enabled = true;
             }
-            else if (prepareTimer.Enabled == false)
+            else if (Distance >= 32 && prepareTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(GetNextNodeDirection());
+                Move(player.BottomPosition);
             }
         }
 

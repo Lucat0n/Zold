@@ -50,8 +50,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         protected void SetGridPosition()
         {
             CombatScreen.Map.Nodes[GridPosition].Occupied = false;
-            GridPosition = new Position((int)BottomPosition.X / CombatScreen.Map.NodeWidth, ((int)BottomPosition.Y  - CombatScreen.Map.TopMapEdge) / CombatScreen.Map.NodeHeight);
+            GridPosition = GetGridPositionOf(BottomPosition);
             CombatScreen.Map.Nodes[GridPosition].Occupied = true;
+        }
+
+        protected Position GetGridPositionOf(Vector2 position)
+        {
+            return new Position((int)position.X / CombatScreen.Map.NodeWidth, ((int)position.Y - CombatScreen.Map.TopMapEdge) / CombatScreen.Map.NodeHeight);
         }
     }
 }
