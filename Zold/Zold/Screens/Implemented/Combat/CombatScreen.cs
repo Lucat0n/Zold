@@ -23,6 +23,8 @@ namespace Zold.Screens.Implemented.Combat
         public Player player;
         public List<Enemy> enemies;
         public List<CombatObject> objects;
+        public List<CombatObject> objectsToAdd;
+        public List<CombatObject> objectsToRemove;
         public Timer timer;
         public Utilities.Map Map;
 
@@ -37,6 +39,8 @@ namespace Zold.Screens.Implemented.Combat
             this.enemies = enemies;
             
             objects = new List<CombatObject>();
+            objectsToAdd = new List<CombatObject>();
+            objectsToRemove = new List<CombatObject>();
 
             IsTransparent = false;
 
@@ -47,6 +51,15 @@ namespace Zold.Screens.Implemented.Combat
         {
             CheckProjectileCollisions();
             objects = objects.OrderBy(item => item.BottomPosition.Y).ToList();
+
+            objects.AddRange(objectsToAdd);
+            objectsToAdd.Clear();
+
+            foreach(CombatObject obj in objectsToRemove)
+            {
+                objects.Remove(obj);
+            }
+            objectsToRemove.Clear();
 
             objects.ForEach(obj => {
                 obj.BaseSpeed = gameScreenManager.baseSpeed;
@@ -135,14 +148,14 @@ namespace Zold.Screens.Implemented.Combat
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.Add(player);
-            objects.Add(projectile);
+            objectsToAdd.Add(projectile);
         }
 
         public void MakePlayerProjectile(Vector2 position, Vector2 destination, Skill skill, int dmg, string texture, int width, int height)
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.AddRange(enemies);
-            objects.Add(projectile);
+            objectsToAdd.Add(projectile);
         }
 
         public void AddObstacle(Obstacle obstacle)
@@ -228,7 +241,7 @@ namespace Zold.Screens.Implemented.Combat
                     }
                     else if (obj is Projectile)
                     {
-                        objects.Remove(obj);
+                        objectsToRemove.Add(obj);
                     }
                 }
             });
