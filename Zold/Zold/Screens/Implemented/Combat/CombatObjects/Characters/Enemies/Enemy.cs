@@ -34,12 +34,22 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         protected void MoveTo(Vector2 destination)
         {
+            if (!CombatScreen.Map.Nodes[GetGridPositionOf(destination)].Passable || !CombatScreen.Map.Nodes.ContainsKey(GetGridPositionOf(destination)))
+            {
+                ChangeToClosestAvailable(destination);
+                return;
+            }
             SetPathTo(destination);
             UpdatePosition(GetNextNodeDirection() * GetSpeed());
         }
 
         protected void MoveTo(Position destination)
         {
+            if (!CombatScreen.Map.Nodes[destination].Passable)
+            {
+                ChangeToClosestAvailable(destination);
+                return;
+            }
             SetPathTo(destination);
             UpdatePosition(GetNextNodeDirection() * GetSpeed());
         }
@@ -87,6 +97,17 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 CombatScreen.Map.Nodes[node].Path = true;
             });
+        }
+
+        protected void ChangeToClosestAvailable(Vector2 destination)
+        {
+            Position destinationPosition = GetGridPositionOf(destination);
+            MoveTo(new Position((int)(destinationPosition.X - Math.Round(playerDirection.X)), (int)(destinationPosition.Y - Math.Round(playerDirection.Y))));
+        }
+
+        protected void ChangeToClosestAvailable(Position destination)
+        {
+            MoveTo(new Position((int)(destination.X - Math.Round(playerDirection.X)), (int)(destination.Y - Math.Round(playerDirection.Y))));
         }
     }
 }

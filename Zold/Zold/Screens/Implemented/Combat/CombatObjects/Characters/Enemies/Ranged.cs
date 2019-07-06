@@ -86,6 +86,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             //{
             //    // TO DO
             //}
+            
             if (IsCloseToTop())
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
@@ -131,7 +132,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 }
             }
             else
-                moveDirection = BottomPosition + (playerDirection * -10);
+            {
+                moveDirection = BottomPosition + (playerDirection * -50);
+            }
             MoveTo(moveDirection);
         }
 
