@@ -224,7 +224,7 @@ namespace Zold.Screens.Implemented.Combat
                 (node.PosY < obj.BottomPosition.Y) && (node.PosY + node.Height > obj.BottomPosition.Y))
                 {
                     collision = true;
-                    if (obj is Character)
+                    if (obj is Player)
                     {
                         Vector2 newPos = obj.Position;
 
@@ -242,6 +242,10 @@ namespace Zold.Screens.Implemented.Combat
                     else if (obj is Projectile)
                     {
                         objectsToRemove.Add(obj);
+                    }
+                    else if (obj is Charger)
+                    {
+                        (obj as Charger).StopCharge();
                     }
                 }
             });

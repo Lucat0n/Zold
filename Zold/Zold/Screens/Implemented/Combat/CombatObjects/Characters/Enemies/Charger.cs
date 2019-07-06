@@ -12,7 +12,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private float chargeSpeed;
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
-        private float chargeRange;
         private float chargeCheck;
         private bool charge;
         private bool hit;
@@ -36,6 +35,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
+            CombatScreen.CheckNodeCollision(this);
             chargeSpeed = BaseSpeed * 350;
             playerDirection = CalcDirection(BottomPosition, new Vector2(player.BottomPosition.X, player.BottomPosition.Y));
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - Height), BottomPosition);
@@ -122,9 +122,14 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
             if (!Map.CheckPointCollision(BottomPosition))
             {
-                charge = false;
-                cooldownTimer.Enabled = true;
+                StopCharge();
             }
+        }
+
+        public void StopCharge()
+        {
+            charge = false;
+            cooldownTimer.Enabled = true;
         }
     }
 }
