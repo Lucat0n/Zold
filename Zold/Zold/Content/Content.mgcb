@@ -470,6 +470,18 @@
 /processorParam:TextureFormat=Compressed
 /build:placeholders/Fonts/dialog.spritefont
 
+#begin placeholders/Music/auu2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/auu2.wav
+
+#begin placeholders/Music/comba.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/comba.wav
+
 #begin placeholders/Music/explo.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -499,6 +511,12 @@
 /processor:EffectProcessor
 /processorParam:DebugMode=Auto
 /build:placeholders/shaders/opacityShader.fx
+
+#begin placeholders/shaders/otherOpacity.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/otherOpacity.fx
 
 #begin placeholders/shaders/testShader.fx
 /importer:EffectImporter
@@ -745,6 +763,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/wallace.png
+
+#begin placeholders/Textures/zks.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/zks.png
 
 #begin screenManager/Textures/blank.png
 /importer:TextureImporter

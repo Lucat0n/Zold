@@ -11,10 +11,11 @@ using Zold.Utilities;
 namespace Zold.Screens.Implemented.Map.Locations
 {
     internal class DormitoryFirstFloor : Location
+
     {
         List<Enemy> enemies;
         Player player;
-
+        List<Npc> characters;
 
         TmxMap currentMap;
         public DormitoryFirstFloor(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
@@ -23,14 +24,16 @@ namespace Zold.Screens.Implemented.Map.Locations
             this.player = player;
         }
 
-        public override Npc GetCharacter(int i)
-        {
-            return null;
-        }
-
         public override List<Npc> GetCharacters()
         {
-            return null;
+            characters = new List<Npc>();
+            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416, 110)));
+            return characters;
+        }
+
+        public override Npc GetCharacter(int i)
+        {
+            return characters[i];
         }
 
         public override List<int> getColideLayers()
@@ -67,14 +70,20 @@ namespace Zold.Screens.Implemented.Map.Locations
             return LayerNumbers;
         }
 
-        public override Vector2 getPortal()
+        public override List<Vector2> getPortals()
         {
-            return new Vector2(0, 544);
+            List<Vector2> Portals = new List<Vector2>();
+            Portals.Add(new Vector2(0, 544));
+            return Portals;
         }
 
-        public override Vector2 playersNewPosition()
+        public override List<Vector2> playersNewPositions()
         {
-            return new Vector2(544,224);
+            List<Vector2> Exits = new List<Vector2>();
+            Exits.Add(new Vector2(544, 224));
+            Exits.Add(new Vector2(544-64, 224));
+            return Exits;
+            //return new Vector2(544,224);
         }
 
         public override string getLocQuest()
@@ -82,5 +91,15 @@ namespace Zold.Screens.Implemented.Map.Locations
             return null;
         }
 
+        public override List<Location> ListofNextPlaces()
+        {
+            return null;
+        }
+        public override List<int> offsets()
+        {
+            List<int> offsets = new List<int>();
+            offsets.Add(-1);
+            return offsets;
+        }
     }
 }

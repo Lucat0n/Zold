@@ -13,14 +13,18 @@ namespace Zold.Screens.Implemented.Map.Locations
     internal class Dormitory : Location
     {
         List<Enemy> enemies;
-        Player player;
 
+        GameScreenManager gameScreenManager;
+        SpriteBatchSpriteSheet spriteSheet;
+        Player player;
 
         TmxMap currentMap;
         public Dormitory(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
         {
             currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_v.tmx");
             this.player = player;
+            this.gameScreenManager = gameScreenManager;
+            this.spriteSheet = spriteSheet;
         }
 
         public override Npc GetCharacter(int i)
@@ -67,19 +71,43 @@ namespace Zold.Screens.Implemented.Map.Locations
             return LayerNumbers;
         }
 
-        public override Vector2 getPortal()
+        public override List<Vector2> getPortals()
         {
-            return new Vector2(544, 64);
+            List<Vector2> Portals = new List<Vector2>();
+            Portals.Add(new Vector2(544, 64));
+            Portals.Add(new Vector2(192, 32));
+            return Portals;
         }
 
-        public override Vector2 playersNewPosition()
+        public override List<Vector2> playersNewPositions()
         {
-            return new Vector2(192, 64);
+            List<Vector2> Exits = new List<Vector2>();
+            Exits.Add(new Vector2(192, 64));
+            Exits.Add(new Vector2(192, 64));
+            return Exits;
         }
 
+        
         public override string getLocQuest()
         {
             return null;
+        }
+
+        public override List<Location> ListofNextPlaces()
+        {
+            List<Location> ListofLocs = new List<Location>();
+      
+            ListofLocs.Add(new Locations.DormitoryFirstFloor(gameScreenManager, spriteSheet, player, false));
+            ListofLocs.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player, false));
+            return ListofLocs;
+        }
+
+        public override List<int> offsets()
+        {
+            List<int> offsets = new List<int>();
+            offsets.Add(1);
+            offsets.Add(-1);
+            return offsets;
         }
 
     }

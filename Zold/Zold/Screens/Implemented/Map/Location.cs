@@ -56,7 +56,15 @@ namespace Zold.Screens.Implemented.Map
 
         List<Rectangle> opacityTiles;
 
+        public static bool opac;
+
         public bool postproc;
+
+        RenderTarget2D opacTarget, mainTarget2;
+
+        Effect op2;
+
+
         public Location(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc)
         {
             this.gameScreenManager = gameScreenManager;
@@ -69,6 +77,7 @@ namespace Zold.Screens.Implemented.Map
             //  ListofPlaces.Add(new Locations.Dormitory(gameScreenManager, spriteSheet, player,true));
 
             opacity = Assets.Instance.Get("placeholders/shaders/opacityShader");
+            op2 = Assets.Instance.Get("placeholders/shaders/otherOpacity");
             opacityTiles = new List<Rectangle>();
             currentOp = 0.55f;
         }
@@ -77,12 +86,14 @@ namespace Zold.Screens.Implemented.Map
         public abstract TmxMap getCurrentMap();
         public abstract List<int> getLayerNumbers();
         public abstract List<int> getColideLayers();
-        public abstract Vector2 getPortal();
-        public abstract Vector2 playersNewPosition();
+        public abstract List<Vector2> getPortals();
+        public abstract List<Vector2> playersNewPositions();
         public abstract List<Npc> GetCharacters();
         public abstract Npc GetCharacter(int i);
         public abstract List<Enemy> GetEnemies();
         public abstract Enemy Getenemy(int i);
+        public abstract List<Location> ListofNextPlaces();
+        public abstract List<int> offsets();
 
         public virtual void initMap(GameScreenManager gameScreenManager, TmxMap currentMap)
         {
@@ -92,6 +103,11 @@ namespace Zold.Screens.Implemented.Map
             tileHeight = currentMap.Tilesets[0].TileHeight;
             tilesetTilesWide = tileset.Width / tileWidth;
             tilesetTilesHigh = tileset.Height / tileHeight;
+
+            var pp = gameScreenManager.GraphicsDevice.PresentationParameters;
+            opacTarget = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+            mainTarget2 = new RenderTarget2D(gameScreenManager.GraphicsDevice, pp.BackBufferWidth, pp.BackBufferHeight);
+
             // getColideObjects(currentMap, 0);
         }
 
@@ -147,9 +163,22 @@ namespace Zold.Screens.Implemented.Map
                     float x = (i % map.Width) * map.TileWidth;
                     float y = (float)Math.Floor(i / (double)map.Width) * map.TileHeight;
 
-                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, transformMatrix: cameraTransformation);
 
+
+
+                    //Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask3");
+                    //gameScreenManager.GraphicsDevice.SetRenderTarget(opacTarget);
+                    //gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
+                    //spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraTransformation);
+                    //spriteSheet.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 100, (int)player.GetPosition().Y - 100, lightMask.Width - 15, lightMask.Height - 15), Color.White);
+                    //spriteSheet.End();
+
+                    //gameScreenManager.GraphicsDevice.SetRenderTarget(mainTarget2);
+
+
+                    Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
+                  //  gameScreenManager.GraphicsDevice.SetRenderTarget(null);
+                    spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, transformMatrix: cameraTransformation);
 
                     if (xx == "Sciany" || xx =="Podloga" || xx == "Meble")
                     {
@@ -199,14 +228,18 @@ namespace Zold.Screens.Implemented.Map
                         {
                             rect = new Rectangle((int)x, (int)y, tileWidth, tileHeight);
 
-                            if (ghost.Intersects(rect))
+                            if (ghost.Intersects(rect) && layer == 6)
                             {
-                                opacity.Parameters["param1"].SetValue(0.75f);
+                                opacity.Parameters["param1"].SetValue(0.7f);
                                 opacity.CurrentTechnique.Passes[0].Apply();
                                 spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+
+                                //spriteSheet.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, null, transformMatrix: cameraTransformation);
+
                             }
                             else
                             {
+                                opac = false;
                                 opacity.Parameters["param1"].SetValue(1f);
                                 opacity.CurrentTechnique.Passes[0].Apply();
                                 spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
@@ -256,10 +289,7 @@ namespace Zold.Screens.Implemented.Map
                         }
                         else if (layer == 3)
                         {
-                        //Console.WriteLine("Horizontal flip: " + flipH);
-                        //Console.WriteLine("verticaal flip: " + flipV);
-                        //Console.WriteLine("diagonal flip: " + flipD);
-                        //Console.WriteLine("gid: " + xx);
+
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                         }
 
@@ -269,9 +299,10 @@ namespace Zold.Screens.Implemented.Map
                         }
                     }
 
-                    // spriteSheet.Draw(tileset, new Vector2(0,0), new Rectangle((int)x , (int)y , tileWidth, tileHeight), Color.White, (float)Math.PI, new Vector2(0,0), 1, SpriteEffects.None, 0);
-
                     spriteSheet.End();
+
+
+
                 }
             }
         }
