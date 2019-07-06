@@ -79,7 +79,6 @@ namespace Zold.Screens.Implemented.Map
         int hp;
 
         Location location;
-        Zold.Screens.Camera cameraPlayer;
         InteractionManager interactionManager;
 
         Effect effect;
@@ -149,8 +148,6 @@ namespace Zold.Screens.Implemented.Map
 
             interactionManager = new InteractionManager(GameScreenManager, location);
 
-            cameraPlayer = new Screens.Camera(player.GetPosition());
-            ExploreCamera.SetTargetToFollow(player.)
         }
 
         public override void UnloadContent()
@@ -181,16 +178,16 @@ namespace Zold.Screens.Implemented.Map
         {
 
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, transformMatrix: ExploreCamera.BindCameraTransformation());
 
             LayerNumbers.ForEach(layer =>
             {
                 if(layer == 5)
                 {
-                    player.Animation(gameTime, cameraPlayer.Transform());
+                    player.Animation(gameTime, ExploreCamera.BindCameraTransformation());
                 }
                 //effect.CurrentTechnique.Passes[0].Apply();
-                location.drawTiles(layer, currentMap, cameraPlayer.Transform());
+                location.drawTiles(layer, currentMap, ExploreCamera.BindCameraTransformation());
             });
 
             if (ListofNpcs != null)
@@ -276,7 +273,7 @@ namespace Zold.Screens.Implemented.Map
                 isPaused = false;
             }
 
-            cameraPlayer.Follow(player.GetPosition(), screenHeight, screenWdth);
+            ExploreCamera.Follow(player.GetPosition());
         }
 
 
@@ -288,14 +285,17 @@ namespace Zold.Screens.Implemented.Map
             {
                 sh = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 sw = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
-                CurrentScreenHeight = sh;
-                CurrentScreenWidth = sw;
+                
             }
             else
             {
                 sh = screenHeight;
                 sw = screenWdth;
             }
+
+            //screen size for camera
+            CurrentScreenHeight = sh;
+            CurrentScreenWidth = sw;
 
             if (player.GetPosition().X <= 0)
             {
