@@ -43,7 +43,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 action = "Moving";
                 skill.CooldownTimer.Interval = 1000;
-                Move(playerDirection);
+                MoveTo(playerDirection);
             }
         }
 
@@ -132,12 +132,12 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else
                 moveDirection = BottomPosition + (playerDirection * -10);
-            Move(moveDirection);
+            MoveTo(moveDirection);
         }
 
         private bool IsCloseToLeft()
         {
-            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.Map.RightMapEdge - mapOffset;
+            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.Map.RightMapEdge + mapOffset;
         }
 
         private bool IsCloseToRight()

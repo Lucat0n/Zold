@@ -85,8 +85,8 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         private void CreateNodeGrid()
         {
             Nodes = new Dictionary<Position, Node>(nodesX * nodesY);
-            for (int x = 0; x <= nodesX; x++)
-                for (int y = 0; y <= nodesY; y++)
+            for (int x = 0; x < nodesX; x++)
+                for (int y = 0; y < nodesY; y++)
                 {
                     Nodes.Add(new Position(x, y), new Node(x, y, TopMapEdge));
                 }

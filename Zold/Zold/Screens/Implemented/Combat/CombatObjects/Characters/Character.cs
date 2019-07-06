@@ -50,7 +50,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
         protected void SetGridPosition()
         {
             CombatScreen.Map.Nodes[GridPosition].Occupied = false;
-            GridPosition = GetGridPositionOf(BottomPosition);
+            Position newPosition = GetGridPositionOf(BottomPosition);
+            Boolean what = CombatScreen.Map.Nodes.ContainsKey(new Position(1,0));
+            if (CombatScreen.Map.Nodes.ContainsKey(newPosition) && CombatScreen.Map.Nodes[newPosition].Passable)
+                GridPosition = newPosition;
             CombatScreen.Map.Nodes[GridPosition].Occupied = true;
         }
 

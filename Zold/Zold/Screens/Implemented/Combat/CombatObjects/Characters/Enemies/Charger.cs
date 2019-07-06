@@ -59,7 +59,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (Distance >= 32 && prepareTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(player.BottomPosition);
+                MoveTo(player.GridPosition);
             }
         }
 

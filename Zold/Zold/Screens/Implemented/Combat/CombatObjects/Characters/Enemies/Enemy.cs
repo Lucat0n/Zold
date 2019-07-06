@@ -28,12 +28,17 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public override void Update(GameTime gameTime)
         {
-            SetPathToPlayer();
             SetGridPosition();
             AI(gameTime);
         }
 
-        protected void Move(Vector2 destination)
+        protected void MoveTo(Vector2 destination)
+        {
+            SetPathTo(destination);
+            UpdatePosition(GetNextNodeDirection() * GetSpeed());
+        }
+
+        protected void MoveTo(Position destination)
         {
             SetPathTo(destination);
             UpdatePosition(GetNextNodeDirection() * GetSpeed());
@@ -51,22 +56,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             return Vector2.Zero;
         }
 
-        private void SetPathToPlayer()
-        {
-            if (path != null)
-            {
-                Array.ForEach(path, node =>
-                {
-                    CombatScreen.Map.Nodes[node].Path = false;
-                });
-            }
-            path = CombatScreen.Map.PathfindingGrid.GetPath(GridPosition, player.GridPosition);
-            Array.ForEach(path, node =>
-            {
-                CombatScreen.Map.Nodes[node].Path = true;
-            });
-        }
-
         protected void SetPathTo(Vector2 position)
         {
             if (path != null)
@@ -78,6 +67,22 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             Position destinationPosition = GetGridPositionOf(position);
             path = CombatScreen.Map.PathfindingGrid.GetPath(GridPosition, destinationPosition);
+            Array.ForEach(path, node =>
+            {
+                CombatScreen.Map.Nodes[node].Path = true;
+            });
+        }
+
+        protected void SetPathTo(Position position)
+        {
+            if (path != null)
+            {
+                Array.ForEach(path, node =>
+                {
+                    CombatScreen.Map.Nodes[node].Path = false;
+                });
+            }
+            path = CombatScreen.Map.PathfindingGrid.GetPath(GridPosition, position);
             Array.ForEach(path, node =>
             {
                 CombatScreen.Map.Nodes[node].Path = true;
