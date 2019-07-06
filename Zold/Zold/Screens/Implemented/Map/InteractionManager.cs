@@ -23,6 +23,7 @@ namespace Zold.Screens.Implemented.Map
         GameScreenManager gameScreenManager;
         Texture2D dymek;
         SpriteFont dialog;
+       // bool randomDialog;
         public List<string> powiedzonka = new List<string>();
 
         Vector2 TextPosition = new Vector2(42, 412);
@@ -31,33 +32,34 @@ namespace Zold.Screens.Implemented.Map
         {
             this.gameScreenManager = gameScreenManager;
             dialog = Assets.Instance.Get("placeholders/Fonts/dialog");
-            AddDialogs(powiedzonka);
+           // AddDialogs(powiedzonka);
+           // this.randomDialog = randomDialog;
 
             var random = new Random();
             index = random.Next(powiedzonka.Count);
         }
 
-        int getRandomIndex()
+        int getRandomIndex(List<string> powiedzenia)
         {
             var random = new Random();
-            return random.Next(powiedzonka.Count);
+            return random.Next(powiedzenia.Count);
         }
 
-        public void AddDialogs(List<string> powiedzonka)
-        {
-            powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
-            powiedzonka.Add("A ty tu czego?");
-            powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
-            powiedzonka.Add("Jestem zajety");
-            powiedzonka.Add("Odejdz");
-            powiedzonka.Add("Do samochodu i do widzenia");
-            powiedzonka.Add("Ile razy sie zesrales? ");
-            powiedzonka.Add("Niech zyje wolny zold, precz z komuniom");
-            powiedzonka.Add("Elo");
-            powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
-        }
+        //public void AddDialogs(List<string> powiedzonka)
+        //{
+        //    powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
+        //    powiedzonka.Add("A ty tu czego?");
+        //    powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
+        //    powiedzonka.Add("Jestem zajety");
+        //    powiedzonka.Add("Odejdz");
+        //    powiedzonka.Add("Do samochodu i do widzenia");
+        //    powiedzonka.Add("Ile razy sie zesrales? ");
+        //    powiedzonka.Add("Niech zyje wolny zold, precz z komuniom");
+        //    powiedzonka.Add("Elo");
+        //    powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
+        //}
 
-        public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy)
+        public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy, List<string> powiedzenia)
         {
             // int index = 0; ;
             int width = MapManager.screenWdth;
@@ -68,7 +70,7 @@ namespace Zold.Screens.Implemented.Map
 
             {
                 if (!Keyboard.GetState().IsKeyDown(Keys.Space))
-                    index = getRandomIndex();
+                    index = getRandomIndex(powiedzenia);
 
                 Rectangle tlo;
                 if (gameScreenManager.IsFullScreenOn)
@@ -98,13 +100,13 @@ namespace Zold.Screens.Implemented.Map
                    // gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("placeholders/Textures/dotekstu"), tlo, Color.White);
                     if (!(gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1") || gameScreenManager.QuestManager.CompletedQuests.ContainsKey("lQ1")))
                     {
-                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,"Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz."));
+                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager, powiedzenia[index]));
                         //    gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz questy, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);
                         gameScreenManager.QuestManager.AddLocationQuest("lQ1");
                     }
                     if (gameScreenManager.QuestManager.ActiveQuests.ContainsKey("lQ1"))
                     {
-                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,"Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz."));
+                        gameScreenManager.InsertScreen(new DialogScreen(gameScreenManager,powiedzenia[index]));
                     }
 
                     //      gameScreenManager.SpriteBatch.DrawString(dialog, "Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz.", TextPosition, Color.White);

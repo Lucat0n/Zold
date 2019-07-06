@@ -39,7 +39,10 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Npc> GetCharacters()
         {
             characters = new List<Npc>();
-            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/Adven"), new Vector2(256, 64)));
+            List<string> powiedzenia = new List<string>();
+            powiedzenia.Add("Sprawdz zadania, potem wyjdz z pokoju i je ponownie zobacz.");
+
+            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/Adven"), new Vector2(256, 64), powiedzenia));
             return characters;
         }
 

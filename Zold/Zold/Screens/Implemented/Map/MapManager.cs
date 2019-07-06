@@ -279,7 +279,7 @@ namespace Zold.Screens.Implemented.Map
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
 
-                    interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y);
+                    interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.getPowiedzanie());
                     gameScreenManager.SpriteBatch.End();
 
                 });

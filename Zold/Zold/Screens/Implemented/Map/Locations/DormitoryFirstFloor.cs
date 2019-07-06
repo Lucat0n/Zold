@@ -27,7 +27,13 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Npc> GetCharacters()
         {
             characters = new List<Npc>();
-            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416, 110)));
+            List<string> powiedzenia = new List<string>();
+            powiedzenia.Add("ZKS czy Dizdew?");
+            powiedzenia.Add("Elo");
+            powiedzenia.Add("A ty tu czego?");
+            powiedzenia.Add("Nie mam pixuw, spadaj!");
+
+            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416,110), powiedzenia));
             return characters;
         }
 
