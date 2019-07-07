@@ -27,7 +27,14 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Npc> GetCharacters()
         {
             characters = new List<Npc>();
-            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416, 110)));
+            List<string> powiedzenia = new List<string>();
+            powiedzenia.Add("ZKS czy Dizdew?");
+            powiedzenia.Add("Elo");
+            powiedzenia.Add("A ty tu czego?");
+            powiedzenia.Add("Spadaj");
+
+
+            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416, 162), powiedzenia));
             return characters;
         }
 
@@ -100,6 +107,11 @@ namespace Zold.Screens.Implemented.Map.Locations
             List<int> offsets = new List<int>();
             offsets.Add(-1);
             return offsets;
+        }
+
+        public override string getName()
+        {
+            return "dormitory_i";
         }
     }
 }

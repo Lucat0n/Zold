@@ -319,6 +319,12 @@
 /processorParam:Quality=Best
 /build:menu/Music/menu-music.wav
 
+#begin menu/Music/menu-music2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:menu/Music/menu-music2.wav
+
 #begin menu/Textures/backButton.png
 /importer:TextureImporter
 /processor:TextureProcessor

@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
@@ -31,14 +32,21 @@ namespace Zold.Screens.Implemented.Map
         float m_animPercent = 1;
         float m_animSpeed = 1.0f / .5f;
 
-        public Npc(Texture2D texture, Vector2 position)
+        public List<string> powiedzenie;
+
+        public Npc(Texture2D texture, Vector2 position, List<string> powiedzenie)
         {
             this.texture = texture;
             this.position = position;
-
+            this.powiedzenie = powiedzenie;
             Width = texture.Width;
             Height = texture.Height;
 
+        }
+
+        public List<string> getPowiedzanie()
+        {
+            return powiedzenie;
         }
 
 

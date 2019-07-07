@@ -110,5 +110,9 @@ namespace Zold.Screens.Implemented.Map.Locations
             return offsets;
         }
 
+        public override string getName()
+        {
+            return "dormitory_v";
+        }
     }
 }
