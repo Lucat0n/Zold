@@ -11,9 +11,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public Mob(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
-            SpriteBatchSpriteSheet.MakeAnimation(3, "Left", 250);
-            SpriteBatchSpriteSheet.MakeAnimation(1, "Right", 250);
-
+            name = "Mob";
             attackTimer = new Timer();
             attackTimer.Interval = 1000;
             attackTimer.Elapsed += new ElapsedEventHandler(Attack);
@@ -23,7 +21,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
-            playerDirection = CalcDirection(BottomPosition, player.BottomPosition);
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y), BottomPosition);
 
             if (attackTimer.Enabled == true)
@@ -39,13 +36,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             else if (attackTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(playerDirection);
+                MoveTo(player.GridPosition);
             }
         }
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: CombatCamera.BindCameraTransformation());
             DrawHealth(SpriteBatchSpriteSheet, "red");
 
             if (action == "Moving")
@@ -54,9 +51,9 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else
             {
-                if (direction == "Right")
+                if (direction == "Right_Mob")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
-                if (direction == "Left")
+                if (direction == "Left_Mob")
                     SpriteBatchSpriteSheet.Draw(Position, 3, 0);
             }
 

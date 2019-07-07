@@ -28,9 +28,9 @@ namespace Zold.Buffs.Implemented
         {
             int value;
             if (pi2 != null)
-                value = (int)pi2.GetValue(null);
+                value = (int)pi2.GetValue(statistics);
             else
-                value = (int)pi.GetValue(null);
+                value = (int)pi.GetValue(statistics);
             value = (int)(value * amount);
             pi.SetValue(statistics, Convert.ChangeType(value, pi.PropertyType));
             statistics.buffSet.Remove(this);

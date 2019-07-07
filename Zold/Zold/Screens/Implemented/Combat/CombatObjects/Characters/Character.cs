@@ -1,4 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
+using RoyT.AStar;
+using System;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -6,10 +8,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 {
     abstract class Character : CombatObject
     {
-        public Vector2 TopPosition;
-        public Vector2 CenterPosition;
-        public Vector2 BottomPosition;
         public string action;
+        public Position GridPosition;
         protected double actualHealthWidth;
         protected int healthWidth;
         protected Rectangle healthRectangle;
@@ -21,15 +21,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             this.Statistics = Statistics;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
 
-            this.height = height;
-            this.width = width;
-
-            TopPosition = new Vector2(Position.X + this.width / 2, Position.Y);
-            CenterPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height / 2);
-            BottomPosition = new Vector2(Position.X + this.width / 2, Position.Y + this.height);
-
             healthWidth = 48;
             healthBackgorundRectangle = new Rectangle((int)Position.X, (int)Position.Y - 10, healthWidth, 7);
+            HitBox = new BoundingBox(new Vector3(Position, 0), new Vector3(Position.X + width, Position.Y + height, 0));
+            GridPosition = new Position();
 
             CalculateDepth();
             tempPosition = Position;
@@ -53,16 +48,19 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             SpriteBatchSpriteSheet.Draw(Assets.Instance.Get("combat/Textures/" + color), new Vector2(CenterPosition.X - healthWidth/2, Position.Y - 15), healthRectangle, Color.White);
         }
 
-        protected void UpdatePosition(float x, float y)
+        protected void SetGridPosition()
         {
-            Position.X += x;
-            Position.Y += y;
-            TopPosition.Y += y;
-            TopPosition.X += x;
-            CenterPosition.X += x;
-            CenterPosition.Y += y;
-            BottomPosition.X += x;
-            BottomPosition.Y += y;
+            CombatScreen.Map.Nodes[GridPosition].Occupied = false;
+            Position newPosition = GetGridPositionOf(BottomPosition);
+            Boolean what = CombatScreen.Map.Nodes.ContainsKey(new Position(1,0));
+            if (CombatScreen.Map.Nodes.ContainsKey(newPosition) && CombatScreen.Map.Nodes[newPosition].Passable)
+                GridPosition = newPosition;
+            CombatScreen.Map.Nodes[GridPosition].Occupied = true;
+        }
+
+        protected Position GetGridPositionOf(Vector2 position)
+        {
+            return new Position((int)position.X / CombatScreen.Map.NodeWidth, ((int)position.Y - CombatScreen.Map.TopMapEdge) / CombatScreen.Map.NodeHeight);
         }
     }
 }

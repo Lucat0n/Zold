@@ -1,45 +1,19 @@
 ﻿using Microsoft.Xna.Framework;
 using System.Timers;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
 
 namespace Zold.Screens.Implemented.Combat.Skills
 {
-    class Skill
+    abstract class Skill
     {
-        public Timer cooldownTimer;
-        public Vector2 Destination;
+        public Timer CooldownTimer;
         public CombatScreen CombatScreen;
-        public Vector2 StartPosition;
 
-        public Skill (CombatScreen combatScreen)
+        public Skill(CombatScreen CombatScreen)
         {
-            this.CombatScreen = combatScreen;
-
-            cooldownTimer = new Timer();
-            cooldownTimer.Interval = 2000;
-            cooldownTimer.Elapsed += new ElapsedEventHandler(Ready);
+            this.CombatScreen = CombatScreen;
         }
 
-        public void Use(string owner, int dmg)
-        {
-            if (cooldownTimer.Enabled == true)
-                return;
-            else
-            {
-                if(owner == "Player")
-                {
-                    CombatScreen.MakePlayerProjectile(StartPosition, dmg, "combat/Textures/arrow", Destination, 22, 5);
-                }
-                else
-                {
-                    CombatScreen.MakeEnemyProjectile(StartPosition, dmg, "combat/Textures/arrow", Destination, 22, 5);
-                }
-            }
-            cooldownTimer.Enabled = true;
-        }
-
-        private void Ready(object source, ElapsedEventArgs e)
-        {
-            cooldownTimer.Enabled = false;
-        }
+        abstract public void ApplyEffect(Character target);
     }
 }

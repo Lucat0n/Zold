@@ -18,7 +18,7 @@ namespace Zold.Buffs
 
         public virtual void Init()
         {
-            type = typeof(Character);
+            type = typeof(Stats);
             pi = type.GetProperty(targetStat);
         }
 

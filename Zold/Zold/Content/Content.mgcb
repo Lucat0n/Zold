@@ -141,6 +141,18 @@
 /processorParam:TextureFormat=Color
 /build:combat/Textures/skeleton.png
 
+#begin combat/Textures/stone.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:combat/Textures/stone.png
+
 #begin Content.mgcb
 /copy:Content.mgcb
 
@@ -470,6 +482,18 @@
 /processorParam:TextureFormat=Compressed
 /build:placeholders/Fonts/dialog.spritefont
 
+#begin placeholders/Music/auu2.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/auu2.wav
+
+#begin placeholders/Music/comba.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:placeholders/Music/comba.wav
+
 #begin placeholders/Music/explo.wav
 /importer:WavImporter
 /processor:SoundEffectProcessor
@@ -487,6 +511,24 @@
 /processor:SoundEffectProcessor
 /processorParam:Quality=Best
 /build:placeholders/Music/wesola.wav
+
+#begin placeholders/shaders/lightShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/lightShader.fx
+
+#begin placeholders/shaders/opacityShader.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/opacityShader.fx
+
+#begin placeholders/shaders/otherOpacity.fx
+/importer:EffectImporter
+/processor:EffectProcessor
+/processorParam:DebugMode=Auto
+/build:placeholders/shaders/otherOpacity.fx
 
 #begin placeholders/shaders/testShader.fx
 /importer:EffectImporter
@@ -589,6 +631,42 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/hpbars.png
+
+#begin placeholders/Textures/lightmask.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/lightmask.png
+
+#begin placeholders/Textures/lightmask2.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/lightmask2.png
+
+#begin placeholders/Textures/lightmask3.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/lightmask3.png
 
 #begin placeholders/Textures/mag.png
 /importer:TextureImporter
@@ -697,6 +775,18 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:placeholders/Textures/wallace.png
+
+#begin placeholders/Textures/zks.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:placeholders/Textures/zks.png
 
 #begin screenManager/Textures/blank.png
 /importer:TextureImporter

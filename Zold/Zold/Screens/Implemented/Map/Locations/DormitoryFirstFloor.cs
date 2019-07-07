@@ -10,31 +10,30 @@ using Zold.Utilities;
 
 namespace Zold.Screens.Implemented.Map.Locations
 {
-    internal class Dormitory : Location
+    internal class DormitoryFirstFloor : Location
+
     {
         List<Enemy> enemies;
-
-        GameScreenManager gameScreenManager;
-        SpriteBatchSpriteSheet spriteSheet;
         Player player;
+        List<Npc> characters;
 
         TmxMap currentMap;
-        public Dormitory(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
+        public DormitoryFirstFloor(GameScreenManager gameScreenManager, SpriteBatchSpriteSheet spriteSheet, Player player, bool postproc) : base(gameScreenManager, spriteSheet, player, postproc)
         {
-            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_v.tmx");
+            currentMap = new TmxMap(@"Content/graphic/locations/Dormitory/dormitory_i.tmx");
             this.player = player;
-            this.gameScreenManager = gameScreenManager;
-            this.spriteSheet = spriteSheet;
-        }
-
-        public override Npc GetCharacter(int i)
-        {
-            return null;
         }
 
         public override List<Npc> GetCharacters()
         {
-            return null;
+            characters = new List<Npc>();
+            characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416, 110)));
+            return characters;
+        }
+
+        public override Npc GetCharacter(int i)
+        {
+            return characters[i];
         }
 
         public override List<int> getColideLayers()
@@ -52,7 +51,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Enemy> GetEnemies()
         {
             enemies = new List<Enemy>();
-            enemies.Add(new Enemy(player, new Vector2(400, 200), Assets.Instance.Get("placeholders/Textures/rat") ));
+            enemies.Add(new Enemy(player, new Vector2(400, 200), Assets.Instance.Get("placeholders/Textures/rat")));
             return enemies;
         }
 
@@ -64,7 +63,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<int> getLayerNumbers()
         {
             List<int> LayerNumbers = new List<int>();
-            // LayerNumbers.Add(2);
+            //LayerNumbers.Add(2);
             LayerNumbers.Add(3);
             LayerNumbers.Add(4);
             LayerNumbers.Add(5);
@@ -74,20 +73,19 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Vector2> getPortals()
         {
             List<Vector2> Portals = new List<Vector2>();
-            Portals.Add(new Vector2(544, 64));
-            Portals.Add(new Vector2(192, 32));
+            Portals.Add(new Vector2(0, 544));
             return Portals;
         }
 
         public override List<Vector2> playersNewPositions()
         {
             List<Vector2> Exits = new List<Vector2>();
-            Exits.Add(new Vector2(192, 64));
-            Exits.Add(new Vector2(192, 64));
+            Exits.Add(new Vector2(544, 224));
+            Exits.Add(new Vector2(544-64, 224));
             return Exits;
+            //return new Vector2(544,224);
         }
 
-        
         public override string getLocQuest()
         {
             return null;
@@ -95,20 +93,13 @@ namespace Zold.Screens.Implemented.Map.Locations
 
         public override List<Location> ListofNextPlaces()
         {
-            List<Location> ListofLocs = new List<Location>();
-      
-            ListofLocs.Add(new Locations.DormitoryFirstFloor(gameScreenManager, spriteSheet, player, false));
-            ListofLocs.Add(new Locations.TheRoom(gameScreenManager, spriteSheet, player, false));
-            return ListofLocs;
+            return null;
         }
-
         public override List<int> offsets()
         {
             List<int> offsets = new List<int>();
-            offsets.Add(1);
             offsets.Add(-1);
             return offsets;
         }
-
     }
 }
