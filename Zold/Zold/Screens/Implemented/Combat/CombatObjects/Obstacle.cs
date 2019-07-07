@@ -16,7 +16,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: CombatCamera.BindCameraTransformation());
 
             SpriteBatchSpriteSheet.Draw(Position, 0, 0);
 

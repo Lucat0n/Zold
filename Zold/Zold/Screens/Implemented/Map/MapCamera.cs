@@ -20,7 +20,7 @@ namespace Zold.Screens.Implemented.Map
 
         public static void Follow(Vector2 cameraTargert)
         {
-            camera.Follow(cameraTargert, ResolutionManager.CurrentMapResosution.Y, ResolutionManager.CurrentMapResosution.X);
+            camera.Follow(cameraTargert, ResolutionManager.CurrentMapResolution.Y, ResolutionManager.CurrentMapResolution.X);
         }
 
         public static Matrix BindCameraTransformation()

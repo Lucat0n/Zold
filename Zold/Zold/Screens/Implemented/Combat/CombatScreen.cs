@@ -68,6 +68,8 @@ namespace Zold.Screens.Implemented.Combat
             {
                 gameScreenManager.RemoveScreen(this);
             }
+
+            CombatCamera.Follow(player.Position);
         }
 
         public override void LoadContent()
@@ -90,8 +92,8 @@ namespace Zold.Screens.Implemented.Combat
         public override void Draw(GameTime gameTime)
         {
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
-            gameScreenManager.GraphicsDevice.Clear(Color.CornflowerBlue);
-            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack);
+            gameScreenManager.GraphicsDevice.Clear(Color.Black);
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack,transformMatrix:CombatCamera.BindCameraTransformation());
 
             // DEBUG - grid
             pixel = new Texture2D(GameScreenManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);

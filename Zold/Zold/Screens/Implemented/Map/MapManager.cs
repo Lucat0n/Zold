@@ -294,7 +294,7 @@ namespace Zold.Screens.Implemented.Map
             }
 
             //Update game Resolution // TODO wywalić do z logiki mapy
-            ResolutionManager.CurrentMapResosution = new Vector2(sw, sh);
+            ResolutionManager.CurrentMapResolution = new Vector2(sw, sh);
 
             if (player.GetPosition().X <= 0)
             {

@@ -49,7 +49,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: CombatCamera.BindCameraTransformation());
             DrawHealth(SpriteBatchSpriteSheet, "red");
 
             if (action == "Moving" || action == "Running")

@@ -109,7 +109,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
                     float y = (float)Math.Floor(i / (double)currentMap.Width) * currentMap.TileHeight;
 
                     Rectangle tilesetRec = new Rectangle(tileWidth * column, tileHeight * row, tileWidth, tileHeight);
-                    mapSprite.Begin();
+                    mapSprite.Begin(transformMatrix:CombatCamera.BindCameraTransformation());
                     mapSprite.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                     mapSprite.End();
                 }
