@@ -178,16 +178,16 @@ namespace Zold.Screens.Implemented.Map
         {
 
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, transformMatrix: ExploreCamera.BindCameraTransformation());
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, transformMatrix: MapCamera.BindCameraTransformation());
 
             LayerNumbers.ForEach(layer =>
             {
                 if(layer == 5)
                 {
-                    player.Animation(gameTime, ExploreCamera.BindCameraTransformation());
+                    player.Animation(gameTime, MapCamera.BindCameraTransformation());
                 }
                 //effect.CurrentTechnique.Passes[0].Apply();
-                location.drawTiles(layer, currentMap, ExploreCamera.BindCameraTransformation());
+                location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
             });
 
             if (ListofNpcs != null)
@@ -273,7 +273,7 @@ namespace Zold.Screens.Implemented.Map
                 isPaused = false;
             }
 
-            ExploreCamera.Follow(player.GetPosition());
+            MapCamera.Follow(player.GetPosition());
         }
 
 
@@ -293,9 +293,8 @@ namespace Zold.Screens.Implemented.Map
                 sw = screenWdth;
             }
 
-            //screen size for camera
-            CurrentScreenHeight = sh;
-            CurrentScreenWidth = sw;
+            //Update game Resolution // TODO wywalić do z logiki mapy
+            ResolutionManager.CurrentMapResosution = new Vector2(sw, sh);
 
             if (player.GetPosition().X <= 0)
             {
