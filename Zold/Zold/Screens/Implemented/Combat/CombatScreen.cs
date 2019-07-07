@@ -204,15 +204,20 @@ namespace Zold.Screens.Implemented.Combat
             });
         }
 
-        private bool CheckNodeCollisions()
+        public bool CheckLineOfSight(Ray ray, float distance)
         {
-            bool collision = false;
-            Map.CollisionNodes.ForEach(node =>
+            foreach (Node node in Map.CollisionNodes)
             {
-                if (node.HitBox.Intersects(player.HitBox))
-                    collision = true;
-            });
-            return collision;
+                if(node.HitBox.Intersects(ray) == null || distance < node.HitBox.Intersects(ray))
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool CheckNodeCollision(CombatObject obj)

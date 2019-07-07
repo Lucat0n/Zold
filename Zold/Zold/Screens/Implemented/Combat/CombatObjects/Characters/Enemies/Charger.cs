@@ -12,6 +12,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private float chargeSpeed;
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
+        private Ray lineOfSight;
         private float chargeCheck;
         private bool charge;
         private bool hit;
@@ -50,7 +51,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 action = "Charging";
                 Charge();
             }
-            else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
+            else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false && CheckIfTargetIsInSight(player))
             {
                 chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y);
                 chargeDirection = CalcDirection(BottomPosition, chargePosition);
@@ -124,6 +125,16 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 StopCharge();
             }
+        }
+
+        private bool CheckIfTargetIsInSight(Character character)
+        {
+            Vector3 thisVector = new Vector3(BottomPosition, 0);
+            Vector3 charVector = new Vector3(character.BottomPosition, 0);
+            Vector3 direction = new Vector3(CalcDirection(BottomPosition, character.BottomPosition), 0);
+            float distance = Vector3.Distance(thisVector, charVector);
+            lineOfSight = new Ray(thisVector, direction);
+            return CombatScreen.CheckLineOfSight(lineOfSight, distance); 
         }
 
         public void StopCharge()

@@ -11,7 +11,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
 {
     class Node
     {
-        public Rectangle HitBox;
+        public BoundingBox HitBox;
         public Vector2 Center;
         public bool Passable;
         public bool Occupied;
@@ -39,7 +39,8 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             Height = 16;
             PosX = x * Width;
             PosY = y * Height + offset;
-            HitBox = new Rectangle(PosX, PosY, Width, Height);
+            //HitBox = new Rectangle(PosX, PosY, Width, Height);
+            HitBox = new BoundingBox(new Vector3(PosX, PosY, 0), new Vector3(PosX + Width, PosY + Height, 0));
             Center = new Vector2(PosX + Width / 2, PosY + Height / 2);
             Position = new Position(x, y);
 

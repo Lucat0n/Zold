@@ -23,6 +23,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
             healthWidth = 48;
             healthBackgorundRectangle = new Rectangle((int)Position.X, (int)Position.Y - 10, healthWidth, 7);
+            HitBox = new BoundingBox(new Vector3(Position, 0), new Vector3(Position.X + width, Position.Y + height, 0));
             GridPosition = new Position();
 
             CalculateDepth();

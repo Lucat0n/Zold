@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using System;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters;
+using Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies;
 using Zold.Screens.Implemented.Combat.Utilities;
 using Zold.Statistics;
 using Zold.Utilities;
@@ -17,7 +19,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         public Stats Statistics;
         public float BaseSpeed { set; protected get; }
         public CombatObject Map { set; protected get; }
-        public Rectangle HitBox;
+        public BoundingBox HitBox;
         public Vector2 Velocity;
         public int Height;
         public int Width;
@@ -32,7 +34,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
         {
             this.Position = Position;
             this.SpriteBatchSpriteSheet = SpriteBatchSpriteSheet;
-            HitBox = new Rectangle();
+            HitBox = new BoundingBox();
 
             this.Height = height;
             this.Width = width;
@@ -99,8 +101,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             CenterPosition.Y += y;
             BottomPosition.X += x;
             BottomPosition.Y += y;
-            HitBox.X += Math.Sign(x);
-            HitBox.Y += Math.Sign(y);
+            HitBox.Min.X += Math.Sign(x);
+            HitBox.Max.X += Math.Sign(x);
+            HitBox.Min.Y += Math.Sign(y);
+            HitBox.Max.Y += Math.Sign(y);
         }
 
         protected void UpdatePosition(Vector2 direction)
@@ -109,8 +113,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             TopPosition += direction;
             CenterPosition += direction;
             BottomPosition += direction;
-            HitBox.X += Math.Sign(direction.X);
-            HitBox.Y += Math.Sign(direction.Y);
+            HitBox.Min.X += direction.X;
+            HitBox.Max.X += direction.X;
+            HitBox.Min.Y += direction.Y;
+            HitBox.Max.Y += direction.Y;
         }
 
         public void SetPosition(Vector2 position)
@@ -119,8 +125,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
             TopPosition = new Vector2(position.X + Width / 2, position.Y);
             CenterPosition = new Vector2(position.X + Width / 2, position.Y + Height / 2);
             BottomPosition = new Vector2(position.X + Width / 2, position.Y + Height);
-            HitBox.X = Math.Sign(position.X);
-            HitBox.Y = Math.Sign(position.Y);
+            HitBox.Min.X = position.X;
+            HitBox.Max.X = position.X;
+            HitBox.Min.Y = position.Y;
+            HitBox.Max.Y = position.Y;
         }
 
         protected float GetSpeed()

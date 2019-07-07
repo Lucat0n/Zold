@@ -26,7 +26,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             
             direction = "Right_Charger";
 
-            HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
+            //HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
             range = new Box(Vector2.Zero, null, 40, 1);
             skill = new SlowingShot(CombatScreen);
             
