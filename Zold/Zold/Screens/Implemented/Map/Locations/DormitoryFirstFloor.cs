@@ -31,7 +31,8 @@ namespace Zold.Screens.Implemented.Map.Locations
             powiedzenia.Add("ZKS czy Dizdew?");
             powiedzenia.Add("Elo");
             powiedzenia.Add("A ty tu czego?");
-            powiedzenia.Add("Nie mam pixuw, spadaj!");
+            powiedzenia.Add("Spadaj");
+            
 
             characters.Add(new Npc(Assets.Instance.Get("placeholders/Textures/zks"), new Vector2(416,110), powiedzenia));
             return characters;

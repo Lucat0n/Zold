@@ -45,19 +45,6 @@ namespace Zold.Screens.Implemented.Map
             return random.Next(powiedzenia.Count);
         }
 
-        //public void AddDialogs(List<string> powiedzonka)
-        //{
-        //    powiedzonka.Add("Witaj zielona magnetyczna gwiazdo");
-        //    powiedzonka.Add("A ty tu czego?");
-        //    powiedzonka.Add("Zbieram zlom, nie widzisz bulwa");
-        //    powiedzonka.Add("Jestem zajety");
-        //    powiedzonka.Add("Odejdz");
-        //    powiedzonka.Add("Do samochodu i do widzenia");
-        //    powiedzonka.Add("Ile razy sie zesrales? ");
-        //    powiedzonka.Add("Niech zyje wolny zold, precz z komuniom");
-        //    powiedzonka.Add("Elo");
-        //    powiedzonka.Add("Tez kiedys bylem jak ty, ale sie jeblem i przestalem");
-        //}
 
         public void displayDialog(Player playerOne, Texture2D npcet, int posx, int posy, List<string> powiedzenia)
         {
