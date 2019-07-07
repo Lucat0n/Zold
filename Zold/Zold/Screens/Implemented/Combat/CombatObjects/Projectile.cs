@@ -34,7 +34,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: CombatCamera.BindCameraTransformation());
             CheckDirection();
             if (direction == "Right_Projectile")
                 SpriteBatchSpriteSheet.Draw(Position, 0, 0);
