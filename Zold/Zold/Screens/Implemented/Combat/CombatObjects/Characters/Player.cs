@@ -24,9 +24,8 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             name = "Player";
             this.enemies = enemies;
             
-            direction = "Right_Charger";
-
-            //HitBox = new Rectangle((int)position.X, (int)position.Y, width, height);
+            direction = "Right_Player";
+            
             range = new Box(Vector2.Zero, null, 40, 1);
             skill = new SlowingShot(CombatScreen);
             
@@ -109,7 +108,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
             if (Keyboard.GetState().IsKeyDown(Keys.S))
             {
                 skill.CombatScreen = CombatScreen;
-                if (direction == "Right_Charger")
+                if (direction == "Right_Player")
                 {
                     skill.Use(CenterPosition, 10, CalcDirection(CenterPosition, new Vector2(CenterPosition.X + 1, CenterPosition.Y)));
                 }
@@ -125,7 +124,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public void Attack(object source, ElapsedEventArgs e)
         {
-            if (direction == "Right_Charger")
+            if (direction == "Right_Player")
                 range.Position = CenterPosition;
             else
                 range.Position = new Vector2(CenterPosition.X - 40, CenterPosition.Y);

@@ -52,16 +52,10 @@ namespace Zold.Screens.Implemented.Combat
             CheckProjectileCollisions();
             objects = objects.OrderBy(item => item.BottomPosition.Y).ToList();
 
-            objects.AddRange(objectsToAdd);
-            objectsToAdd.Clear();
+            AddAndRemoveObjects();
 
-            foreach(CombatObject obj in objectsToRemove)
+            objects.ForEach(obj =>
             {
-                objects.Remove(obj);
-            }
-            objectsToRemove.Clear();
-
-            objects.ForEach(obj => {
                 obj.BaseSpeed = gameScreenManager.baseSpeed;
                 obj.Update(gameTime);
             });
@@ -122,6 +116,18 @@ namespace Zold.Screens.Implemented.Combat
             });
 
             gameScreenManager.SpriteBatch.End();
+        }
+
+        private void AddAndRemoveObjects()
+        {
+            objects.AddRange(objectsToAdd);
+            objectsToAdd.Clear();
+
+            foreach (CombatObject obj in objectsToRemove)
+            {
+                objects.Remove(obj);
+            }
+            objectsToRemove.Clear();
         }
 
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
