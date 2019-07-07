@@ -54,14 +54,15 @@
     <Compile Include="Buffs\TimedBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedIncrementBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedPercentageBuff.cs" />
-    <Compile Include="Cutscenes\Commands\AnimationCommand.cs" />
-    <Compile Include="Cutscenes\Commands\ChangeMapCommand.cs" />
-    <Compile Include="Cutscenes\Commands\DialogCommand.cs" />
-    <Compile Include="Cutscenes\Commands\EffectCommand.cs" />
-    <Compile Include="Cutscenes\Commands\MoveCameraCommand.cs" />
-    <Compile Include="Cutscenes\Commands\MoveCommand.cs" />
-    <Compile Include="Cutscenes\Cutscene.cs" />
-    <Compile Include="Cutscenes\CutsceneCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\AnimationCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\ChangeMapCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\DirectionCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\DialogCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\EffectCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\MoveCameraCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Commands\MoveCommand.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Cutscene.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\CutsceneCommand.cs" />
     <Compile Include="Inventory\Items\BuffItem.cs" />
     <Compile Include="Screens\Camera.cs" />
     <Compile Include="Inventory\Items\Item.cs" />
@@ -74,6 +75,8 @@
     <Compile Include="Screens\Implemented\Combat\CombatObjects\Box.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Implemented\SlowingShot.cs" />
     <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\CutsceneMenager.cs" />
+    <Compile Include="Screens\Implemented\Cutscenes\Dummy.cs" />
     <Compile Include="Screens\Implemented\Map\MapCamera.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
     <Compile Include="Screens\Implemented\Map\Locations\DormitoryFirstFloor.cs" />
@@ -121,6 +124,7 @@
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Utilities\StatisticManager.cs" />
+    <Compile Include="Utilities\TileMapGenerator.cs" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="Microsoft.CSharp" />

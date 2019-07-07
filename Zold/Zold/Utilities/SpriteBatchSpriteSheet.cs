@@ -30,6 +30,7 @@ namespace Zold.Utilities
         private Rectangle[,] Frames;
 
         private Dictionary<string, Animation> Animations = new Dictionary<string, Animation>();
+        private Dictionary<string, Rectangle> Directions  = new Dictionary<string, Rectangle>();
 
         public SpriteBatchSpriteSheet(GraphicsDevice graphicsDevice, Texture2D spriteSheet, int rows, int cols, int textureWidthPixels, int textureHeightPixels) : base(graphicsDevice)
         {
@@ -70,6 +71,16 @@ namespace Zold.Utilities
             {
                 base.Draw(SpriteSheet, place, Frames[0, 0], Color.Pink);
             }
+        }
+
+        public void MakeDirection(int row, int col, String name)
+        {
+            Directions.Add(name, Frames[row, col]);
+        }
+
+        public void DirectSprite(Vector2 place, String name)
+        {
+            base.Draw(SpriteSheet, place, Directions[name], Color.White, Rotation, Vector2.Zero, Scale, SpriteEffects.None, LayerDepth);
         }
     }
 
