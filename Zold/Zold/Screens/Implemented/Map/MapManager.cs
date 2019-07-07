@@ -74,7 +74,6 @@ namespace Zold.Screens.Implemented.Map
         int hp;
 
         Location location;
-        Zold.Screens.Camera cameraPlayer;
         InteractionManager interactionManager;
 
         Effect effect;
@@ -89,6 +88,9 @@ namespace Zold.Screens.Implemented.Map
         private SoundEffect bgMusic;
         private SoundEffect combatMusic;
         private SoundEffectInstance bg;
+
+        public static float CurrentScreenWidth { get; set; }
+        public static float CurrentScreenHeight { get; set; }
 
         public MapManager()
         {
@@ -173,13 +175,10 @@ namespace Zold.Screens.Implemented.Map
 
             interactionManager = new InteractionManager(GameScreenManager, location);
 
-            cameraPlayer = new Screens.Camera(player.GetPosition());
-
 
             bgMusic = Assets.Instance.Get("placeholders/Music/explo");
             combatMusic = Assets.Instance.Get("placeholders/Music/comba");
             bg = bgMusic.CreateInstance();
-
         }
 
         public override void UnloadContent()
@@ -236,16 +235,16 @@ namespace Zold.Screens.Implemented.Map
             
 
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
-            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, SamplerState.PointClamp, transformMatrix: MapCamera.BindCameraTransformation());
 
             LayerNumbers.ForEach(layer =>
             {
                 if (layer == 5)
                 {
-                    player.Animation(gameTime, cameraPlayer.Transform());
+                    player.Animation(gameTime, MapCamera.BindCameraTransformation());
                 }
                 //effect.CurrentTechnique.Passes[0].Apply();
-                location.drawTiles(layer, currentMap, cameraPlayer.Transform());
+                location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
             });
 
             gameScreenManager.SpriteBatch.End();
@@ -403,7 +402,7 @@ namespace Zold.Screens.Implemented.Map
                 isPaused = false;
             }
 
-            cameraPlayer.Follow(player.GetPosition(), screenHeight, screenWdth);
+            MapCamera.Follow(player.GetPosition());
         }
 
 
@@ -415,12 +414,16 @@ namespace Zold.Screens.Implemented.Map
             {
                 sh = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Height;
                 sw = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width;
+                
             }
             else
             {
                 sh = screenHeight;
                 sw = screenWdth;
             }
+
+            //Update game Resolution // TODO wywalić do z logiki mapy
+            ResolutionManager.CurrentMapResolution = new Vector2(sw, sh);
 
             if (player.GetPosition().X <= 0)
             {

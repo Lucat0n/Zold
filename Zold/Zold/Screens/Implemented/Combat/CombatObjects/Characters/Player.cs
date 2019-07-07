@@ -36,7 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters
 
         public override void Draw(GameTime gameTime)
         {
-            SpriteBatchSpriteSheet.Begin();
+            SpriteBatchSpriteSheet.Begin(transformMatrix: CombatCamera.BindCameraTransformation());
             DrawHealth(SpriteBatchSpriteSheet, "green");
 
             if (action == "Moving")

@@ -111,7 +111,7 @@ namespace Zold.Screens.Implemented.Map
         //TODO: wywalić matrixa z parametrów
         public void Animation(GameTime gameTime, Matrix cameraTransform)
         {
-            SpriteBatchSpriteSheet.Begin(transformMatrix: cameraTransform);
+            SpriteBatchSpriteSheet.Begin(samplerState: SamplerState.PointClamp, transformMatrix: cameraTransform);
             if (isMoving)
             {
                 SpriteBatchSpriteSheet.PlayFullAniamtion(GetPosition(), Direction, gameTime);
