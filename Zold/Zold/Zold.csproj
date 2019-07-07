@@ -68,6 +68,7 @@
     <Compile Include="Screens\Implemented\Combat\Skills\Skill.cs" />
     <Compile Include="Screens\Implemented\Map\MapCamera.cs" />
     <Compile Include="Screens\Implemented\Map\DialogScreen.cs" />
+    <Compile Include="Screens\Implemented\Map\Locations\DormitoryFirstFloor.cs" />
     <Compile Include="Screens\Implemented\Map\Npc.cs" />
     <Compile Include="Screens\Implemented\Pause\ConfirmationScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
