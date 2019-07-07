@@ -54,6 +54,14 @@
     <Compile Include="Buffs\TimedBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedIncrementBuff.cs" />
     <Compile Include="Buffs\Implemented\TimedPercentageBuff.cs" />
+    <Compile Include="Cutscenes\Commands\AnimationCommand.cs" />
+    <Compile Include="Cutscenes\Commands\ChangeMapCommand.cs" />
+    <Compile Include="Cutscenes\Commands\DialogCommand.cs" />
+    <Compile Include="Cutscenes\Commands\EffectCommand.cs" />
+    <Compile Include="Cutscenes\Commands\MoveCameraCommand.cs" />
+    <Compile Include="Cutscenes\Commands\MoveCommand.cs" />
+    <Compile Include="Cutscenes\Cutscene.cs" />
+    <Compile Include="Cutscenes\CutsceneCommand.cs" />
     <Compile Include="Inventory\Items\BuffItem.cs" />
     <Compile Include="Screens\Camera.cs" />
     <Compile Include="Inventory\Items\Item.cs" />
