@@ -239,46 +239,39 @@ namespace Zold.Screens.Implemented.Map
 
             LayerNumbers.ForEach(layer =>
             {
-                if (layer == 5)
+                if (location.getName() == "dormitory_i")
                 {
-                    player.Animation(gameTime, MapCamera.BindCameraTransformation());
+                    location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
+                    if (layer == 5)
+                    {
+                        player.Animation(gameTime, MapCamera.BindCameraTransformation());
+                    } 
+                    
                 }
-                //effect.CurrentTechnique.Passes[0].Apply();
-                location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
+                else
+                {
+                    if (layer == 5)
+                    {
+                        player.Animation(gameTime, MapCamera.BindCameraTransformation());
+                    }
+                    //effect.CurrentTechnique.Passes[0].Apply();
+
+                    location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
+                }
             });
 
             gameScreenManager.SpriteBatch.End();
-
-            //if (Location.opac)
-            //{
-            //   // postprocessing = true;
-            //    Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask3");
-            //    gameScreenManager.GraphicsDevice.SetRenderTarget(opacTarget);
-            //    gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
-            //    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraPlayer.Transform());
-
-            //    // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
-            //    gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 100, (int)player.GetPosition().Y - 100, lightMask.Width - 15, lightMask.Height - 15), Color.White);
-
-            //    gameScreenManager.SpriteBatch.End();
-
-
-            //    gameScreenManager.GraphicsDevice.SetRenderTarget(mainTarget2);
-            //}
 
             if (ListofNpcs != null)
             {
                 ListofNpcs.ForEach(npc =>
                 {
-
-
                     gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
-
 
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
 
-                    interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y);
+                    interactionManager.displayDialog(player, tex, (int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.getPowiedzanie());
                     gameScreenManager.SpriteBatch.End();
 
                 });
@@ -291,18 +284,14 @@ namespace Zold.Screens.Implemented.Map
             {
                 ListofEnemies.ForEach(npc =>
                 {
-                    // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
-                    //gameScreenManager.GraphicsDevice.Clear(Color.Black);
+
                     gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
 
                     opacity.Parameters["param1"].SetValue(1.5f);
                     opacity.CurrentTechnique.Passes[0].Apply();
                     Texture2D tex = npc.GetTexture();
                     gameScreenManager.SpriteBatch.Draw(tex, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, npc.GetTexture().Width, npc.GetTexture().Height), Color.White);
-
-
                     gameScreenManager.SpriteBatch.End();
-
 
                 });
             }
@@ -337,7 +326,7 @@ namespace Zold.Screens.Implemented.Map
             // player.Animation(gameTime, cameraPlayer.Transform());
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString() +"--"+ location.getPortals()[0].X, new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 90), Color.White);
+            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 10), Color.White);
          //   gameScreenManager.SpriteBatch.DrawString(dialog, "xdxd"+ListofPlaces.IndexOf(location.ListofNextPlaces()[0]), new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 120), Color.White);
 
             if (gameScreenManager.IsFullScreenOn)
@@ -356,7 +345,14 @@ namespace Zold.Screens.Implemented.Map
 
         public override void Update(GameTime gameTime)
         {
+            if (ListofNpcs != null)
+            {
+                ListofNpcs.ForEach(npc =>
+                {
+                    location.checkIfColideWithNpc(npc);
 
+                });
+            }
 
 
             location.checkIfColide(colisionTiles);
@@ -390,7 +386,7 @@ namespace Zold.Screens.Implemented.Map
                             bg.Stop();
                             bg = combatMusic.CreateInstance();
                             bg.Play();
-                            gameScreenManager.InsertScreen(Combat);
+                           // gameScreenManager.InsertScreen(Combat);
                         }
                     });
                 }

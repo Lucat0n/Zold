@@ -94,6 +94,7 @@ namespace Zold.Screens.Implemented.Map
         public abstract Enemy Getenemy(int i);
         public abstract List<Location> ListofNextPlaces();
         public abstract List<int> offsets();
+        public abstract string getName();
 
         public virtual void initMap(GameScreenManager gameScreenManager, TmxMap currentMap)
         {
@@ -247,7 +248,7 @@ namespace Zold.Screens.Implemented.Map
                         }
                     }
 
-                    if (xx == "sciany2" || xx == "podloga2" || xx == "meble2" || xx == "sciany3" || xx == "podloga3" || xx == "meble3")
+                    if (xx == "sciany2" || xx == "podloga2" || xx == "meble2" )
                     {
 
                         //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
@@ -298,6 +299,61 @@ namespace Zold.Screens.Implemented.Map
                             spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
                         }
                     }
+
+
+                    if (xx == "sciany3" || xx == "podloga3" || xx == "meble3")
+                    {
+
+                        //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+
+                        if (layer == 4 && flipV && flipH && flipD)
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && flipV && !flipH && !flipD)
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            //  spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && flipV && !flipH && flipD)
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
+                            //    spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && flipV && flipH && !flipD)
+                        {
+                            // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && !flipV && flipH && !flipD)
+                        {
+                           // spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                              spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(270 * Math.PI / 180), new Vector2(32, 0), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && !flipV && !flipH && flipD)
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(180 * Math.PI / 180), new Vector2(32, 32), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 4 && !flipV && flipH && flipD)
+                        {
+                            //spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White, (float)(90 * Math.PI / 180), new Vector2(0, 32), SpriteEffects.None, 1);
+                        }
+                        else if (layer == 3)
+                        {
+
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                        }
+
+                        else
+                        {
+                            spriteSheet.Draw(tileset, new Rectangle((int)x, (int)y, tileWidth, tileHeight), tilesetRec, Color.White);
+                        }
+                    }
+
+
 
                     spriteSheet.End();
 
@@ -365,6 +421,33 @@ namespace Zold.Screens.Implemented.Map
             }
         }
 
+        public virtual void checkIfColideWithNpc(Npc npc)
+        {
+            Rectangle ghost = new Rectangle((int)player.GetPosition().X, (int)player.GetPosition().Y, 32, 48);
+            Rectangle ghostNpc = new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, 32, 64);
+
+            if (ghost.X == ghostNpc.X - 32 && ghost.Y + 32 == ghostNpc.Y)
+            {
+                MapManager.canMoveRight = false;
+            }
+
+            else if (ghost.X == ghostNpc.X + 32 && ghost.Y + 32 == ghostNpc.Y)
+            {
+                MapManager.canMoveLeft = false;
+            }
+
+            else if (ghost.Y == ghostNpc.Y && ghostNpc.X == ghost.X)
+            {
+                MapManager.canMoveUp = false;
+
+            }
+
+            else if (ghost.Y + 32 * 2 == ghostNpc.Y && ghostNpc.X == ghost.X)
+            {
+                MapManager.canMoveDown = false;
+            }
+
+        }
         public virtual void checkIfColide(List<Rectangle> colisionTiles)
         {
             MapManager.canMoveRight = true;

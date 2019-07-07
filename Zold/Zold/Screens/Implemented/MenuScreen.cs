@@ -180,7 +180,7 @@ namespace Zold.Screens.Implemented
             rightArrow = Assets.Instance.Get("menu/Textures/rightArrow");
             optionsButton = Assets.Instance.Get("menu/Textures/optionsButton");
             font = Assets.Instance.Get("menu/Fonts/dialog");
-            bgMusic = Assets.Instance.Get("menu/Music/menu-music");
+            bgMusic = Assets.Instance.Get("menu/Music/menu-music2");
             bg = bgMusic.CreateInstance();
             buttonBlock = new TimeSpan(0, 0, 0, 0, 750);
             masterVolume = (byte)(gameScreenManager.MasterVolume * 100);
