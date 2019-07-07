@@ -217,7 +217,7 @@ namespace Zold.Screens.Implemented.Map
                 Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask3");
                 gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
                 gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
-                gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: cameraPlayer.Transform());
+                gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: MapCamera.BindCameraTransformation());
 
                 // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
                 gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 120, (int)player.GetPosition().Y - 120, lightMask.Width + 15, lightMask.Height + 15), Color.White);
@@ -272,7 +272,7 @@ namespace Zold.Screens.Implemented.Map
                 {
 
 
-                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
 
 
                     Texture2D tex = npc.GetTexture();
@@ -293,7 +293,7 @@ namespace Zold.Screens.Implemented.Map
                 {
                     // gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
                     //gameScreenManager.GraphicsDevice.Clear(Color.Black);
-                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+                    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
 
                     opacity.Parameters["param1"].SetValue(1.5f);
                     opacity.CurrentTechnique.Passes[0].Apply();
@@ -335,7 +335,7 @@ namespace Zold.Screens.Implemented.Map
             // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
 
             // player.Animation(gameTime, cameraPlayer.Transform());
-            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
+            gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
             gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString() +"--"+ location.getPortals()[0].X, new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
             gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 90), Color.White);
          //   gameScreenManager.SpriteBatch.DrawString(dialog, "xdxd"+ListofPlaces.IndexOf(location.ListofNextPlaces()[0]), new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 120), Color.White);
