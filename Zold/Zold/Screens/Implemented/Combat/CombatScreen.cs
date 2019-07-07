@@ -54,11 +54,11 @@ namespace Zold.Screens.Implemented.Combat
 
             AddAndRemoveObjects();
 
-            objects.ForEach(obj =>
+            foreach(CombatObject obj in objects)
             {
                 obj.BaseSpeed = gameScreenManager.baseSpeed;
                 obj.Update(gameTime);
-            });
+            }
 
             var enemiesToDelete = enemies.Where(x => x.Statistics.Health <= 0).ToArray();
             foreach (Enemy enemy in enemiesToDelete)
@@ -101,7 +101,7 @@ namespace Zold.Screens.Implemented.Combat
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack,transformMatrix:CombatCamera.BindCameraTransformation());
-
+            /*
             // DEBUG - grid
             pixel = new Texture2D(GameScreenManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.White });
@@ -111,7 +111,7 @@ namespace Zold.Screens.Implemented.Combat
                     Map.Nodes[new RoyT.AStar.Position(x,y)].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
                 }
             // END OF DEBUG
-
+            */
             Map.DrawTiles(0);
             objects.ForEach(obj => {
                 obj.Draw(gameTime);

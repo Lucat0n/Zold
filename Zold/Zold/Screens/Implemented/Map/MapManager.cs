@@ -325,8 +325,8 @@ namespace Zold.Screens.Implemented.Map
 
             // player.Animation(gameTime, cameraPlayer.Transform());
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
-            gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString() +"--"+ location.getPortals()[0].X, new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
-            gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 10), Color.White);
+         //   gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString() +"--"+ location.getPortals()[0].X, new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
+         //   gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 10), Color.White);
          //   gameScreenManager.SpriteBatch.DrawString(dialog, "xdxd"+ListofPlaces.IndexOf(location.ListofNextPlaces()[0]), new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 120), Color.White);
 
             if (gameScreenManager.IsFullScreenOn)
@@ -386,7 +386,7 @@ namespace Zold.Screens.Implemented.Map
                             bg.Stop();
                             bg = combatMusic.CreateInstance();
                             bg.Play();
-                           // gameScreenManager.InsertScreen(Combat);
+                            gameScreenManager.InsertScreen(Combat);
                         }
                     });
                 }

@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using RoyT.AStar;
 using System;
+using System.Timers;
 using Zold.Statistics;
 using Zold.Utilities;
 
@@ -15,6 +16,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         public double AttackStart { get; set; }
         public float AttackEnd { get; set; }
         protected Position[] path;
+        protected Timer attackTimer;
 
         public Enemy(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int height, int width) : base(position, statistics, SpriteBatchSpriteSheet, height, width)
         {
@@ -30,6 +32,13 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             SetGridPosition();
             AI(gameTime);
+        }
+
+        protected void Attack(object source, ElapsedEventArgs e)
+        {
+            if (player.CheckPointCollision(attackPosition))
+                player.Statistics.Health -= Statistics.Damage;
+            attackTimer.Enabled = false;
         }
 
         protected void MoveTo(Vector2 destination)
