@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using RoyT.AStar;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -10,13 +11,16 @@ namespace Zold.Screens.Implemented.Combat.Utilities
 {
     class Node
     {
-        public Rectangle HitBox;
+        public BoundingBox HitBox;
         public Vector2 Center;
         public bool Passable;
+        public bool Occupied;
+        public bool Path;
         public readonly int Width;
         public readonly int Height;
         public readonly int PosX;
         public readonly int PosY;
+        public readonly Position Position;
 
         // Border
         Color borderColor;
@@ -29,12 +33,16 @@ namespace Zold.Screens.Implemented.Combat.Utilities
         public Node(int x, int y, int offset)
         {
             Passable = true;
+            Occupied = false;
+            Path = false;
             Width = 16;
             Height = 16;
             PosX = x * Width;
             PosY = y * Height + offset;
-            HitBox = new Rectangle(PosX, PosY, Width, Height);
+            //HitBox = new Rectangle(PosX, PosY, Width, Height);
+            HitBox = new BoundingBox(new Vector3(PosX, PosY, 0), new Vector3(PosX + Width, PosY + Height, 0));
             Center = new Vector2(PosX + Width / 2, PosY + Height / 2);
+            Position = new Position(x, y);
 
             // Border rectangles
             topBorder = new Rectangle(PosX, PosY, Width, 1);
@@ -50,6 +58,10 @@ namespace Zold.Screens.Implemented.Combat.Utilities
                 borderColor = Color.Green;
             else
                 borderColor = Color.Red;
+            if (Path)
+                borderColor = Color.Yellow;
+            if (Occupied)
+                borderColor = Color.Orange;
 
             // Draw top line
             spriteBatch.Draw(pixel, topBorder, borderColor);

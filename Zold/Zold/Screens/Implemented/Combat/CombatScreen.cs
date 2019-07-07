@@ -23,6 +23,8 @@ namespace Zold.Screens.Implemented.Combat
         public Player player;
         public List<Enemy> enemies;
         public List<CombatObject> objects;
+        public List<CombatObject> objectsToAdd;
+        public List<CombatObject> objectsToRemove;
         public Timer timer;
         public Utilities.Map Map;
 
@@ -37,6 +39,8 @@ namespace Zold.Screens.Implemented.Combat
             this.enemies = enemies;
             
             objects = new List<CombatObject>();
+            objectsToAdd = new List<CombatObject>();
+            objectsToRemove = new List<CombatObject>();
 
             IsTransparent = false;
 
@@ -48,7 +52,10 @@ namespace Zold.Screens.Implemented.Combat
             CheckProjectileCollisions();
             objects = objects.OrderBy(item => item.BottomPosition.Y).ToList();
 
-            objects.ForEach(obj => {
+            AddAndRemoveObjects();
+
+            objects.ForEach(obj =>
+            {
                 obj.BaseSpeed = gameScreenManager.baseSpeed;
                 obj.Update(gameTime);
             });
@@ -101,7 +108,7 @@ namespace Zold.Screens.Implemented.Combat
             for (int x = 0; x < 40; x++)
                 for (int y = 0; y < 16; y++)
                 {
-                    Map.Nodes[x + "_" + y].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
+                    Map.Nodes[new RoyT.AStar.Position(x,y)].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
                 }
             // END OF DEBUG
 
@@ -111,6 +118,18 @@ namespace Zold.Screens.Implemented.Combat
             });
 
             gameScreenManager.SpriteBatch.End();
+        }
+
+        private void AddAndRemoveObjects()
+        {
+            objects.AddRange(objectsToAdd);
+            objectsToAdd.Clear();
+
+            foreach (CombatObject obj in objectsToRemove)
+            {
+                objects.Remove(obj);
+            }
+            objectsToRemove.Clear();
         }
 
         public override void HandleInput(MouseState mouseState, Rectangle mousePos, KeyboardState keyboardState)
@@ -137,14 +156,14 @@ namespace Zold.Screens.Implemented.Combat
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.Add(player);
-            objects.Add(projectile);
+            objectsToAdd.Add(projectile);
         }
 
         public void MakePlayerProjectile(Vector2 position, Vector2 destination, Skill skill, int dmg, string texture, int width, int height)
         {
             Projectile projectile = new Projectile(position, destination, skill, dmg, new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, Assets.Instance.Get(texture), 2, 1, width, height), width, height);
             projectile.Targets.AddRange(enemies);
-            objects.Add(projectile);
+            objectsToAdd.Add(projectile);
         }
 
         public void AddObstacle(Obstacle obstacle)
@@ -193,15 +212,20 @@ namespace Zold.Screens.Implemented.Combat
             });
         }
 
-        private bool CheckNodeCollisions()
+        public bool CheckLineOfSight(Ray ray, float distance)
         {
-            bool collision = false;
-            Map.CollisionNodes.ForEach(node =>
+            foreach (Node node in Map.CollisionNodes)
             {
-                if (node.HitBox.Intersects(player.HitBox))
-                    collision = true;
-            });
-            return collision;
+                if(node.HitBox.Intersects(ray) == null || distance < node.HitBox.Intersects(ray))
+                {
+                    continue;
+                }
+                else
+                {
+                    return false;
+                }
+            }
+            return true;
         }
 
         public bool CheckNodeCollision(CombatObject obj)
@@ -213,7 +237,7 @@ namespace Zold.Screens.Implemented.Combat
                 (node.PosY < obj.BottomPosition.Y) && (node.PosY + node.Height > obj.BottomPosition.Y))
                 {
                     collision = true;
-                    if (obj is Character)
+                    if (obj is Player)
                     {
                         Vector2 newPos = obj.Position;
 
@@ -230,7 +254,11 @@ namespace Zold.Screens.Implemented.Combat
                     }
                     else if (obj is Projectile)
                     {
-                        objects.Remove(obj);
+                        objectsToRemove.Add(obj);
+                    }
+                    else if (obj is Charger)
+                    {
+                        (obj as Charger).StopCharge();
                     }
                 }
             });

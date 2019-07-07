@@ -43,7 +43,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             {
                 action = "Moving";
                 skill.CooldownTimer.Interval = 1000;
-                Move(playerDirection);
+                MoveTo(playerDirection);
             }
         }
 
@@ -86,59 +86,61 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             //{
             //    // TO DO
             //}
+            
             if (IsCloseToTop())
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.TopMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.RightMapEdge - 5, CombatScreen.Map.TopMapEdge + 5);
                 }
                 else if (player.BottomPosition.X > BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.TopMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.LeflMapEdge + 5, CombatScreen.Map.TopMapEdge + 5);
                 }
             }
-            
             else if (IsCloseToBot())
             {
                 if (player.BottomPosition.X <= BottomPosition.X)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.BottomMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.RightMapEdge - 5, CombatScreen.Map.BottomMapEdge - 5);
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.BottomMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.LeflMapEdge + 5, CombatScreen.Map.BottomMapEdge - 5);
                 }
             }
             else if (IsCloseToRight())
             {
                 if (player.BottomPosition.Y <= BottomPosition.Y)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.BottomMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.RightMapEdge - 5, CombatScreen.Map.BottomMapEdge - 5);
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.RightMapEdge, CombatScreen.Map.TopMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.RightMapEdge - 5, CombatScreen.Map.TopMapEdge + 5);
                 }
             }
             else if (IsCloseToLeft())
             {
                 if (player.BottomPosition.Y <= BottomPosition.Y)
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.BottomMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.LeflMapEdge + 5, CombatScreen.Map.BottomMapEdge - 5);
                 }
                 else
                 {
-                    moveDirection = CalcDirection(BottomPosition, new Vector2(CombatScreen.Map.LeflMapEdge, CombatScreen.Map.TopMapEdge));
+                    moveDirection = new Vector2(CombatScreen.Map.LeflMapEdge + 5, CombatScreen.Map.TopMapEdge + 5);
                 }
             }
             else
-                moveDirection = playerDirection * -1;
-            Move(moveDirection);
+            {
+                moveDirection = BottomPosition + (playerDirection * -50);
+            }
+            MoveTo(moveDirection);
         }
 
         private bool IsCloseToLeft()
         {
-            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.Map.RightMapEdge - mapOffset;
+            return player.BottomPosition.X >= BottomPosition.X && BottomPosition.X <= CombatScreen.Map.RightMapEdge + mapOffset;
         }
 
         private bool IsCloseToRight()

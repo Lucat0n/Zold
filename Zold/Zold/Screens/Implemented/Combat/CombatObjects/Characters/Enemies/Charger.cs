@@ -12,7 +12,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         private float chargeSpeed;
         private Vector2 chargePosition;
         private Vector2 chargeDirection;
-        private float chargeRange;
+        private Ray lineOfSight;
         private float chargeCheck;
         private bool charge;
         private bool hit;
@@ -36,6 +36,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
         {
             CalculateDepth();
             CheckDirection();
+            CombatScreen.CheckNodeCollision(this);
             chargeSpeed = BaseSpeed * 350;
             playerDirection = CalcDirection(BottomPosition, new Vector2(player.BottomPosition.X, player.BottomPosition.Y));
             Distance = Vector2.Distance(new Vector2(player.BottomPosition.X, player.BottomPosition.Y - Height), BottomPosition);
@@ -50,16 +51,16 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
                 action = "Charging";
                 Charge();
             }
-            else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false)
+            else if (Distance <= 200 && prepareTimer.Enabled == false && cooldownTimer.Enabled == false && CheckIfTargetIsInSight(player))
             {
                 chargePosition = new Vector2(player.BottomPosition.X, player.BottomPosition.Y);
                 chargeDirection = CalcDirection(BottomPosition, chargePosition);
                 prepareTimer.Enabled = true;
             }
-            else if (prepareTimer.Enabled == false)
+            else if (Distance >= 32 && prepareTimer.Enabled == false)
             {
                 action = "Moving";
-                Move(playerDirection);
+                MoveTo(player.GridPosition);
             }
         }
 
@@ -122,9 +123,24 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
             if (!Map.CheckPointCollision(BottomPosition))
             {
-                charge = false;
-                cooldownTimer.Enabled = true;
+                StopCharge();
             }
+        }
+
+        private bool CheckIfTargetIsInSight(Character character)
+        {
+            Vector3 thisVector = new Vector3(BottomPosition, 0);
+            Vector3 charVector = new Vector3(character.BottomPosition, 0);
+            Vector3 direction = new Vector3(CalcDirection(BottomPosition, character.BottomPosition), 0);
+            float distance = Vector3.Distance(thisVector, charVector);
+            lineOfSight = new Ray(thisVector, direction);
+            return CombatScreen.CheckLineOfSight(lineOfSight, distance); 
+        }
+
+        public void StopCharge()
+        {
+            charge = false;
+            cooldownTimer.Enabled = true;
         }
     }
 }
