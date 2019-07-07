@@ -22,8 +22,8 @@ namespace Zold.Utilities
             PlayerLocation.Name = "Akademik";
             mapNode[] mn = new mapNode[] { PlayerLocation, null, null, null };
             mapNode dormitoryOutside = new mapNode(new Point(400, 200), "DormOutside", mn);
-            mapNode[] mn2 = new mapNode[] { PlayerLocation, null, null, null };
-            mapNode dormitoryOutside2 = new mapNode(new Point(100, 150), "DormOutside2", mn2);
+            mapNode[] mn2 = new mapNode[] { null, null, PlayerLocation, null };
+            mapNode dormitoryOutside2 = new mapNode(new Point(50, 450), "DormOutside2", mn2);
             dormitoryOutside.Name = "Dziedziniec akademika";
             dormitoryOutside2.Name = "Dziedziniec akademika2";
             PlayerLocation.Neighbours[3] = dormitoryOutside;
