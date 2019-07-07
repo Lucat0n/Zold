@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using System.Timers;
 using Zold.Screens.Implemented.Combat.Skills;
 using Zold.Statistics;
 using Zold.Utilities;
@@ -16,6 +17,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             name = "Ranged";
             mapOffset = 50;
             skill = new ShootEnemy(CombatScreen, Statistics.Damage);
+
+            attackTimer = new Timer();
+            attackTimer.Interval = 1000;
+            attackTimer.Elapsed += new ElapsedEventHandler(Attack);
         }
 
         public override void AI(GameTime gameTime)
@@ -58,10 +63,10 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else
             {
-                direction = player.Position.X >= Position.X ? "Right_Charger" : "Left_Charger";
-                if (direction == "Right_Charger")
+                direction = player.Position.X >= Position.X ? "Right_Ranged" : "Left_Ranged";
+                if (direction == "Right_Ranged")
                     SpriteBatchSpriteSheet.Draw(Position, 1, 0);
-                if (direction == "Left_Charger")
+                if (direction == "Left_Ranged")
                     SpriteBatchSpriteSheet.Draw(Position, 3, 0);
             }
 
@@ -70,22 +75,35 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 
         public void Run()
         {
-            //if (IsCloseToBot() && IsCloseToRight())
-            //{
-            //    // TO DO
-            //}
-            //else if (IsCloseToBot() && IsCloseToLeft())
-            //{
-            //    // TO DO
-            //}
-            //else if (IsCloseToTop() && IsCloseToRight())
-            //{
-            //    // TO DO
-            //}
-            //else if (IsCloseToTop() && IsCloseToLeft())
-            //{
-            //    // TO DO
-            //}
+            if (attackTimer.Enabled == true)
+            {
+                action = "Attacking";
+                return;
+            }
+            if (IsCloseToBot() && IsCloseToRight() && attackTimer.Enabled == false)
+            {
+                attackPosition = player.CenterPosition;
+                attackTimer.Enabled = true;
+                return;
+            }
+            else if (IsCloseToBot() && IsCloseToLeft() && attackTimer.Enabled == false)
+            {
+                attackPosition = player.CenterPosition;
+                attackTimer.Enabled = true;
+                return;
+            }
+            else if (IsCloseToTop() && IsCloseToRight() && attackTimer.Enabled == false)
+            {
+                attackPosition = player.CenterPosition;
+                attackTimer.Enabled = true;
+                return;
+            }
+            else if (IsCloseToTop() && IsCloseToLeft() && attackTimer.Enabled == false)
+            {
+                attackPosition = player.CenterPosition;
+                attackTimer.Enabled = true;
+                return;
+            }
             
             if (IsCloseToTop())
             {
@@ -133,7 +151,7 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
             else
             {
-                moveDirection = BottomPosition + (playerDirection * -50);
+                moveDirection = BottomPosition + (playerDirection * -40);
             }
             MoveTo(moveDirection);
         }

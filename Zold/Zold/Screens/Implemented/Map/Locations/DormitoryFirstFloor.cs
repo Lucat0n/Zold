@@ -58,7 +58,6 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Enemy> GetEnemies()
         {
             enemies = new List<Enemy>();
-            enemies.Add(new Enemy(player, new Vector2(400, 200), Assets.Instance.Get("placeholders/Textures/rat")));
             return enemies;
         }
 

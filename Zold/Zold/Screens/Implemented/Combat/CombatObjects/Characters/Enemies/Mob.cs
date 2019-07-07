@@ -7,8 +7,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
 {
     class Mob : Enemy
     {
-        private Timer attackTimer;
-
         public Mob(Player player, Stats statistics, Vector2 position, SpriteBatchSpriteSheet SpriteBatchSpriteSheet, int width, int height) : base(player, statistics, position, SpriteBatchSpriteSheet, width, height)
         {
             name = "Mob";
@@ -58,13 +56,6 @@ namespace Zold.Screens.Implemented.Combat.CombatObjects.Characters.Enemies
             }
 
             SpriteBatchSpriteSheet.End();
-        }
-
-        private void Attack(object source, ElapsedEventArgs e)
-        {
-            if (player.CheckPointCollision(attackPosition))
-                player.Statistics.Health -= Statistics.Damage;
-            attackTimer.Enabled = false;
         }
     }
 }

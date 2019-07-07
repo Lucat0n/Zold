@@ -28,7 +28,7 @@ namespace Zold.Statistics
         public Stats()
         {
             Level = 1;
-            MaxHealth = 800;
+            MaxHealth = 80;
             health = MaxHealth;
             Damage = 20;
             Speed = 80;
