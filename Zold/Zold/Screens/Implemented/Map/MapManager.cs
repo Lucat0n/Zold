@@ -51,6 +51,7 @@ namespace Zold.Screens.Implemented.Map
 
         bool isPaused = false;
         private bool isEscPressed = false;
+        private bool isF4Pressed = false;
 
         public static bool canMoveLeft;
         public static bool canMoveUp;
@@ -454,6 +455,16 @@ namespace Zold.Screens.Implemented.Map
             else if (keyboardState.IsKeyUp(Keys.Escape) && pressed)
             {
                 pressed = false;
+            }
+            if (keyboardState.IsKeyDown(Keys.F4) && !isF4Pressed)
+            {
+                isF4Pressed = true;
+                System.Diagnostics.Debug.WriteLine("test");
+                gameScreenManager.InsertScreen(new WorldMapScreen(gameScreenManager, spriteSheet, player));
+            }
+            else if (keyboardState.IsKeyUp(Keys.F4) && !isF4Pressed)
+            {
+                isF4Pressed = false;
             }
         }
 

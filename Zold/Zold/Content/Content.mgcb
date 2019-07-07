@@ -14,6 +14,18 @@
 
 #---------------------------------- Content ---------------------------------#
 
+#begin ../../../../../../Documents/tile/Miasto.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:../../../../../../Documents/tile/Miasto.png;Miasto.png
+
 #begin combat/Fonts/dialog.spritefont
 /importer:FontDescriptionImporter
 /processor:FontDescriptionProcessor
@@ -263,6 +275,24 @@
 
 #begin graphic/locations/MainRoom/MainRoom2.tsx
 /copy:graphic/locations/MainRoom/MainRoom2.tsx
+
+#begin graphic/locations/World/Miasto.tsx
+/copy:graphic/locations/World/Miasto.tsx
+
+#begin graphic/locations/World/MiastoMapa.tmx
+/copy:graphic/locations/World/MiastoMapa.tmx
+
+#begin graphic/locations/World/Tiles.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:graphic/locations/World/Tiles.png
 
 #begin magecity.png
 /importer:TextureImporter
