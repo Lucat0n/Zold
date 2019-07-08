@@ -16,7 +16,7 @@ namespace Zold.Utilities
         public Map()
         {
             Locations = new List<mapNode>();
-            PlayerLocation = new mapNode(new Point(310, 310), "Dormitory", null);
+            /*PlayerLocation = new mapNode(new Point(310, 310), "Dormitory", null);
             PlayerLocation.IsVisited = true;
             PlayerLocation.IsFriendly = true;
             PlayerLocation.Name = "Akademik";
@@ -27,10 +27,10 @@ namespace Zold.Utilities
             dormitoryOutside.Name = "Dziedziniec akademika";
             dormitoryOutside2.Name = "Dziedziniec akademika2";
             PlayerLocation.Neighbours[3] = dormitoryOutside;
-            PlayerLocation.Neighbours[1] = dormitoryOutside2;
-            Locations.Add(PlayerLocation);
-            Locations.Add(dormitoryOutside);
-            Locations.Add(dormitoryOutside2);
+            PlayerLocation.Neighbours[1] = dormitoryOutside2;*/
+            //Locations.Add(PlayerLocation);
+            //Locations.Add(dormitoryOutside);
+            //Locations.Add(dormitoryOutside2);
         }
 
         internal List<mapNode> Locations { get => locations; set => locations = value; }
@@ -75,5 +75,11 @@ namespace Zold.Utilities
             internal mapNode[] Neighbours { get => neighbours; }
             internal String TargetMapID { get => targetMapID; set => targetMapID = value; }
         }
+
+        public void addLocation(mapNode mapNode)
+        {
+            Locations.Add(mapNode);
+        }
+
     }
 }

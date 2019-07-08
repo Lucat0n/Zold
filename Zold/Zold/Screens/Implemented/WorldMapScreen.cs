@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Zold.Utilities;
+using static Zold.Utilities.Map;
 
 namespace Zold.Screens.Implemented
 {
@@ -32,6 +33,7 @@ namespace Zold.Screens.Implemented
         private Texture2D friendlyLocation;
         private Texture2D hostileLocation;
         private Texture2D line;
+        private Texture2D pietr;
         private Texture2D unknownLocation;
 
         internal WorldMapScreen()
@@ -99,10 +101,10 @@ namespace Zold.Screens.Implemented
                 }
                 gameScreenManager.SpriteBatch.Draw(mn.IsVisited ? (mn.IsFriendly ? friendlyLocation : hostileLocation) : unknownLocation, r, Color.White);
                 //gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(400,400/*r.X + r.Width/2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom + r.Height/2*/), Color.White, 0.0f, Vector2.Zero, 0.05f, SpriteEffects.None, 1f);
-                gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width / 2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Orange);
+                gameScreenManager.SpriteBatch.DrawString(font, mn.Name, new Vector2(r.X + r.Width / 2 - font.MeasureString(mn.Name).Length() / 2, r.Bottom), Color.Red);
 
             }
-            gameScreenManager.SpriteBatch.Draw(line, playerRec, Color.White);
+            gameScreenManager.SpriteBatch.Draw(pietr, playerRec, Color.White);
             gameScreenManager.SpriteBatch.End();
         }
 
@@ -202,9 +204,15 @@ namespace Zold.Screens.Implemented
                             posX = map.PlayerLocation.Location.X - initialRoute / 50 * routeProgress;
                         }
                         else if (posY > map.PlayerLocation.Neighbours[locationToVisit].Location.Y)
+                        {
+                            posX = map.PlayerLocation.Neighbours[locationToVisit].Location.X;
                             posY = map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Height / 20 - initialRoute / 50 * (routeProgress - directionChangeStep);
+                        }
                         else if (posY < map.PlayerLocation.Neighbours[locationToVisit].Location.Y)
+                        {
+                            posX = map.PlayerLocation.Neighbours[locationToVisit].Location.X;
                             posY = map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Height / 20 + initialRoute / 50 * (routeProgress - directionChangeStep);
+                        }
 
                         break;
                     case 2:
@@ -215,14 +223,14 @@ namespace Zold.Screens.Implemented
                         }
                         else if (posX < map.PlayerLocation.Neighbours[locationToVisit].Location.X)
                         {
-                            if (routeProgress < 49)
+                            if (routeProgress < 48)
                                 posX = map.PlayerLocation.Location.X + initialRoute / 50 * (routeProgress - directionChangeStep);
                             else
                                 posX = map.PlayerLocation.Neighbours[locationToVisit].Location.X - 4;
                         }
                         else if (posX > map.PlayerLocation.Neighbours[locationToVisit].Location.X)
                         {
-                            if (routeProgress < 49)
+                            if (routeProgress < 48)
                                 posX = map.PlayerLocation.Location.X - initialRoute / 50 * (routeProgress - directionChangeStep);
                             else
                                 posX = map.PlayerLocation.Neighbours[locationToVisit].Location.X;
@@ -259,8 +267,8 @@ namespace Zold.Screens.Implemented
                         }
                         break;
                 }
-                Point playerPos = new Point(posX, posY);
-                playerRec = new Rectangle(playerPos, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 20));
+                Point playerPos = new Point(posX, posY + gameScreenManager.GraphicsDevice.Viewport.Height / 40);
+                playerRec = new Rectangle(playerPos, new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Height / 20));
                 route -= initialRoute / 50;
                 if (route > 0)
                     routeProgress++;  
@@ -279,11 +287,29 @@ namespace Zold.Screens.Implemented
             friendlyLocation = Assets.Instance.Get("worldMap/Textures/friendlyLoc");
             hostileLocation = Assets.Instance.Get("worldMap/Textures/hostileLoc");
             unknownLocation = Assets.Instance.Get("worldMap/Textures/unknownLoc");
-            background = Assets.Instance.Get("worldMap/Textures/ulicapixelated");
+            background = Assets.Instance.Get("worldMap/Textures/miasto");
             line = Assets.Instance.Get("worldMap/Textures/lineTex");
+            pietr = Assets.Instance.Get("worldMap/Textures/pietr");
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
             map = gameScreenManager.Map;
-            playerRec = new Rectangle(new Point(map.PlayerLocation.Location.X, map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Width / 20), new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Width / 20));
+            map.Locations.Clear();
+            mapNode PlayerLocation = new mapNode(new Point((int)(gameScreenManager.GraphicsDevice.Viewport.Width / 2.8), (int)(gameScreenManager.GraphicsDevice.Viewport.Height / 1.75)), "Dormitory", null);
+            PlayerLocation.IsVisited = true;
+            PlayerLocation.IsFriendly = true;
+            PlayerLocation.Name = "Akademik";
+            mapNode[] mn = new mapNode[] { PlayerLocation, null, null, null };
+            //mapNode dormitoryOutside = new mapNode(new Point(400, 200), "DormOutside", mn);
+            mapNode[] mn2 = new mapNode[] { null, null, PlayerLocation, null };
+            mapNode dormitoryOutside2 = new mapNode(new Point((int)(gameScreenManager.GraphicsDevice.Viewport.Width / 3.35), 2*((int)(gameScreenManager.GraphicsDevice.Viewport.Height / 2.7))), "DormOutside2", mn2);
+            //dormitoryOutside.Name = "Dziedziniec akademika";
+            dormitoryOutside2.Name = "Rog ulicy";
+            //PlayerLocation.Neighbours[3] = dormitoryOutside;
+            PlayerLocation.Neighbours[1] = dormitoryOutside2;
+            map.PlayerLocation = PlayerLocation;
+            map.addLocation(PlayerLocation);
+            //map.addLocation(dormitoryOutside);
+            map.addLocation(dormitoryOutside2);
+            playerRec = new Rectangle(new Point(map.PlayerLocation.Location.X, map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Height / 20), new Point(gameScreenManager.GraphicsDevice.Viewport.Width / 40, gameScreenManager.GraphicsDevice.Viewport.Height / 20));
             posX = map.PlayerLocation.Location.X;
             posY = map.PlayerLocation.Location.Y - gameScreenManager.GraphicsDevice.Viewport.Width / 20;
         }

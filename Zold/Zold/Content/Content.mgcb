@@ -758,7 +758,7 @@
 /processorParam:TextureFormat=Color
 /build:worldMap/Textures/lineTex.png
 
-#begin worldMap/Textures/ulicapixelated.png
+#begin worldMap/Textures/miasto.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -768,7 +768,19 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:worldMap/Textures/ulicapixelated.png
+/build:worldMap/Textures/miasto.png
+
+#begin worldMap/Textures/pietr.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:worldMap/Textures/pietr.png
 
 #begin worldMap/Textures/unknownLoc.png
 /importer:TextureImporter
