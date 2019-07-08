@@ -28,7 +28,7 @@ namespace Zold.Screens.Implemented.Map.Locations
         {
             characters = new List<Npc>();
             List<string> powiedzenia = new List<string>();
-            powiedzenia.Add("ZKS czy Dizdew?");
+            //powiedzenia.Add("ZKS czy Dizdew?");
             powiedzenia.Add("Elo");
             powiedzenia.Add("A ty tu czego?");
             powiedzenia.Add("Spadaj");
