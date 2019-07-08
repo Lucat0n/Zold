@@ -103,7 +103,7 @@ namespace Zold.Screens.Implemented.Pause
                         gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/cursor"), cursorPos, Color.White);
                     break;
                 case (PauseState.map):
-                    gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
+                    //gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
                     break;
                 case (PauseState.options):
                     gameScreenManager.SpriteBatch.Draw(Assets.Instance.Get("pause/Textures/secondaryWindow"), secondaryWindow, Color.White);
@@ -158,7 +158,10 @@ namespace Zold.Screens.Implemented.Pause
                     if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
                     {
                         pauseState = (PauseState)index;
-                        isEnterPressed = true;
+                        if(index==4)
+                            isEnterPressed = false;
+                        else
+                            isEnterPressed = true;
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
@@ -270,6 +273,15 @@ namespace Zold.Screens.Implemented.Pause
                         isEscPressed = true;
                         pauseState = PauseState.main;
                     }
+                    if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
+                    {
+                        gameScreenManager.InsertScreen(new WorldMapScreen());
+                        Debug.WriteLine("test");
+                        isEscPressed = true;
+                        isEnterPressed = true;
+                    }
+                    else if (keyboardState.IsKeyUp(Keys.Enter))
+                        isEnterPressed = false;
                     break;
                 case (PauseState.options):
                     if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
