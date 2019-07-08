@@ -74,6 +74,7 @@
     <Compile Include="Screens\Implemented\Pause\ItemDecisionScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\ItemPreviewScreen.cs" />
     <Compile Include="Screens\Implemented\Pause\QuestDescriptionScreen.cs" />
+    <Compile Include="Screens\Implemented\WorldMapScreen.cs" />
     <Compile Include="Statistics\Stats.cs" />
     <Compile Include="Utilities\ResolutionManager.cs" />
     <Compile Include="Utilities\InventoryManager.cs" />
@@ -105,6 +106,7 @@
     <Compile Include="Utilities\ContentLoader.cs" />
     <Compile Include="Quests\Quest.cs" />
     <Compile Include="Quests\ItemQuest.cs" />
+    <Compile Include="Utilities\Map.cs" />
     <Compile Include="Utilities\QuestManager.cs" />
     <Compile Include="Utilities\SpriteBatchSpriteSheet.cs" />
     <Compile Include="Game1.cs" />

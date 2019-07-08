@@ -23,6 +23,7 @@ namespace Zold.Screens
         private QuestManager questManager;
         private float masterVolume = 1.0f;
         private GraphicsDeviceManager graphics;
+        private Zold.Utilities.Map map;
         private Rectangle cursor;
         private List<GameScreen> ScreenList = new List<GameScreen>();
         private List<GameScreen> ScreensToDraw = new List<GameScreen>();
@@ -77,6 +78,8 @@ namespace Zold.Screens
         internal QuestManager QuestManager { get => questManager; set => questManager = value; }
 
         internal InventoryManager InventoryManager => inventoryManager;
+
+        internal Map Map { get => map; set => map = value; }
         #endregion
 
         #region init
@@ -90,6 +93,7 @@ namespace Zold.Screens
             itemManager = new ItemManager(contentLoader);
             inventoryManager = new InventoryManager(itemManager);
             questManager = new QuestManager(inventoryManager, itemManager);
+            Map = new Map();
             
             BuffItem ibi = new BuffItem("healthPotion1", itemManager, "buffItems");
             itemManager.AddItem("healthPotion");
