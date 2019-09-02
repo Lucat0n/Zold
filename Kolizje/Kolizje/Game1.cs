@@ -26,13 +26,21 @@ namespace Kolizje
 
         protected override void Initialize()
         {
+            InitializeGraphicElements();
 
+            base.Initialize();
+        }
+
+        private void InitializeGraphicElements()
+        {
             movingRectangle = new GraphicRectangle(graphics.GraphicsDevice, 100, 50, Color.Orange);
             rectanglePosition = new Vector2(0, 0);
 
-            rectangles.Add(movingRectangle);
+            obstacleRectangle = new GraphicRectangle(graphics.GraphicsDevice, 50, 50, Color.Black);
+            obstacleRectangle.UpdatePosition(new Vector2(200, 100));
 
-            base.Initialize();
+            rectangles.Add(movingRectangle);
+            rectangles.Add(obstacleRectangle);
         }
 
         protected override void LoadContent()

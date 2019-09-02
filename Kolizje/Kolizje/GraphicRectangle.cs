@@ -11,7 +11,7 @@ namespace Kolizje
     class GraphicRectangle : Texture2D, IGraphicObject
     {
         private readonly SpriteBatch spriteBatch;
-        private Vector2 position;
+        private Vector2 position = new Vector2(0,0);
 
         public GraphicRectangle(GraphicsDevice graphicsDevice, int width, int height, Color color) : base(graphicsDevice, width, height)
         {
