@@ -45,6 +45,8 @@
     <Compile Include="GraphicRectangle.cs" />
     <Compile Include="IGraphicObject.cs" />
     <Compile Include="Game1.cs" />
+    <Compile Include="KeyboardMovingKeys.cs" />
+    <Compile Include="MovingKeyEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>

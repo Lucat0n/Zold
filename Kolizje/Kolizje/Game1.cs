@@ -10,10 +10,12 @@ namespace Kolizje
     {
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
-        //Texture2D rect;
+
         private List<IGraphicObject> rectangles = new List<IGraphicObject>();
         private GraphicRectangle movingRectangle;
         private GraphicRectangle obstacleRectangle;
+
+        private KeyboardMovingKeys keyboardMovingKeys;
 
         private Vector2 rectanglePosition;
 
@@ -27,6 +29,8 @@ namespace Kolizje
         protected override void Initialize()
         {
             InitializeGraphicElements();
+
+            keyboardMovingKeys = new KeyboardMovingKeys(Keys.W, Keys.D, Keys.S, Keys.A);
 
             base.Initialize();
         }
@@ -53,12 +57,34 @@ namespace Kolizje
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            UpdateRectanglePosition();
 
             movingRectangle.UpdatePosition(rectanglePosition);
 
             base.Update(gameTime);
+        }
+
+        private void UpdateRectanglePosition()
+        {
+            if(Keyboard.GetState().GetPressedKeys().Length>0)
+            {
+                switch (keyboardMovingKeys.GetMovementKey(Keyboard.GetState().GetPressedKeys()[0]))
+                {
+                    case MovingKeyEnum.UP:
+                        rectanglePosition.Y -= 1;
+                        break;
+                    case MovingKeyEnum.RIGHT:
+                        rectanglePosition.X += 1;
+                        break;
+                    case MovingKeyEnum.DOWN:
+                        rectanglePosition.Y += 1;
+                        break;
+                    case MovingKeyEnum.LEFT:
+                        rectanglePosition.X -= 1;
+                        break;
+                }
+            }
+            
         }
 
         protected override void Draw(GameTime gameTime)
