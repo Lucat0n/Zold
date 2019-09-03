@@ -9,7 +9,7 @@ namespace Kolizje
 {
     interface IGraphicObject
     {
-        void UpdatePosition(Vector2 vector2);
+        void ChangePosition(Vector2 vector2);
         void Draw();
     }
 }

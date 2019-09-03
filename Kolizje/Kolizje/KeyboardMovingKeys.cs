@@ -23,16 +23,6 @@ namespace Kolizje
         {
             return movingKeys.ContainsKey(key) ? movingKeys[key] : MovingKeyEnum.NONE;
         }
-
-        //public bool IsMovingKeyPressed()
-        //{
-        //    var pressedKeys = Keyboard.GetState().GetPressedKeys();
-        //    foreach(var pair in movingKeys)
-        //    {
-        //        return Array.Exists
-        //    }
-        //    //return Keyboard.GetState().GetPressedKeys().Contains(movingKeys.Keys[0]);
-        //}
        
     }
 }

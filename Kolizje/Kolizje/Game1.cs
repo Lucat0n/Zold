@@ -1,7 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace Kolizje
 {
@@ -41,7 +43,7 @@ namespace Kolizje
             rectanglePosition = new Vector2(0, 0);
 
             obstacleRectangle = new GraphicRectangle(graphics.GraphicsDevice, 50, 50, Color.Black);
-            obstacleRectangle.UpdatePosition(new Vector2(200, 100));
+            obstacleRectangle.ChangePosition(new Vector2(200, 100));
 
             rectangles.Add(movingRectangle);
             rectangles.Add(obstacleRectangle);
@@ -59,7 +61,7 @@ namespace Kolizje
         {
             UpdateRectanglePosition();
 
-            movingRectangle.UpdatePosition(rectanglePosition);
+            movingRectangle.ChangePosition(rectanglePosition);
 
             base.Update(gameTime);
         }
