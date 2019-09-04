@@ -138,6 +138,24 @@
 #begin dormitory.tsx
 /copy:dormitory.tsx
 
+#begin dormitory_I.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dormitory_I.png
+
+#begin dormitory_i.tmx
+/copy:dormitory_i.tmx
+
+#begin dormitory_I.tsx
+/copy:dormitory_I.tsx
+
 #begin Dormitory-combat.tmx
 /copy:Dormitory-combat.tmx
 
