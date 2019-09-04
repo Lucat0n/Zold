@@ -85,10 +85,9 @@ namespace Zold.Screens.Implemented.Map.Locations
         public override List<Vector2> playersNewPositions()
         {
             List<Vector2> Exits = new List<Vector2>();
-            Exits.Add(new Vector2(544, 224-64));
+            Exits.Add(new Vector2(544, 160));
           //  Exits.Add(new Vector2(544-64, 224));
             return Exits;
-            //return new Vector2(544,224);
         }
 
         public override string getLocQuest()
