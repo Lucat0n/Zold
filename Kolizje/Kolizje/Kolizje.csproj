@@ -42,12 +42,12 @@
     <ApplicationManifest>app.manifest</ApplicationManifest>
   </PropertyGroup>
   <ItemGroup>
-    <Compile Include="GraphicRectangle.cs" />
-    <Compile Include="ICollisionObject.cs" />
-    <Compile Include="IGraphicObject.cs" />
+    <Compile Include="Collisions\GraphicRectangle.cs" />
+    <Compile Include="Collisions\ICollisionObject.cs" />
+    <Compile Include="Collisions\IGraphicObject.cs" />
     <Compile Include="Game1.cs" />
-    <Compile Include="KeyboardMovingKeys.cs" />
-    <Compile Include="MovingKeyEnum.cs" />
+    <Compile Include="Collisions\KeyboardMovingKeys.cs" />
+    <Compile Include="Collisions\MovingKeyEnum.cs" />
     <Compile Include="Program.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
