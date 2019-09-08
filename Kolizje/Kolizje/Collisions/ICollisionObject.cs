@@ -9,9 +9,10 @@ namespace Kolizje
 {
     interface ICollisionObject
     {
-        Rectangle BoundingBox { get;}
+        BoundingBox BoundingBox { get; }
 
-        Vector2 BoundingBoxPosition { get;}
+        void UpdateBoundingBoxMinMaxPoints();
+
         bool CheckCollsionWithObject(ICollisionObject collisionObject);
     }
 }

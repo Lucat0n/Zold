@@ -1,11 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Kolizje
 {
@@ -13,9 +8,10 @@ namespace Kolizje
     {
         private readonly SpriteBatch spriteBatch;
         private Vector2 position = new Vector2(0, 0);
+        private BoundingBox boundingBox = new BoundingBox(new Vector3(0, 0, 0), new Vector3(0, 0, 0));
 
-        public Rectangle BoundingBox { get { return Bounds; } }
-        public Vector2 BoundingBoxPosition { get { return position; } }
+        public BoundingBox BoundingBox { get { return boundingBox; } }
+
 
         public GraphicRectangle(GraphicsDevice graphicsDevice, int width, int height, Color color) : base(graphicsDevice, width, height)
         {
@@ -49,12 +45,16 @@ namespace Kolizje
 
         public bool CheckCollsionWithObject(ICollisionObject collisionObject)
         {
-            var collisionBox = collisionObject.BoundingBox;
+            UpdateBoundingBoxMinMaxPoints();
+            collisionObject.UpdateBoundingBoxMinMaxPoints();
 
-            var xCollision = BoundingBoxPosition.X > collisionObject.BoundingBoxPosition.X && BoundingBoxPosition.X < collisionObject.BoundingBoxPosition.X + collisionBox.Width ? true : false;
-            var yCollision = BoundingBoxPosition.Y > collisionObject.BoundingBoxPosition.Y && BoundingBoxPosition.Y < collisionObject.BoundingBoxPosition.Y + collisionBox.Height ? true : false;
+            return boundingBox.Intersects(collisionObject.BoundingBox);
+        }
 
-            return xCollision && yCollision ? true : false;
+        public void UpdateBoundingBoxMinMaxPoints()
+        {
+            boundingBox.Min = new Vector3(position.X, position.Y, 0);
+            boundingBox.Max = new Vector3(position.X + Width, position.Y + Height, 0);
         }
     }
 }
