@@ -16,6 +16,19 @@ namespace Kolizje
         {
             FillWithColor(width, height, color);
         }
+
+        protected override void FillWithColor(int width, int height, Color color)
+        {
+            {
+                pixels = new Color[width * height];
+
+                for (int i = 0; i < width * height; i++)
+                    pixels[i] = color;
+
+                SetData(pixels);
+            }
+        }
+
         public override void ChangePosition(Vector2 vector)
         {
             base.ChangePosition(vector);
@@ -32,5 +45,7 @@ namespace Kolizje
         {
             return boundingBox.Intersects(TargetBoundingBox);
         }
+
+        
     }
 }

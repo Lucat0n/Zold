@@ -12,22 +12,15 @@ namespace Kolizje
     {
         protected readonly SpriteBatch spriteBatch;
         protected Vector2 position = new Vector2(0, 0);
+        protected Color[] pixels;
 
         public GraphicObject(GraphicsDevice graphicsDevice, int width, int height) : base(graphicsDevice, width, height)
         {
             spriteBatch = new SpriteBatch(graphicsDevice);
         }
-        protected virtual void FillWithColor(int width, int height, Color color)
-        {
-            Color[] pixelColors = new Color[width * height];
 
-            for (int i = 0; i < width * height; i++)
-            {
-                pixelColors[i] = color;
-            }
-
-            SetData(pixelColors);
-        }
+        protected abstract void FillWithColor(int width, int height, Color color);
+        
         public virtual void ChangePosition(Vector2 vector)
         {
             position = vector;
