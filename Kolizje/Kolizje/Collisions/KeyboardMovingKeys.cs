@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kolizje
 {
-     class KeyboardMovingKeys
+    public class KeyboardMovingKeys
     {
         public Dictionary<Keys, MovingKeyEnum> movingKeys = new Dictionary<Keys, MovingKeyEnum>(); 
 

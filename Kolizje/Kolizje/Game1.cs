@@ -13,7 +13,7 @@ namespace Kolizje
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        private List<IGraphicObject> rectangles = new List<IGraphicObject>();
+        private List<GraphicObject> rectangles = new List<GraphicObject>();
         private GraphicRectangle movingRectangle;
         private GraphicRectangle obstacleRectangle;
 

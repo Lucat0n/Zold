@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Kolizje
 {
-    interface ICollisionObject
+    public interface ICollisionObject
     {
         BoundingBox BoundingBox { get; }
 

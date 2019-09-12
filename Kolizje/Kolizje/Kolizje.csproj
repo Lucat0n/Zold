@@ -45,7 +45,7 @@
     <Compile Include="Collisions\BoundingBox2D.cs" />
     <Compile Include="Collisions\GraphicRectangle.cs" />
     <Compile Include="Collisions\ICollisionObject.cs" />
-    <Compile Include="Collisions\IGraphicObject.cs" />
+    <Compile Include="Collisions\GraphicObject.cs" />
     <Compile Include="Game1.cs" />
     <Compile Include="Collisions\KeyboardMovingKeys.cs" />
     <Compile Include="Collisions\MovingKeyEnum.cs" />
