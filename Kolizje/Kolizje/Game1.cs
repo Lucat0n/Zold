@@ -78,7 +78,7 @@ namespace Kolizje
 
         private bool RectangleCollisionDetected()
         {
-            return movingRectangle.CheckCollsionWithObject(obstacleRectangle);
+            return movingRectangle.CheckCollsionWithBoundingBox(obstacleRectangle.BoundingBox);
         }
 
         private bool RectangleMovementEventDetected()
