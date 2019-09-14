@@ -14,9 +14,11 @@ namespace PracaDomowa1
         SpriteBatch spriteBatch;
         Random random = new Random();
 
-        List<GraphicCircle> greenBalls = new List<GraphicCircle>();
+        List<GraphicCircleWithPhysics> greenBalls = new List<GraphicCircleWithPhysics>();
         List<GraphicCircle> redBalls = new List<GraphicCircle>();
         List<GraphicCircle> allBalls = new List<GraphicCircle>();
+
+        int gravityRatio;
 
         public Game1()
         {
@@ -28,14 +30,14 @@ namespace PracaDomowa1
         {
             var greenBallsNumber = 4;
             var redBallsNumber = 6;
+            gravityRatio = 1;
 
-            InitializeBallList(greenBalls, greenBallsNumber, Color.Green);
+            InitializeBallsWithPhysicsList(greenBalls, greenBallsNumber, Color.Green);
             InitializeBallList(redBalls, redBallsNumber, Color.Red);
             allBalls.AddRange(greenBalls);
             allBalls.AddRange(redBalls);
 
             RemoveCollisionBetweenBalls(allBalls);
-            
 
             base.Initialize();
         }
@@ -46,7 +48,14 @@ namespace PracaDomowa1
             {
                 list.Add(new GraphicCircle(graphics.GraphicsDevice, random.Next(10, 100), color, RandomPosition()));
             }
+        }
 
+        private void InitializeBallsWithPhysicsList(List<GraphicCircleWithPhysics> list, int ballsNumber, Color color)
+        {
+            for (int i = 0; i < ballsNumber; i++)
+            {
+                list.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, random.Next(10, 100), color, RandomPosition()));
+            }
         }
 
         private void RemoveCollisionBetweenBalls(List<GraphicCircle> list)
@@ -98,8 +107,7 @@ namespace PracaDomowa1
 
         protected override void Update(GameTime gameTime)
         {
-            if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
-                Exit();
+            greenBalls.ForEach(i => i.Gravity(gravityRatio));
 
             base.Update(gameTime);
         }

@@ -14,7 +14,6 @@ namespace PracaDomowa1.CircleCollisons
     {
         private BoundingSphere boundingSphere;
         private int radius;
-        private int mass;
         public BoundingSphere BoundingSphere { get { return boundingSphere; } }
         public Vector2 Position { get { return position; } } 
 
@@ -24,7 +23,6 @@ namespace PracaDomowa1.CircleCollisons
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color) : base(graphicsDevice, radius, radius)
         {
             this.radius = radius;
-            mass = radius;
             FillWithColor(radius, radius, color);
             boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius);
         }
