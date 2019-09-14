@@ -18,13 +18,14 @@ namespace PracaDomowa1.CircleCollisons
         public Vector2 Position { get { return position; } } 
 
         public int Radius { get { return radius; } }
+        public int Mass { get { return radius; } }
 
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color) : base(graphicsDevice, radius, radius)
         {
             this.radius = radius;
             FillWithColor(radius, radius, color);
-            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius);
+            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius/2 );
         }
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position) : this(graphicsDevice, radius, color)
@@ -71,7 +72,7 @@ namespace PracaDomowa1.CircleCollisons
             boundingSphere.Center = new Vector3(position.X, position.Y, 0);
         }
 
-        public bool CheckCollisionWithBoundingSphere(BoundingSphere TargetBoundingSphere)
+        public  bool CheckCollisionWithBoundingSphere(BoundingSphere TargetBoundingSphere)
         {
             return boundingSphere.Intersects(TargetBoundingSphere);
         }
