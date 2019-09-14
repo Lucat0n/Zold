@@ -12,13 +12,13 @@ namespace PracaDomowa1.CircleCollisons
 {
     class GraphicCircle : GraphicObject, ICollisionWithBoundinSphere
     {
-
-        public BoundingBox BoundingBox => throw new NotImplementedException();
-
+        private BoundingSphere boundingSphere;
+        public BoundingBox BoundingBox { get; }
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color) : base(graphicsDevice, radius, radius)
         {
             FillWithColor(radius, radius, color);
+            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius);
         }
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position) : this(graphicsDevice, radius, color)
@@ -54,10 +54,20 @@ namespace PracaDomowa1.CircleCollisons
             SetData(colorData);
         }
 
-
-        public bool CheckCollisionWithBoundingSphere(BoundingSphere boundingSphere)
+        public override void ChangePosition(Vector2 vector)
         {
-            throw new NotImplementedException();
+            base.ChangePosition(vector);
+            UpdateBoundingSpherePosition();
+        }
+
+        private void UpdateBoundingSpherePosition()
+        {
+            boundingSphere.Center = new Vector3(position.X, position.Y, 0);
+        }
+
+        public bool CheckCollisionWithBoundingSphere(BoundingSphere TargetBoundingSphere)
+        {
+            return boundingSphere.Intersects(TargetBoundingSphere);
         }
 
         
