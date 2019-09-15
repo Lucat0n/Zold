@@ -13,19 +13,18 @@ namespace PracaDomowa1.CircleCollisons
     class GraphicCircle : GraphicObject, ICollisionWithBoundinSphere
     {
         private BoundingSphere boundingSphere;
-        private int radius;
+        protected int radius;
         public BoundingSphere BoundingSphere { get { return boundingSphere; } }
         public Vector2 Position { get { return position; } } 
 
         public int Radius { get { return radius; } }
-        public int Mass { get { return radius; } }
 
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color) : base(graphicsDevice, radius, radius)
         {
             this.radius = radius;
             FillWithColor(radius, radius, color);
-            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius/2 );
+            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius/2f);
         }
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position) : this(graphicsDevice, radius, color)

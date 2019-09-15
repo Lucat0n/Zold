@@ -18,8 +18,8 @@ namespace PracaDomowa1
         int currentWindowHeight;
 
         List<GraphicCircleWithPhysics> greenBalls = new List<GraphicCircleWithPhysics>();
-        List<GraphicCircle> redBalls = new List<GraphicCircle>();
-        List<GraphicCircle> allBalls = new List<GraphicCircle>();
+        List<GraphicCircleWithPhysics> redBalls = new List<GraphicCircleWithPhysics>();
+        List<GraphicCircleWithPhysics> allBalls = new List<GraphicCircleWithPhysics>();
         //List<GraphicCircleWithPhysics> yellowBalls = new List<GraphicCircleWithPhysics>();
 
         float gravityRatio;
@@ -35,7 +35,7 @@ namespace PracaDomowa1
             currentWindowWidth = 800;
             currentWindowHeight = 1000;
             var greenBallsNumber = 10;
-            var redBallsNumber = 6;
+            var redBallsNumber = 12;
             gravityRatio = 0.02f;
 
             //yellowBalls.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, 50, Color.Yellow, new Vector2(200,200)));
@@ -45,6 +45,7 @@ namespace PracaDomowa1
             InitializeResolution(currentWindowWidth, currentWindowHeight);
             InitializeBallsColections(greenBallsNumber, redBallsNumber);
 
+            allBalls.ForEach(i => Console.WriteLine($"{i.Position} {i.Radius}, {i.BoundingSphere.Center} {i.BoundingSphere.Radius}"));
 
             //Console.WriteLine($"{redBalls[0].BoundingSphere.Center.X} {redBalls[0].BoundingSphere.Center.Y}, {redBalls[0].Position.X} {redBalls[0].Position.Y} ");
             //Console.WriteLine($"{redBalls[0].Radius} {redBalls[0].BoundingSphere.Radius}");
@@ -54,8 +55,8 @@ namespace PracaDomowa1
 
         private void InitializeBallsColections(int greenBallsNumber, int redBallsNumber)
         {
-            InitializeBallsWithPhysicsList(greenBalls, greenBallsNumber, Color.Green);
-            InitializeBallList(redBalls, redBallsNumber, Color.Red);
+            InitializeBallsWithPhysicsList(greenBalls, greenBallsNumber, Color.Green, new Vector2(0, 1));
+            InitializeBallsWithPhysicsList(redBalls, redBallsNumber, Color.Red, new Vector2(0, 0));
             allBalls.AddRange(greenBalls);
             allBalls.AddRange(redBalls);
 
@@ -69,23 +70,15 @@ namespace PracaDomowa1
             graphics.ApplyChanges();
         }
 
-        private void InitializeBallList(List<GraphicCircle> list, int ballsNumber, Color color)
+        private void InitializeBallsWithPhysicsList(List<GraphicCircleWithPhysics> list, int ballsNumber, Color color, Vector2 movementVector)
         {
             for (int i = 0; i < ballsNumber; i++)
             {
-                list.Add(new GraphicCircle(graphics.GraphicsDevice, random.Next(10, 100), color, RandomPosition()));
+                list.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, random.Next(10, 100), color, RandomPosition(), movementVector));
             }
         }
 
-        private void InitializeBallsWithPhysicsList(List<GraphicCircleWithPhysics> list, int ballsNumber, Color color)
-        {
-            for (int i = 0; i < ballsNumber; i++)
-            {
-                list.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, random.Next(10, 100), color, RandomPosition()));
-            }
-        }
-
-        private void RemoveCollisionBetweenBalls(List<GraphicCircle> list)
+        private void RemoveCollisionBetweenBalls(List<GraphicCircleWithPhysics> list)
         {
             while (true)
             {
@@ -140,11 +133,11 @@ namespace PracaDomowa1
             {
                 ball.Gravity(gravityRatio);
                 //if (gameTime.TotalGameTime.TotalSeconds % 1 > 0.5)
-                    foreach (var targetBall in allBalls.ToArray())
-                    {
-                        if (ball == targetBall) continue;
-                        ball.BounceOnCollisionWithOtherBall(targetBall);
-                    }
+                foreach (var targetBall in allBalls.ToArray())
+                {
+                    if (ball == targetBall) continue;
+                    ball.BounceOnCollisionWithOtherBall(targetBall);
+                }
             }
 
 
