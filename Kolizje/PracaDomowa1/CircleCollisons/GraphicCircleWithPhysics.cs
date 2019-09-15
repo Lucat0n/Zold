@@ -15,21 +15,22 @@ namespace PracaDomowa1.CircleCollisons
         public static float MaxSpeed = 4f;
 
         private float startEnergy = MaxSpeed;
-        private Vector2 movementVector = new Vector2(0, 0); 
+        private Vector2 movementVector = new Vector2(0, 0);
+        private int mass;
         public int Mass { get { return radius * 2; } }
 
 
         public Vector2 MovementVector { get { return movementVector; } }
-        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, Color color) : base(graphicsDevice, radius, color)
+        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, int mass, Color color) : base(graphicsDevice, radius, color)
         {
-
+            this.mass = mass;
         }
-        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position) : this(graphicsDevice, radius, color)
+        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, int mass, Color color, Vector2 position) : this(graphicsDevice, radius, mass, color)
         {
             ChangePosition(position);
         }
 
-        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position, Vector2 movementVector) : this(graphicsDevice, radius, color, position)
+        public GraphicCircleWithPhysics(GraphicsDevice graphicsDevice, int radius, int mass, Color color, Vector2 position, Vector2 movementVector) : this(graphicsDevice, radius, mass, color, position)
         {
             this.movementVector = movementVector;
         }

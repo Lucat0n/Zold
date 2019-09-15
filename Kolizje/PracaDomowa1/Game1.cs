@@ -18,6 +18,8 @@ namespace PracaDomowa1
         int currentWindowHeight;
         int minCircleSize;
         int maxCircleSize;
+        int minCircleMass;
+        int maxCircleMass;
 
         List<GraphicCircleWithPhysics> greenBalls = new List<GraphicCircleWithPhysics>();
         List<GraphicCircleWithPhysics> redBalls = new List<GraphicCircleWithPhysics>();
@@ -40,6 +42,8 @@ namespace PracaDomowa1
             gravityRatio = 0.02f;
             minCircleSize = 10;
             maxCircleSize = 120;
+            minCircleMass = 1;
+            maxCircleMass = 100;
 
             InitializeResolution(currentWindowWidth, currentWindowHeight);
             InitializeBallsColections(greenBallsNumber, redBallsNumber);
@@ -68,7 +72,9 @@ namespace PracaDomowa1
         {
             for (int i = 0; i < ballsNumber; i++)
             {
-                list.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, random.Next(minCircleSize, maxCircleSize), color, RandomPosition(), movementVector));
+                var size = random.Next(minCircleSize, maxCircleSize);
+                var mass = random.Next(minCircleMass, maxCircleMass);
+                list.Add(new GraphicCircleWithPhysics(graphics.GraphicsDevice, size, mass, color, RandomPosition(), movementVector));
             }
         }
 
