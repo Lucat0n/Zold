@@ -24,7 +24,8 @@ namespace PracaDomowa1.CircleCollisons
         {
             this.radius = radius;
             FillWithColor(radius, radius, color);
-            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius/2f);
+            boundingSphere = new BoundingSphere(new Vector3(0, 0, 0), radius / 2f);
+
         }
 
         public GraphicCircle(GraphicsDevice graphicsDevice, int radius, Color color, Vector2 position) : this(graphicsDevice, radius, color)
