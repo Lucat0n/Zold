@@ -160,5 +160,6 @@ namespace PracaDomowa1.CircleCollisons
             return Math.Atan2(first.Y - secound.Y, first.X - secound.X) * StraightAngle / Math.PI;
         }
 
+
     }
 }

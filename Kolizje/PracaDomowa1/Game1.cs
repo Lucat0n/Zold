@@ -119,11 +119,17 @@ namespace PracaDomowa1
 
         protected override void Update(GameTime gameTime)
         {
-            RemoveBallsWhenOutOfScreen();
+            RemoveBalls();
 
             BallsPhisics();
 
             base.Update(gameTime);
+        }
+
+        private void RemoveBalls()
+        {
+            RemoveBallsFromListWhenOutOfScreen(allBalls);
+            RemoveBallsFromListWhenOutOfScreen(greenBalls);
         }
 
         private void BallsPhisics()
@@ -139,13 +145,17 @@ namespace PracaDomowa1
             }
         }
 
-        private void RemoveBallsWhenOutOfScreen()
+        private void RemoveBallsFromListWhenOutOfScreen(List<GraphicCircleWithPhysics> list)
         {
-            foreach (var ball in allBalls.ToArray())
+            foreach (var ball in list.ToArray())
             {
-                var notInHeightOfWindow = ball.Position.Y > currentWindowHeight || ball.Position.Y < 0;
-                var notInWidthOfWindow = ball.Position.X > currentWindowWidth || ball.Position.X < 0;
-                if (notInHeightOfWindow || notInWidthOfWindow) allBalls.Remove(ball);
+                var diam = ball.Radius * 2;
+                var notInHeightOfWindow = ball.Position.Y - diam > currentWindowHeight || ball.Position.Y + diam < 0;
+                var notInWidthOfWindow = ball.Position.X - diam > currentWindowWidth || ball.Position.X + diam < 0;
+                if (notInHeightOfWindow || notInWidthOfWindow)
+                {
+                    list.Remove(ball);
+                }
             }
         }
 

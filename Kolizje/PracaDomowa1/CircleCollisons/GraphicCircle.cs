@@ -10,7 +10,7 @@ using System.Threading.Tasks;
 
 namespace PracaDomowa1.CircleCollisons
 {
-    class GraphicCircle : GraphicObject, ICollisionWithBoundinSphere
+    class GraphicCircle : GraphicObject, ICollisionWithBoundinSphere, IDisposable
     {
         private BoundingSphere boundingSphere;
         protected int radius;
