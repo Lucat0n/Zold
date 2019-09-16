@@ -14,6 +14,7 @@ using System.Threading.Tasks;
 using TiledSharp;
 using System;
 using Zold.Statistics;
+using Microsoft.Xna.Framework.Audio;
 using Zold.Screens.Implemented.Combat.Skills;
 
 namespace Zold.Screens.Implemented.Combat
@@ -27,6 +28,12 @@ namespace Zold.Screens.Implemented.Combat
         public List<CombatObject> objectsToRemove;
         public Timer timer;
         public Utilities.Map Map;
+
+        bool songStart = false;
+
+        private SoundEffect bgMusic;
+        private SoundEffect combatMusic;
+        private SoundEffectInstance bg;
 
         private bool isEscPressed = false;
 
@@ -45,6 +52,9 @@ namespace Zold.Screens.Implemented.Combat
             IsTransparent = false;
 
             timer = new Timer(e => { OnTimerTick(); }, null, 0, 500);
+
+            
+
         }
 
         public override void Update(GameTime gameTime)
@@ -54,7 +64,13 @@ namespace Zold.Screens.Implemented.Combat
 
             AddAndRemoveObjects();
 
-            foreach(CombatObject obj in objects)
+            if (!songStart)
+            {
+                bg.Play();
+                songStart = true;
+
+            }
+            foreach (CombatObject obj in objects)
             {
                 obj.BaseSpeed = gameScreenManager.baseSpeed;
                 obj.Update(gameTime);
@@ -67,12 +83,13 @@ namespace Zold.Screens.Implemented.Combat
                 objects.Remove(enemy);
             }
 
-            if (enemies.Count == 0)
+            if (enemies.Count == 0 || player.Statistics.Health <= 0)
             {
-                gameScreenManager.RemoveScreen(this);
-            }
-            else if (player.Statistics.Health <= 0)
-            {
+
+                bg.Stop();
+                bg = bgMusic.CreateInstance();
+                bg.Play();
+
                 gameScreenManager.RemoveScreen(this);
             }
 
@@ -83,6 +100,12 @@ namespace Zold.Screens.Implemented.Combat
         {
             objects.Add(player);
             objects.AddRange(enemies);
+            gameScreenManager.ContentLoader.LoadLocation("placeholders");
+
+            bgMusic = Assets.Instance.Get("placeholders/Music/explo");
+            combatMusic = Assets.Instance.Get("placeholders/Music/comba");
+            bg = combatMusic.CreateInstance();
+
 
             Map = new Utilities.Map(gameScreenManager, this);
 
