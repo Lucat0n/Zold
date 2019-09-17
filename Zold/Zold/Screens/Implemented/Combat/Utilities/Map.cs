@@ -6,6 +6,7 @@ using TiledSharp;
 using Zold.Screens.Implemented.Combat.CombatObjects;
 using Zold.Utilities;
 using RoyT.AStar;
+using System.Linq;
 
 namespace Zold.Screens.Implemented.Combat.Utilities
 {
