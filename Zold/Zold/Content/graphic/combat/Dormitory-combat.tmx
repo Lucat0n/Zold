@@ -17,7 +17,7 @@
  </layer>
  <layer id="13" name="sciany" width="23" height="10">
 	<properties>
-    <property name="Height" type="integer" value="7"/>
+    <property name="Height" type="integer" value="3"/>
    </properties>
   <data encoding="csv">
 14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,14,

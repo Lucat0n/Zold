@@ -85,12 +85,12 @@ namespace Zold.Screens.Implemented.Combat
 
             if (enemies.Count == 0 || player.Statistics.Health <= 0)
             {
-
+                /*
                 bg.Stop();
                 bg = bgMusic.CreateInstance();
                 bg.Play();
-
-                gameScreenManager.RemoveScreen(this);
+                
+                gameScreenManager.RemoveScreen(this);*/
             }
 
             CombatCamera.Follow(player.Position);
@@ -124,7 +124,7 @@ namespace Zold.Screens.Implemented.Combat
             // Sorting mode FrontToBack - layerDepth 1.0f = front, 0 = back
             gameScreenManager.GraphicsDevice.Clear(Color.Black);
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.FrontToBack,transformMatrix:CombatCamera.BindCameraTransformation());
-            /*
+            
             // DEBUG - grid
             pixel = new Texture2D(GameScreenManager.GraphicsDevice, 1, 1, false, SurfaceFormat.Color);
             pixel.SetData(new[] { Color.White });
@@ -134,8 +134,9 @@ namespace Zold.Screens.Implemented.Combat
                     Map.Nodes[new RoyT.AStar.Position(x,y)].DrawBorder(pixel, GameScreenManager.GraphicsDevice, gameScreenManager.SpriteBatch);
                 }
             // END OF DEBUG
-            */
+            
             Map.DrawTiles(0);
+            Map.DrawTiles(1);
             objects.ForEach(obj => {
                 obj.Draw(gameTime);
             });
