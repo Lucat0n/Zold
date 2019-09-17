@@ -390,11 +390,10 @@ namespace Zold.Screens.Implemented.Pause
                                 gameScreenManager.GoToMenu();
                                 break;
                         }
-                        isRightPressed = true;
-                        select.Play();
+                        isEnterPressed = true;
                     }
-                    else if (keyboardState.IsKeyUp(Keys.Right))
-                        isRightPressed = false;
+                    else if (keyboardState.IsKeyUp(Keys.Enter))
+                        isEnterPressed = false;
                     break;
 
             }
