@@ -171,7 +171,7 @@
 /processorParam:TextureFormat=Color
 /build:graphic/characters/main.png
 
-#begin graphic/combat/combat_city.png
+#begin graphic/combat/dormitory.png
 /importer:TextureImporter
 /processor:TextureProcessor
 /processorParam:ColorKeyColor=255,0,255,255
@@ -181,13 +181,13 @@
 /processorParam:ResizeToPowerOfTwo=False
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
-/build:graphic/combat/combat_city.png
+/build:graphic/combat/dormitory.png
 
-#begin graphic/combat/combat_city.tmx
-/copy:graphic/combat/combat_city.tmx
+#begin graphic/combat/dormitory.tsx
+/copy:graphic/combat/dormitory.tsx
 
-#begin graphic/combat/combat_city.tsx
-/copy:graphic/combat/combat_city.tsx
+#begin graphic/combat/Dormitory-combat.tmx
+/copy:graphic/combat/Dormitory-combat.tmx
 
 #begin graphic/locations/Dormitory/dormitory_I.png
 /importer:TextureImporter

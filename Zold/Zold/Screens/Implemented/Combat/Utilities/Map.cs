@@ -41,7 +41,7 @@ namespace Zold.Screens.Implemented.Combat.Utilities
             this.combatScreen = combatScreen;
             CollisionNodes = new List<Node>();
 
-            currentMap = new TmxMap("Content/graphic/combat/combat_city.tmx");
+            currentMap = new TmxMap("Content/graphic/combat/Dormitory-combat.tmx");
             mapSprite = new SpriteBatchSpriteSheet(gameScreenManager.GraphicsDevice, null, 0, 0, 0, 0);
 
             InitMap(currentMap);
