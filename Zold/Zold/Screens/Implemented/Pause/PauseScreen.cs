@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Screens.Implemented.Map;
@@ -45,6 +46,10 @@ namespace Zold.Screens.Implemented.Pause
         private Rectangle cursorPos;
         private Rectangle mainWindow;
         private Rectangle secondaryWindow;
+        private SoundEffect scrollUp;
+        private SoundEffect scrollDown;
+        private SoundEffect select;
+        private SoundEffect back;
         private readonly SpriteFont font;
         private readonly String[] mainOptions = new String[] { "Ekwip.", "Rzeczy", "Zdolnosci", "Zadania", "Mapa", "Opcje" };
         private readonly String[] options = new String[] { "Pelny ekran", "Glosnosc muzyki", "Glosnosc efektow", "Wyjscie" };
@@ -134,6 +139,7 @@ namespace Zold.Screens.Implemented.Pause
                 case (PauseState.main):
                     if (keyboardState.IsKeyDown(Keys.Escape) && this.cooldown <= TimeSpan.Zero && !isEscPressed)
                     {
+                        back.Play();
                         gameScreenManager.RemoveScreen(this);
                         Assets.Instance.Remove("pause");
                     }
@@ -144,6 +150,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (++index > mainOptions.Count() - 1)
                             index = 0;
                         isDownPressed = true;
+                        scrollDown.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Down))
                         isDownPressed = false;
@@ -152,6 +159,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (--index < 0)
                             index = (sbyte)(mainOptions.Count() - 1);
                         isUpPressed = true;
+                        scrollUp.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Up))
                         isUpPressed = false;
@@ -162,6 +170,7 @@ namespace Zold.Screens.Implemented.Pause
                             isEnterPressed = false;
                         else
                             isEnterPressed = true;
+                        select.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
@@ -171,6 +180,7 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        back.Play();
                     }
                     break;
                 case (PauseState.items):
@@ -178,6 +188,7 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        back.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Escape))
                         isEscPressed = false;
@@ -186,6 +197,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (++itemsIndex > itemsToDisplay.Count()-1)
                             itemsIndex = 0;
                         isDownPressed = true;
+                        scrollDown.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Down))
                         isDownPressed = false;
@@ -194,6 +206,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (--itemsIndex < 0)
                             itemsIndex = (sbyte)(itemsToDisplay.Count()-1);
                         isUpPressed = true;
+                        scrollUp.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Up))
                         isUpPressed = false;
@@ -202,6 +215,7 @@ namespace Zold.Screens.Implemented.Pause
                         gameScreenManager.InsertScreen(new ItemDecisionScreen(itemsToDisplay[itemsIndex].Item, cursorPos.Y));
                         isEscPressed = true;
                         isEnterPressed = true;
+                        select.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
@@ -211,6 +225,7 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        back.Play();
                     }
                     break;
                 case (PauseState.quests):
@@ -218,6 +233,7 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        back.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Escape))
                     {
@@ -231,6 +247,7 @@ namespace Zold.Screens.Implemented.Pause
                             if (++questIndex > Math.Min(10, activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count - 1 : gameScreenManager.QuestManager.CompletedQuests.Count - 1))
                                 questIndex = 0;
                             isDownPressed = true;
+                            scrollDown.Play();
                         }
                         else if (keyboardState.IsKeyUp(Keys.Down))
                             isDownPressed = false;
@@ -239,6 +256,7 @@ namespace Zold.Screens.Implemented.Pause
                             if (--questIndex < 0)
                                 questIndex = (sbyte)Math.Min(10, activeQuestsSelected ? gameScreenManager.QuestManager.ActiveQuests.Count - 1 : gameScreenManager.QuestManager.CompletedQuests.Count - 1);
                             isUpPressed = true;
+                            scrollUp.Play();
                         }
                         else if (keyboardState.IsKeyUp(Keys.Up))
                             isUpPressed = false;
@@ -247,6 +265,7 @@ namespace Zold.Screens.Implemented.Pause
                             gameScreenManager.InsertScreen(new QuestDescriptionScreen(questIndex, activeQuestsSelected));
                             isEscPressed = true;
                             isEnterPressed = true;
+                            select.Play();
                         }
                         else if (keyboardState.IsKeyUp(Keys.Enter))
                             isEnterPressed = false;
@@ -272,13 +291,14 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        back.Play();
                     }
                     if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
                     {
                         gameScreenManager.InsertScreen(new WorldMapScreen());
-                        Debug.WriteLine("test");
                         isEscPressed = true;
                         isEnterPressed = true;
+                        select.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
@@ -291,6 +311,7 @@ namespace Zold.Screens.Implemented.Pause
                             pauseState = PauseState.main;
                         else
                             isAdjustingMusic = false;
+                        back.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Escape))
                         isEscPressed = false;
@@ -299,6 +320,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (++optionsIndex > 3)
                             optionsIndex = 0;
                         isDownPressed = true;
+                        scrollDown.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Down))
                         isDownPressed = false;
@@ -307,6 +329,7 @@ namespace Zold.Screens.Implemented.Pause
                         if (--optionsIndex < 0)
                             optionsIndex = 3;
                         isUpPressed = true;
+                        scrollUp.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Up))
                         isUpPressed = false;
@@ -368,6 +391,7 @@ namespace Zold.Screens.Implemented.Pause
                                 break;
                         }
                         isRightPressed = true;
+                        select.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Right))
                         isRightPressed = false;
@@ -381,6 +405,10 @@ namespace Zold.Screens.Implemented.Pause
         {
             gameScreenManager.LoadAssets("pause");
             masterVolume = (byte)(gameScreenManager.MasterVolume * 100);
+            scrollUp = Assets.Instance.Get("pause/Sounds/scrollup");
+            scrollDown = Assets.Instance.Get("pause/Sounds/scrolldown");
+            select = Assets.Instance.Get("pause/Sounds/enter");
+            back = Assets.Instance.Get("pause/Sounds/back");
         }
 
         public override void UnloadContent()

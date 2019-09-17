@@ -427,6 +427,30 @@
 /processorParam:TextureFormat=Color
 /build:menu/Textures/zold.png
 
+#begin pause/Sounds/back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/back.wav
+
+#begin pause/Sounds/enter.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/enter.wav
+
+#begin pause/Sounds/scrolldown.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/scrolldown.wav
+
+#begin pause/Sounds/scrollup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/scrollup.wav
+
 #begin pause/Textures/cursor.png
 /importer:TextureImporter
 /processor:TextureProcessor
