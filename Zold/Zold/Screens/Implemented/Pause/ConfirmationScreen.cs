@@ -4,6 +4,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Utilities;
@@ -19,6 +20,10 @@ namespace Zold.Screens.Implemented.Pause
         private Rectangle cursor;
         private Rectangle decisionBox;
         private sbyte confirmation;
+        private SoundEffect scrollUp;
+        private SoundEffect scrollDown;
+        private SoundEffect select;
+        private SoundEffect back;
         private SpriteFont font;
         private Delegate delegation;
 
@@ -44,6 +49,7 @@ namespace Zold.Screens.Implemented.Pause
         {
             if (keyboardState.IsKeyDown(Keys.Escape))
             {
+                back.Play();
                 gameScreenManager.RemoveScreen(this);
             }
             if (keyboardState.IsKeyDown(Keys.Down) && !isDownPressed)
@@ -51,6 +57,7 @@ namespace Zold.Screens.Implemented.Pause
                 if (++confirmation > 2)
                     confirmation = 1;
                 isDownPressed = true;
+                scrollDown.Play();
             }
             else if (keyboardState.IsKeyUp(Keys.Down))
                 isDownPressed = false;
@@ -59,11 +66,13 @@ namespace Zold.Screens.Implemented.Pause
                 if (--confirmation < 1)
                     confirmation = 2;
                 isUpPressed = true;
+                scrollUp.Play();
             }
             else if (keyboardState.IsKeyUp(Keys.Up))
                 isUpPressed = false;
             if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
             {
+                select.Play();
                 if (confirmation == 1)
                     delegation.DynamicInvoke();
                 gameScreenManager.RemoveScreen(this);
@@ -76,11 +85,14 @@ namespace Zold.Screens.Implemented.Pause
         public override void LoadContent()
         {
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
+            scrollUp = Assets.Instance.Get("pause/Sounds/scrollup");
+            scrollDown = Assets.Instance.Get("pause/Sounds/scrolldown");
+            select = Assets.Instance.Get("pause/Sounds/enter");
+            back = Assets.Instance.Get("pause/Sounds/back");
         }
 
         public override void UnloadContent()
         {
-            //throw new NotImplementedException();
         }
 
         public override void Update(GameTime gameTime)

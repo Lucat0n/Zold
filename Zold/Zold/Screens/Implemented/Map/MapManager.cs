@@ -182,6 +182,7 @@ namespace Zold.Screens.Implemented.Map
 
         public override void UnloadContent()
         {
+            bg.Stop();
             Assets.Instance.Remove("placeholders");
         }
         #endregion
@@ -362,7 +363,7 @@ namespace Zold.Screens.Implemented.Map
 
             else
             {
-                gameScreenManager.InsertScreen(new Pause.PauseScreen());
+                gameScreenManager.InsertScreen(new Pause.PauseScreen(this));
                 isPaused = false;
             }
 

@@ -42,6 +42,7 @@ namespace Zold.Screens.Implemented.Pause
         private bool activeQuestsSelected = true;
         private byte questTitleFontSize;
         private byte masterVolume;
+        private GameScreen parent;
         private ItemAmountPair[] itemsToDisplay = new ItemAmountPair[10];
         private Rectangle cursorPos;
         private Rectangle mainWindow;
@@ -61,11 +62,12 @@ namespace Zold.Screens.Implemented.Pause
         private SByte questIndex = 0;
         #endregion
 
-        public PauseScreen()
+        public PauseScreen(GameScreen parent)
         {
             IsTransparent = true;
             cooldown = new TimeSpan(0, 0, 0, 500);
             font = Assets.Instance.Get("placeholders/Fonts/dialog");
+            this.parent = parent;
         }
         public override void Draw(GameTime gameTime)
         {
@@ -188,6 +190,7 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
+                        
                         back.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Escape))
@@ -212,10 +215,12 @@ namespace Zold.Screens.Implemented.Pause
                         isUpPressed = false;
                     if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
                     {
+                        if(select == null)
+                            
+                        select.Play();
                         gameScreenManager.InsertScreen(new ItemDecisionScreen(itemsToDisplay[itemsIndex].Item, cursorPos.Y));
                         isEscPressed = true;
                         isEnterPressed = true;
-                        select.Play();
                     }
                     else if (keyboardState.IsKeyUp(Keys.Enter))
                         isEnterPressed = false;
@@ -225,7 +230,13 @@ namespace Zold.Screens.Implemented.Pause
                     {
                         isEscPressed = true;
                         pauseState = PauseState.main;
-                        back.Play();
+                        try
+                        {
+                            back.Play();
+                        }catch(Exception e)
+                        {
+                            Debug.WriteLine(e.ToString());
+                        }
                     }
                     break;
                 case (PauseState.quests):
@@ -387,6 +398,8 @@ namespace Zold.Screens.Implemented.Pause
                                 break;
                             case (3):
                                 gameScreenManager.RemoveScreen(this);
+                                gameScreenManager.RemoveScreen(parent);
+                                //gameScreenManager.InsertScreen(new MenuScreen());
                                 gameScreenManager.GoToMenu();
                                 break;
                         }
