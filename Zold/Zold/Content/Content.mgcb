@@ -138,6 +138,24 @@
 #begin dormitory.tsx
 /copy:dormitory.tsx
 
+#begin dormitory_I.png
+/importer:TextureImporter
+/processor:TextureProcessor
+/processorParam:ColorKeyColor=255,0,255,255
+/processorParam:ColorKeyEnabled=True
+/processorParam:GenerateMipmaps=False
+/processorParam:PremultiplyAlpha=True
+/processorParam:ResizeToPowerOfTwo=False
+/processorParam:MakeSquare=False
+/processorParam:TextureFormat=Color
+/build:dormitory_I.png
+
+#begin dormitory_i.tmx
+/copy:dormitory_i.tmx
+
+#begin dormitory_I.tsx
+/copy:dormitory_I.tsx
+
 #begin Dormitory-combat.tmx
 /copy:Dormitory-combat.tmx
 
@@ -227,21 +245,6 @@
 
 #begin graphic/locations/MainRoom/MainRoom2.tsx
 /copy:graphic/locations/MainRoom/MainRoom2.tsx
-
-#begin magecity.png
-/importer:TextureImporter
-/processor:TextureProcessor
-/processorParam:ColorKeyColor=255,0,255,255
-/processorParam:ColorKeyEnabled=True
-/processorParam:GenerateMipmaps=False
-/processorParam:PremultiplyAlpha=True
-/processorParam:ResizeToPowerOfTwo=False
-/processorParam:MakeSquare=False
-/processorParam:TextureFormat=Color
-/build:magecity.png
-
-#begin magecity.tsx
-/copy:magecity.tsx
 
 #begin MainRoom.tmx
 /copy:MainRoom.tmx
@@ -408,6 +411,30 @@
 /processorParam:MakeSquare=False
 /processorParam:TextureFormat=Color
 /build:menu/Textures/zold.png
+
+#begin pause/Sounds/back.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/back.wav
+
+#begin pause/Sounds/enter.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/enter.wav
+
+#begin pause/Sounds/scrolldown.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/scrolldown.wav
+
+#begin pause/Sounds/scrollup.wav
+/importer:WavImporter
+/processor:SoundEffectProcessor
+/processorParam:Quality=Best
+/build:pause/Sounds/scrollup.wav
 
 #begin pause/Textures/cursor.png
 /importer:TextureImporter

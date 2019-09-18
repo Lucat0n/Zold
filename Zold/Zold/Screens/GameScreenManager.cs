@@ -197,7 +197,7 @@ namespace Zold.Screens
 
         public void GoToMenu()
         {
-            UnloadContent();
+            //UnloadContent();
             ScreenList.Clear();
             InsertScreen(new MenuScreen());
         }

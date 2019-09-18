@@ -102,8 +102,7 @@ namespace Zold.Screens.Implemented.Map
         {
             gameScreenManager.LoadAssets("menu");
 
-            
-
+           
             ListofColors.Add(Color.Green);
             ListofColors.Add(Color.DarkGreen);
             ListofColors.Add(Color.Blue);
@@ -183,6 +182,7 @@ namespace Zold.Screens.Implemented.Map
 
         public override void UnloadContent()
         {
+            bg.Stop();
             Assets.Instance.Remove("placeholders");
         }
         #endregion
@@ -213,18 +213,13 @@ namespace Zold.Screens.Implemented.Map
             if (postprocessing)
             {
 
-               // var rand = new Random().Next(ListofColors.Count);
                 Texture2D lightMask = Assets.Instance.Get("placeholders/Textures/lightmask3");
                 gameScreenManager.GraphicsDevice.SetRenderTarget(lightsTarget);
                 gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
                 gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.Additive, transformMatrix: MapCamera.BindCameraTransformation());
 
-                // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)npc.GetPosition().X, (int)npc.GetPosition().Y, lightMask.Width / 4, lightMask.Height / 4), Color.White);
                 gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle((int)player.GetPosition().X - 120, (int)player.GetPosition().Y - 120, lightMask.Width + 15, lightMask.Height + 15), Color.White);
-                // gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(100,100, lightMask.Width / 2, lightMask.Height / 2), Color.White);
-                //  gameScreenManager.SpriteBatch.Draw(lightMask, new Rectangle(200,100, lightMask.Width /2, lightMask.Height / 2), Color.White);
 
-                // gameScreenManager.SpriteBatch.Draw(lightMask, new Vector2((int)npc.GetPosition().X, (int)npc.GetPosition().Y), Color.White);
 
                 gameScreenManager.SpriteBatch.End();
 
@@ -254,7 +249,6 @@ namespace Zold.Screens.Implemented.Map
                     {
                         player.Animation(gameTime, MapCamera.BindCameraTransformation());
                     }
-                    //effect.CurrentTechnique.Passes[0].Apply();
 
                     location.drawTiles(layer, currentMap, MapCamera.BindCameraTransformation());
                 }
@@ -277,9 +271,6 @@ namespace Zold.Screens.Implemented.Map
                 });
             }
 
-            //   gameScreenManager.GraphicsDevice.SetRenderTarget(null);
-            // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
-            //gameScreenManager.SpriteBatch.End();
             if (ListofEnemies != null)
             {
                 ListofEnemies.ForEach(npc =>
@@ -307,28 +298,8 @@ namespace Zold.Screens.Implemented.Map
                 gameScreenManager.SpriteBatch.End();
             }
 
-            //if (Location.opac)
-            //{
-            //    postprocessing = true;
-            //    gameScreenManager.GraphicsDevice.SetRenderTarget(null);
-            //    gameScreenManager.GraphicsDevice.Clear(Color.TransparentBlack);
-            //    gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend);
-            //    op2.Parameters["lightMask"].SetValue(opacTarget);
-            //    op2.Parameters["param2"].SetValue(.6f);
-            //    op2.CurrentTechnique.Passes[0].Apply();  // ten dziala nie tylko na adasiu ale tez na chmurce i tle do tekstu
-            //    gameScreenManager.SpriteBatch.Draw(mainTarget2, new Vector2(0, 0), Color.White);
-            //    gameScreenManager.SpriteBatch.End();
-            //}
-
-            //gameScreenManager.GraphicsDevice.SetRenderTarget(null);
-            // gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: cameraPlayer.Transform());
-
-            // player.Animation(gameTime, cameraPlayer.Transform());
             gameScreenManager.SpriteBatch.Begin(SpriteSortMode.Immediate, BlendState.AlphaBlend, transformMatrix: MapCamera.BindCameraTransformation());
-         //   gameScreenManager.SpriteBatch.DrawString(dialog, "X: " + player.GetPosition().X.ToString() +"--"+ location.getPortals()[0].X, new Vector2(player.GetPosition().X-30, player.GetPosition().Y - 30), Color.White);
-         //   gameScreenManager.SpriteBatch.DrawString(dialog, "Y: " + player.GetPosition().Y.ToString() + "--" + location.getPortals()[0].Y, new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 10), Color.White);
-         //   gameScreenManager.SpriteBatch.DrawString(dialog, "xdxd"+ListofPlaces.IndexOf(location.ListofNextPlaces()[0]), new Vector2(player.GetPosition().X - 30, player.GetPosition().Y - 120), Color.White);
-
+       
             if (gameScreenManager.IsFullScreenOn)
             {
                 int posY = GraphicsAdapter.DefaultAdapter.CurrentDisplayMode.Width - 300;
@@ -360,8 +331,6 @@ namespace Zold.Screens.Implemented.Map
 
             if (!songStart)
             {
-              //  bg = bgMusic.CreateInstance();
-               // bg.Volume = gameScreenManager.MasterVolume;
                 bg.Play();
                 songStart = true;
             }
@@ -384,8 +353,8 @@ namespace Zold.Screens.Implemented.Map
                         {
                             enemy.position.Y = 5000;
                             bg.Stop();
-                            bg = combatMusic.CreateInstance();
-                            bg.Play();
+                          //  bg = combatMusic.CreateInstance();
+                          //  bg.Play();
                             gameScreenManager.InsertScreen(Combat);
                         }
                     });
@@ -394,7 +363,7 @@ namespace Zold.Screens.Implemented.Map
 
             else
             {
-                gameScreenManager.InsertScreen(new Pause.PauseScreen());
+                gameScreenManager.InsertScreen(new Pause.PauseScreen(this));
                 isPaused = false;
             }
 
