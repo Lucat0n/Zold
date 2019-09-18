@@ -5,6 +5,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using Microsoft.Xna.Framework.Graphics;
 using Microsoft.Xna.Framework.Input;
 using Zold.Inventory;
@@ -27,6 +28,10 @@ namespace Zold.Screens.Implemented.Pause
         private Rectangle decisionBox;
         private Rectangle decisionBox2;
         private Rectangle cursor;
+        private SoundEffect scrollUp;
+        private SoundEffect scrollDown;
+        private SoundEffect select;
+        private SoundEffect back;
         private sbyte decision;
         private sbyte maxDecision;
         private SpriteFont font;
@@ -70,6 +75,7 @@ namespace Zold.Screens.Implemented.Pause
         {
             if (keyboardState.IsKeyDown(Keys.Escape) && !isEscPressed)
             {
+                back.Play();
                 if (!isEscPressed)
                     gameScreenManager.RemoveScreen(this);
             }
@@ -82,6 +88,7 @@ namespace Zold.Screens.Implemented.Pause
                     if (++decision > maxDecision)
                         decision = 0;
                 isDownPressed = true;
+                scrollDown.Play();
             }
             else if (keyboardState.IsKeyUp(Keys.Down))
                 isDownPressed = false;
@@ -90,12 +97,14 @@ namespace Zold.Screens.Implemented.Pause
                 if (--decision < 0)
                     decision = maxDecision;
                 isUpPressed = true;
+                scrollUp.Play();
             }
             else if (keyboardState.IsKeyUp(Keys.Up))
                 isUpPressed = false;
             if (keyboardState.IsKeyDown(Keys.Enter) && !isEnterPressed)
             {
                 isEnterPressed = true;
+                select.Play();
                 isEnterPressed2 = !isEnterPressed2;
                 if (!isEnterPressed2)
                 {
@@ -151,6 +160,10 @@ namespace Zold.Screens.Implemented.Pause
 
         public override void LoadContent()
         {
+            scrollUp = Assets.Instance.Get("pause/Sounds/scrollup");
+            scrollDown = Assets.Instance.Get("pause/Sounds/scrolldown");
+            select = Assets.Instance.Get("pause/Sounds/enter");
+            back = Assets.Instance.Get("pause/Sounds/back");
             switch (item)
             {
                 case BuffItem bit:
@@ -174,7 +187,9 @@ namespace Zold.Screens.Implemented.Pause
 
         }
 
-        public override void UnloadContent() { }
+        public override void UnloadContent()
+        {
+        }
 
         public override void Update(GameTime gameTime)
         {

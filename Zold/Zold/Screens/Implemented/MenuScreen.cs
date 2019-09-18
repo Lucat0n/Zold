@@ -115,7 +115,7 @@ namespace Zold.Screens.Implemented
         {
             if (!songStart)
             {
-                bg = bgMusic.CreateInstance();
+                bg = Assets.Instance.Get("menu/Music/menu-music2").CreateInstance();
                 bg.Volume = gameScreenManager.MasterVolume;
                 bg.Play();
                 songStart = true;
@@ -154,7 +154,7 @@ namespace Zold.Screens.Implemented
                     if (isCountDownActive.Contains(true)) CountDown(gameTime);
                     break;
                 case MenuState.Play:
-                    bg.Dispose();
+                    //bg.Dispose();
                     gameScreenManager.RemoveScreen(this);
                     gameScreenManager.InsertScreen(new Map.MapManager());
                     break;
@@ -188,15 +188,16 @@ namespace Zold.Screens.Implemented
 
         public override void UnloadContent()
         {
-            title.Dispose();
-            backButton.Dispose();
-            boxChecked.Dispose();
-            boxUnchecked.Dispose();
-            fscrIcon.Dispose();
-            playButton.Dispose();
-            optionsButton.Dispose();
-            bg.Dispose();
-            bgMusic.Dispose();
+            //title.Dispose();
+            //backButton.Dispose();
+            //boxChecked.Dispose();
+            //boxUnchecked.Dispose();
+            //fscrIcon.Dispose();
+            //playButton.Dispose();
+            //optionsButton.Dispose();
+            bg.Stop();
+            //bg.Dispose();
+            //bgMusic.Dispose();
             Assets.Instance.Remove("menu");
         }
 
